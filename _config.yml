@@ -3,16 +3,16 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
-subtitle:
+title: Laurent Kempé
+subtitle: One of the Tech Head Brothers
 description:
-author: John Doe
-language:
-timezone:
+author: Laurent Kempé
+language: en
+timezone: Europe/Paris
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
+url: http://laurentkempe.com
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -52,7 +52,7 @@ tag_map:
 ## Hexo uses Moment.js to parse and display date
 ## You can customize the date format as defined in
 ## http://momentjs.com/docs/#/displaying/format/
-date_format: YYYY-MM-DD
+date_format: MM/DD/YYYY
 time_format: HH:mm:ss
 
 # Pagination
@@ -68,4 +68,13 @@ theme: tranquilpeak
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
-  type:
+  type: git
+  repo: https://github.com/laurentkempe/laurentkempe.github.io.git
+  branch: master
+  
+# hexo-generator-feed
+## Docs: https://github.com/LouisBarranqueiro/tranquilpeak-hexo-theme/blob/master/docs/user.md#installation  
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20

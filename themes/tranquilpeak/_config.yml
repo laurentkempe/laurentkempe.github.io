@@ -58,18 +58,18 @@ sidebar:
             url: /#about
             icon: question
     author_links:
-        # github:
-        #     title: global.github
-        #     url: https://github.com/
-        #     icon: github
+        github:
+            title: global.github
+            url: https://github.com/laurentkempe
+            icon: github
         # stack_overflow:
         #     title: global.stack_overflow
         #     url: http://stackoverflow.com/users
         #     icon: stack-overflow
-        # twitter:
-        #     title: global.twitter
-        #     url: https://twitter.com/
-        #     icon: twitter
+        twitter:
+            title: global.twitter
+            url: https://twitter.com/laurentkempe
+            icon: twitter
         # facebook:
         #     title: global.facebook
         #     url: https://facebook.com/
@@ -112,15 +112,15 @@ header:
 # Author
 # Your biography and your job is editable in each languages files in `languages` folder
 author:
-    email:
-    location:
+    email: laurent.kempe@techheadbrothers.com
+    location: Illzach, France
     # Your profile picture located in folder `source/_images/` (development)
     # or in `source/assets/images/` (production)
     # or you can use an external url
     # Overwritten by your gravatar image if `gravatar_email` is filled
     picture:
     # Your Twitter username without the @. E.g : `tranquilpeak`
-    twitter:
+    twitter: laurentkempe
     # Your google plus profile id. E.g : `+Tranquilpeak` or `123812884128439`
     google_plus:
 
@@ -132,7 +132,7 @@ author:
 # 2: Display medium sidebar on large and medium screen and header bar on small screen and medium sidebar is swiped (default)
 # 3: Display header bar on all screens and large sidebar is swiped
 # 4: Display header bar on all screens and medium sidebar is swiped
-sidebar_behavior: 2
+sidebar_behavior: 1
 # Hide sidebar on all article page to let article take full width to improve reading, and enjoy wide images and cover images. (true: enable, false: disable)
 clear_reading: true
 # Head title displayed at the top of the table of contents.
@@ -168,13 +168,13 @@ tag_pagination: true
 # You can't use Disqus and Duoshuo together
 # then fill the right shortname
 # Your Disqus shortname
-disqus_shortname:
+disqus_shortname: laurentkempe
 # Your Duoshuo shortname
 duoshuo_shortname:
 # Your Google analystics web property ID : UA-XXXXX-X
-google_analytics_id:
+google_analytics_id: UA-64298-8
 # Your Gravatar email. Overwrite `author.picture` everywhere in the blog
-gravatar_email:
+gravatar_email: laurent.kempe@techheadbrothers.com
 # Your swiftype install key
 swiftype_install_key:
 # Your Facebook user ids used to connect your blog with your facebook user accounts (Facebook Insights). Separate ids with comma. e.g : 9830047,1003342
