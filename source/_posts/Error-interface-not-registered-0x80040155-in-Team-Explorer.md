@@ -1,0 +1,12 @@
+title: Error interface not registered 0x80040155 in Team Explorer
+date: 10/11/2006 3:14:50 AM
+updated: 10/11/2006 3:14:50 AM
+tags: ["Team System", "Visual Studio"]
+---
+Tonight I had the following issue; right clicking on a Team Query in Team Explorer and choosing '*Open in Microsoft Excel*' gave the following error:
+
+> interface not registered 0x80040155
+
+The solution I found was to run: **C:\Program Files\Microsoft Office\OFFICE11>EXCEL.EXE /regserver**
+
+Now I can again open my tasks in Excel.

@@ -1,0 +1,7 @@
+title: Trying out Newsgator and .Text Publishing plugin
+date: 4/16/2004 6:22:00 PM
+updated: 4/16/2004 6:22:00 PM
+tags: ["Tools"]
+---
+
+This is a post I directly made from [Newsgator](http://newsgator.com/) using [.Text Publishing plugin](http://www.newsgator.com/download/plugins/NGASPNetWebLogPlugIn.msi). I just started a search for the ultimate blog tool. I will need some time to evaluate this one, but I like the idea of having it in Outlook. Stay tuned…

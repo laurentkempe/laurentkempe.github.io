@@ -1,0 +1,10 @@
+title: Visual Studio 2005 Beta 1 refresh with the Team System
+date: 8/27/2004 5:38:00 AM
+updated: 8/27/2004 5:38:00 AM
+tags: ["Whidbey"]
+---
+It seems that we will be updated on Whidbey :-) Nice. I will add to my development an evoluation of the Team System tools.
+
+> [Visual Studio 2005 Beta 1 refresh with Team System](http://www.activewin.com/awin/comments.asp?HeadlineIndex=25951)
+> 
+> [Rick LaPlante](http://blogs.msdn.com/rickla/) announced an upcoming refresh to the Visual Studio Community Technology Preview:

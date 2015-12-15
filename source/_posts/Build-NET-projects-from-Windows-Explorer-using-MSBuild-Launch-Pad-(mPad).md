@@ -1,0 +1,20 @@
+title: Build .NET projects from Windows Explorer using MSBuild Launch Pad (mPad)
+date: 6/4/2010 7:27:22 PM
+updated: 6/4/2010 7:27:22 PM
+tags: ["Visual Studio", "MSBuild", "Tools"]
+---
+In September 2009 I posted about a tool I am using to build my MSBuild projects from the shell “[Build your .NET project with a right click in Windows Explorer](http://www.laurentkempe.com/post/Build-your-NET-project-with-a-right-click-in-Windows-Explorer.aspx)”
+
+Last week I changed to [MSBuild Launch Pad (mPad)](http://msbuildlaunchpad.codeplex.com/) which also add a context menu when you right click your project or solution files.
+
+The added value for me is that it maintained project, 1.0 was released on May 21, 2010 with following release notes:
+
+*   *   Support sln, csproj, vbproj, vcxproj, shfbproj, ccproj, oxygene and proj files execution.
+    *   Basic settings such as Show Prompt, and Auto Hide are provided. 
+    *   MSBuild Shell Extension integration is achieved.   
+
+I also very much like that when I right click and say build I get the control on the .NET framework version I want to use and if it is a Release, Debug or what so ever.
+
+![4668737460_d5f6fd3791_o[1]](http://www.laurentkempe.com/image.axd?picture=4668737460_d5f6fd3791_o%5B1%5D.png "4668737460_d5f6fd3791_o[1]") 
+
+Nice little productivity booster tool.

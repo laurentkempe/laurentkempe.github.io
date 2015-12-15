@@ -1,0 +1,37 @@
+title: Updated my Live Template for NUnit in ReSharper
+date: 5/9/2009 4:59:33 PM
+updated: 5/9/2009 4:59:33 PM
+tags: ["Visual Studio", "ReSharper", "unit test"]
+---
+I tend to use a lot the [Live Template of ReSharper](http://www.jetbrains.com/resharper/features/code_templates.html), for example working for some time now with the WPF MVVM pattern I created a ViewModel template of such a class and use it extensively.
+
+Today I updated the [File Template](http://www.jetbrains.com/resharper/features/code_templates.html#File_Templates) I use to write my [NUnit](http://nunit.com/index.php) tests like this:
+
+using NUnit.Framework; 
+
+namespace $NAMESPACE$     
+{      
+    // ReSharper disable InconsistentNaming 
+
+    [TestFixture]     
+    public class $CLASSNAME$      
+    {          
+        /*      
+         * ... hold ...      
+         *       
+         * Arrange - Act - Assert      
+         */ 
+
+        [Test]     
+        public void $FIRST_TEST_NAME$()      
+        {      
+            $END$      
+        }      
+    } 
+
+   // ReSharper restore InconsistentNaming     
+}
+
+where I have the variable names defined as this:
+
+![](http://farm4.static.flickr.com/3326/3515113386_55481b1a06_o.png)

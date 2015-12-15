@@ -1,0 +1,10 @@
+title: Newsgator
+date: 4/19/2004 6:45:00 PM
+updated: 4/19/2004 6:45:00 PM
+tags: ["Tools"]
+---
+<div class="Section1">
+
+
+ I continued the evaluation and was a bit disappointed about the import function. I had quite a lot of feed in [SharpReader](http://www.sharpreader.net/ "http://www.sharpreader.net/") and the import function did not imported them the way I thought, I mean ordered like it was before. <span style="FONT-FAMILY: Wingdings">L</span>
+</div>

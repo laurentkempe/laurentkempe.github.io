@@ -1,0 +1,8 @@
+title: Visual Studio Team System 2008 Team Suite (x86 and x64 WoW) - DVD (English)
+date: 11/19/2007 9:46:16 PM
+updated: 11/19/2007 9:46:16 PM
+tags: ["Visual Studio"]
+---
+![](http://farm3.static.flickr.com/2394/2047143464_86d2fdfe7e_o.jpg) 
+
+On MSDN, start your downloads!!!!

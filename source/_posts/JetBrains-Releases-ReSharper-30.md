@@ -1,0 +1,12 @@
+title: JetBrains Releases ReSharper 3.0
+date: 6/22/2007 1:47:32 AM
+updated: 6/22/2007 1:47:32 AM
+tags: ["Tools", "Visual Studio"]
+---
+They did it again!!! The great tool became even better.
+
+Here is the page on which you can [read what is new in that release](http://www.jetbrains.com/resharper/features/newfeatures.html).
+
+> ReSharper 3.0 has loads of new goodies for C# users and VB.NET developers alike including XML, XAML, and ASP.NET support.
+
+Ant the [press release is here](http://www.jetbrains.com/company/press/pr_210607.html).
