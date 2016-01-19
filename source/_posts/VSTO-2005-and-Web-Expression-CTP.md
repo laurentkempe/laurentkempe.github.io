@@ -1,11 +1,16 @@
-title: VSTO 2005 and Web Expression CTP
+title: "VSTO 2005 and Web Expression CTP"
+permalink: "VSTO-2005-and-Web-Expression-CTP"
 date: 10/5/2006 6:17:08 AM
 updated: 10/5/2006 6:17:08 AM
+disqusIdentifier: 20061005061708
 tags: ["Visual Studio", "VSTO"]
+alias:
+ - /post/VSTO-2005-and-Web-Expression-CTP.aspx/index.html
 ---
 What? How can you link those two!!!???
 
 I am working on [Tech Head Brothers Authoring](http://www.codeplex.com/Wiki/View.aspx?ProjectName=THBAuthoring) tool and it means that I need to provide a setup to all the authors. I did it following a real long tutorial in two parts:
+<!-- more -->
 
 *   [Deploying Visual Studio 2005 Tools for Office Solutions Using Windows Installer (Part 1 of 2)](http://msdn.microsoft.com/office/default.aspx?pull=/library/en-us/odc_vsto2005_ta/html/OfficeVSTOWindowsInstallerOverview.asp)
 *   [Deploying Visual Studio 2005 Tools for Office Solutions Using Windows Installer: Walkthroughs (Part 2 of 2)](http://msdn.microsoft.com/office/default.aspx?pull=/library/en-us/odc_vsto2005_ta/html/OfficeVSTOWindowsInstallerWalkthrough.asp) 

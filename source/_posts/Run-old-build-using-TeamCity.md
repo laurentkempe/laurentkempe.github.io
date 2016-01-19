@@ -1,11 +1,16 @@
-title: Run old build using TeamCity
+title: "Run old build using TeamCity"
+permalink: "Run-old-build-using-TeamCity"
 date: 7/10/2010 12:59:35 AM
 updated: 9/17/2010 9:56:52 PM
+disqusIdentifier: 20100710125935
 tags: ["Team City", "continuous integration", "innoveo solutions", "Jobping"]
+alias:
+ - /post/Run-old-build-using-TeamCity.aspx/index.html
 ---
 At [Jobping](http://www.jobping.com) and [Innoveo](http://www.innoveo.com/) we are using [TeamCity](http://www.jetbrains.com/teamcity/index.html) from Jetbrains to automate our different builds.
 
 Today I was asked by my colleague Roy the following interesting question “Can I rerun an old build?”
+<!-- more -->
 
 My first thought and question was, “do you have a tag for that old build?” The response was no. With a yes I would have proposed to use what I described in a previous post: [Build and Deployment automation, VCS Root and Labeling in TeamCity](http://www.laurentkempe.com/post/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity.aspx). In which we could change the [VCS Checkout rules](http://confluence.jetbrains.net/display/TCD5/VCS+Checkout+Rules)to point to that particular tag and run the build.
 

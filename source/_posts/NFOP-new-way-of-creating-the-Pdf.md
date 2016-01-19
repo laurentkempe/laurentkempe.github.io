@@ -1,7 +1,11 @@
-title: NFOP new way of creating the Pdf
+title: "NFOP new way of creating the Pdf"
+permalink: "NFOP-new-way-of-creating-the-Pdf"
 date: 3/18/2005 3:26:00 AM
 updated: 3/18/2005 3:26:00 AM
+disqusIdentifier: 20050318032600
 tags: ["Tech Head Brothers", ".NET Development"]
+alias:
+ - /post/NFOP-new-way-of-creating-the-Pdf.aspx/index.html
 ---
 I was asked about the new way to work with [NFOP](http://nfop.sourceforge.net/) to generate the pdf without 
 the old Engine class. So here is what I am doing:

@@ -1,11 +1,16 @@
-title: File dialog automation using White framework
+title: "File dialog automation using White framework"
+permalink: "File-dialog-automation-using-White-framework"
 date: 7/16/2010 3:22:07 AM
 updated: 5/2/2012 12:53:45 AM
+disqusIdentifier: 20100716032207
 tags: ["acceptance test", "white"]
+alias:
+ - /post/File-dialog-automation-using-White-framework.aspx/index.html
 ---
 Today [TeamCity](http://www.jetbrains.com/teamcity/index.html) was showing me one functional test failure on my WPF application.
 
 I already discussed about this problem here: [White’s tip for your automated WPF functional tests](http://www.laurentkempe.com/post/Whitee28099s-tip-for-your-automated-WPF-functional-tests.aspx)       
+<!-- more -->
 The solution I presented at that time was working on my local development environment but not on my Continuous Integration system; aka TeamCity. So I went for another solution which was searching for the filename ComboBox and was setting the value. 
 
 This was working for some time but today not anymore. The issue I discovered is that using the ComboBox needed that the path was already used in the past otherwise setting the value was failing. So I was stuck and had to find another solution.

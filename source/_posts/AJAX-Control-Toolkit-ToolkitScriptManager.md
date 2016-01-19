@@ -1,11 +1,16 @@
-title: AJAX Control Toolkit - ToolkitScriptManager
+title: "AJAX Control Toolkit - ToolkitScriptManager"
+permalink: "AJAX-Control-Toolkit-ToolkitScriptManager"
 date: 6/9/2007 6:24:41 AM
 updated: 6/9/2007 6:24:41 AM
+disqusIdentifier: 20070609062441
 tags: ["ASP.NET AJAX"]
+alias:
+ - /post/AJAX-Control-Toolkit-ToolkitScriptManager.aspx/index.html
 ---
 A new release (10606) is out, that you might [download on CodePlex](http://www.codeplex.com/AtlasControlToolkit).
 
 I quickly tried out the script combining stuff and it works really great. I saved 7 round trip to the server and almost 2 seconds in the page load. You might read more about it on [Shawn Burke](http://blogs.msdn.com/sburke/archive/2007/06/07/updated-toolkit-release-now-available.aspx)
+<!-- more -->
 
 > **Script Combining**.  With the Toolkit, we made the decision to have components be responsible for their own scripts, as opposed to having one mondo-script file with all the script for the whole Toolkit.  This was the right call, as it allows adding to the Toolkit without having everyone pay a penalty for the added items.  However, for components with deep dependancies, this could add up to a lot of individual script files which caused multiple requests back to the server - a problem on slower connections.  We've not got functionality such that all of the scripts needed for all of the Toolkit components on the page will be dynamically combined into just one script file and sent down that way.
 

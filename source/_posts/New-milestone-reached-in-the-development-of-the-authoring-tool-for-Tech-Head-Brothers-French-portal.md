@@ -1,11 +1,16 @@
-title: New milestone reached in the development of the authoring tool for Tech Head Brothers French portal
+title: "New milestone reached in the development of the authoring tool for Tech Head Brothers French portal"
+permalink: "New-milestone-reached-in-the-development-of-the-authoring-tool-for-Tech-Head-Brothers-French-portal"
 date: 8/24/2004 6:41:00 AM
 updated: 8/24/2004 6:41:00 AM
+disqusIdentifier: 20040824064100
 tags: ["Tech Head Brothers", ".NET Development"]
+alias:
+ - /post/New-milestone-reached-in-the-development-of-the-authoring-tool-for-Tech-Head-Brothers-French-portal.aspx/index.html
 ---
 In this version we now have:
 
 *   a toolbar hosting Preview, Zip, Post plugin
+<!-- more -->
 *   a dropdown connecting to a web service at first click to get back the articles categories, used before posting
 *   a web service to post the article using DIME
 

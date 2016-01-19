@@ -1,11 +1,15 @@
-title: Log4net nice idea :-)
+title: "Log4net nice idea :-)"
+permalink: "Log4net-nice-idea-)"
 date: 11/5/2004 7:49:00 AM
 updated: 11/5/2004 7:49:00 AM
-tags: [""]
+disqusIdentifier: 20041105074900
+alias:
+ - /post/Log4net-nice-idea-).aspx/index.html
 ---
 If you are using [log4net](http://logging.apache.org/log4net/) like me then I am sure you will like this idea. I combined it with [ReSharper.](http://www.jetbrains.com/resharper/)
 
 > [A log4net tip](http://blogs.dotnetguru.org/tbarrere?title=a_log4net_tip&more=1&c=1&tb=1&pb=1)
+<!-- more -->
 > 
 > ``
 > 

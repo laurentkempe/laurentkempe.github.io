@@ -1,7 +1,10 @@
-title: Some rules...
+title: "Some rules..."
+permalink: "Some-rules"
 date: 11/23/2004 8:13:00 AM
 updated: 5/7/2010 7:46:51 AM
-tags: [""]
+disqusIdentifier: 20041123081300
+alias:
+ - /post/Some-rules.aspx/index.html
 ---
 [Microsoft Notebook: Top exec shares business lessons](http://seattlepi.nwsource.com/business/200538_msftnotebook22.html)
 
@@ -13,6 +16,7 @@ tags: [""]
 <li><em>Keep your mind open to unexpected opportunity.</em></li></ul>
 
 
+<!-- more -->
 I really like the last two.
 
 <em></em> 

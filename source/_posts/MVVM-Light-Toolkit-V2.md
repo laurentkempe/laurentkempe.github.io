@@ -1,11 +1,16 @@
-title: MVVM Light Toolkit V2
+title: "MVVM Light Toolkit V2"
+permalink: "MVVM-Light-Toolkit-V2"
 date: 10/14/2009 6:12:53 AM
 updated: 4/28/2010 8:02:22 PM
+disqusIdentifier: 20091014061253
 tags: ["WPF", "innoveo solutions", "MVVM"]
+alias:
+ - /post/MVVM-Light-Toolkit-V2.aspx/index.html
 ---
 At [Innoveo Solutions](http://www.innoveo.com/) we are using .NET and WPF for our [Innoveo Skye](http://www.innoveo.com/Products.aspx)® Editor application. Skye® Editor is a distribution channel editor targeting business people letting them edit and configure their insurance products. 
 
 From the beginning we have adopted the **Model-View-ViewModel** architecture. Having our solution growing we were facing the issue of having our ViewModels dependency growing too. Some ViewModel became too much dependent of others. This was obvious in our unit tests whose complexity to setup were growing too. It was time to find a solution to decouple the ViewModels.
+<!-- more -->
 
 The solution came out after a discussion with [Laurent Bugnion](http://www.galasoft.ch/intro_en.html), the famous author of [**MVVM Light Toolkit**](http://www.galasoft.ch/mvvm/getstarted/). At that time we used the V1 that already helped a lot in this decoupling.
 

@@ -1,11 +1,16 @@
-title: ReSharper 4.5 Beta Released
+title: "ReSharper 4.5 Beta Released"
+permalink: "ReSharper-45-Beta-Released"
 date: 3/14/2009 12:53:38 AM
 updated: 3/14/2009 12:53:38 AM
+disqusIdentifier: 20090314125338
 tags: ["ReSharper"]
+alias:
+ - /post/ReSharper-45-Beta-Released.aspx/index.html
 ---
 Jura Gorohovsky just posted on the release of a [public beta of ReSharper 4.5](http://blogs.jetbrains.com/dotnet/2009/03/resharper-45-beta-released/)
 
 > Your wait is almost over: ReSharper 4.5 has gone public beta, and the official release is just a few weeks away!
+<!-- more -->
 > After significantly expanding the set of ReSharper features in previous releases, we’ve shifted focus to the issues of performance and memory usage. Making the tool more agile, robust and responsive was our main goal when developing ReSharper 4.5.
 > ReSharper 4.5 brings a wide-ranging set of improvements that go way beyond performance enhancements:
 > 

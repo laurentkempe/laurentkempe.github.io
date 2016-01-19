@@ -1,11 +1,16 @@
-title: Tech Head Brothers Silverlight Streaming framework
+title: "Tech Head Brothers Silverlight Streaming framework"
+permalink: "Tech-Head-Brothers-Silverlight-Streaming-framework"
 date: 10/12/2007 4:24:05 AM
 updated: 10/12/2007 4:24:05 AM
+disqusIdentifier: 20071012042405
 tags: ["Silverlight", "Silverlight Streaming"]
+alias:
+ - /post/Tech-Head-Brothers-Silverlight-Streaming-framework.aspx/index.html
 ---
 [Tech Head Brothers Silverlight Streaming framework](http://www.codeplex.com/THBSLSFramework) is an implementation of [Silverlight Streaming REST API](http://msdn2.microsoft.com/en-us/library/bb851621.aspx) as a class library and a set of [Workflow Foundation](http://msdn.microsoft.com/workflow/) activities focused on the [Hosting Content on Silverlight Streaming](http://msdn2.microsoft.com/en-us/library/bb802532.aspx).  
 
 I have implemented this light framework (some functionality are still missing) as a class library and [Patrice Lamarche](http://www.techheadbrothers.com/Auteurs.aspx/patrice-lamarche) ([http://patricelamarche.net](http://patricelamarche.net)) implemented the Workflow Foundation part of it.  
+<!-- more -->
 
 The following picture shows the classes used in the framework:  
 

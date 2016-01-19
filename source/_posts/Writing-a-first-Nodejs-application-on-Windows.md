@@ -1,11 +1,20 @@
-title: Writing a first Node.js application on Windows
+title: "Writing a first Node.js application on Windows"
+permalink: "Writing-a-first-Nodejs-application-on-Windows"
 date: 3/25/2012 2:25:39 AM
 updated: 3/25/2012 2:53:32 AM
+disqusIdentifier: 20120325022539
+coverImage: https://farm8.staticflickr.com/7184/6972712717_3065764dc8_h.jpg
+coverSize: partial
+thumbnailImage: https://farm8.staticflickr.com/7184/6972712717_29c1c987ab_q.jpg
+coverCaption: "Grande Anse, Le Diamant, Martinique"
 tags: ["nodejs"]
+alias:
+ - /post/Writing-a-first-Nodejs-application-on-Windows.aspx/index.html
 ---
-[![Plage de la Grande Anse du Diamant](http://farm8.staticflickr.com/7184/6972712717_29c1c987ab_m.jpg)](http://www.flickr.com/photos/laurentkempe/6972712717/ "Plage de la Grande Anse du Diamant by Laurent Kempé, on Flickr")   
+<!-- [![Plage de la Grande Anse du Diamant](http://farm8.staticflickr.com/7184/6972712717_29c1c987ab_m.jpg)](http://www.flickr.com/photos/laurentkempe/6972712717/ "Plage de la Grande Anse du Diamant by Laurent Kempé, on Flickr") -->   
 
 I started some weeks ago to play with [Github Hubot](http://www.laurentkempe.com/post/Starting-TeamCity-builds-from-HipChat-using-Github-Hubot.aspx) and hosted one version on [Heroku](http://www.heroku.com/) to start learning about all those new technologies.
+<!-- more -->
 
 The next step was to go a bit onto [Node.js](http://nodejs.org/) and write a first small application.
 

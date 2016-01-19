@@ -1,7 +1,11 @@
-title: VSTO 2003 with .NET Framework Beta 2
+title: "VSTO 2003 with .NET Framework Beta 2"
+permalink: "VSTO-2003-with-NET-Framework-Beta-2"
 date: 4/23/2005 4:40:00 AM
 updated: 4/23/2005 4:40:00 AM
+disqusIdentifier: 20050423044000
 tags: ["Tech Head Brothers", "Tools", ".NET Development"]
+alias:
+ - /post/VSTO-2003-with-NET-Framework-Beta-2.aspx/index.html
 ---
 
 
@@ -10,6 +14,7 @@ I finally managed to have a first beta going to the [Tech Head Brothers](http://
 publishing tool based on Word 2003, XML, Web Services... [Read 
 more](http://weblogs.asp.net/lkempe/archive/2005/01/25/360227.aspx) and a [bit 
 more](http://weblogs.asp.net/lkempe/archive/2004/11/03/251422.aspx).
+<!-- more -->
 
 So I have a cool setup for the tool that works for me on two machines, but 
 when you start to distribute your software you face other challenges. On 

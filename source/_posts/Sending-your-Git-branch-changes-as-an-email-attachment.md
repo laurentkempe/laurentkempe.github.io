@@ -1,11 +1,21 @@
-title: Sending your Git branch changes as an email attachment
+title: "Sending your Git branch changes as an email attachment"
+permalink: "Sending-your-Git-branch-changes-as-an-email-attachment"
 date: 4/13/2012 9:23:11 AM
 updated: 4/13/2012 7:28:11 PM
+disqusIdentifier: 20120413092311
+coverImage: https://farm8.staticflickr.com/7046/6829846914_d0c6a8da4a_h.jpg
+coverSize: partial
+thumbnailImage: https://farm8.staticflickr.com/7046/6829846914_6d316434c6_q.jpg
+coverCaption: "Anse Noire, Martinique"
 tags: ["DVCS", "Git", "PowerShell"]
+alias:
+ - /post/Sending-your-Git-branch-changes-as-an-email-attachment.aspx/index.html
 ---
-[![IMG_1586](http://farm8.staticflickr.com/7046/6829846914_6d316434c6_m.jpg)](http://www.flickr.com/photos/laurentkempe/6829846914/ "IMG_1586 by Laurent Kempé, on Flickr")The other day I wanted to send per email some code to a friend which doesn’t use [Git](http://git-scm.com/). He is using Svn and I use [Git Svn](http://schacon.github.com/git/git-svn.html) in front of this Svn repository. Why I do that? Don’t get me started…
+<!-- [![IMG_1586](http://farm8.staticflickr.com/7046/6829846914_6d316434c6_m.jpg)](http://www.flickr.com/photos/laurentkempe/6829846914/ "IMG_1586 by Laurent Kempé, on Flickr") -->
+The other day I wanted to send per email some code to a friend which doesn’t use [Git](http://git-scm.com/). He is using Svn and I use [Git Svn](http://schacon.github.com/git/git-svn.html) in front of this Svn repository. Why I do that? Don’t get me started…
 
 So he couldn’t pull from my repo and we were kind of stuck. Really?!? For sure not, here was the goal I set as I am sure this will happen some other time: having the computer work for me. What a strange idea you would say! Yeah, the computer working for you. At the end aren’t we here to make the cool things and let the computer do the boring things?
+<!-- more -->
 
 Ok so I came up with a quick hack. I wanted to have a way to send all the new, or modified, files of my current Git branch per email as a zip attachment. Guess what it was quite easy even for a PowerShell beginner like me.
 

@@ -1,11 +1,16 @@
-title: VisualSVN Server 1.1 released
+title: "VisualSVN Server 1.1 released"
+permalink: "VisualSVN-Server-11-released"
 date: 3/30/2008 6:37:00 AM
 updated: 3/30/2008 6:37:00 AM
+disqusIdentifier: 20080330063700
 tags: ["Tools", "continuous integration"]
+alias:
+ - /post/VisualSVN-Server-11-released.aspx/index.html
 ---
 By starting to write a post about the new step achieved in the tooling of Tech Head Brothers development I just realized that [VisualSVN Server 1.1 is released](http://www.visualsvn.com/server/changelog/).
 
 So I downloaded and updated my installation in 2-3 minutes, all went well, just nice.
+<!-- more -->
 
 > #### VisualSVN Server Change Log
 > 

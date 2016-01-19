@@ -1,11 +1,16 @@
-title: PIXELS by PATRICK JEAN
+title: "PIXELS by PATRICK JEAN"
+permalink: "PIXELS-by-PATRICK-JEAN"
 date: 4/9/2010 9:18:24 AM
 updated: 4/10/2010 7:08:08 PM
+disqusIdentifier: 20100409091824
 tags: ["Video"]
+alias:
+ - /post/PIXELS-by-PATRICK-JEAN.aspx/index.html
 ---
 If you are an old (even not so old) video game player, do you remember those old days of fun with pac man, space invaders, frogger… You have to watch this fantastic video! 
 
 > New York invasion by 8-bits creatures !
+<!-- more -->
 > PIXELS is Patrick Jean' latest short film, shot on location in New York.
 
 <object width="480" height="270">

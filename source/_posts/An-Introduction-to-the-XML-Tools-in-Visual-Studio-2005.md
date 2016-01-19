@@ -1,11 +1,16 @@
-title: An Introduction to the XML Tools in Visual Studio 2005
+title: "An Introduction to the XML Tools in Visual Studio 2005"
+permalink: "An-Introduction-to-the-XML-Tools-in-Visual-Studio-2005"
 date: 7/29/2004 6:17:00 PM
 updated: 7/29/2004 6:17:00 PM
+disqusIdentifier: 20040729061700
 tags: ["Whidbey"]
+alias:
+ - /post/An-Introduction-to-the-XML-Tools-in-Visual-Studio-2005.aspx/index.html
 ---
 Msdn published an [interesting article](http://msdn.microsoft.com/XML/BuildingXML/XMLinNETFramework/default.aspx?pull=/library/en-us/dnxmlnet/html/xmltools.asp) concerning the new XML possibilities of the IDE Visual Studio 2005.
 
 <u>Summary</u>:
+<!-- more -->
 
 <ul>
 <li>Checks the <strong>well-formedness</strong> errors in the XML and provides live feedback using red squiggly under the sequence of characters that is the cause of the errors and  through the error list.</li>

@@ -35,10 +35,10 @@ sidebar:
             title: global.home
             url: /
             icon: home
-        categories:
-            title: global.categories
-            url: /all-categories
-            icon: bookmark
+        # categories:
+        #    title: global.categories
+        #    url: /all-categories
+        #    icon: bookmark
         tags:
             title: global.tags
             url: /all-tags
@@ -47,12 +47,12 @@ sidebar:
             title: global.archives
             url: /all-archives
             icon: archive
-        search:
-            title: global.search
-            url: /#search
-            icon: search
+        # search:
+        #    title: global.search
+        #    url: /#search
+        #    icon: search
             # `st-search-show-outputs` classes are used to open swiftype search window
-            class: st-search-show-outputs
+        #    class: st-search-show-outputs
         about:
             title: global.about
             url: /#about
@@ -168,7 +168,7 @@ tag_pagination: true
 # You can't use Disqus and Duoshuo together
 # then fill the right shortname
 # Your Disqus shortname
-disqus_shortname:
+disqus_shortname: laurentkempe
 # Your Duoshuo shortname
 duoshuo_shortname:
 # Your Google analystics web property ID : UA-XXXXX-X

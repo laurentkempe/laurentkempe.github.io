@@ -1,7 +1,11 @@
-title: Report from Redmond - By Rick Ross of Javalobby
+title: "Report from Redmond - By Rick Ross of Javalobby"
+permalink: "Report-from-Redmond-By-Rick-Ross-of-Javalobby"
 date: 3/28/2005 7:01:00 AM
 updated: 3/28/2005 7:01:00 AM
+disqusIdentifier: 20050328070100
 tags: ["Work", ".NET Development"]
+alias:
+ - /post/Report-from-Redmond-By-Rick-Ross-of-Javalobby.aspx/index.html
 ---
 
 
@@ -11,6 +15,7 @@ Microsoft campus in Redmond Washington for the Technology Summit 2005. This
 gathering of developers from a variety of platforms yielded some interesting 
 insights from all parties. Listen on for Rick's overview and thoughts on the 
 summit.   
+<!-- more -->
 
 [Listen to the 
 report now! ](http://www.javalobby.org/eps/summit)  

@@ -1,11 +1,20 @@
-title: Using TeamCity integrated dotCover coverage files with NDepend
+title: "Using TeamCity integrated dotCover coverage files with NDepend"
+permalink: "Using-TeamCity-integrated-dotCover-coverage-files-with-NDepend"
 date: 11/29/2013 6:55:49 PM
 updated: 11/29/2013 10:21:02 PM
+disqusIdentifier: 20131129065549
+coverImage: https://farm3.staticflickr.com/2869/11098125944_ed0e781a91_h.jpg
+coverSize: partial
+thumbnailImage: https://farm3.staticflickr.com/2869/11098125944_08a562bd51_q.jpg
+coverCaption: "Byron Bay, Australia"
 tags: ["NDepend", "Team City", "dotCover"]
+alias:
+ - /post/Using-TeamCity-integrated-dotCover-coverage-files-with-NDepend.aspx/index.html
 ---
-[![Byron Bay 2013-08-26 038_DxO](http://farm3.staticflickr.com/2869/11098125944_08a562bd51_m.jpg)](http://www.flickr.com/photos/laurentkempe/11098125944/ "Byron Bay 2013-08-26 038_DxO by Laurent Kempé, on Flickr")
+<!-- [![Byron Bay 2013-08-26 038_DxO](http://farm3.staticflickr.com/2869/11098125944_08a562bd51_m.jpg)](http://www.flickr.com/photos/laurentkempe/11098125944/ "Byron Bay 2013-08-26 038_DxO by Laurent Kempé, on Flickr")-->
 
 For a long time I wanted to integrated [NDepend](http://www.ndepend.com) on our build server so that this week I invested some time here and there to achieve that goal. I did that already a long time ago, I even wrote the documentation which you can read on [NDepend website](http://www.ndepend.com/Doc_CI_TeamCity.aspx).
+<!-- more -->
 
 This time I wanted to go one step further. 
 

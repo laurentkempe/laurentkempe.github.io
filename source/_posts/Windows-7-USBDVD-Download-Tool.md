@@ -1,11 +1,16 @@
-title: Windows 7 USB/DVD Download Tool
+title: "Windows 7 USB/DVD Download Tool"
+permalink: "Windows-7-USBDVD-Download-Tool"
 date: 8/27/2010 9:18:30 AM
 updated: 8/27/2010 9:19:47 AM
+disqusIdentifier: 20100827091830
 tags: ["Windows 7"]
+alias:
+ - /post/Windows-7-USBDVD-Download-Tool.aspx/index.html
 ---
 Tonight during the preparation of an usb stick using [Windows 7 USB/DVD Download](http://store.microsoft.com/Help/ISO-Tool) I got an error message about bootsect just at the end of the creation of bootable usb stick. Following the troubleshoot link I arrived on the following
 
 > **When creating a bootable USB device, I am getting an error about bootsect**
+<!-- more -->
 > To make the USB device bootable, you need to run a tool named bootsect.exe. In some cases, this tool needs to be downloaded from your Microsoft Store account. This may happen if you're trying to create a 64-bit bootable USB device from a 32-bit version of Windows. To download bootsect:
 > 
 > 1.  Login to your [Microsoft Store account](https://store.microsoft.com/account) to view your purchase history

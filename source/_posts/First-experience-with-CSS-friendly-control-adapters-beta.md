@@ -1,7 +1,10 @@
-title: First experience with CSS friendly control adapters beta
+title: "First experience with CSS friendly control adapters beta"
+permalink: "First-experience-with-CSS-friendly-control-adapters-beta"
 date: 4/29/2006 8:41:00 AM
 updated: 4/29/2006 8:41:00 AM
-tags: [""]
+disqusIdentifier: 20060429084100
+alias:
+ - /post/First-experience-with-CSS-friendly-control-adapters-beta.aspx/index.html
 ---
 I had the chance to realize that CSS friendly control adapters beta from the 
 ASP.NET Team was online for a short time and downloaded it, so I had the 
@@ -9,6 +12,7 @@ pleasure to experience it a bit this evening.
 
 By the way I recommend the reading of the White Paper, that is well 
 written.
+<!-- more -->
 
 So my first idea was to integrate the Menu on [Tech Head Brothers](http://www.techheadbrothers.com/). IMHO this new 
 menu is far better than the one delivered with ASP.NET because it uses a pure 

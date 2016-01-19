@@ -1,7 +1,11 @@
-title: Blogging Tools
+title: "Blogging Tools"
+permalink: "Blogging-Tools"
 date: 5/12/2004 2:50:00 AM
 updated: 5/12/2004 2:50:00 AM
+disqusIdentifier: 20040512025000
 tags: ["Tools"]
+alias:
+ - /post/Blogging-Tools.aspx/index.html
 ---
 I have tried several tools to read blogs and to publish on mine, I wanted to have one that combines all.
 
@@ -12,6 +16,7 @@ I have tried several tools to read blogs and to publish on mine, I wanted to hav
 <li>Sharpreader</li></ul>
 
 
+<!-- more -->
 I must admit that I always came back to Sharpreader but this might change after the test of Sauce Reader. I saw some options on some ohers that are missing like the possibility to get the newsgroups (something I would really like), to be able to post pictures directly to a ftp account. The tool looks good and is developed with [.NET](http://www.microsoft.com/net/) and lots of components:
 
 <li>

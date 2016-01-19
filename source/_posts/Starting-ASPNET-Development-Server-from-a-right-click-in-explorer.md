@@ -1,11 +1,16 @@
-title: Starting ASP.NET Development Server from a right click in explorer
+title: "Starting ASP.NET Development Server from a right click in explorer"
+permalink: "Starting-ASPNET-Development-Server-from-a-right-click-in-explorer"
 date: 7/7/2007 12:18:37 AM
 updated: 5/7/2010 7:46:47 AM
+disqusIdentifier: 20070707121837
 tags: ["Tools", "ASP.NET 2.0", "Visual Studio", "ASP.NET"]
+alias:
+ - /post/Starting-ASPNET-Development-Server-from-a-right-click-in-explorer.aspx/index.html
 ---
 **<u>Update</u>: **Following the comment of [Jon Galloway](http://weblogs.asp.net/jgalloway)
 
 I know that there are other solutions doing this but I was just asked about how to do it today (hey Christine ;) and had this registry file stored somewhere for a while waiting for a blog post.
+<!-- more -->
 
 Save this to a file with an extension .reg, e.g. "asp.net web server here.reg":
 

@@ -1,7 +1,11 @@
-title: JetBrains .NET Profiler Early Access Program (EAP) starts
+title: "JetBrains .NET Profiler Early Access Program (EAP) starts"
+permalink: "JetBrains-NET-Profiler-Early-Access-Program-(EAP)-starts"
 date: 1/26/2005 8:12:00 AM
 updated: 1/26/2005 8:12:00 AM
+disqusIdentifier: 20050126081200
 tags: ["Tools", ".NET Development"]
+alias:
+ - /post/JetBrains-NET-Profiler-Early-Access-Program-(EAP)-starts.aspx/index.html
 ---
 
 
@@ -9,6 +13,7 @@ tags: ["Tools", ".NET Development"]
 [Jetbrains](http://www.jetbrains.com/) is opening it's early 
 Access Program for it new tool [.NET 
 Profiler](http://www.jetbrains.net/confluence/display/NetProf/Home;jsessionid=2D14D441FF9F196312B8F8303B583D34). Screen shot:
+<!-- more -->
 
  ![](http://membres.lycos.fr/lkempe//jetbrain.jpg)
 

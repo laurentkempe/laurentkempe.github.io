@@ -1,11 +1,22 @@
-title: Optimizing Skye Editor using JetBrains dotTrace
+title: "Optimizing Skye Editor using JetBrains dotTrace"
+permalink: "Optimization-using-JetBrains-dotTrace"
 date: 12/7/2012 1:55:00 PM
 updated: 12/7/2012 11:07:27 PM
+disqusIdentifier: 20121207015500
+coverImage: https://farm9.staticflickr.com/8150/6969851740_a5dbe52669_c.jpg
+coverSize: partial
+thumbnailImage: https://farm9.staticflickr.com/8150/6969851740_a5dbe52669_q.jpg
+coverCaption: "Vosges, France"
 tags: ["dotTrace", "Jetbrains", "C#", "innoveo solutions"]
+alias:
+ - /post/Optimization-using-JetBrains-dotTrace.aspx/index.html
 ---
-[![WP_000092](http://farm9.staticflickr.com/8150/6969851740_a5dbe52669_m.jpg)](http://www.flickr.com/photos/laurentkempe/6969851740/ "WP_000092 by Laurent Kempé, on Flickr")This post is a transcript of an internal post I did on [Innoveo Solutions](http://www.innoveo.com/) internal blog. Thanks to Innoveo to let me share this here!
+<!-- [![WP_000092](http://farm9.staticflickr.com/8150/6969851740_a5dbe52669_m.jpg)](http://www.flickr.com/photos/laurentkempe/6969851740/ "WP_000092 by Laurent Kempé, on Flickr") -->
+
+This post is a transcript of an internal post I did on [Innoveo Solutions](http://www.innoveo.com/) internal blog. Thanks to Innoveo to let me share this here!
 
 Skye Editor is our metal model editor which is written in C# 4, WPF uses [Model-View-ViewModel](http://msdn.microsoft.com/en-us/magazine/dd419663.aspx) design pattern and [MVVM Light](http://mvvmlight.codeplex.com/).
+<!-- more -->
 
 The post shows the usage of [JetBrains dotTace](http://www.jetbrains.com/profiler/) to optimize Skye Editor and the importance of profiling your code, here it is.
 

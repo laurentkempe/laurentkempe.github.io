@@ -1,11 +1,16 @@
-title: ReSharper 4.5 released
+title: "ReSharper 4.5 released"
+permalink: "ReSharper-45-released"
 date: 4/10/2009 5:08:49 PM
 updated: 4/10/2009 5:08:49 PM
+disqusIdentifier: 20090410050849
 tags: ["Tools", "Visual Studio", "ReSharper"]
+alias:
+ - /post/ReSharper-45-released.aspx/index.html
 ---
 As you might have realized following my blog, I am big fan of [JetBrains ReSharper](http://www.jetbrains.com/resharper/index.html) for quite some years! This tool really boost my productivity. Today they just realized ReSharper 4.5 which brings some new functionalities but also a huge improvement in performance.
 
 > ##### What's New in ReSharper 4.5
+<!-- more -->
 > 
 > ReSharper 4.5 delivers a great performance boost, new features and more. Read about them below or watch this [Live Demo](http://www.jetbrains.com/documentation/presentation/rs45/whatsnew-rs45.html)
 > 

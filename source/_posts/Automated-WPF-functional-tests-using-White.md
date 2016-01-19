@@ -1,11 +1,16 @@
-title: Automated WPF functional tests using White
+title: "Automated WPF functional tests using White"
+permalink: "Automated-WPF-functional-tests-using-White"
 date: 1/28/2010 4:50:57 AM
 updated: 5/7/2010 7:53:18 AM
+disqusIdentifier: 20100128045057
 tags: ["WPF", "unit test", "white"]
+alias:
+ - /post/Automated-WPF-functional-tests-using-White.aspx/index.html
 ---
 I’d like to introduce a tool that I have added for a month or two in my toolset. This tool is [White](http://white.codeplex.com/) from [ThoughtWorks](http://opensource.thoughtworks.com/). Here is the description of White: 
 
 > ### [White: Automate windows applications](http://white.codeplex.com/)
+<!-- more -->
 > 
 >  White supports all rich client applications, which are Win32, WinForm, **WPF **and SWT (java).
 > It is **.NET based **and hence you wouldn't have use proprietary scripting language. You can use your favourite .NET language, IDE and tools for developing tests/automation programs.

@@ -1,13 +1,18 @@
-title: MSDN Codezone online now!!!
+title: "MSDN Codezone online now!!!"
+permalink: "MSDN-Codezone-online-now!!!"
 date: 9/11/2005 5:12:00 AM
 updated: 9/11/2005 5:12:00 AM
+disqusIdentifier: 20050911051200
 tags: ["Tech Head Brothers"]
+alias:
+ - /post/MSDN-Codezone-online-now!!!.aspx/index.html
 ---
 
 
 
 I am proud to announce the launch of the new [MSDN codezone 
 site](http://msdn.microsoft.com/community/codezone/default.aspx).
+<!-- more -->
 
 As you might have read in my last post "[Codezone 
 search integration in Visual Studio 2005 !!! Cooool stuf :-)](http://weblogs.asp.net/lkempe/archive/2005/08/17/422902.aspx)",  [Tech Head Brothers](http://www.techheadbrothers.com/), my French 

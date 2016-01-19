@@ -1,7 +1,10 @@
-title: VMware Workstation 5 available
+title: "VMware Workstation 5 available"
+permalink: "VMware-Workstation-5-available"
 date: 4/9/2005 10:56:00 PM
 updated: 4/9/2005 10:56:00 PM
-tags: [""]
+disqusIdentifier: 20050409105600
+alias:
+ - /post/VMware-Workstation-5-available.aspx/index.html
 ---
 
 

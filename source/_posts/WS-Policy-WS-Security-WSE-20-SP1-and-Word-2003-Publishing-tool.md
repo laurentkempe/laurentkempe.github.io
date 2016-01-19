@@ -1,7 +1,11 @@
-title: WS-Policy, WS-Security, WSE 2.0 SP1 and Word 2003 Publishing tool
+title: "WS-Policy, WS-Security, WSE 2.0 SP1 and Word 2003 Publishing tool"
+permalink: "WS-Policy-WS-Security-WSE-20-SP1-and-Word-2003-Publishing-tool"
 date: 11/3/2004 1:13:00 PM
 updated: 11/3/2004 1:13:00 PM
+disqusIdentifier: 20041103011300
 tags: ["Tech Head Brothers", ".NET Development"]
+alias:
+ - /post/WS-Policy-WS-Security-WSE-20-SP1-and-Word-2003-Publishing-tool.aspx/index.html
 ---
 This morning I woke up at 4:30 AM, and could not sleep anymore, so I decided to work on my publishing tool for my site [Tech Head Brothers](http://www.techheadbrothers.com "Tech Head Brothers"). I finally managed to publish directly from Word 2003 in a secure way. <br>The website expose a publishing web service that uses [WS-Policy](http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnglobspec/html/ws-policy.asp), to specify that it needs Signature and Encryption using a X.509 certificate. When the user hit the publish button, the tool:
 
@@ -13,4 +17,5 @@ This morning I woke up at 4:30 AM, and could not sleep anymore, so I decided to 
 <li>Call the web service</li></ol>
 
 
+<!-- more -->
 Adding the WS-Policy to your web service is just a matter of some configuration using WSE 2.0 SP1, when you specify the correct certificates ;-)<br>Now I am able to get back to Word 2003 article's categories, publish, update articles and that without leaving Word 2003. <strong>Really cool !!!</strong>

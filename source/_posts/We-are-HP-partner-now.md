@@ -1,11 +1,16 @@
-title: We are HP partner now
+title: "We are HP partner now"
+permalink: "We-are-HP-partner-now"
 date: 3/11/2008 11:39:10 PM
 updated: 3/11/2008 11:39:10 PM
+disqusIdentifier: 20080311113910
 tags: ["innoveo solutions"]
+alias:
+ - /post/We-are-HP-partner-now.aspx/index.html
 ---
 Nice to see that my company, [innoveo solutions](http://www.innoveo.com/), became a [HP Partner](http://h21007.www2.hp.com/portal/site/dspp/menuitem.5070eb5189f3295ac6713f8da973a801/?partnerId=28469)!
 
 > ### innoveo solutions
+<!-- more -->
 > 
 > Developer & Solution Partner Program (DSPP)
 > 

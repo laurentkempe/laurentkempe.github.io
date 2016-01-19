@@ -1,11 +1,16 @@
-title: Linked files in Visual Studio projects
+title: "Linked files in Visual Studio projects"
+permalink: "Linked-files-in-Visual-Studio-projects"
 date: 11/30/2007 4:10:00 AM
 updated: 11/30/2007 4:10:00 AM
+disqusIdentifier: 20071130041000
 tags: ["Visual Studio", "innoveo solutions"]
+alias:
+ - /post/Linked-files-in-Visual-Studio-projects.aspx/index.html
 ---
 <div> 
 
 ![](http://farm3.static.flickr.com/2222/2073605741_5a6f80845e_o.jpg) Following my post "[Visual Studio and PowerShell Trick](http://weblogs.asp.net/lkempe/archive/2007/11/29/visual-studio-and-powershell-trick.aspx)" I had another little issue, I have one mapping file, mapping.xml, that I want to use on my website and with my data access layer unit tests project.
+<!-- more -->
 
 I used to solve this using the **linked file possibility of Visual Studio**. Point the target folder, and click Add Existing item, browse to your source folder, choose the original file, and at the bottom of the dialog you will have the Add button showing a dropdown, you juste then need to use Add As Link.
 

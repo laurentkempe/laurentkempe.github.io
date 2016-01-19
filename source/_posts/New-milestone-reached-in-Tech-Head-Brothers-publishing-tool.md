@@ -1,7 +1,11 @@
-title: New milestone reached  in Tech Head Brothers publishing tool
+title: "New milestone reached  in Tech Head Brothers publishing tool"
+permalink: "New-milestone-reached-in-Tech-Head-Brothers-publishing-tool"
 date: 4/10/2006 6:46:00 AM
 updated: 4/10/2006 6:46:00 AM
+disqusIdentifier: 20060410064600
 tags: ["Tech Head Brothers", ".NET Development"]
+alias:
+ - /post/New-milestone-reached-in-Tech-Head-Brothers-publishing-tool.aspx/index.html
 ---
 
 
@@ -11,6 +15,7 @@ Publications are working](http://weblogs.asp.net/lkempe/archive/2006/03/18/44054
 website [Tech Head Brothers](http://www.techheadbrothers.com/), and 
 today I reached another milestone: The tool is now installed on [Laurent 
 Duveau](http://www.techheadbrothers.com/DesktopDefault.aspx?tabindex=7&tabid=19&id=18) notebook and he is able to post directly from Word 2003.
+<!-- more -->
 
 Currently the tool let the author 
 

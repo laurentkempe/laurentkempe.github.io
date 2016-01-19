@@ -1,7 +1,11 @@
-title: Beeing a speaker
+title: "Beeing a speaker"
+permalink: "Beeing-a-speaker"
 date: 5/22/2005 10:03:00 PM
 updated: 5/22/2005 10:03:00 PM
+disqusIdentifier: 20050522100300
 tags: ["Microsoft MVP", "Tech Head Brothers", "Web Services"]
+alias:
+ - /post/Beeing-a-speaker.aspx/index.html
 ---
 
 
@@ -11,6 +15,7 @@ based on Word 2003, I developed to publish content on my web site [Tech Head Br
 called "Rencontres Solutions Métiers sur Office" and was held in Strasbourg, 
 France. [Tech Head Brothers](http://www.techheadbrothers.com) was 
 even a partner for that event.
+<!-- more -->
 
 So I arrived in Strasbourg by car and met [Mitsu](http://blogs.microsoft.fr/mitsufu). We prepared my notebook to 
 be able to make the presentation. It was a nightmare to install his wifi pcmcia 

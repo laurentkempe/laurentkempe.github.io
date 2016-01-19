@@ -1,12 +1,17 @@
-title: Technologies used on the new version of Tech Head Brothers
+title: "Technologies used on the new version of Tech Head Brothers"
+permalink: "Technologies-used-on-the-new-version-of-Tech-Head-Brothers"
 date: 4/22/2006 6:48:00 AM
 updated: 4/22/2006 6:48:00 AM
+disqusIdentifier: 20060422064800
 tags: ["Tech Head Brothers", "ASP.NET 2.0"]
+alias:
+ - /post/Technologies-used-on-the-new-version-of-Tech-Head-Brothers.aspx/index.html
 ---
 The application is written as a n-tier web application and 
 modeled with domain objects.
 
 It uses those differents technologies:
+<!-- more -->
 
 *   .NET Framework 2 
 *   [C#](http://msdn.microsoft.com/vcsharp/) and [ASP.NET 2](http://msdn.microsoft.com/asp.net)

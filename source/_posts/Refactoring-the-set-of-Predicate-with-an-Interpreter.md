@@ -1,7 +1,11 @@
-title: Refactoring the set of Predicate with an Interpreter
+title: "Refactoring the set of Predicate with an Interpreter"
+permalink: "Refactoring-the-set-of-Predicate-with-an-Interpreter"
 date: 3/12/2005 9:09:00 AM
 updated: 3/12/2005 9:09:00 AM
+disqusIdentifier: 20050312090900
 tags: ["Tech Head Brothers", "Whidbey", "ASP.NET 2.0", ".NET Framework 2.0"]
+alias:
+ - /post/Refactoring-the-set-of-Predicate-with-an-Interpreter.aspx/index.html
 ---
 
 
@@ -10,6 +14,7 @@ This evening I continued my journey with the [C# Generics](http://msdn.microsof
 I refactored what I described in my post "[DataAccessLayer.FindAll(PublishedBy(Author))](http://weblogs.asp.net/lkempe/archive/2005/03/09/391247.aspx) 
 " to be able to use the [Design 
 Pattern Interpreter](http://www.dofactory.com/Patterns/PatternInterpreter.aspx).
+<!-- more -->
 
 The result in the ASPX code behind file is the following:
 

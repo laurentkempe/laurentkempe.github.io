@@ -1,11 +1,16 @@
-title: Build and Deployment automation, VCS Root and Labeling in TeamCity
+title: "Build and Deployment automation, VCS Root and Labeling in TeamCity"
+permalink: "Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity"
 date: 6/3/2010 3:11:49 AM
 updated: 6/3/2010 3:11:49 AM
+disqusIdentifier: 20100603031149
 tags: ["Team City", "Jobping", "Tech Head Brothers"]
+alias:
+ - /post/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity.aspx/index.html
 ---
 As you might now from reading my blog I tend to automate as much as I can. 
 
 Why? Because I hate to do repetitive tasks. First because it is boring, at least for me, and as a developer we have more interesting things to do. Second because executing repetitive tasks tend to be error prone. 
+<!-- more -->
 
 So last week I decided that it was enough for me to have to create manually a subversion tag for [Jobping](http://www.jobping.com "Job posting web site aimed specifically at job seekers and employers who work with Microsoft technologies")web site then also took the time to do the same for my portal [Tech Head Brothers](http://www.techheadbrothers.com/).
 
@@ -23,11 +28,11 @@ At this point I realized that I missed a point with TeamCity VCS Root is that it
 
 And here comes the [VCS Checkout rules](http://confluence.jetbrains.net/display/TCD5/VCS+Checkout+Rules), which you can configure on every project which is using the VCS Root
 
-![4663096481_231787d2d1_o[1]](http://www.laurentkempe.com/image.axd?picture=4663096481_231787d2d1_o%5B1%5D.png "4663096481_231787d2d1_o[1]") 
+![4663096481_231787d2d1_o[1]](/images/4663096481_231787d2d1_o%5B1%5D.png "4663096481_231787d2d1_o[1]") 
 
 So in my case it looks like that
 
-![4663731014_a4945d38d0_o[1]](http://www.laurentkempe.com/image.axd?picture=4663731014_a4945d38d0_o%5B1%5D.png "4663731014_a4945d38d0_o[1]") 
+![4663731014_a4945d38d0_o[1]](/images/4663731014_a4945d38d0_o%5B1%5D.png "4663731014_a4945d38d0_o[1]") 
 
 Which specify that for that particular build I want to checkout from my VCS Root extended with trunk to the build folder /. So with that I restrict the checkout to the trunk. Good
 
@@ -35,13 +40,13 @@ Now back to my first topic, which was to automate the subversion tag creation wh
 
 Here is how we set it up for our staging build
 
-![4663125553_c725cbc3dc_o[1]](http://www.laurentkempe.com/image.axd?picture=4663125553_c725cbc3dc_o%5B1%5D.png "4663125553_c725cbc3dc_o[1]") 
+![4663125553_c725cbc3dc_o[1]](/images/4663125553_c725cbc3dc_o%5B1%5D.png "4663125553_c725cbc3dc_o[1]") 
 
 For sure we have another one for our production build.
 
 And here is the result in Subversion
 
-![4663756592_592d22d287_o[1]](http://www.laurentkempe.com/image.axd?picture=4663756592_592d22d287_o%5B1%5D.png "4663756592_592d22d287_o[1]") 
+![4663756592_592d22d287_o[1]](/images/4663756592_592d22d287_o%5B1%5D.png "4663756592_592d22d287_o[1]") 
 
 Another thing that I will not forget as it is automated
 

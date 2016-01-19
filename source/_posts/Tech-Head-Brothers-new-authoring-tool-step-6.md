@@ -1,11 +1,16 @@
-title: Tech Head Brothers new authoring tool, step 6
+title: "Tech Head Brothers new authoring tool, step 6"
+permalink: "Tech-Head-Brothers-new-authoring-tool-step-6"
 date: 2/27/2008 5:54:51 AM
 updated: 2/27/2008 5:54:51 AM
+disqusIdentifier: 20080227055451
 tags: ["Tech Head Brothers", "Visual Studio", "VSTO", "Office 2007"]
+alias:
+ - /post/Tech-Head-Brothers-new-authoring-tool-step-6.aspx/index.html
 ---
 Another day another step!
 
 Tonight I wanted to work on the list and on the optimization a bit because I did use to much time the parsing of the whole WordML document.
+<!-- more -->
 
 I also tried the deployment through clickonce and two of my fellow tested it. Thanks to [Sébastien Pertus](http://www.dotmim.com/blogs/mim/) and [Grégory Renard (alias Rédo)](http://blogs.codes-sources.com/redo) for the quick test.
 

@@ -1,11 +1,16 @@
-title: VisualSvn, TortoiseSvn and relocating a working copy
+title: "VisualSvn, TortoiseSvn and relocating a working copy"
+permalink: "VisualSvn-TortoiseSvn-and-relocating-a-working-copy"
 date: 1/28/2010 8:04:19 PM
 updated: 5/7/2010 7:53:27 AM
+disqusIdentifier: 20100128080419
 tags: ["VisualSVN"]
+alias:
+ - /post/VisualSvn-TortoiseSvn-and-relocating-a-working-copy.aspx/index.html
 ---
 Whenever you have to relocate your svn working copy because the svn server url or protocol as changed, you need to use [TortoiseSvn](http://tortoisesvn.net/) [relocate](http://tortoisesvn.net/docs/release/TortoiseSVN_en/tsvn-dug-relocate.html). If, like me, you use [VisualSvn](http://www.visualsvn.com/visualsvn/) plugin then you would need to quit Visual Studio and come back to Windows Explorer and [TortoiseSvn](http://tortoisesvn.net/), right click your project folder then find Relocate command:
 
 [![4311387612_f21c311484_o[1]](http://weblogs.asp.net/blogs/lkempe/4311387612_f21c311484_o1_thumb_020E2270.png "4311387612_f21c311484_o[1]")](http://weblogs.asp.net/blogs/lkempe/4311387612_f21c311484_o1_431CA1D4.png) 
+<!-- more -->
 
 Type in the dialog which open the new url of the svn repository, then click Ok.
 

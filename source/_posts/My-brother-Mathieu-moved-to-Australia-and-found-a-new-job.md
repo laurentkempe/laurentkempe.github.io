@@ -1,7 +1,11 @@
-title: My brother Mathieu moved to Australia and found a new job...
+title: "My brother Mathieu moved to Australia and found a new job..."
+permalink: "My-brother-Mathieu-moved-to-Australia-and-found-a-new-job"
 date: 7/29/2005 7:55:00 AM
 updated: 7/29/2005 7:55:00 AM
+disqusIdentifier: 20050729075500
 tags: ["Tech Head Brothers"]
+alias:
+ - /post/My-brother-Mathieu-moved-to-Australia-and-found-a-new-job.aspx/index.html
 ---
 
 
@@ -15,6 +19,7 @@ Blue Mountains](http://myaustraliantrip.blogspot.com/2005/03/les-blue-mountains.
 et les bananes](http://myaustraliantrip.blogspot.com/2005/05/innisfail-et-les-bananes.html)), he started searching for a job and finally found one in 
 Perth. **Congratulation** [Mathieu](http://www.techheadbrothers.com/DesktopDefault.aspx?tabindex=7&tabid=19&id=3) 
 !!! I am really proud of what you are doing.  
+<!-- more -->
 
 He just sent me a picture of 
 his new office :-)

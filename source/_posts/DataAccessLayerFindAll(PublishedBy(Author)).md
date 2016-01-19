@@ -1,7 +1,11 @@
-title: DataAccessLayer.FindAll(PublishedBy(Author))
+title: "DataAccessLayer.FindAll(PublishedBy(Author))"
+permalink: "DataAccessLayerFindAll(PublishedBy(Author))"
 date: 3/10/2005 7:43:00 AM
 updated: 3/10/2005 7:43:00 AM
+disqusIdentifier: 20050310074300
 tags: ["Whidbey", "ASP.NET 2.0", ".NET Framework 2.0"]
+alias:
+ - /post/DataAccessLayerFindAll(PublishedBy(Author)).aspx/index.html
 ---
 
 
@@ -10,6 +14,7 @@ One of the first development rule is to **write human readable
 code**. Why ? To avoid to have to write comments ;-) Because it 
 ***will be read as a spoken language*** and ***it 
 separate important code from distracting one***.
+<!-- more -->
 
 What do you think about that line of code:
 

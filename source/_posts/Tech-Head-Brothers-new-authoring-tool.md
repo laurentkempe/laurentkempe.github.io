@@ -1,11 +1,16 @@
-title: Tech Head Brothers new authoring tool
+title: "Tech Head Brothers new authoring tool"
+permalink: "Tech-Head-Brothers-new-authoring-tool"
 date: 2/15/2008 7:25:23 AM
 updated: 2/15/2008 7:25:23 AM
+disqusIdentifier: 20080215072523
 tags: ["Tech Head Brothers", "Visual Studio", "VSTO", ".NET Framework 3.5", "Office 2007"]
+alias:
+ - /post/Tech-Head-Brothers-new-authoring-tool.aspx/index.html
 ---
 ![](http://farm3.static.flickr.com/2206/2265076929_dea257e7f3_o.jpg) 
 
 Beginning of this week; during the Tech Days 2008 in Paris, I had the great pleasure to discuss with [Aurelien Verla](http://www.techheadbrothers.com/Auteurs.aspx/aurelien-verla) and [Grégory Renard](http://www.techheadbrothers.com/Auteurs.aspx/gregory-renard) about [Tech Head Brothers](http://www.techheadbrothers.com/) [authoring and publishing tool](http://www.codeplex.com/THBAuthoring).
+<!-- more -->
 
 We went then with Aurelien on more details about the tool and I must say that I came to is conclusion, even if the tool is a really good show case it could be better to hide the XML part to the users.
 

@@ -1,11 +1,16 @@
-title: Yahoo release a web site evaluation tool called YSlow
+title: "Yahoo release a web site evaluation tool called YSlow"
+permalink: "Yahoo-release-a-web-site-evaluation-tool-called-YSlow"
 date: 8/19/2007 11:07:30 PM
 updated: 8/19/2007 11:07:30 PM
+disqusIdentifier: 20070819110730
 tags: ["Tools", "ASP.NET 2.0", "ASP.NET"]
+alias:
+ - /post/Yahoo-release-a-web-site-evaluation-tool-called-YSlow.aspx/index.html
 ---
 [YSlow](http://developer.yahoo.com/yslow/) is a new web tool published by Yahoo. It let you test a total of 13 rules against your web site to check if it is efficient.
 
 YSlow is an addin to Firefox integrated in the web development tool [Firebug](http://www.getfirebug.com/).
+<!-- more -->
 
 You might read the rules that are verified on this page : [Thirteen Simple Rules for Speeding Up Your Web Site](http://developer.yahoo.com/performance/rules.html) and the documentation is on this page : [YSlow User Guide](http://developer.yahoo.com/yslow/help/).
 

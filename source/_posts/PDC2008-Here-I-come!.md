@@ -1,7 +1,11 @@
-title: PDC2008 Here I come!
+title: "PDC2008 Here I come!"
+permalink: "PDC2008-Here-I-come!"
 date: 10/23/2008 4:01:23 AM
 updated: 10/23/2008 4:01:23 AM
+disqusIdentifier: 20081023040123
 tags: ["PDC 2008"]
+alias:
+ - /post/PDC2008-Here-I-come!.aspx/index.html
 ---
 <style>
 .schedule {font-family:segoe,verdana,arial;font-size:9pt;color:#715442;}
@@ -16,6 +20,7 @@ tags: ["PDC 2008"]
 </style>  
 
 [![](http://ecx.images-amazon.com/images/I/51CrrTeaEzL._SL500_AA240_.jpg)](http://www.poppendieck.com/ilsd.htm)I finished a first selection of my sessions! 
+<!-- more -->
 
 The main topic for me will be Cloud Computing and Live Mesh. With some WF 4.0, WCF 4.0 and Dublin and for sure some more web stuff like Silverlight, ASP.NET MVC.
 

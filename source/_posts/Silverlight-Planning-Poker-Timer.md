@@ -1,11 +1,16 @@
-title: Silverlight Planning Poker Timer
+title: "Silverlight Planning Poker Timer"
+permalink: "Silverlight-Planning-Poker-Timer"
 date: 6/15/2008 7:07:47 PM
 updated: 6/15/2008 7:07:47 PM
+disqusIdentifier: 20080615070747
 tags: ["Silverlight", "Scrum"]
+alias:
+ - /post/Silverlight-Planning-Poker-Timer.aspx/index.html
 ---
 <div class="wlWriterHeaderFooter" style="float:right; margin:0px; padding:0px 0px 4px 8px;"><script type="text/javascript">digg_url = "http://weblogs.asp.net/lkempe/archive/2008/06/15/silverlight-planning-poker-timer.aspx";digg_title = "Silverlight Planning Poker Timer";digg_bgcolor = "#FFFFFF";digg_skin = "normal";</script><script src="http://digg.com/tools/diggthis.js" type="text/javascript"></script><script type="text/javascript">digg_url = undefined;digg_title = undefined;digg_bgcolor = undefined;digg_skin = undefined;</script></div>
 
 The other day I was searching for a small project to [get started with Silverlight 2 development](http://weblogs.asp.net/lkempe/archive/2008/06/13/silverlight-2-beta-2-unable-to-start-debugging.aspx). 
+<!-- more -->
 
 In my today’s works at [Innoveo Solutions](http://www.innoveo.com/) I am spending quite some time evangelizing about [Scrum](http://en.wikipedia.org/wiki/Scrum_(development)) framework. I found some time ago the [Planning Poker Timer](http://aslakhellesoy.com/planning_poker_timer/index.html) by [Aslak Hellesøy](http://blog.aslakhellesoy.com/). That’s definitely looks like a great project to implement with Silverlight 2.
 

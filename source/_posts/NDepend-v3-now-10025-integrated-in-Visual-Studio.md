@@ -1,11 +1,16 @@
-title: NDepend v3 - now 100% integrated in Visual Studio
+title: "NDepend v3 - now 100% integrated in Visual Studio"
+permalink: "NDepend-v3-now-10025-integrated-in-Visual-Studio"
 date: 1/28/2010 7:01:47 PM
 updated: 1/28/2010 7:01:47 PM
+disqusIdentifier: 20100128070147
 tags: ["continuous integration", "Team City", "NDepend"]
+alias:
+ - /post/NDepend-v3-now-10025-integrated-in-Visual-Studio.aspx/index.html
 ---
 [Patrick](http://codebetter.com/blogs/patricksmacchia/) just announced on his blog the launch of the new [NDepend v3](http://www.ndepend.com/Version3BetaProgram.aspx). It is still in beta but very stable. I am testing it for a month now and enjoy very much it’s integration in Visual Studio 2008. I was using it and will continue to use it in our continuous integration server, [TeamCity](http://www.jetbrains.com/teamcity/index.html). But getting feedback right out of the developer environment is a very interesting feature.
 
 Read more on Patrick’s blog post, “[NDepend v3 is now 100% integrated in Visual Studio](http://codebetter.com/blogs/patricksmacchia/archive/2010/01/28/ndepend-v3-is-now-100-integrated-in-visual-studio.aspx)“
+<!-- more -->
 
 > **Even on large code base, made of hundreds of thousands of lines of code and dozens of VS projects, Visual Studio is not noticeably slow down by the NDepend v3 addin.**
 > 

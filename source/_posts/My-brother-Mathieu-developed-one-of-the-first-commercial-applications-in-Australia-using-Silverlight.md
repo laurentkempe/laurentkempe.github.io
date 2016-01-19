@@ -1,11 +1,16 @@
-title: My brother Mathieu developed one of the first commercial applications in Australia using Silverlight
+title: "My brother Mathieu developed one of the first commercial applications in Australia using Silverlight"
+permalink: "My-brother-Mathieu-developed-one-of-the-first-commercial-applications-in-Australia-using-Silverlight"
 date: 6/23/2007 6:59:39 AM
 updated: 6/23/2007 6:59:39 AM
+disqusIdentifier: 20070623065939
 tags: ["Silverlight"]
+alias:
+ - /post/My-brother-Mathieu-developed-one-of-the-first-commercial-applications-in-Australia-using-Silverlight.aspx/index.html
 ---
 As stated in the blog of [Frank Arrigo](http://blogs.msdn.com/frankarr/) (responsible for all Technical Communities in Australia),
 
 > One of the things we will be showing at [ReMIX](http://microsoft.com/australia/remix07) is a preview of Discovery Channel Asia's "Never Miss TV" developed by local digital agency [@www](http://www.atwww.com.au/). It's one of the first commercial applications developed in Australia using [Silverlight.](http://www.silverlight.net/)
+<!-- more -->
 > 
 > [You may have read about this in a recent B & T Article](http://blogs.msdn.com/frankarr/archive/2007/05/30/spreading-the-word-about-silverlight-to-bandt.aspx) (which also featured me)
 > 

@@ -1,11 +1,16 @@
-title: Run NCover through MSBuild in Team City
+title: "Run NCover through MSBuild in Team City"
+permalink: "Run-NCover-through-MSBuild-in-Team-City"
 date: 4/30/2008 5:05:10 AM
 updated: 5/7/2010 7:45:42 AM
+disqusIdentifier: 20080430050510
 tags: ["Tech Head Brothers", "continuous integration", "Team City"]
+alias:
+ - /post/Run-NCover-through-MSBuild-in-Team-City.aspx/index.html
 ---
 After one comment of Chris Walquist on one of [my last post about Team City integration of NCover](http://weblogs.asp.net/lkempe/archive/2008/03/30/integration-of-ncover-into-team-city-for-tech-head-brothers.aspx) here is the way I run NCover through MSBuild in Team City.
 
 First I need to import the Task of NCover.
+<!-- more -->
 
 <span style="background: black; color: white"><Project</span><span style="background: black; color: #ff8000">ToolsVersion</span><span style="background: black; color: white">="</span><span style="background: black; color: lime">3.5</span><span style="background: black; color: white">"</span><span style="background: black; color: #ff8000">DefaultTargets</span><span style="background: black; color: white">="</span><span style="background: black; color: lime">Build</span><span style="background: black; color: white">"</span><span style="background: black; color: #ff8000">xmlns</span><span style="background: black; color: white">="</span><span style="background: black; color: lime">http://schemas.microsoft.com/developer/msbuild/2003</span><span style="background: black; color: white">">       
   <UsingTask </span><span style="background: black; color: #ff8000">TaskName</span><span style="background: black; color: white">="</span><span style="background: black; color: lime">NCoverExplorer.MSBuildTasks.NCover</span><span style="background: black; color: white">"</span><span style="background: black; color: #ff8000">AssemblyFile</span><span style="background: black; color: white">="</span><span style="background: black; color: lime">$(NCoverPath)\Build Task Plugins\NCoverExplorer.MSBuildTasks.dll</span><span style="background: black; color: white">" />       

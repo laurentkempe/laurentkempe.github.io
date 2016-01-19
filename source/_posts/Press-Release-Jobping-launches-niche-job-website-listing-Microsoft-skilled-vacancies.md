@@ -1,11 +1,16 @@
-title: Press Release - Jobping launches niche job website listing Microsoft skilled vacancies
+title: "Press Release - Jobping launches niche job website listing Microsoft skilled vacancies"
+permalink: "Press-Release-Jobping-launches-niche-job-website-listing-Microsoft-skilled-vacancies"
 date: 4/27/2010 5:03:57 PM
 updated: 4/27/2010 7:27:31 PM
+disqusIdentifier: 20100427050357
 tags: ["Jobping"]
+alias:
+ - /post/Press-Release-Jobping-launches-niche-job-website-listing-Microsoft-skilled-vacancies.aspx/index.html
 ---
 [Press Release](http://blog.jobping.com/2010/04/jobping-launches-niche-job-website.html)
 
 > *Sydney, Australia - April 22, 2010** - **Last week, Jobping, a new job posting web site aimed specifically at job seekers and employers who work with Microsoft technologies, was released into public beta.*
+<!-- more -->
 > 
 > Jobping currently focuses on the Australian market and aims to bring a better quality of candidate to a posted vacancy via a niche, industry targeted approach.
 > 

@@ -1,11 +1,16 @@
-title: Jobping Open Source Short URLs Service
+title: "Jobping Open Source Short URLs Service"
+permalink: "Jobping-Open-Source-Short-URLs-Service"
 date: 5/4/2010 5:16:30 AM
 updated: 5/4/2010 5:16:30 AM
+disqusIdentifier: 20100504051630
 tags: ["Jobping"]
+alias:
+ - /post/Jobping-Open-Source-Short-URLs-Service.aspx/index.html
 ---
 We at [Jobping](http://www.jobping.com/ "Jobping") use different Open Source projects so we thought it would be nice to participate by giving back also to that eco-system. This is why we realized [Jobping Open Source Short URLs Service](http://blog.jobping.com/2010/05/jobping-open-source-short-urls-service.html) 
 
 The project goal was to have our own branded short URL service: [http://jobp.in](http://jobp.in)      
+<!-- more -->
 As we leverage [Twitter](http://twitter.com/jobping) to have an easy way for job seekers to follow the different published offers, we decided that having our own branded url would be nice. Job posters now get an extra few characters for each tweet and readers can rely on our short URL as a trusted domain that leads them to our main site
 
 Our shortener, [http://jobp.in](http://jobp.in), only accepts long URLs that are in our jobping.com domain.

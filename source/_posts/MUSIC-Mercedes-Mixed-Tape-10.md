@@ -1,13 +1,17 @@
-title: MUSIC: Mercedes Mixed Tape 10
+title: "MUSIC: Mercedes Mixed Tape 10"
+permalink: "MUSIC-Mercedes-Mixed-Tape-10"
 date: 12/27/2005 11:57:00 PM
 updated: 12/27/2005 11:57:00 PM
-tags: [""]
+disqusIdentifier: 20051227115700
+alias:
+ - /post/MUSIC-Mercedes-Mixed-Tape-10.aspx/index.html
 ---
 I often, not to say always, get the news from [Didier](http://www.didierbeck.com) (yeah you start to be old also ;) 
 and I really like the mixed tape so I decided to post about it.
 
 
 > ![Mercedes MixedTape 10](http://www.didierbeck.com/pics/200512/mixedtape10.jpg)
+<!-- more -->
 > 
 > [Mercedes 
   Benz](http://www.mercedes-benz.com/content/mbcom/international/international_website/en/com/international_home.html) released its 10th version of the Mixed Tape. Still for free. [Download here](http://www.mercedes-benz.com/mixedtape). Now, you can 

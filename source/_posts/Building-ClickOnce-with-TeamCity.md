@@ -1,11 +1,16 @@
-title: Building ClickOnce with TeamCity
+title: "Building ClickOnce with TeamCity"
+permalink: "Building-ClickOnce-with-TeamCity"
 date: 11/3/2009 7:52:25 AM
 updated: 11/3/2009 7:52:25 AM
+disqusIdentifier: 20091103075225
 tags: ["continuous integration", "Team City", "ClickOnce"]
+alias:
+ - /post/Building-ClickOnce-with-TeamCity.aspx/index.html
 ---
 [Migrating our TeamCity](http://weblogs.asp.net/lkempe/archive/2009/11/02/teamcity-migration-tip.aspx) server today I got the following error on the new server:
 
 error MSB3147: Could not find required file 'setup.bin' in …
+<!-- more -->
 
 I for sure fixed that on the older server, and the fix was to have the SDK on the build server. The issue is that I don’t want to install Visual Studio to do that, so here is how I achieved it
 

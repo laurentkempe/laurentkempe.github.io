@@ -1,11 +1,16 @@
-title: Discovery Channel switches to Silverlight in a flash: News - Software - ZDNet Australia
+title: "Discovery Channel switches to Silverlight in a flash: News - Software - ZDNet Australia"
+permalink: "Discovery-Channel-switches-to-Silverlight-in-a-flash-News-Software-ZDNet-Australia"
 date: 6/28/2007 4:01:25 PM
 updated: 6/28/2007 4:01:25 PM
+disqusIdentifier: 20070628040125
 tags: ["Silverlight"]
+alias:
+ - /post/Discovery-Channel-switches-to-Silverlight-in-a-flash-News-Software-ZDNet-Australia.aspx/index.html
 ---
 Another publication talking about the Silverlight implementation made by my brother [Mathieu](http://www.techheadbrothers.com/Auteurs.aspx?Id=337eb7bf-2bba-417c-be9d-20488ba6732a)!!! Wonderful!
 
 You made an excellent job [Mathieu](http://www.techheadbrothers.com/Auteurs.aspx?Id=337eb7bf-2bba-417c-be9d-20488ba6732a)!!!
+<!-- more -->
 
 (side note: Lorenz, it will be live on 1st of July, so I will be able to give you the link ;)
 

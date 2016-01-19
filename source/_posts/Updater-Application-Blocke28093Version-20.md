@@ -1,7 +1,11 @@
-title: Updater Application Block–Version 2.0
+title: "Updater Application Block–Version 2.0"
+permalink: "Updater-Application-Blocke28093Version-20"
 date: 3/16/2005 5:50:00 AM
 updated: 3/16/2005 5:50:00 AM
+disqusIdentifier: 20050316055000
 tags: [".NET Development"]
+alias:
+ - /post/Updater-Application-Blocke28093Version-20.aspx/index.html
 ---
 The **latest **release of Updater Application Block, version 2.0, can be 
 downloaded from [Microsoft 
@@ -15,6 +19,7 @@ them as part of the implementation of the updater. Enterprise Library was
 released in January 2005. To learn about and download Enterprise Library, use 
 the following links: 
 
+<!-- more -->
 
 *   [Enterprise Library home 
   page](/library/en-us/dnpag2/html/entlib.asp)<u> </u>

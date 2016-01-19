@@ -1,13 +1,18 @@
-title: Wonderful Gadget from Aurelien
+title: "Wonderful Gadget from Aurelien"
+permalink: "Wonderful-Gadget-from-Aurelien"
 date: 4/8/2006 5:21:00 AM
 updated: 4/8/2006 5:21:00 AM
+disqusIdentifier: 20060408052100
 tags: ["Tech Head Brothers"]
+alias:
+ - /post/Wonderful-Gadget-from-Aurelien.aspx/index.html
 ---
 
 
 
 **Incredible **what you might do with javascript, I cannot 
 believe it. You made an awesome work [Aurel](http://blogs.developpeur.org/aurelien/default.aspx).
+<!-- more -->
 
 You might see this [gadget](http://microsoftgadgets.com/Gallery/) [here](http://microsoftgadgets.com/forums/4865/ShowPost.aspx).
 

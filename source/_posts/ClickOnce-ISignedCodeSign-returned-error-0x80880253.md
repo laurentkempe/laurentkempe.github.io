@@ -1,11 +1,16 @@
-title: ClickOnce ISignedCode::Sign returned error: 0x80880253
+title: "ClickOnce ISignedCode::Sign returned error: 0x80880253"
+permalink: "ClickOnce-ISignedCodeSign-returned-error-0x80880253"
 date: 1/12/2010 6:08:53 AM
 updated: 1/12/2010 6:08:53 AM
+disqusIdentifier: 20100112060853
 tags: ["continuous integration", "Team City", "MSBuild", "ClickOnce"]
+alias:
+ - /post/ClickOnce-ISignedCodeSign-returned-error-0x80880253.aspx/index.html
 ---
 Tonight we got the following issue on our [TeamCity](http://www.jetbrains.com/teamcity/index.html) build server which produce different ClickOnce setups :
 
 > c:\WINDOWS\Microsoft.NET\Framework\v3.5\Microsoft.Common.targets(3652, 9): **error MSB3482: An error occurred while signing: Failed to sign ..\..\Tests\Output\bin\DeployClickOnce\app.publish\setup.exe**. 
+<!-- more -->
 > **SignTool Error: ISignedCode::Sign returned error: 0x80880253
 > **    **The signer's certificate is not valid for signing.**
 > SignTool Error: An error occurred while attempting to sign: ..\..\Tests\Output\bin\DeployClickOnce\app.publish\setup.exe

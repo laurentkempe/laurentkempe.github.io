@@ -1,7 +1,11 @@
-title: Codezone search integration in Visual Studio 2005 !!! Cooool stuf :-)
+title: "Codezone search integration in Visual Studio 2005 !!! Cooool stuf :-)"
+permalink: "Codezone-search-integration-in-Visual-Studio-2005-!!!-Cooool-stuf-)"
 date: 8/18/2005 6:53:00 AM
 updated: 8/18/2005 6:53:00 AM
+disqusIdentifier: 20050818065300
 tags: ["Tech Head Brothers", "Whidbey", ".NET Framework 2.0"]
+alias:
+ - /post/Codezone-search-integration-in-Visual-Studio-2005-!!!-Cooool-stuf-).aspx/index.html
 ---
 
 
@@ -11,6 +15,7 @@ Announces CodeZone!](http://weblogs.asp.net/lkempe/archive/2005/03/29/396184.asp
 Head Brothers](http://www.techheadbrothers.com), my French portal about Microsoft .NET technologies, will be 
 part of Codezone.  Today for the first time I am able to see what this 
 means to be a part of the Codezone program.
+<!-- more -->
 
 As you can see in the option dialog of the Visual Studio 2005 help, you will 
 be able to choose from a list of currently 28 world wide community web sites (we 

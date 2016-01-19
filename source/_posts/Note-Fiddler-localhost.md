@@ -1,11 +1,16 @@
-title: [Note] - Fiddler localhost
+title: "[Note] - Fiddler localhost"
+permalink: "Note-Fiddler-localhost"
 date: 6/5/2007 6:21:49 PM
 updated: 5/7/2010 7:45:48 AM
+disqusIdentifier: 20070605062149
 tags: ["Tools", "Note"]
+alias:
+ - /post/Note-Fiddler-localhost.aspx/index.html
 ---
 That's just a reminder for me about [Fiddler](http://www.fiddler2.com/) and localhost/127.0.0.1:
 
 > <table cellspacing="0" cellpadding="20" width="100%" border="0" unselectable="on"> <tbody> <tr> <td width="100%"><font size="2">
+<!-- more -->
 > 
 > #### I don't see IE7 or .NET traffic sent to <u>*localhost*</u> or <u>*127.0.0.1.*</u>
 > 

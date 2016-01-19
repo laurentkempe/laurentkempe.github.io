@@ -1,7 +1,11 @@
-title: Going live in 1 hour
+title: "Going live in 1 hour"
+permalink: "Going-live-in-1-hour"
 date: 4/26/2005 10:10:00 PM
 updated: 4/26/2005 10:10:00 PM
+disqusIdentifier: 20050426101000
 tags: ["Microsoft MVP", "Tech Head Brothers", ".NET Development"]
+alias:
+ - /post/Going-live-in-1-hour.aspx/index.html
 ---
 Today I am with [Microsoft 
 France](http://www.microsoft.com/france/) in Strasbourg for the "[Rencontres 

@@ -1,7 +1,11 @@
-title: 8-( 8-( 8-( 8-( 8-( 8-(  FURIOUS !!!!! :-( :-( :-( :-( :-( :-( :-( 
+title: "8-( 8-( 8-( 8-( 8-( 8-(  FURIOUS !!!!! :-( :-( :-( :-( :-( :-( :-( "
+permalink: "8-(-8-(-8-(-8-(-8-(-8-(-FURIOUS-!!!!!-(-(-(-(-(-(-(-"
 date: 3/18/2005 4:21:00 AM
 updated: 3/18/2005 4:21:00 AM
+disqusIdentifier: 20050318042100
 tags: ["Tech Head Brothers"]
+alias:
+ - /post/8-(-8-(-8-(-8-(-8-(-8-(-FURIOUS-!!!!!-(-(-(-(-(-(-(-.aspx/index.html
 ---
 
 
@@ -9,6 +13,7 @@ tags: ["Tech Head Brothers"]
 I just started google to find out my NFOP article on Tech Head Brothers, and 
 guess what I found that again someone copied content from my site without asking 
 me and without any reference to the original author, in that case me.
+<!-- more -->
 
 I really hate that, I mean you spend time to create a website, to devlop it, 
 to produce content, ok because you like that, but at least there should be a 

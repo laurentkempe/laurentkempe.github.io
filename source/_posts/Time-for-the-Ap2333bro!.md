@@ -1,7 +1,10 @@
-title: Time for the Ap&#233;ro!
+title: "Time for the Apéro!"
+permalink: "Time-for-the-Ap2333bro!"
 date: 7/31/2008 7:56:22 PM
 updated: 7/31/2008 7:56:22 PM
-tags: [""]
+disqusIdentifier: 20080731075622
+alias:
+ - /post/Time-for-the-Ap2333bro!.aspx/index.html
 ---
 <div style="text-align: left; padding: 3px;">
 [![](http://farm4.static.flickr.com/3221/2718754961_70f8d4fab7.jpg)](http://www.flickr.com/photos/laurentkempe/2718754961/ "photo sharing")
@@ -11,6 +14,7 @@ tags: [""]
 </div>
 
 
+<!-- more -->
 
 Enjoying the nice weather at home.  
 

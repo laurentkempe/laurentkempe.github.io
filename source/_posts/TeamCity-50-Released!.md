@@ -1,11 +1,16 @@
-title: TeamCity 5.0 Released!
+title: "TeamCity 5.0 Released!"
+permalink: "TeamCity-50-Released!"
 date: 12/4/2009 6:03:37 AM
 updated: 12/4/2009 6:03:37 AM
+disqusIdentifier: 20091204060337
 tags: ["Team City"]
+alias:
+ - /post/TeamCity-50-Released!.aspx/index.html
 ---
 JetBrains just published [TeamCity](http://www.jetbrains.com/teamcity/index.html) 5.
 
 > The wait is over, ladies and gentlemen! The release build is baked, tested, and put on the shelf. Tastes good, so go and [grab it now](http://www.jetbrains.com/teamcity/download/index.html)!
+<!-- more -->
 > 
 > Let us write down a short summary of what was accomplished since the TeamCity 4.5 release.
 > 

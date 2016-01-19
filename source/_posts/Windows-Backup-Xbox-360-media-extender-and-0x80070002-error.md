@@ -1,11 +1,16 @@
-title: Windows Backup, Xbox 360 media extender and 0x80070002 error
+title: "Windows Backup, Xbox 360 media extender and 0x80070002 error"
+permalink: "Windows-Backup-Xbox-360-media-extender-and-0x80070002-error"
 date: 11/3/2009 6:57:20 PM
 updated: 11/3/2009 6:57:20 PM
+disqusIdentifier: 20091103065720
 tags: ["Windows 7", "media extender", "xbox 360"]
+alias:
+ - /post/Windows-Backup-Xbox-360-media-extender-and-0x80070002-error.aspx/index.html
 ---
 Yesterday I bought a new Western Digital external hard drive of 1TB for 109CHF, incredible how cheap it is now.
 
 Then I configured my Windows 7 backup to use this new hard drive, very easy and the backup in less than 2 minutes.
+<!-- more -->
 
 At the end the backup failed because of drive having errors, then after a Error-checking everything was fine.
 

@@ -1,11 +1,16 @@
-title: Installation and first experience with the Ergotron WorkFit-D
+title: "Installation and first experience with the Ergotron WorkFit-D"
+permalink: "Installation-of-the-Ergotron-WorkFit-D"
 date: 3/22/2012 5:09:07 AM
 updated: 3/22/2012 6:47:01 AM
+disqusIdentifier: 20120322050907
 tags: ["Home Office"]
+alias:
+ - /post/Installation-of-the-Ergotron-WorkFit-D.aspx/index.html
 ---
 [![New Ergotron Workfit-D desk](http://farm8.staticflickr.com/7120/7003699985_7c0182c1f6_c.jpg)](http://www.flickr.com/photos/laurentkempe/7003699985/ "New Ergotron WorkFit-D desk by Laurent Kempé, on Flickr")
 
 In late 2010 I reworked my home office and installed a new [Ergotron LX Dual Side-by-Side Arm](http://www.laurentkempe.com/post/Installation-of-Ergotron-LX-Dual-Side-by-Side-Arm.aspx), to gain some place on my desk.
+<!-- more -->
 
 Some months ago, after different discussions with my colleague Bojan I decided to go on and try to find an height adjustable desk, which he just installed in his home office. I didn’t quite like his one because it was with an electrical motor and I prefered to find a mechanical one. It started to be important for me to stand during the day/night that I spend in front of a computer. I have back pains since years, and it is really time that I do something about it. You might read more about the topic on “[JustStand.org](http://www.juststand.org/ResearchandNews/tabid/636/language/en-US/Default.aspx)” or on “[Sitting is killing you](http://www.medicalbillingandcoding.org/sitting-kills/)”. 
 
@@ -38,9 +43,7 @@ During Christmas I worked with my brother [Mathieu](http://myaustraliantrip.blog
 So, **I like very much my new Ergotron WorkFit-D and the LX Dual Side-by-Side every day and night** I am working home.
 
 Here are some more pictures
- <object width="400" height="300"> 
-
-<embed type="application/x-shockwave-flash" src="http://www.flickr.com/apps/slideshow/show.swf?v=109615" allowfullscreen="true" flashvars="offsite=true&lang=en-us&page_show_url=%2Fphotos%2Flaurentkempe%2Fsets%2F72157629629270505%2Fshow%2F&page_show_back_url=%2Fphotos%2Flaurentkempe%2Fsets%2F72157629629270505%2F&set_id=72157629629270505&jump_to=" width="400" height="300"></object>  
+<div><object width="400" height="300"><embed type="application/x-shockwave-flash" src="http://www.flickr.com/apps/slideshow/show.swf?v=109615" allowfullscreen="true" flashvars="offsite=true&lang=en-us&page_show_url=%2Fphotos%2Flaurentkempe%2Fsets%2F72157629629270505%2Fshow%2F&page_show_back_url=%2Fphotos%2Flaurentkempe%2Fsets%2F72157629629270505%2F&set_id=72157629629270505&jump_to=" width="400" height="300"></object></div>  
 
 I still have some work to do to have my home office the way I want it, but this is work in progress.
 

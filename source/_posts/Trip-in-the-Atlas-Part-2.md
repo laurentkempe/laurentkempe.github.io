@@ -1,11 +1,16 @@
-title: Trip in the Atlas - Part 2
+title: "Trip in the Atlas - Part 2"
+permalink: "Trip-in-the-Atlas-Part-2"
 date: 6/13/2006 6:38:00 AM
 updated: 6/13/2006 6:38:00 AM
+disqusIdentifier: 20060613063800
 tags: ["Tech Head Brothers", "ASP.NET 2.0", "ASP.NET AJAX"]
+alias:
+ - /post/Trip-in-the-Atlas-Part-2.aspx/index.html
 ---
 This time the targeted scenario was to implement a login the way I saw it on [on10.net](http://www.on10.net/).
 
 Using the [Atlas Control Toolkit](http://atlas.asp.net/default.aspx?tabid=47&subtabid=477), I started to implement the scenario with a [ModalPopup](http://atlas.asp.net/atlastoolkit/ModalPopup/ModalPopup.aspx) atlas control surrounding an ASP.NET Login.
+<!-- more -->
 
 After some drag and drop on the designer I hit the F5, and I was in front of my Modal login. Nice, but no postback, so no login. Tehn I came with the idea to add the property UseSubmitBehavoir to false for OK/Cancel button like so:
 

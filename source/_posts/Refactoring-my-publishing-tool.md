@@ -1,11 +1,16 @@
-title: Refactoring my publishing tool
+title: "Refactoring my publishing tool"
+permalink: "Refactoring-my-publishing-tool"
 date: 5/20/2004 10:49:00 PM
 updated: 5/20/2004 10:49:00 PM
+disqusIdentifier: 20040520104900
 tags: [".NET Development"]
+alias:
+ - /post/Refactoring-my-publishing-tool.aspx/index.html
 ---
 I started some time ago to work on a new release of the tool I developed to publish content on my web site [Tech Head Brothers](http://www.techheadbrothers.com "Tech Head Brothers"). This new release will add the possibility for the author to directly post there article to the website.<br>This solution is using:
 
 *   [Word 2003](http://msdn.microsoft.com/office/understanding/word/) with it XML features
+<!-- more -->
 *   XML Schema for the definition of the content
 *   XSLT for the presentation. Transformation to HTML, PDF using nFOP (FOP is not working properly at the moment), and soon WordML.
 *   [Microsoft Visual Studio Tools for the Microsoft Office System](http://msdn.microsoft.com/vstudio/office/default.aspx)

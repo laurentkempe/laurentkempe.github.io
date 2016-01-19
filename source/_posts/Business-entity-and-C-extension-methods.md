@@ -1,7 +1,11 @@
-title: Business entity and C# extension methods
+title: "Business entity and C# extension methods"
+permalink: "Business-entity-and-C-extension-methods"
 date: 11/1/2007 12:56:23 AM
 updated: 11/1/2007 12:56:23 AM
+disqusIdentifier: 20071101125623
 tags: ["Note to self"]
+alias:
+ - /post/Business-entity-and-C-extension-methods.aspx/index.html
 ---
 In place of writing something like:
 
@@ -14,6 +18,7 @@ In place of writing something like:
     <span style="color: rgb(0,0,255)">else
 </span>        <span style="color: rgb(0,0,255)">return</span> <span style="color: rgb(0,0,255)">string</span>.Empty;
 }
+<!-- more -->
 
 I would use on the presentation layer only an extension method on my business entity class of type Information to add a GetUrl method!
 

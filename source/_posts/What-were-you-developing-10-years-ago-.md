@@ -1,11 +1,16 @@
-title: What were you developing 10 years ago ?
+title: "What were you developing 10 years ago ?"
+permalink: "What-were-you-developing-10-years-ago-"
 date: 9/15/2007 7:49:34 AM
 updated: 9/15/2007 7:49:34 AM
+disqusIdentifier: 20070915074934
 tags: ["Fun"]
+alias:
+ - /post/What-were-you-developing-10-years-ago-.aspx/index.html
 ---
 I found browsing the Internet an old software I developed [Xit](http://aminet.net/package/util/pack/XIT). 
 
 I am not 100% sure it was developed 10 years ago it might be more 11 years ago, but that's really funny to see things like that still on the Internet. **Whoa**, I didn't realized I was that old!!! :) Compared to my 102 grand father I will hopefully write software for quite some time :)
+<!-- more -->
 
 This application was a cool one, it was written for the wonderful [AMIGA](http://www.amiga.com/about/history/?t=past) using the [Magic User Interface, MUI](http://www.sasg.com/mui/) (can't believe that this site still exists) . The application was an icon on you desktop, you had just to drag an archive on it to unpack it, or a set of file to pack.
 

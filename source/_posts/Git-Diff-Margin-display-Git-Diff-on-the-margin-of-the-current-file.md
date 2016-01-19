@@ -1,11 +1,22 @@
-title: Git Diff Margin, display Git Diff on the margin of the current file in Visual Studio 2012
+title: "Git Diff Margin, display Git Diff on the margin of the current file in Visual Studio 2012"
+permalink: "Git-Diff-Margin-display-Git-Diff-on-the-margin-of-the-current-file"
 date: 5/4/2013 6:13:49 PM
 updated: 5/9/2013 4:50:28 AM
+disqusIdentifier: 20130504061349
+coverImage: https://farm9.staticflickr.com/8094/8567352477_a01373fbfc_h.jpg
+coverSize: partial
+thumbnailImage: https://farm9.staticflickr.com/8094/8567352477_59d7bc06c0_q.jpg
+coverCaption: "Anse Cafard, Martinique"
 tags: ["Git", "Tools", "Visual Studio"]
+alias:
+ - /post/Git-Diff-Margin-display-Git-Diff-on-the-margin-of-the-current-file.aspx/index.html
 ---
-[![Levé du jour](http://farm9.staticflickr.com/8094/8567352477_59d7bc06c0_m.jpg)](http://www.flickr.com/photos/laurentkempe/8567352477/ "Levé du jour by Laurent Kempé, on Flickr")I am happy to announce that I finally released today my first Visual Studio 2012 extension called **Git Diff Margin**.
+<!-- [![Levé du jour](http://farm9.staticflickr.com/8094/8567352477_59d7bc06c0_m.jpg)](http://www.flickr.com/photos/laurentkempe/8567352477/ "Levé du jour by Laurent Kempé, on Flickr") -->
+
+I am happy to announce that I finally released today my first Visual Studio 2012 extension called **Git Diff Margin**.
 
 ## Git Diff Margin
+<!-- more -->
 
 A Visual Studio 2012 extension to display Git Diff on the margin of the current file.
 

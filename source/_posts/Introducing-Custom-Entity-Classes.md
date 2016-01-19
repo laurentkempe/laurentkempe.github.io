@@ -1,12 +1,17 @@
-title: Introducing Custom Entity Classes
+title: "Introducing Custom Entity Classes"
+permalink: "Introducing-Custom-Entity-Classes"
 date: 3/16/2005 5:44:00 AM
 updated: 3/16/2005 5:44:00 AM
+disqusIdentifier: 20050316054400
 tags: ["ASP.NET 2.0", ".NET Framework 2.0"]
+alias:
+ - /post/Introducing-Custom-Entity-Classes.aspx/index.html
 ---
 
 
 
 If you read my two last posts:
+<!-- more -->
 
 1.  [DataAccessLayer.FindAll(PublishedBy(Author))](http://weblogs.asp.net/lkempe/archive/2005/03/09/391247.aspx) 
 

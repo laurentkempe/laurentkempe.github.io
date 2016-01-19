@@ -1,11 +1,16 @@
-title: Starting with Mercurial distributed source control management tool on Windows
+title: "Starting with Mercurial distributed source control management tool on Windows"
+permalink: "Starting-with-Mercurial-distributed-source-control-management-tool-on-Windows"
 date: 11/6/2010 10:24:47 PM
 updated: 11/6/2010 10:24:47 PM
+disqusIdentifier: 20101106102447
 tags: ["Mercurial"]
+alias:
+ - /post/Starting-with-Mercurial-distributed-source-control-management-tool-on-Windows.aspx/index.html
 ---
 I am starting to use [Mercurial](http://mercurial.selenic.com/)for my personal projects. At the moment I use it only locally to be able to experience it but also to be able to try thing and revert easily to previous state.
 
 To get started I downloaded
+<!-- more -->
 
 *   [Mercurial for Windows](http://mercurial.selenic.com/downloads/)
 *   [TortoiseHG for Windows 64bits](http://mercurial.selenic.com/downloads/)

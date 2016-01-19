@@ -1,11 +1,16 @@
-title: Alpha vertical slice of Silverlight Streaming on Tech Head Brothers
+title: "Alpha vertical slice of Silverlight Streaming on Tech Head Brothers"
+permalink: "Alpha-vertical-slice-of-Silverlight-Streaming-on-Tech-Head-Brothers"
 date: 10/17/2007 4:42:26 AM
 updated: 10/17/2007 4:42:26 AM
+disqusIdentifier: 20071017044226
 tags: ["Tech Head Brothers", "Silverlight", "Silverlight Streaming"]
+alias:
+ - /post/Alpha-vertical-slice-of-Silverlight-Streaming-on-Tech-Head-Brothers.aspx/index.html
 ---
 Tonight I reached a new milestone on my current development for my portal Tech Head Brothers.
 
 You might know, or guessed, from one of my last post; "[Tech Head Brothers Silverlight Streaming framework](http://weblogs.asp.net/lkempe/archive/2007/10/11/tech-head-brothers-silverlight-streaming-framework.aspx)" that I am working on adding [Silverlight Streaming](http://silverlight.live.com/) to Tech Head Brothers. I first [released a little framework](http://www.codeplex.com/THBSLSFramework) to ease the development against the REST API of [Silverlight Streaming](http://silverlight.live.com/). Now I went further on with a first vertical slice of the whole solution.
+<!-- more -->
 
 The solution is composed of four parts:
 

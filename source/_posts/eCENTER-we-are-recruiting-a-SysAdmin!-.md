@@ -1,7 +1,11 @@
-title: eCENTER: we are recruiting a SysAdmin! 
+title: "eCENTER: we are recruiting a SysAdmin! "
+permalink: "eCENTER-we-are-recruiting-a-SysAdmin!-"
 date: 7/11/2005 4:47:00 PM
 updated: 7/11/2005 4:47:00 PM
+disqusIdentifier: 20050711044700
 tags: ["Work"]
+alias:
+ - /post/eCENTER-we-are-recruiting-a-SysAdmin!-.aspx/index.html
 ---
 <span style="FONT-WEIGHT: bold">«Are you proactive, communicative and 
 independent? Welcome in our Team!»</span>  
@@ -11,6 +15,7 @@ Swiss insurance service provider with core competencies in risk management and
 private pensions. Mutual appreciation, open communications and clear objectives 
 are important principles of management and collaboration in our 
 company.  
+<!-- more -->
 
 We are looking in our ecenter for a professional, 
 client-oriented and motivated  

@@ -1,7 +1,11 @@
-title: ComponentArt released Web.UI 3.0 for ASP.NET
+title: "ComponentArt released Web.UI 3.0 for ASP.NET"
+permalink: "ComponentArt-released-WebUI-30-for-ASPNET"
 date: 9/11/2005 5:25:00 AM
 updated: 9/11/2005 5:25:00 AM
+disqusIdentifier: 20050911052500
 tags: ["Tech Head Brothers"]
+alias:
+ - /post/ComponentArt-released-WebUI-30-for-ASPNET.aspx/index.html
 ---
 
 
@@ -10,6 +14,7 @@ tags: ["Tech Head Brothers"]
 ASP.NET](http://www.componentart.com/products.aspx) combines ComponentArt's unique rendering technology with the power 
 of AJAX to deliver the most advanced set of user interface controls available 
 for ASP.NET. Now featuring ALL NEW Grid, Callback and Calendar controls.
+<!-- more -->
 
 I am currently using the [Menu control](http://www.componentart.com/menu/default.aspx) from this 
 ASP.NET controls suite on [Tech Head 

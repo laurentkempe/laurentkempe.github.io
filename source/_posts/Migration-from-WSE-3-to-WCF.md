@@ -1,11 +1,16 @@
-title: Migration from WSE 3 to WCF
+title: "Migration from WSE 3 to WCF"
+permalink: "Migration-from-WSE-3-to-WCF"
 date: 6/27/2007 4:28:25 PM
 updated: 6/27/2007 4:28:25 PM
+disqusIdentifier: 20070627042825
 tags: ["ASP.NET 2.0", "Web Services", "VSTO", "WCF", "SOAP"]
+alias:
+ - /post/Migration-from-WSE-3-to-WCF.aspx/index.html
 ---
 I started to migrate the [Tech Head Brothers](http://www.techheadbrothers.com/) authoring tool and portal from Web Service Enhancement 3 (WSE 3) to Windows Communication Foundation (WCF). This is a next step in the integration of .NET Framework 3 in Tech Head Brothers portal.
 
 Till today I was using WSE 3 from the Word VSTO solution to securely publish content to the portal directly out of Word 2003/2007.
+<!-- more -->
 
 The migration went straight due to my initial implementation that was already using interfaces and implementation classes. So basically I had to :
 

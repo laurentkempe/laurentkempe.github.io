@@ -1,11 +1,16 @@
-title: Orbit Downloader
+title: "Orbit Downloader"
+permalink: "Orbit-Downloader"
 date: 7/28/2007 5:52:53 PM
 updated: 7/28/2007 5:52:53 PM
+disqusIdentifier: 20070728055253
 tags: ["Tools"]
+alias:
+ - /post/Orbit-Downloader.aspx/index.html
 ---
 Since some weeks now I changed my download manager from [Free Download Manager](http://www.freedownloadmanager.org/) to [Orbit Downloader](http://www.orbitdownloader.com/index.htm).
 
 I enjoyed Free Download Manager for quite a long time but when I installed Vista I started to have troubles. 
+<!-- more -->
 
 I really like the [features of Orbit Downloader](http://www.orbitdownloader.com/features.htm) and the fact that it is light weight; they say "Super Light: micro-sized and resource-friendly"' !
 

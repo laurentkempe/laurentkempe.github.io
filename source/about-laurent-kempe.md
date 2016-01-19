@@ -1,11 +1,15 @@
-title: About
+title: "About"
+permalink: "/page/about-laurent-kempe"
 date: 8/25/2012 8:54:56 PM
 updated: 8/25/2012 8:57:06 PM
-tags: [""]
+disqusIdentifier: 20120825085456
+alias:
+ - /page/about-laurent-kempe.aspx/index.html
 ---
 <span style="font-family: Tahoma, Arial, Helvetica; font-size: 13px;">Laurent Kempé is the editor, founder, and primary contributor of [Tech Head Brothers](http://www.techheadbrothers.com), a French portal about Microsoft .NET technologies.  
 
 He is currently employed by [Innoveo Solutions](http://www.innoveo.com/ "innoveo solutions") since 10/2007 as a Senior Solution Architect and [certified Scrum Master](http://www.scrumalliance.org/profiles/74435-laurent-kemp).  
+<!-- more -->
 </span>
 
 <span style="font-family: Tahoma, Arial, Helvetica; font-size: 13px;">Founder, owner and Managing Partner of [Jobping](http://www.jobping.com), which provides a unique and efficient platform for connecting Microsoft skilled job seekers with employers using Microsoft technologies.</span>

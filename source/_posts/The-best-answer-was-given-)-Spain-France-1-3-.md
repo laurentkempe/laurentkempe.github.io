@@ -1,11 +1,15 @@
-title: The best answer was given :-) Spain - France 1 - 3 
+title: "The best answer was given :-) Spain - France 1 - 3 "
+permalink: "The-best-answer-was-given-)-Spain-France-1-3-"
 date: 6/29/2006 6:25:00 AM
 updated: 6/29/2006 6:25:00 AM
-tags: [""]
+disqusIdentifier: 20060629062500
+alias:
+ - /post/The-best-answer-was-given-)-Spain-France-1-3-.aspx/index.html
 ---
 I would like to congratulate all the French "has-been too old" football players :-)
 
 Then I would like to quote [Didier](http://www.didierbeck.com/)<br>"<br>And my dear Spanish colleagues, friends and non-friends, journalists, trainer and players, sometimes, as in the business field, it is *definitely* better to keep a low profile and to respect your opponents, and more especially before playing a match, even if you have won your last 26 games. Some examples...."
+<!-- more -->
 
 <strong>What about the shameful behaviour of the Spanish fans during the anthem?</strong>
 

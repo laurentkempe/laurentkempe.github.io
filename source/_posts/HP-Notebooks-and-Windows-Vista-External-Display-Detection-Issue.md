@@ -1,11 +1,16 @@
-title: HP Notebooks and Windows Vista - External Display Detection Issue
+title: "HP Notebooks and Windows Vista - External Display Detection Issue"
+permalink: "HP-Notebooks-and-Windows-Vista-External-Display-Detection-Issue"
 date: 12/17/2007 3:19:03 AM
 updated: 12/17/2007 3:19:03 AM
+disqusIdentifier: 20071217031903
 tags: ["Tools"]
+alias:
+ - /post/HP-Notebooks-and-Windows-Vista-External-Display-Detection-Issue.aspx/index.html
 ---
 I am using a tool from HP called [hp Health Check](http://h30155.www3.hp.com/helpandsupport/cpcehelp.html) that runs one time per week. Till now I didn't get any recommendation that I didn't know about but today that changed.
 
 > #### External Display Detection Issue
+<!-- more -->
 > 
 > There is a known issue with Vista operating systems where external displays will not be detected or will display with the resolution incorrectly if the notebook is booted with the lid closed or if the lid is closed soon after boot.
 > 

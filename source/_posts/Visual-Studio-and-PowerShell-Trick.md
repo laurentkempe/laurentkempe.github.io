@@ -1,11 +1,16 @@
-title: Visual Studio and PowerShell Trick
+title: "Visual Studio and PowerShell Trick"
+permalink: "Visual-Studio-and-PowerShell-Trick"
 date: 11/30/2007 3:30:45 AM
 updated: 11/30/2007 3:30:45 AM
+disqusIdentifier: 20071130033045
 tags: ["Visual Studio", "innoveo solutions", "white"]
+alias:
+ - /post/Visual-Studio-and-PowerShell-Trick.aspx/index.html
 ---
 This end of afternoon I worked on the mapping part of my new project for [innoveo solutions](http://www.innoveo.com/), a blog engine.
 
 Till now I was using the XML Persistence Engine of [Euss](http://euss.evaluant.com/) but it was time to go to a real mapping and a database.
+<!-- more -->
 
 ![](http://farm3.static.flickr.com/2130/2073540103_dcff049d11_o.jpg) 
 

@@ -1,7 +1,11 @@
-title: Visual Studio 2005 Team Suite installation
+title: "Visual Studio 2005 Team Suite installation"
+permalink: "Visual-Studio-2005-Team-Suite-installation"
 date: 12/10/2005 8:59:00 AM
 updated: 12/10/2005 8:59:00 AM
+disqusIdentifier: 20051210085900
 tags: [".NET Framework 2.0"]
+alias:
+ - /post/Visual-Studio-2005-Team-Suite-installation.aspx/index.html
 ---
 
 
@@ -9,6 +13,7 @@ tags: [".NET Framework 2.0"]
 It was a nightmare to have this installed and working!!! For all previous 
 versions, since the alpha version, I used a Virtual PC. And now that the product 
 went RTM I decided that it was time to install it on my productive machine.
+<!-- more -->
 
 I had not installed any piece of alpha nor beta software on my productive 
 environment before starting the installation of Visual Studio 2005 Team 

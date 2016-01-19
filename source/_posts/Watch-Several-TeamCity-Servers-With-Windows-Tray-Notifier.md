@@ -1,11 +1,16 @@
-title: Watch Several TeamCity Servers With Windows Tray Notifier
+title: "Watch Several TeamCity Servers With Windows Tray Notifier"
+permalink: "Watch-Several-TeamCity-Servers-With-Windows-Tray-Notifier"
 date: 11/5/2009 4:49:39 AM
 updated: 11/5/2009 4:49:39 AM
+disqusIdentifier: 20091105044939
 tags: ["Team City"]
+alias:
+ - /post/Watch-Several-TeamCity-Servers-With-Windows-Tray-Notifier.aspx/index.html
 ---
 Browsing [TeamCity](http://www.jetbrains.com/teamcity/index.html) documentation this evening I discovered that it is possible to [Watch Several TeamCity Servers With Windows Tray Notifier](http://www.jetbrains.net/confluence/display/TCD5/How+To...#HowTo...-WatchSeveralTeamCityServersWithWindowsTrayNotifier)
 
 > TeamCity Tray Notifier is used normally to watch builds and receive notifications from a single TeamCity server.
+<!-- more -->
 > 
 > In situations, when you have more than one TeamCity server, and want to monitor them with Windows Tray Notifier simultaneously, you need to start a separate instance of Tray Notifier for each of the servers from the command line with the <tt>/allowMultiple</tt> option:
 > 

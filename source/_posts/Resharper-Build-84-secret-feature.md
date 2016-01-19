@@ -1,7 +1,11 @@
-title: Resharper Build 84 secret feature
+title: "Resharper Build 84 secret feature"
+permalink: "Resharper-Build-84-secret-feature"
 date: 6/8/2004 5:57:00 AM
 updated: 6/8/2004 5:57:00 AM
+disqusIdentifier: 20040608055700
 tags: ["Tools", ".NET Development"]
+alias:
+ - /post/Resharper-Build-84-secret-feature.aspx/index.html
 ---
 On the [JetBrain](http://www.jetbrains.com)'s [Resharper](http://www.jetbrains.com/resharper/) [changes page](http://www.jetbrains.net/confluence/display/ReSharper/Changes) it is written:<br>"
 
@@ -14,6 +18,7 @@ On the [JetBrain](http://www.jetbrains.com)'s [Resharper](http://www.jetbrains.c
 <li><strong>A secret feature, many of you will see it in the next few days :-)</strong> </li></li></li></li></li></ul>
 
 
+<!-- more -->
 "
 
 Anyone could find what the secret feature is?

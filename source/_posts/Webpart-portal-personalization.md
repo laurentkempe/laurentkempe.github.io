@@ -1,7 +1,11 @@
-title: Webpart portal personalization
+title: "Webpart portal personalization"
+permalink: "Webpart-portal-personalization"
 date: 8/4/2004 7:52:00 AM
 updated: 8/4/2004 7:52:00 AM
+disqusIdentifier: 20040804075200
 tags: ["ASP.NET 2.0"]
+alias:
+ - /post/Webpart-portal-personalization.aspx/index.html
 ---
 <P>In some portal scenarios you might want to have only webmaster(s) manage the layout of the site. So your goal is  to avoid that a registered user change it.</P>
 <P>With Webparts you might build portal that match this scenario like this:</P>

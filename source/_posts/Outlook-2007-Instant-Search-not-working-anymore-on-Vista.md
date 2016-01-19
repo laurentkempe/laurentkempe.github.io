@@ -1,11 +1,16 @@
-title: Outlook 2007 Instant Search not working anymore on Vista
+title: "Outlook 2007 Instant Search not working anymore on Vista"
+permalink: "Outlook-2007-Instant-Search-not-working-anymore-on-Vista"
 date: 7/7/2007 8:24:13 AM
 updated: 7/7/2007 8:24:13 AM
+disqusIdentifier: 20070707082413
 tags: ["Tools", "VSTO"]
+alias:
+ - /post/Outlook-2007-Instant-Search-not-working-anymore-on-Vista.aspx/index.html
 ---
 Since the beginning of this week I wasn't able to search anymore in Outlook and has I am using this a lot I was really pissed off.
 
 I finally found an explanation in one of the [Microsoft Forum](http://forums.microsoft.com/msdn/showpost.aspx?postid=1264471&siteid=1&sb=0&d=1&at=7&ft=11&tf=0&pageid=1):
+<!-- more -->
 
 > Jake, you may have been hitting a known Office 2003/2007 setup issue.  If you install any Office 2003 component after installing Office 2007, Outlook 2007 Instant Seaerch stops working.  You'd have to repair your Office 2007 installation to repair the issue.
 

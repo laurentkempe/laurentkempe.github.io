@@ -1,11 +1,15 @@
-title: Unit Test using test doubles, aka Mock, Stub, Fake, Dummy
+title: "Unit Test using test doubles, aka Mock, Stub, Fake, Dummy"
+permalink: "Unit-Test-using-test-doubles-aka-Mock-Stub-Fake-Dummy"
 date: 7/17/2010 12:31:53 AM
 updated: 7/17/2010 12:31:53 AM
-tags: [""]
+disqusIdentifier: 20100717123153
+alias:
+ - /post/Unit-Test-using-test-doubles-aka-Mock-Stub-Fake-Dummy.aspx/index.html
 ---
 Following my post about [Application Acceptance Testing](http://www.laurentkempe.com/post/Application-Acceptance-Testing.aspx), we went, beginning of that week, in some very interesting discussions during a meeting at [Innoveo](http://www.innoveo.com/) in which I presented the differences between Mock and Stub in Unit Test. After the meeting as I often do I gather up from the web some posts which expressed in more details what I was talking about and made some extract of the posts.
 
 This time I found some interesting content follow-up on my explanations on the site of [Rhino.Mock](http://ayende.com/Wiki/Rhino+Mocks+3.5.ashx) framework website and a post from Martin Fowler; [Mock’s aren’t Stubs](http://martinfowler.com/articles/mocksArentStubs.html)
+<!-- more -->
 
 Understanding the difference between a Stub and a Mock is an important distinction to do, because they have each one purpose which isn’t the same.
 

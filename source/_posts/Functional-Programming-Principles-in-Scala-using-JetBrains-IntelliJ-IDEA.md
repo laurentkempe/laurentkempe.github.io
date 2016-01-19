@@ -1,11 +1,22 @@
-title: Functional Programming Principles in Scala using JetBrains IntelliJ IDEA
+title: "Functional Programming Principles in Scala using JetBrains IntelliJ IDEA"
+permalink: "Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA"
 date: 9/20/2013 8:43:00 PM
 updated: 10/4/2013 4:53:57 AM
+disqusIdentifier: 20130920084300
+coverImage: https://farm4.staticflickr.com/3798/9553182109_8db2fd62d4_o.jpg
+coverSize: partial
+thumbnailImage: https://farm4.staticflickr.com/3798/9553182109_bcac5e189d_q.jpg
+coverCaption: "Whale in Cape Bridgewater, Australia"
 tags: ["Coursera", "IntelliJ", "Jetbrains", "Scala"]
+alias:
+ - /post/Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA.aspx/index.html
 ---
-[![Another great shot of our friend the Whale of last week in Cape Bridgewater](http://farm4.staticflickr.com/3798/9553182109_bcac5e189d_m.jpg)](http://www.flickr.com/photos/laurentkempe/9553182109/ "Another great shot of our friend the Whale of last week in Cape Bridgewater by Laurent Kempé, on Flickr")This week I started the [Coursera](https://www.coursera.org/) course [Functional Programming Principles in Scala](https://www.coursera.org/course/progfun) with Martin Odersky as instructor.
+<!-- [![Another great shot of our friend the Whale of last week in Cape Bridgewater](http://farm4.staticflickr.com/3798/9553182109_bcac5e189d_m.jpg)](http://www.flickr.com/photos/laurentkempe/9553182109/ "Another great shot of our friend the Whale of last week in Cape Bridgewater by Laurent Kempé, on Flickr") -->
+
+This week I started the [Coursera](https://www.coursera.org/) course [Functional Programming Principles in Scala](https://www.coursera.org/course/progfun) with Martin Odersky as instructor.
 
 One of my first step was to have [JetBrains IntelliJ IDEA](http://www.jetbrains.com/idea/) working with the [Scala programming language](http://www.scala-lang.org/) so that I can work on the course assignments using my preferred IDE.
+<!-- more -->
 
 I have seen that The Guardian published a blog post [Functional Programming Principles in Scala: Setting up IntelliJ](http://www.theguardian.com/info/developer-blog/2012/sep/21/funtional-programming-principles-scala-setting-up-intellij) but it focus on the Unix-like operating systems (OSX and Linux). As I work on Windows I for sure installed it on my machine running Windows 8.1! I also use a different set of tools so here is the way I did it!
 
@@ -59,4 +70,4 @@ There is still two tests to fix in the first assignment, this is why there are r
 
 But as you can see now you have a full Scala development environment based on the great JetBrains IntelliJ IDEA IDE! Now you can code with pleasure!
 
-I really enjoy the first week assignments and implemented the first two as [coding Kata](http://www.laurentkempe.com/post/Test-Driven-Development-Kata-String-Calculator.aspx)! And I even involved France-Anne for the second one; first time that she is coding something ![Smile](http://www.laurentkempe.com/image.axd?picture=wlEmoticon-smile.png) . Very nice!
+I really enjoy the first week assignments and implemented the first two as [coding Kata](http://www.laurentkempe.com/post/Test-Driven-Development-Kata-String-Calculator.aspx)! And I even involved France-Anne for the second one; first time that she is coding something ![Smile](/images/wlEmoticon-smile.png) . Very nice!

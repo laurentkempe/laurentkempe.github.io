@@ -1,11 +1,16 @@
-title: MSBuildProjectDirectory issue in Web Deployment Project! Any idea Welcomed!
+title: "MSBuildProjectDirectory issue in Web Deployment Project! Any idea Welcomed!"
+permalink: "MSBuildProjectDirectory-issue-in-Web-Deployment-Project!-Any-idea-Welcomed!"
 date: 4/4/2008 3:31:50 AM
 updated: 4/4/2008 3:31:50 AM
+disqusIdentifier: 20080404033150
 tags: ["Tech Head Brothers", "continuous integration", "Team City"]
+alias:
+ - /post/MSBuildProjectDirectory-issue-in-Web-Deployment-Project!-Any-idea-Welcomed!.aspx/index.html
 ---
 I go crazy with a stupid error!
 
 I try to have my web deployment project use the property [MSBuildProjectDirectory](http://msdn2.microsoft.com/en-us/ms164309.aspx) like this:
+<!-- more -->
   <table style="background-color: black" cellspacing="0" cellpadding="2" width="600" border="0"><tbody>     <tr>       <td valign="top" width="600">         
 
 <span style="background: black; color: white">  <Target </span><span style="background: black; color: #ff8000">Name</span><span style="background: black; color: white">="</span><span style="background: black; color: lime">NDepend</span><span style="background: black; color: white">">

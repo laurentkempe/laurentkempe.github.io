@@ -1,11 +1,16 @@
-title: Follow up on “Reducing ORM Friction” by Rob Conery
+title: "Follow up on “Reducing ORM Friction” by Rob Conery"
+permalink: "Follow-up-on-e2809cReducing-ORM-Frictione2809d-by-Rob-Conery"
 date: 11/5/2008 7:20:24 AM
 updated: 11/5/2008 7:20:24 AM
+disqusIdentifier: 20081105072024
 tags: ["unit test", "Euss", "ORM", "Agile"]
+alias:
+ - /post/Follow-up-on-e2809cReducing-ORM-Frictione2809d-by-Rob-Conery.aspx/index.html
 ---
 In my development process I do use what Rob is describing in his post “[Crazy Talk: Reducing ORM Friction](http://blog.wekeroad.com/blog/crazy-talk-reducing-orm-friction/)” with some slight differences.
 
 For example I developed [Tech Head Brothers](http://www.techheadbrothers.com/) portal this way, as [Innoveo Solutions](http://www.innoveo.com) web site. I use TDD and Domain Driven Development and I keep the mapping as one of the last step for my implementation.
+<!-- more -->
 
 I do have a generic Repository interface as following:
   <div style="font-family: courier new; background: white; color: black; font-size: 10pt">   

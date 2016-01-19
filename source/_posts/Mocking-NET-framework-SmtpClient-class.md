@@ -1,11 +1,16 @@
-title: Mocking .NET framework SmtpClient class
+title: "Mocking .NET framework SmtpClient class"
+permalink: "Mocking-NET-framework-SmtpClient-class"
 date: 6/1/2008 7:41:20 AM
 updated: 5/7/2010 7:52:14 AM
+disqusIdentifier: 20080601074120
 tags: ["unit test", "mock"]
+alias:
+ - /post/Mocking-NET-framework-SmtpClient-class.aspx/index.html
 ---
 This Saturday like the last two I planned to work on my wooden terrace, but with the weather we have for this year's spring, it was almost impossible. So I replaced that with some development.
 
 I am using [Rhino.Mocks](http://www.ayende.com/projects/rhino-mocks.aspx) as mock object framework and went to the following solution to mock [SmtpClient](http://msdn.microsoft.com/en-us/library/system.net.mail.smtpclient.aspx).
+<!-- more -->
 
 Capabilities of Rhino.Mock are to mock interfaces, delegates and virtual methods of classes!
 

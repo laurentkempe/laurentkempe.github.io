@@ -1,11 +1,20 @@
-title: Running your TeamCity builds from PowerShell for any Git branch
+title: "Running your TeamCity builds from PowerShell for any Git branch"
+permalink: "Running-your-TeamCity-builds-from-a-command-line"
 date: 2/7/2012 1:09:02 AM
 updated: 2/8/2012 4:50:22 PM
+disqusIdentifier: 20120207010902
+coverImage: https://farm6.staticflickr.com/5257/5561493976_859ff775f3_b.jpg
+coverSize: partial
+thumbnailImage: https://farm6.staticflickr.com/5257/5561493976_859ff775f3_q.jpg
+coverCaption: "Plage le long de la Savane des Pétrifications, Martinique"
 tags: ["Team City", "Productivity", "Agile", "Git", "PowerShell"]
+alias:
+ - /post/Running-your-TeamCity-builds-from-a-command-line.aspx/index.html
 ---
-[![Plage le long de la Savane des Pétrifications](http://farm6.staticflickr.com/5257/5561493976_859ff775f3_m.jpg)](http://www.flickr.com/photos/laurentkempe/5561493976/ "Plage le long de la Savane des Pétrifications by Laurent Kempé, on Flickr")  
+<!-- [![Plage le long de la Savane des Pétrifications](http://farm6.staticflickr.com/5257/5561493976_859ff775f3_m.jpg)](http://www.flickr.com/photos/laurentkempe/5561493976/ "Plage le long de la Savane des Pétrifications by Laurent Kempé, on Flickr") -->  
 
 I love [TeamCity](http://www.jetbrains.com/teamcity/) and use it since a while to automate my build/release processes. As human we should never do the work a machine can do, we have certainly better and more interesting things to do.
+<!-- more -->
 
 The habit I saw in the different projects I worked for is to create new TeamCity builds for the branches you work on. It take quite some work to do, even with templates…
 
@@ -32,6 +41,7 @@ Nice ,but we want to get a step further and be able to start the build from Powe
 
 To achieve this goal you add those two functions to your PowerShell profile:
 
+{% codeblock Microsoft.PowerShell_profile.ps1 lang:powershell %}
 function Get-Web($url, 
     [switch]$self,
     $credential, 
@@ -92,6 +102,7 @@ function tcBuild([string]$branch) {
 
     Get-Web $url -credential $credentials
 }
+{% endcodeblock %}
 
 Please adapt the tcBuild script by replacing the YourServerUrl, YourBuildId, Username, Password by your personal values.
 
@@ -105,9 +116,7 @@ My workflow now is the following one:
 2.  when I want to run a build I push to the centralized Git origin repository in my branch then 
 3.  I start my build on the Git Branch from PowerShell by typing : 
 
-
-
-> > tcBuild Jobping-10-NewFeature
+> tcBuild Jobping-10-NewFeature
 
 where Jobping-10-NewFeature is the name of my Git branch.
 

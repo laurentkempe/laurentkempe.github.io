@@ -1,7 +1,11 @@
-title: Rewards :-)
+title: "Rewards :-)"
+permalink: "Rewards-)"
 date: 7/22/2004 3:16:00 PM
 updated: 7/22/2004 3:16:00 PM
+disqusIdentifier: 20040722031600
 tags: ["Tools"]
+alias:
+ - /post/Rewards-).aspx/index.html
 ---
 <table width="100%" boder="0">
 <tbody>
@@ -11,4 +15,5 @@ tags: ["Tools"]
 
 
 Hey I've got some rewards from the [Synop](http://www.synop.com/) team developing the famous [Sauce Reader](http://www.synop.com/Products/SauceReader/) blog tool. Thanks guys :-)
+<!-- more -->
 </td></tr></tbody></table>

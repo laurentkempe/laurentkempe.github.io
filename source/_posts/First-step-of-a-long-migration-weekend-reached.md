@@ -1,11 +1,16 @@
-title: First step of a long migration weekend reached
+title: "First step of a long migration weekend reached"
+permalink: "First-step-of-a-long-migration-weekend-reached"
 date: 6/3/2006 10:23:00 PM
 updated: 6/3/2006 10:23:00 PM
+disqusIdentifier: 20060603102300
 tags: ["Work"]
+alias:
+ - /post/First-step-of-a-long-migration-weekend-reached.aspx/index.html
 ---
 Yesterday, Friday 2 June, 2006 at 5:00 PM, we started our platform migration process at [ecenter solutions](http://www.ecenter-solutions.com/). 
 
 This is the result of one year of hard work splitted in two phases:
+<!-- more -->
 
 <ol>
 <li>first 6 months we made several proof of concepts</li>

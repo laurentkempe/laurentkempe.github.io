@@ -1,11 +1,16 @@
-title: Attending the &quot;WPF FOR LOB&quot; TRAINING TOUR in London
+title: "Attending the WPF FOR LOB TRAINING TOUR in London"
+permalink: "Attending-the-quot3bWPF-FOR-LOBquot3b-TRAINING-TOUR-in-London"
 date: 4/17/2009 6:29:52 AM
 updated: 1/25/2012 7:27:50 AM
+disqusIdentifier: 20090417062952
 tags: ["WPF"]
+alias:
+ - /post/Attending-the-quot3bWPF-FOR-LOBquot3b-TRAINING-TOUR-in-London.aspx/index.html
 ---
 Next month I will attend with my colleague Robert the [“WPF FOR LOB”](http://blogs.msdn.com/jaimer/archive/2009/04/01/announcing-the-using-wpf-to-build-lob-applications-training-tour.aspx) training Tour in London (5/15 -5/16). Our flights and hotel rooms are already booked. We fly from Zurich to London Heathrow on Thursday 14 Mai arriving at 20:15 in London and I fly back to Mulhouse on Saturday evening.
 
 We will be at the conference hotel [Radisson Edwardian Heathrow Hotel](http://www.radissonedwardian.com/londonuk_heathrow), where the training take place.
+<!-- more -->
 
 **[Jaime Rodriquez](http://blogs.msdn.com/jaimer/) **and **[Karl Shifflett](http://karlshifflett.wordpress.com/) **have been organizing a “WPF FOR LOB” to provide **2 days of free WPF training for developers.**
 

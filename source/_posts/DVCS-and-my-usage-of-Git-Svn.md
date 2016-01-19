@@ -1,11 +1,16 @@
-title: DVCS and my usage of Git Svn
+title: "DVCS and my usage of Git Svn"
+permalink: "DVCS-and-my-usage-of-Git-Svn"
 date: 11/7/2011 11:14:00 PM
 updated: 11/12/2011 10:44:36 PM
+disqusIdentifier: 20111107111400
 tags: ["Git", "DVCS"]
+alias:
+ - /post/DVCS-and-my-usage-of-Git-Svn.aspx/index.html
 ---
 Sometime ago I moved “away” from subversion has my Version Control System (VCS) because I felt not free of my way of working with it. I found a great was to improve my work experience by using Git Svn in front of our central Subversion repository.
 
 I started my experimentation with Mercurial and Hg Svn because I was already using Mercurial for my personal projects. I hit some much the wall with Hg Svn that I decided quite quickly to go and try Git Svn. I had no experience with Git at that time and I had the feeling that it was more complex to handle than Mercurial (which I still think).
+<!-- more -->
 
 So currently I use Git Svn to work on one of our product at [Innoveo Solutions](http://www.innoveo.com/). I also made a presentation to the team during our techno pizza lunch about DVCS, Git, Git Flow and Git Svn.
 

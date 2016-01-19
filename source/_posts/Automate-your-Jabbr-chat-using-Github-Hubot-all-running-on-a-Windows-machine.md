@@ -1,11 +1,16 @@
-title: Automate your Jabbr chat using Github Hubot all running on a Windows machine
+title: "Automate your Jabbr chat using Github Hubot all running on a Windows machine"
+permalink: "Automate-your-Jabbr-chat-using-Github-Hubot-all-running-on-a-Windows-machine"
 date: 7/17/2012 4:31:48 PM
 updated: 8/11/2013 9:14:53 AM
+disqusIdentifier: 20120717043148
 tags: ["ASP.NET MVC", ".NET", "Agile", "CoffeeScripts", "Campfire", "GitHub", "Git", "HipChat", "Productivity", "hubot", "nodejs"]
+alias:
+ - /post/Automate-your-Jabbr-chat-using-Github-Hubot-all-running-on-a-Windows-machine.aspx/index.html
 ---
 I previously talked about “[Running Github Hubot on a Windows machine](http://www.laurentkempe.com/post/Running-Github-Hubot-on-a-Windows-machine.aspx)”, “[Using Github hubot and Appharbor service hook to get deployment status in Campfire/HipChat rooms](http://www.laurentkempe.com/post/Using-Appharbor-service-hook-to-get-build-status-in-HipChat-rooms.aspx)” or even “[Starting TeamCity builds from HipChat using Github Hubot](http://www.laurentkempe.com/post/Starting-TeamCity-builds-from-HipChat-using-Github-Hubot.aspx)”.
 
 All those solution rely on an external chat service either [Altassian HipChat](http://www.atlassian.com/software/hipchat/overview) or 37signals [Campfire](http://campfirenow.com/).
+<!-- more -->
 
 If you want to have your own all integrated experience with all your tools running on premise I propose to look how you might do that using [Jabbr](https://github.com/davidfowl/JabbR/) and [Hubot](http://hubot.github.com/) on a windows machine.
 

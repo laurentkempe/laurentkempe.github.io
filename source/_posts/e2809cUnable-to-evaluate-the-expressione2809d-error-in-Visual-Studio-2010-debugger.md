@@ -1,11 +1,16 @@
-title: “Unable to evaluate the expression” error in Visual Studio 2010 debugger
+title: "“Unable to evaluate the expression” error in Visual Studio 2010 debugger"
+permalink: "e2809cUnable-to-evaluate-the-expressione2809d-error-in-Visual-Studio-2010-debugger"
 date: 11/23/2010 8:04:46 PM
 updated: 11/23/2010 8:04:46 PM
+disqusIdentifier: 20101123080446
 tags: ["Visual Studio", "ASP.NET MVC", "Async"]
+alias:
+ - /post/e2809cUnable-to-evaluate-the-expressione2809d-error-in-Visual-Studio-2010-debugger.aspx/index.html
 ---
 Last week I had an issue in Visual Studio 2010 debugger in some projects only! When I was looking at the value of variables I was getting an error message saying “Unable to evaluate the expression”!
 
 Searching on [Connect](https://connect.microsoft.com/) I have found that someone else had the same issue! Not really a good sign, “[Debuging (Evalutation) stops working at times - Unable to evaluate the expression](https://connect.microsoft.com/VisualStudio/feedback/details/622525/debuging-evalutation-stops-working-at-times-unable-to-evaluate-the-expression)”. I have the same configuration, same issue and can reproduce what is described:
+<!-- more -->
 
 > I'm on Windows 7 64bit and am using VS.NET 2010 Ultimate
 > Never had a problem with VS.NET 2010 until recently. And the problem I am having is that when I create a new console app and am not able to:

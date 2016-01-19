@@ -1,11 +1,16 @@
-title: Missing a little FileAccess.Read and it doesn’t work
+title: "Missing a little FileAccess.Read and it doesn’t work"
+permalink: "Missing-a-little-FileAccessRead-and-it-doesne28099t-work"
 date: 5/22/2010 1:19:21 AM
 updated: 5/22/2010 1:19:21 AM
+disqusIdentifier: 20100522011921
 tags: [".NET Framework 3.5"]
+alias:
+ - /post/Missing-a-little-FileAccessRead-and-it-doesne28099t-work.aspx/index.html
 ---
 What is the difference between this code
   <div style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:4f938988-5f57-401f-aa50-3fabd8f1c6ed" class="wlWriterEditableSmartContent"> <div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt"> <div style="background-color: #ffffff; overflow: auto; padding: 2px 5px; white-space: nowrap"><span style="color:#0000ff">using</span> (<span style="color:#0000ff">var</span> fileStream = <span style="color:#0000ff">new</span> <span style="color:#2b91af">FileStream</span>(settingsFilename,  
                                         <span style="color:#2b91af">FileMode</span>.Open))  
+<!-- more -->
  {  
      <span style="color:#0000ff">return</span> ReadSettings(fileStream);  
  }</div> </div> </div>  

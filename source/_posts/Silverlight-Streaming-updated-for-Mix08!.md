@@ -1,11 +1,16 @@
-title: Silverlight Streaming updated for Mix'08!
+title: "Silverlight Streaming updated for Mix'08!"
+permalink: "Silverlight-Streaming-updated-for-Mix08!"
 date: 2/29/2008 8:11:46 PM
 updated: 2/29/2008 8:11:46 PM
+disqusIdentifier: 20080229081146
 tags: ["Tech Head Brothers", "Silverlight", "Silverlight Streaming"]
+alias:
+ - /post/Silverlight-Streaming-updated-for-Mix08!.aspx/index.html
 ---
 First of all it goes from 4Gb to 10Gb, **whouah**!
 
 > [Get your free 10 GB hosting space now!](http://silverlight.live.com/account/create.aspx)
+<!-- more -->
 
 You can manage Video directly from the administration interface now!
 

@@ -1,11 +1,16 @@
-title: Windows Live Writer Dynamic Template Plugin
+title: "Windows Live Writer Dynamic Template Plugin"
+permalink: "Windows-Live-Writer-Dynamic-Template-Plugin"
 date: 6/14/2008 1:10:32 AM
 updated: 6/14/2008 1:10:32 AM
+disqusIdentifier: 20080614011032
 tags: ["innoveo solutions", "Windows Live Writer"]
+alias:
+ - /post/Windows-Live-Writer-Dynamic-Template-Plugin.aspx/index.html
 ---
 <div class="wlWriterHeaderFooter" style="float:right; margin:0px; padding:0px 0px 4px 8px;"><script type="text/javascript">digg_url = "http://weblogs.asp.net/lkempe/archive/2008/06/13/windows-live-writer-dynamic-template-plugin.aspx";digg_title = "Windows Live Writer Dynamic Template Plugin";digg_bgcolor = "#FFFFFF";digg_skin = "normal";</script><script src="http://digg.com/tools/diggthis.js" type="text/javascript"></script><script type="text/javascript">digg_url = undefined;digg_title = undefined;digg_bgcolor = undefined;digg_skin = undefined;</script></div>
 
 Today working on the development of a website I had the following user story to develop “As an author I want to be able to add a lightbox/darkbox around my content in [Live Writer](http://windowslivewriter.spaces.live.com/)”.
+<!-- more -->
 
 First of all I updated my version of Windows Live Writer to the latest CTP version. You can download it from here: [Technical Preview: Now Available for Download](http://windowslivewriter.spaces.live.com/blog/cns!D85741BB5E0BE8AA!1508.entry)! Nice work [Joe](http://jcheng.wordpress.com/2008/06/03/new-writer-plugins-for-tech-preview/), it is quite stable and look really nice.
 

@@ -1,11 +1,15 @@
-title: Migration of Tech Head Brothers portal to .NET Framework 3.5
+title: "Migration of Tech Head Brothers portal to .NET Framework 3.5"
+permalink: "Migration-of-Tech-Head-Brothers-portal-to-NET-Framework-35"
 date: 11/28/2007 9:01:39 PM
 updated: 11/28/2007 9:01:39 PM
-tags: [""]
+disqusIdentifier: 20071128090139
+alias:
+ - /post/Migration-of-Tech-Head-Brothers-portal-to-NET-Framework-35.aspx/index.html
 ---
 I started yesterday the migration of [Tech Head Brothers](http://www.techheadbrothers.com/) portal to .NET Framework 3.5 and Visual Studio 2008.
 
 The automatic migration of the solution went straight without any error. During the process I was asked if I want to now target .NET Framework 3.5, replying yes seems not to have changed all things needed, for example in the solution properties I had to do the change manually, but it seems that the web.config was updated correctly.
+<!-- more -->
 
 Being ready to see the application running I started a compilation and got my first issue, and finally the only one.
 

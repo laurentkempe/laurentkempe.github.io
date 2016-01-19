@@ -1,11 +1,15 @@
-title: Extending existing .NET API to support asynchronous operations
+title: "Extending existing .NET API to support asynchronous operations"
+permalink: "Extending-existing-NET-API-to-support-asynchronous-operations"
 date: 1/5/2012 7:10:53 AM
 updated: 11/13/2012 11:05:11 AM
-tags: [""]
+disqusIdentifier: 20120105071053
+alias:
+ - /post/Extending-existing-NET-API-to-support-asynchronous-operations.aspx/index.html
 ---
 [![Palmier sur la plage de la grande anse du diamant](http://farm6.staticflickr.com/5057/5517072642_bc446224c7_m.jpg)](http://www.flickr.com/photos/laurentkempe/5517072642/ "Palmier sur la plage de la grande anse du diamant by Laurent Kempé, on Flickr")
 
 The other day I needed a way in a project I am working on to turn a .NET API, [RestSharp](http://restsharp.org/) to name it, so that I could use it in an asynchronous way.
+<!-- more -->
 
 The goal was to have the API returning a **Task<TResult>** so that I could use it if I want with the [Async CTP](http://msdn.microsoft.com/en-us/vstudio/gg316360). I also wanted to have something running both on .NET 4.0 and on Windows Phone 7.5.** **
 

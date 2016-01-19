@@ -1,11 +1,16 @@
-title: Launch of innoveo solutions blog
+title: "Launch of innoveo solutions blog"
+permalink: "Launch-of-innoveo-solutions-blog"
 date: 12/11/2007 7:25:15 PM
 updated: 12/11/2007 7:25:15 PM
+disqusIdentifier: 20071211072515
 tags: ["innoveo solutions"]
+alias:
+ - /post/Launch-of-innoveo-solutions-blog.aspx/index.html
 ---
 A few seconds ago [Didier](http://www.didierbeck.com/) and I just launched [innoveo solutions blog](http://blog.innoveo.com/home.aspx).
 
 If you ask yourself what is [innoveo solutions](http://www.innoveo.com/), it is my new company and you might read more about it here:
+<!-- more -->
 
 [New start on next Monday](http://weblogs.asp.net/lkempe/archive/2007/09/25/new-start-on-next-monday.aspx "New start on next Monday")
 

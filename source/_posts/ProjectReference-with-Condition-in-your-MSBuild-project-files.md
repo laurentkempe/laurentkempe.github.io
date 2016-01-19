@@ -1,11 +1,16 @@
-title: ProjectReference with Condition in your MSBuild project files
+title: "ProjectReference with Condition in your MSBuild project files"
+permalink: "ProjectReference-with-Condition-in-your-MSBuild-project-files"
 date: 12/3/2009 7:24:42 AM
 updated: 12/3/2009 7:24:42 AM
+disqusIdentifier: 20091203072442
 tags: ["Visual Studio", "ReSharper", "continuous integration", "Team City", "MSBuild"]
+alias:
+ - /post/ProjectReference-with-Condition-in-your-MSBuild-project-files.aspx/index.html
 ---
 Since some time I have the current scenario where I need to have conditional reference in a project. Basically the application must reference an assembly in one case in other it should reference another one. This was working correctly from an MSBuild point of view as the first implemented solution let me compile and run the application on my development machine and it was also working for our [TeamCity](http://www.jetbrains.com/teamcity/index.html) build server. So everything was fine in this perfect word expect one thing!
 
 The issue was the following; Visual Studio was showing two references of the ‘same assembly’ with different path. Not really an issue you would say because the correct one was used at compile time and at run time in all configurations. So the issue was that this had an impact of [ReSharper](http://www.jetbrains.com/resharper/index.html). And this is I cannot accept because it affect my productivity.
+<!-- more -->
 
 So the other day I had a discussion with [Ilya](http://resharper.blogspot.com/) of [JetBrains](http://www.jetbrains.com/) which gave me some idea but also told me that ReSharper reads project structure out of Visual Studio and that it doesn't provide lots of info, e.g. conditions on references. So this is why seeing two reference of the ‘same assembly’ was not a problem on Visual Studio itself and on the build server but was an issue to ReSharper because it was seeing two same reference, same namespace, same classes…
 

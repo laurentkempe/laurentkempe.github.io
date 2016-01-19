@@ -1,11 +1,16 @@
-title: Jobping announcing StickyBeak
+title: "Jobping announcing StickyBeak"
+permalink: "Jobping-announcing-StickyBeak"
 date: 6/26/2010 8:25:21 PM
 updated: 6/26/2010 8:25:21 PM
+disqusIdentifier: 20100626082521
 tags: ["Jobping", "ASP.NET", "ASP.NET MVC"]
+alias:
+ - /post/Jobping-announcing-StickyBeak.aspx/index.html
 ---
 As said when we launched [Jobping](http://www.jobping.com) [Open Source Short Urls Service](http://blog.jobping.com/2010/05/jobping-open-source-short-urls-service.html), we at [Jobping](http://www.jobping.com) are committed to open source.
 
 So last week we announced  [StickyBeak](http://stickybeak.codeplex.com/), you might read more on the blog of [Mark](http://markkemper1.blogspot.com/) - [Introduction to StickyBeak](http://markkemper1.blogspot.com/2010/06/introduction-to-stickybeak.html)
+<!-- more -->
 
 [StickyBeak](http://stickybeak.codeplex.com/) is a logging tool for asp.net websites which logs information such as date, http method, url, User.Identity.Name, IP Address, unique session Id, unique browser Id, header values, querystring values, posted form values and cookie values for every request.
 

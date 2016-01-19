@@ -1,11 +1,15 @@
-title: Cleaning BlogEngine.NET spam
+title: "Cleaning BlogEngine.NET spam"
+permalink: "Cleaning-BlogEngineNET-spam"
 date: 10/30/2011 8:45:39 PM
 updated: 11/6/2011 12:28:19 AM
-tags: [""]
+disqusIdentifier: 20111030084539
+alias:
+ - /post/Cleaning-BlogEngineNET-spam.aspx/index.html
 ---
 [![Martinique 2011](http://farm6.static.flickr.com/5136/5561350588_1d52c313f9_m.jpg)](http://www.flickr.com/photos/laurentkempe/5561350588/ "Martinique 2011 by Laurent Kempé, on Flickr")
 
 I just migrated [my blog](http://http://www.laurentkempe.com/) to the latest version of [BlogEngine.NET](http://www.dotnetblogengine.net/) 2.5.0.6.
+<!-- more -->
 
 I had a shock when I saw the number of spam that I had on the blog! 
 

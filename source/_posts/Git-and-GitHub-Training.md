@@ -1,11 +1,16 @@
-title: Git and GitHub Training
+title: "Git and GitHub Training"
+permalink: "Git-and-GitHub-Training"
 date: 5/28/2013 6:20:00 AM
 updated: 5/28/2013 4:16:36 PM
+disqusIdentifier: 20130528062000
 tags: ["Git", "GitHub"]
+alias:
+ - /post/Git-and-GitHub-Training.aspx/index.html
 ---
 Today I had the pleasure to attend “Git and GitHub Training” held by [Tim Berglund](http://timberglund.com/) one of the GitHubber, so called because he is working at [Github](https://github.com/).
 
 In the past I enjoyed very much the video Tim and [Matthew McCullough](http://matthewjmccullough.com/), another GitHubber, did for O’Reilly
+<!-- more -->
 
 *   [McCullough and Berglund on Mastering Git](http://shop.oreilly.com/product/0636920017462.do)
 *   [McCullough and Berglund on Mastering Advanced Git](http://shop.oreilly.com/product/0636920024774.do)
@@ -60,7 +65,7 @@ For people with a good understanding of git I would take care to go to the [Adva
 
 During the course we had some open discussions on various topics, but here are some which I would like to put some emphasis on.
 
-My personal experience brought me from thinking that I want to have the tools integrated into my IDE to, after getting more knowledge about git, using git from the command line. This makes me as a developer much more efficient and let me automate some stuff, which I couldn’t do with the IDE. For sure I agree with Tim ![Winking smile](http://www.laurentkempe.com/image.axd?picture=wlEmoticon-winkingsmile.png) that if I would have to work with cmd it would be rude but today there is [PowerShell](http://technet.microsoft.com/en-us/scriptcenter/powershell.aspx) and combined with [ConEmu](https://code.google.com/p/conemu-maximus5/) and [PoshGit](https://github.com/dahlbyk/posh-git) it makes very effective, even on Windows which was still seen as a clicking environment!
+My personal experience brought me from thinking that I want to have the tools integrated into my IDE to, after getting more knowledge about git, using git from the command line. This makes me as a developer much more efficient and let me automate some stuff, which I couldn’t do with the IDE. For sure I agree with Tim ![Winking smile](/images/wlEmoticon-winkingsmile.png) that if I would have to work with cmd it would be rude but today there is [PowerShell](http://technet.microsoft.com/en-us/scriptcenter/powershell.aspx) and combined with [ConEmu](https://code.google.com/p/conemu-maximus5/) and [PoshGit](https://github.com/dahlbyk/posh-git) it makes very effective, even on Windows which was still seen as a clicking environment!
 
 I learned about
 

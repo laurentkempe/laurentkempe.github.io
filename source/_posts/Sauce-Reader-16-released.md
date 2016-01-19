@@ -1,11 +1,16 @@
-title: Sauce Reader 1.6 released
+title: "Sauce Reader 1.6 released"
+permalink: "Sauce-Reader-16-released"
 date: 7/21/2004 5:55:00 AM
 updated: 5/7/2010 7:46:51 AM
+disqusIdentifier: 20040721055500
 tags: ["Tools"]
+alias:
+ - /post/Sauce-Reader-16-released.aspx/index.html
 ---
 I've got this late afternoon a popup saying that release 1.6 is out. So I updated my favorite blog tools. I will test soon the image uploading tool that i just configured. And now posting to a .Text blog is working without issue and kind of update of already posted message (erase, post). So cool.<br>Nice to see that such a company is hiring, a bit far, but who knows. 
 
 > [Sauce Reader v1.6 (BETA) released](http://www.synop.com/Weblogs/SauceReader/PermaLink.aspx?guid=84af447a-39ce-4c3d-98be-f9eaea9787d3)
+<!-- more -->
 > 
 > [Sauce Reader](http://www.synop.com/Products/SauceReader/) v1.6 is now available for [download](http://www.synop.com/Products/SauceReader/Download/). Major changes and improvements in this version include:
 > 

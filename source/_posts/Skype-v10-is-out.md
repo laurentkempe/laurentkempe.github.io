@@ -1,11 +1,16 @@
-title: Skype v1.0 is out
+title: "Skype v1.0 is out"
+permalink: "Skype-v10-is-out"
 date: 7/28/2004 6:12:00 AM
 updated: 7/28/2004 6:12:00 AM
+disqusIdentifier: 20040728061200
 tags: ["Tools"]
+alias:
+ - /post/Skype-v10-is-out.aspx/index.html
 ---
 [Download it here](http://www.skype.net/download.html).
 
 For the one that did not know (is that possible?):<td align="center" width="53%"></td><td width="47%">
+<!-- more -->
 
 
 <h2>What is Skype?</h2>

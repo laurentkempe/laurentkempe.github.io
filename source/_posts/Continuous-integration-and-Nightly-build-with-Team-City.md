@@ -1,11 +1,16 @@
-title: Continuous integration and Nightly build with Team City
+title: "Continuous integration and Nightly build with Team City"
+permalink: "Continuous-integration-and-Nightly-build-with-Team-City"
 date: 4/23/2008 7:16:19 AM
 updated: 4/23/2008 7:16:19 AM
+disqusIdentifier: 20080423071619
 tags: ["Tech Head Brothers", "continuous integration", "Team City"]
+alias:
+ - /post/Continuous-integration-and-Nightly-build-with-Team-City.aspx/index.html
 ---
 I finally found some time this evening to re-configure Team City and adapt my MSBuild script to be able to achieve the following build configuration for [Tech Head Brothers](http://www.techheadbrothers.com/) portal:
 
 ![](http://farm3.static.flickr.com/2006/2434398929_d8bb394867_o.jpg) 
+<!-- more -->
 
 *   CI Trunk - Unit Tests, Coverage, Deploy Staging
 *   *   Checkout source code from subversion Portal project trunk

@@ -1,11 +1,16 @@
-title: Git Diff Margin v2.0 released
+title: "Git Diff Margin v2.0 released"
+permalink: "Git-Diff-Margin-v20-released"
 date: 8/29/2014 5:50:54 PM
 updated: 8/29/2014 5:58:54 PM
+disqusIdentifier: 20140829055054
 tags: ["Visual Studio"]
+alias:
+ - /post/Git-Diff-Margin-v20-released.aspx/index.html
 ---
 I am pleased to announce that Git Diff Margin v2.0 is released!
 
 **Git Diff Margin displays live changes of the currently edited file on Visual Studio 2013 margin and scroll bar.**
+<!-- more -->
 
 You can download it from [Visual Studio Gallery](http://visualstudiogallery.msdn.microsoft.com/cf49cf30-2ca6-4ea0-b7cc-6a8e0dadc1a8) and get the [source code on Github](https://github.com/laurentkempe/GitDiffMargin)
 

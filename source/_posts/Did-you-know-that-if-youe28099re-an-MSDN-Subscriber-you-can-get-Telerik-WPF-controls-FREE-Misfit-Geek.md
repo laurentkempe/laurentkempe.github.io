@@ -1,11 +1,15 @@
-title: Did you know that if you’re an MSDN Subscriber you can get Telerik WPF controls FREE ? : Misfit Geek
+title: "Did you know that if you’re an MSDN Subscriber you can get Telerik WPF controls FREE ? : Misfit Geek"
+permalink: "Did-you-know-that-if-youe28099re-an-MSDN-Subscriber-you-can-get-Telerik-WPF-controls-FREE-Misfit-Geek"
 date: 6/9/2009 6:55:34 PM
 updated: 6/9/2009 6:55:34 PM
-tags: [""]
+disqusIdentifier: 20090609065534
+alias:
+ - /post/Did-you-know-that-if-youe28099re-an-MSDN-Subscriber-you-can-get-Telerik-WPF-controls-FREE-Misfit-Geek.aspx/index.html
 ---
 > [![6-8-2009 4-20-55 PM](http://misfitgeek.com/files/media/image/WindowsLiveWriter/DidyouknowthatifyoureanMSDNSubscriberyou_E651/6-8-2009%204-20-55%20PM_thumb.png "6-8-2009 4-20-55 PM")](http://misfitgeek.com/files/media/image/WindowsLiveWriter/DidyouknowthatifyoureanMSDNSubscriberyou_E651/6-8-2009%204-20-55%20PM_2.png)
 > 
 > Telerik, a leading vendor of .NET UI components and tools, has a special offer for all active MSDN subscribers !!
+<!-- more -->
 > 
 > A free Developer License for RadControls for WPF ($799 value), with community support only.
 > 

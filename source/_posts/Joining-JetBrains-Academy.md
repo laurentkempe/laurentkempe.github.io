@@ -1,11 +1,16 @@
-title: Joining JetBrains Academy
+title: "Joining JetBrains Academy"
+permalink: "Joining-JetBrains-Academy"
 date: 9/6/2009 5:21:59 PM
 updated: 5/7/2010 7:46:50 AM
+disqusIdentifier: 20090906052159
 tags: ["ReSharper", "Team City"]
+alias:
+ - /post/Joining-JetBrains-Academy.aspx/index.html
 ---
 I am pleased to announce that I was invited to join [JetBrains Development Academy](http://www.jetbrains.com/devnet/academy/about/index.html) and [accepted the invitation](http://www.jetbrains.com/devnet/academy/experts/Laurent_Kempe.html). 
 
 [![3860358212_196cfab6b6_o[1]](http://weblogs.asp.net/blogs/lkempe/3860358212_196cfab6b6_o1_7F2C80DF.gif "3860358212_196cfab6b6_o[1]")](http://www.jetbrains.com/devnet/academy/experts/Laurent_Kempe.html) 
+<!-- more -->
 
 If you read this blog I guess you already know that I am a big fan of their development tools, especially [ReSharper](http://www.jetbrains.com/resharper) and [Team City](http://www.jetbrains.com/teamcity) which make my daily job easier and more productive.
 

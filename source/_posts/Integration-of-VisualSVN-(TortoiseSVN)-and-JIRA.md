@@ -1,11 +1,16 @@
-title: Integration of VisualSVN (TortoiseSVN) and JIRA
+title: "Integration of VisualSVN (TortoiseSVN) and JIRA"
+permalink: "Integration-of-VisualSVN-(TortoiseSVN)-and-JIRA"
 date: 3/27/2008 1:08:13 AM
 updated: 3/27/2008 1:08:13 AM
+disqusIdentifier: 20080327010813
 tags: ["Tools", "innoveo solutions"]
+alias:
+ - /post/Integration-of-VisualSVN-(TortoiseSVN)-and-JIRA.aspx/index.html
 ---
 The aim is to be able to associate a bug/feature described into [JIRA](http://www.atlassian.com/software/jira/) to source code changes made into the [Subversion](http://subversion.tigris.org/) repository.
 
 First of all you need to install the [JIRA Subversion Plugin](http://confluence.atlassian.com/display/JIRAEXT/JIRA+Subversion+Plugin) on you JIRA server.
+<!-- more -->
 
 Then you need to have [VisualSVN](http://www.visualsvn.com/) installed and configured with your project checkout and opened in Visual Studio. You might do the same directly with [TortoiseSVN](http://tortoisesvn.tigris.org/).
 

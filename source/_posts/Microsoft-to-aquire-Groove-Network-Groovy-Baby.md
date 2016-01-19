@@ -1,7 +1,11 @@
-title: Microsoft to aquire Groove Network - Groovy Baby
+title: "Microsoft to aquire Groove Network - Groovy Baby"
+permalink: "Microsoft-to-aquire-Groove-Network-Groovy-Baby"
 date: 3/11/2005 5:24:00 AM
 updated: 5/7/2010 7:45:46 AM
+disqusIdentifier: 20050311052400
 tags: ["Tools"]
+alias:
+ - /post/Microsoft-to-aquire-Groove-Network-Groovy-Baby.aspx/index.html
 ---
 **Groove Virtual Office added to lineup of Microsoft Office System 
 products, servers and services  
@@ -12,6 +16,7 @@ that help geographically distributed work groups be as productive as those that
 work in a single physical location. Financial terms of the acquisition were not 
 disclosed.   
 
+<!-- more -->
 
 <table>
   <tbody>

@@ -1,11 +1,16 @@
-title: Application Acceptance Testing
+title: "Application Acceptance Testing"
+permalink: "Application-Acceptance-Testing"
 date: 7/15/2010 1:01:39 AM
 updated: 7/15/2010 1:01:39 AM
+disqusIdentifier: 20100715010139
 tags: ["Agile", "BDD", "innoveo solutions", "Jobping", "acceptance test"]
+alias:
+ - /post/Application-Acceptance-Testing.aspx/index.html
 ---
 Yesterday evening I found a set of Google blog posts talking about web application acceptance testing which reflect Google experience through “Several years of experience across multiple project teams”.
 
 This reflect lot of points I brought into our discussions either at [Innoveo](http://www.innoveo.com/) or [Jobping](http://www.jobping.com); best practices, screen/page object, dev. language, recording/coding, BDD..
+<!-- more -->
 
 Here are the blog posts:
 

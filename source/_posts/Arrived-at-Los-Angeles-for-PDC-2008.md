@@ -1,11 +1,16 @@
-title: Arrived at Los Angeles for PDC 2008
+title: "Arrived at Los Angeles for PDC 2008"
+permalink: "Arrived-at-Los-Angeles-for-PDC-2008"
 date: 10/26/2008 10:50:03 PM
 updated: 10/26/2008 10:50:03 PM
+disqusIdentifier: 20081026105003
 tags: ["PDC 2008"]
+alias:
+ - /post/Arrived-at-Los-Angeles-for-PDC-2008.aspx/index.html
 ---
 We finally arrived in Los Angeles, [Sébastien Ros](http://www.dotnetguru2.org/sebastienros/) and myself after quite a trip.
 
 We left Mulhouse (East of France) at 7:AM on Saturday direction Paris, then Paris direction Seattle and finally Los Angeles.
+<!-- more -->
 
 We had a Mexican diner, I love Mexican food, with Sébastien at [Loteria Grill – Hollywood](http://www.loteriagrill.com/loteriahollywood). There website sucks but the place is good and the food was excellent.
 

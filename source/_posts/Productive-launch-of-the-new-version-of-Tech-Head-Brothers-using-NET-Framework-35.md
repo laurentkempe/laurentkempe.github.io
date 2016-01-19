@@ -1,11 +1,16 @@
-title: Productive launch of the new version of Tech Head Brothers using .NET Framework 3.5
+title: "Productive launch of the new version of Tech Head Brothers using .NET Framework 3.5"
+permalink: "Productive-launch-of-the-new-version-of-Tech-Head-Brothers-using-NET-Framework-35"
 date: 12/19/2007 7:38:55 AM
 updated: 12/19/2007 7:38:55 AM
+disqusIdentifier: 20071219073855
 tags: ["Tech Head Brothers"]
+alias:
+ - /post/Productive-launch-of-the-new-version-of-Tech-Head-Brothers-using-NET-Framework-35.aspx/index.html
 ---
 I just pushed to production the new version of my French portal [Tech Head Brothers](http://www.techheadbrothers.com/) that uses .NET Framework 3.5.
 
 This new release correct some bugs of the old release and improve some part of the design. For the new functionality you will have to wait for the next release that will include some great new .NET technologies.
+<!-- more -->
 
 So today here are the technologies used on the site:
 

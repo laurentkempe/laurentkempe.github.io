@@ -1,11 +1,16 @@
-title: Integration of NCover into Team City for Tech Head Brothers
+title: "Integration of NCover into Team City for Tech Head Brothers"
+permalink: "Integration-of-NCover-into-Team-City-for-Tech-Head-Brothers"
 date: 3/30/2008 7:10:28 AM
 updated: 4/28/2010 8:02:43 PM
+disqusIdentifier: 20080330071028
 tags: ["Tech Head Brothers", "continuous integration", "Team City", "unit test"]
+alias:
+ - /post/Integration-of-NCover-into-Team-City-for-Tech-Head-Brothers.aspx/index.html
 ---
 Starting the development of the new [Tech Head Brothers](http://www.techheadbrothers.com/) in a remote multi developers environment I wanted to have some tooling to ease our work. For sure we have:
 
 1.  A code repository: Subversion installed using [VisualSVN server](http://www.visualsvn.com/server/) 
+<!-- more -->
 2.  A continuous integration server: [Team City](http://www.jetbrains.com/teamcity/)   
 
 The continuous integration MSBuild script is doing the following steps:

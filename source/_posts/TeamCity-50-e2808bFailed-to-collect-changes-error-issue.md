@@ -1,11 +1,16 @@
-title: TeamCity 5.0 '​Failed to collect changes error' issue
+title: "TeamCity 5.0 '​Failed to collect changes error' issue"
+permalink: "TeamCity-50-e2808bFailed-to-collect-changes-error-issue"
 date: 12/11/2009 5:49:21 AM
 updated: 12/11/2009 5:49:21 AM
+disqusIdentifier: 20091211054921
 tags: ["continuous integration", "Team City"]
+alias:
+ - /post/TeamCity-50-e2808bFailed-to-collect-changes-error-issue.aspx/index.html
 ---
 Tonight I was facing an issue with [TeamCity](http://www.jetbrains.com/teamcity/index.html) 5.0 plugin in Visual Studio 2008. 
 
 I was getting the error message '​Failed to collect changes error' in the new Local changes window.
+<!-- more -->
 
 Searching on the bug tracking tool of JetBrains for TeamCity I found this issue "[TW-10474 I can not make VS addin recollect changes after recieveing '​Failed to collect changes error'](http://youtrack.jetbrains.net/issue/TW-10474)”
 

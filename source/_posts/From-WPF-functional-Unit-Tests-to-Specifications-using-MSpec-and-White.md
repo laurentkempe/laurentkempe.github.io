@@ -1,11 +1,16 @@
-title: From WPF functional Unit Tests to Specifications using MSpec and White
+title: "From WPF functional Unit Tests to Specifications using MSpec and White"
+permalink: "From-WPF-functional-Unit-Tests-to-Specifications-using-MSpec-and-White"
 date: 6/11/2010 3:21:22 AM
 updated: 6/13/2010 8:09:10 PM
+disqusIdentifier: 20100611032122
 tags: ["white", "WPF", "unit test", "MSpec"]
+alias:
+ - /post/From-WPF-functional-Unit-Tests-to-Specifications-using-MSpec-and-White.aspx/index.html
 ---
 I am in the train back home and wanted to try out quickly to migrate our WPF functional tests written has Unit Tests to BDD Specifications. 
 
 Here is the code I started from, pure Unit Test using NUnit and White
+<!-- more -->
   <div style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:4955d68a-7a42-4fa8-bd02-2ff18f2492fe" class="wlWriterEditableSmartContent"> <div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt"> <div style="background-color: #ffffff; max-height: 500px; overflow: auto; padding: 2px 5px; white-space: nowrap">[<span style="color:#2b91af">Test</span>]  
  <span style="color:#0000ff">public</span> <span style="color:#0000ff">void</span> Opening_Valid_VersionZip()  
  {  
@@ -49,6 +54,6 @@ Now the same functional test written as a BDD specification using MSpec
 
 And the output in ReSharper MSpec plugin
 
-![4687909611_49a4e5a71a_o[1]](http://www.laurentkempe.com/image.axd?picture=4687909611_49a4e5a71a_o%5B1%5D.png "4687909611_49a4e5a71a_o[1]") 
+![4687909611_49a4e5a71a_o[1]](/images/4687909611_49a4e5a71a_o%5B1%5D.png "4687909611_49a4e5a71a_o[1]") 
 
 Which one do you prefer? I personally have made my choice.

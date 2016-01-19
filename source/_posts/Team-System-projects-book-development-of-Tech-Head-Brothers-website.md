@@ -1,7 +1,11 @@
-title: Team System projects: book, development of Tech Head Brothers website
+title: "Team System projects: book, development of Tech Head Brothers website"
+permalink: "Team-System-projects-book-development-of-Tech-Head-Brothers-website"
 date: 7/16/2005 6:05:00 AM
 updated: 7/16/2005 6:05:00 AM
+disqusIdentifier: 20050716060500
 tags: ["Tech Head Brothers", "ASP.NET 2.0", "Team System"]
+alias:
+ - /post/Team-System-projects-book-development-of-Tech-Head-Brothers-website.aspx/index.html
 ---
 First project about Team System is a book that I started with my friend 
 [Kader 
@@ -24,6 +28,7 @@ idea, even share documents in online/offline mode. But we missed a Software
 Development Lifecycle Tool (SDLC). At the time of the website version written in 
 ASP.NET 1.0/1.1, we had tried several solutions from Visual SourceSafe over 
 Internet, over VPN, then we moved to CVS because it was too slow. We also had [Draco.NET](http://draconet.sourceforge.net/)...
+<!-- more -->
 
 Now our solution is the following one:
 

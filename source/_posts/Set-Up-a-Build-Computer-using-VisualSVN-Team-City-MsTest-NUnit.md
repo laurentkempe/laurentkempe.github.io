@@ -1,11 +1,16 @@
-title: Set Up a Build Computer using VisualSVN, Team City, MsTest, NUnit
+title: "Set Up a Build Computer using VisualSVN, Team City, MsTest, NUnit"
+permalink: "Set-Up-a-Build-Computer-using-VisualSVN-Team-City-MsTest-NUnit"
 date: 3/21/2008 8:55:32 AM
 updated: 3/21/2008 8:55:32 AM
+disqusIdentifier: 20080321085532
 tags: ["Tech Head Brothers", "innoveo solutions", "continuous integration", "Team City", "unit test"]
+alias:
+ - /post/Set-Up-a-Build-Computer-using-VisualSVN-Team-City-MsTest-NUnit.aspx/index.html
 ---
 When I started to work on the new version of [Tech Head Brothers](http://www.techheadbrothers.com/) I decided to use the new version of the unit testing framework from Microsoft. Before making this decision I read that it was much better and faster in several places. As I also wanted to get code coverage I thought it was a good idea.
 
 I also had to setup a version control system and decided to use subversion with the facility of the free [VisualSVN Server](http://www.visualsvn.com/server/). Very simple way to setup in less than 10 min (including download time) a subversion repository on a Windows server. I highly recommend it ! I am also now, for some months, using [VisualSVN](http://www.visualsvn.com/features.html) that provides a seamless integration between subversion and Visual Studio 2005 and 2008. VisualSVN Limited offered a license of VisualSVN to me and my brother. Thanks a lot, really appreciated! And now at [innoveo solutions](http://www.innoveo.com/), my company, we are also using it.
+<!-- more -->
 
 Then came the time to have a continuous integration server. After having [CC.NET](http://ccnet.thoughtworks.com/) installed and used at [innoveo solutions](http://www.innoveo.com/) I decided to give a try to [JetBrains Team City](http://www.jetbrains.com/teamcity/index.html) for my personal use  on [Tech Head Brothers](http://www.techheadbrothers.com/) development. The installation and configuration with subversion was straight and achieved in less than two hours. So I had a version control system and continuous integration process setup in less than 2 hours and a half. Isn't that incredible?
 

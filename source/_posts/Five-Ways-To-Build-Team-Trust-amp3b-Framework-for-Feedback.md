@@ -1,11 +1,16 @@
-title: Five Ways To Build Team Trust &amp; Framework for Feedback
+title: "Five Ways To Build Team Trust & Framework for Feedback"
+permalink: "Five-Ways-To-Build-Team-Trust-amp3b-Framework-for-Feedback"
 date: 4/17/2009 6:46:28 AM
 updated: 4/17/2009 6:46:28 AM
+disqusIdentifier: 20090417064628
 tags: ["Agile"]
+alias:
+ - /post/Five-Ways-To-Build-Team-Trust-amp3b-Framework-for-Feedback.aspx/index.html
 ---
 I am for quite some time now working on the Agile subject and tonight I read two very interesting posts that I wanted to share and keep track of.
 
 The first one was posted by **Mike Bria** on [InfoQ](http://www.infoq.com/) and is called [Five Ways To Build Team Trust](http://www.infoq.com/news/2009/04/derby-building-trust), in which advises are given to help trust form within teams.
+<!-- more -->
 
 1.  1.  **Address Issues Directly.**
     2.  **Share Relevant Information.**

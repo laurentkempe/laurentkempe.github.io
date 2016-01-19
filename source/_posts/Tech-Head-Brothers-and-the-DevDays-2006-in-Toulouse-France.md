@@ -1,7 +1,10 @@
-title: Tech Head Brothers and the DevDays 2006 in Toulouse, France
+title: "Tech Head Brothers and the DevDays 2006 in Toulouse, France"
+permalink: "Tech-Head-Brothers-and-the-DevDays-2006-in-Toulouse-France"
 date: 4/10/2006 6:04:00 AM
 updated: 4/10/2006 6:04:00 AM
-tags: [""]
+disqusIdentifier: 20060410060400
+alias:
+ - /post/Tech-Head-Brothers-and-the-DevDays-2006-in-Toulouse-France.aspx/index.html
 ---
 
 
@@ -9,6 +12,7 @@ tags: [""]
 This year edition of the French DevDays held in Toulouse the 30th March, 
 2006 was marked by the presence of **6 [Tech Head Brothers](http://www.techheadbrothers.com/) authors as 
 speakers** !!! Nice :-)
+<!-- more -->
 
 *   **[David 
   Catuhe](http://www.techheadbrothers.com/DesktopDefault.aspx?tabindex=7&tabid=19&id=6)** - Windows Presentation Foundation

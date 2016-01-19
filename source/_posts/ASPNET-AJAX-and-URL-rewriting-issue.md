@@ -1,11 +1,16 @@
-title: ASP.NET AJAX and URL rewriting issue
+title: "ASP.NET AJAX and URL rewriting issue"
+permalink: "ASPNET-AJAX-and-URL-rewriting-issue"
 date: 8/4/2007 8:29:46 AM
 updated: 8/4/2007 8:29:46 AM
+disqusIdentifier: 20070804082946
 tags: ["ASP.NET 2.0", "ASP.NET AJAX"]
+alias:
+ - /post/ASPNET-AJAX-and-URL-rewriting-issue.aspx/index.html
 ---
 If you are using URL rewriting you might know that you have to take care about the way you reference resources has written in the Scott Guthrie post; [Tip/Trick: Url Rewriting with ASP.NET](http://weblogs.asp.net/scottgu/archive/2007/02/26/tip-trick-url-rewriting-with-asp-net.aspx):
 
 > ###### **Handling CSS and Image Reference Correctly**
+<!-- more -->
 > 
 > One gotcha that people sometime run into when using Url Rewriting for the very first time is that they find that their image and CSS stylesheet references sometimes seem to stop working.  This is because they have relative references to these files within their HTML pages - and when you start to re-write URLs within an application you need to be aware that the browser will often be requesting files in different logical hierarchy levels than what is really stored on the server.
 > 

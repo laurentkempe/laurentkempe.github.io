@@ -1,11 +1,16 @@
-title: Testing your Google AdSense
+title: "Testing your Google AdSense"
+permalink: "Testing-your-Google-AdSense"
 date: 10/12/2007 6:43:44 AM
 updated: 10/12/2007 6:43:44 AM
+disqusIdentifier: 20071012064344
 tags: ["Note to self"]
+alias:
+ - /post/Testing-your-Google-AdSense.aspx/index.html
 ---
 This trick is coming from my friend [Nix](http://blogs.codes-sources.com/nix).
 
 If you are developing a site containing [Google Adsense](http://www.google.com/adsense/) you might know that clicking on your own ad is not allowed.
+<!-- more -->
 
 To be able to test and click on your own ad and still follow [Google AdSense Program Policies](https://www.google.com/adsense/support/bin/answer.py?answer=48182&sourceid=aso&subid=ww-ww-et-asui&medium=link), just add following to your pages: 
 

@@ -1,11 +1,16 @@
-title: Fundamental Laws from David S. Platt on MSDN Magazine
+title: "Fundamental Laws from David S. Platt on MSDN Magazine"
+permalink: "Fundamental-Laws-from-David-S-Platt-on-MSDN-Magazine"
 date: 5/12/2010 5:15:00 PM
 updated: 5/12/2010 5:15:00 PM
+disqusIdentifier: 20100512051500
 tags: ["Jobping"]
+alias:
+ - /post/Fundamental-Laws-from-David-S-Platt-on-MSDN-Magazine.aspx/index.html
 ---
 Yesterday I got the new issue of MSDN Magazine in my mailbox and as often I started to go quickly around it to get an overview of what kind of subject’s it talks about. And as often I end up at the last page’s article which is the first I am reading.
 
 This time [David S. Platt](http://msdn.microsoft.com/ee532098.aspx?sdmr=DavidPlatt&sdmi=authors) is writing about “[Fundamental Laws](http://msdn.microsoft.com/en-us/magazine/ff646970.aspx)” which start like that
+<!-- more -->
 
 > Whenever I find a program or Web site that sucks, it’s invariably because the developer or designer **forgot the user’s goals **and started embellishing the program for its own sake.
 

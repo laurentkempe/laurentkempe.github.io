@@ -1,11 +1,21 @@
-title: TeamCity and Gitlab working together with SSH Keys
+title: "TeamCity and Gitlab working together with SSH Keys"
+permalink: "TeamCity-and-Gitlab-working-together-with-SSH-Keys"
 date: 8/24/2012 11:44:59 PM
 updated: 8/24/2012 11:59:24 PM
+disqusIdentifier: 20120824114459
+coverImage: https://farm9.staticflickr.com/8299/7764455174_207330f8d0_h.jpg
+coverSize: partial
+thumbnailImage: https://farm9.staticflickr.com/8299/7764455174_84625faf34_q.jpg
+coverCaption: "Calzarellu, Corse, France"
 tags: ["Git", "Gitlab", "Team City"]
+alias:
+ - /post/TeamCity-and-Gitlab-working-together-with-SSH-Keys.aspx/index.html
 ---
-[![Calzarellu](http://farm9.staticflickr.com/8299/7764455174_84625faf34_m.jpg)](http://www.flickr.com/photos/laurentkempe/7764455174/ "Calzarellu by Laurent Kempé, on Flickr")On February I posted about “[Running your TeamCity builds from PowerShell for any Git branch](http://www.laurentkempe.com/post/Running-your-TeamCity-builds-from-a-command-line.aspx)” and now I have to configure a new ssh key so that [TeamCity](http://www.jetbrains.com/teamcity/) can connect to [Gitlab](http://www.gitlabhq.com/).
+<!-- [![Calzarellu](http://farm9.staticflickr.com/8299/7764455174_84625faf34_m.jpg)](http://www.flickr.com/photos/laurentkempe/7764455174/ "Calzarellu by Laurent Kempé, on Flickr") -->
+On February I posted about “[Running your TeamCity builds from PowerShell for any Git branch](http://www.laurentkempe.com/post/Running-your-TeamCity-builds-from-a-command-line.aspx)” and now I have to configure a new ssh key so that [TeamCity](http://www.jetbrains.com/teamcity/) can connect to [Gitlab](http://www.gitlabhq.com/).
 
 I struggled a bit getting continuous error message from TeamCity that the connection failed because it was enable to load identity file. File rights were all ok on the key file and everything looked fine. But still the error message.
+<!-- more -->
 
 Then I remembered that I had the same issue in February while using [PuTTYgen](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) to generate my SSH key pair. 
 

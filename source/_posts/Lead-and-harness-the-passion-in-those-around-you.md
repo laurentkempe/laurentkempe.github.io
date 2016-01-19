@@ -1,11 +1,16 @@
-title: Lead and harness the passion in those around you
+title: "Lead and harness the passion in those around you"
+permalink: "Lead-and-harness-the-passion-in-those-around-you"
 date: 9/27/2006 7:29:31 AM
 updated: 9/27/2006 7:29:31 AM
+disqusIdentifier: 20060927072931
 tags: ["ecenter solutions"]
+alias:
+ - /post/Lead-and-harness-the-passion-in-those-around-you.aspx/index.html
 ---
 Very interesting post about Architects by Nick Malik 
 
 Source: [Lead and harness the passion in those around you](http://blogs.msdn.com/nickmalik/archive/2006/09/22/766294.aspx) 
+<!-- more -->
 
 > Architects don't write code.  That's the first thing that a developer notices when he or she moves into this job.  But there is another change... substantial yet subtle... Architects don't accomplish anything without having someone else 'doing the real work.'
 > 

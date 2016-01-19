@@ -1,7 +1,10 @@
-title: Creating PDF with .NET
+title: "Creating PDF with .NET"
+permalink: "Creating-PDF-with-NET"
 date: 3/16/2005 12:33:00 PM
 updated: 3/16/2005 12:33:00 PM
-tags: [""]
+disqusIdentifier: 20050316123300
+alias:
+ - /post/Creating-PDF-with-NET.aspx/index.html
 ---
 
 
@@ -13,6 +16,7 @@ natural to use [FOP](http://xml.apache.org/fop/) and it's .NET port
 version of [NFOP](http://sourceforge.net/project/showfiles.php?group_id=65558&package_id=63045&release_id=311452) 
 based on the FOP version 0.20.5 that is working better than the first port. I 
 encourage you to download this version to give it a try.
+<!-- more -->
 
 I wrote an article, in French,  about NFOP that you can read on [Tech Head Brothers](http://www.techheadbrothers.com):  
 **[Utilitaire 

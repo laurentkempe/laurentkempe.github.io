@@ -1,11 +1,16 @@
-title: Tech Head Brothers Authoring tool
+title: "Tech Head Brothers Authoring tool"
+permalink: "Tech-Head-Brothers-Authoring-tool"
 date: 8/31/2007 6:42:19 AM
 updated: 8/31/2007 6:42:19 AM
+disqusIdentifier: 20070831064219
 tags: ["Tech Head Brothers", "VSTO", "WCF", ".NET Framework 3.0"]
+alias:
+ - /post/Tech-Head-Brothers-Authoring-tool.aspx/index.html
 ---
 I just updated the source code of my [Tech Head Brothers Authoring tool](http://www.codeplex.com/THBAuthoring) on [Codeplex](http://www.codeplex.com/).
 
 Now it uses Windows Communication Foundation (WCF) in place of WSE 3.0 and Word 2007.
+<!-- more -->
 
 > **Tech Head Brothers Authoring Tool** is a content authoring tool based on Word 2007, VSTO 2005se, XML, XSLT and Web Services (WCF).
 > It permits offline content authoring and pre-visualization then online publishing to the French portal Tech Head Brothers - [http://www.techheadbrothers.com](http://www.techheadbrothers.com).

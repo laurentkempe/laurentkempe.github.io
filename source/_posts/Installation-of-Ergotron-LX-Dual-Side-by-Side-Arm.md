@@ -1,11 +1,15 @@
-title: Installation of Ergotron LX Dual Side-by-Side Arm
+title: "Installation of Ergotron LX Dual Side-by-Side Arm"
+permalink: "Installation-of-Ergotron-LX-Dual-Side-by-Side-Arm"
 date: 9/16/2010 8:10:02 AM
 updated: 9/16/2010 8:10:02 AM
-tags: [""]
+disqusIdentifier: 20100916081002
+alias:
+ - /post/Installation-of-Ergotron-LX-Dual-Side-by-Side-Arm.aspx/index.html
 ---
 I am reworking my home office and it was time to start with my work place ergonomic.
 
 One of my goal was to cleanup a bit and gain some place on my desk. I wanted to be able to move my two 24’’ Samsung SyncMaster 2493HM monitors so that I can work on paper without going to another desk. I also wanted to be able adjust the position of the monitor easily.
+<!-- more -->
 
 Searching for a solution I found the [LX Dual Side-by-Side Arm](http://www.ergotron.com/Products/tabid/65/PRDID/354/language/en-US/Default.aspx) from [Ergotron](http://www.ergotron.com/).
 

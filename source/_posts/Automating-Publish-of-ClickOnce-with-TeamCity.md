@@ -1,11 +1,16 @@
-title: Automating Publish of ClickOnce with TeamCity
+title: "Automating Publish of ClickOnce with TeamCity"
+permalink: "Automating-Publish-of-ClickOnce-with-TeamCity"
 date: 11/11/2009 8:24:47 PM
 updated: 11/11/2009 8:24:47 PM
+disqusIdentifier: 20091111082447
 tags: ["continuous integration", "Team City", "MSBuild", "ClickOnce"]
+alias:
+ - /post/Automating-Publish-of-ClickOnce-with-TeamCity.aspx/index.html
 ---
 The other day I published different posts about the way I automated our build process at [Innoveo Solutions](http://www.innoveo.com/) to generate different ClickOnce setup using [TeamCity](http://www.jetbrains.com/teamcity/index.html): 
 
 [Build multiple ClickOnce deployment packages using MSBuild and Team City](http://weblogs.asp.net/lkempe/archive/2009/11/03/build-multiple-clickonce-deployment-packages-using-msbuild-and-team-city.aspx)      
+<!-- more -->
 [Building ClickOnce with TeamCity](http://weblogs.asp.net/lkempe/archive/2009/11/02/building-clickonce-with-teamcity.aspx)      
 [ClickOnce certificate and TeamCity](http://weblogs.asp.net/lkempe/archive/2009/11/02/clickonce-certificate-and-teamcity.aspx)      
 [Build ClickOnce deployment packages using MSBuild and Team City](http://weblogs.asp.net/lkempe/archive/2009/10/27/build-clickonce-deployment-packages-using-msbuild-and-team-city.aspx)

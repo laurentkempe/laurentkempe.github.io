@@ -1,13 +1,18 @@
-title: Groove Virtual Office Tips #1 : Fast access to Workspaces
+title: "Groove Virtual Office Tips #1 : Fast access to Workspaces"
+permalink: "Groove-Virtual-Office-Tips-1-Fast-access-to-Workspaces"
 date: 5/21/2005 7:07:00 PM
 updated: 5/21/2005 7:07:00 PM
+disqusIdentifier: 20050521070700
 tags: ["Groove Virtual Office"]
+alias:
+ - /post/Groove-Virtual-Office-Tips-1-Fast-access-to-Workspaces.aspx/index.html
 ---
 [Groove](http://www.groove.net/) Launchbar is great but sometimes 
 it simply takes too much time to open it to get to a workspace. 
 
 1.  Go with Explorer in your My Documents folder, Create a folder and call it 
     **My Groove**
+<!-- more -->
 2.  You might create in your My Groove Folder other Folders to classify your 
   worksapces
 3.  Open Groove Launchbar

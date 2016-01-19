@@ -1,11 +1,16 @@
-title: Just downloading/installing Silverlight 2.0 Beta 1
+title: "Just downloading/installing Silverlight 2.0 Beta 1"
+permalink: "Just-downloadinginstalling-Silverlight-20-Beta-1"
 date: 3/6/2008 5:04:32 AM
 updated: 3/6/2008 5:04:32 AM
+disqusIdentifier: 20080306050432
 tags: ["Silverlight"]
+alias:
+ - /post/Just-downloadinginstalling-Silverlight-20-Beta-1.aspx/index.html
 ---
 Those bits has just been released at [MIX 08](http://visitmix.com/2008) in Las Vegas!
 
 You might [download Silverlight 2 Beta 1 here](http://www.microsoft.com/silverlight/resources/installationFiles.aspx?v=2.0)!
+<!-- more -->
 
 Also [Microsoft Silverlight Tools Beta 1 for Visual Studio 2008](http://www.microsoft.com/downloads/details.aspx?FamilyId=E0BAE58E-9C0B-4090-A1DB-F134D9F095FD&displaylang=en) !
 

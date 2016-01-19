@@ -1,11 +1,15 @@
-title: Funny, I am on Google Street View
+title: "Funny, I am on Google Street View"
+permalink: "Funny-I-am-on-Google-Street-View"
 date: 8/25/2009 6:33:36 AM
 updated: 8/25/2009 6:33:36 AM
-tags: [""]
+disqusIdentifier: 20090825063336
+alias:
+ - /post/Funny-I-am-on-Google-Street-View.aspx/index.html
 ---
 3 month ago I twitted 
 
 > Funny, I am outside the office waiting for colleagues to go to lunch and a google car just passed by. I might be on google street soon!
+<!-- more -->
 
 Last week during my holiday, my colleague Rolf sent an email to inform me that finally Street View was available in Switzerland and that I could be seen in front of the office of [Innoveo Solutions](http://www.innoveo.com/). You can even see the grey and blue logo of [Innoveo Solutions](http://www.innoveo.com/) on the right part of the picture.
 

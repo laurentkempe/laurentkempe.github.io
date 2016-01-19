@@ -1,7 +1,10 @@
-title: X-develop Professional 1.0 released
+title: "X-develop Professional 1.0 released"
+permalink: "X-develop-Professional-10-released"
 date: 4/13/2005 7:05:00 AM
 updated: 4/13/2005 7:05:00 AM
-tags: [""]
+disqusIdentifier: 20050413070500
+alias:
+ - /post/X-develop-Professional-10-released.aspx/index.html
 ---
 Direct From [TheServerSide.net](http://www.theserverside.net/) "Omnicore has 
 released X-develop Professional 1.0. X-develop is a new multi-language IDE for 
@@ -12,6 +15,7 @@ checking,
 refactoring and smart code templates." [Read 
 more](http://www.theserverside.net/news/thread.tss?thread_id=33256)...  
 ![](http://membres.lycos.fr/lkempe//xdevelop.jpg)
+<!-- more -->
 
 I quickly installed it to have a look to it. I can load [Tech Head Brothers](http://www.techheadbrothers.com "Tech Head Brothers") 
 portal, except the ASP.NET part.... But it has some good ideas. Wait and see, 

@@ -1,11 +1,16 @@
-title: Jetbrains Resharper 2.5 RTM
+title: "Jetbrains Resharper 2.5 RTM"
+permalink: "Jetbrains-Resharper-25-RTM"
 date: 12/13/2006 6:41:37 AM
 updated: 12/13/2006 6:41:37 AM
+disqusIdentifier: 20061213064137
 tags: ["Tools", ".NET Framework 2.0", "Visual Studio"]
+alias:
+ - /post/Jetbrains-Resharper-25-RTM.aspx/index.html
 ---
 As you certainly know I you sometimes read my blog I am absolutely addicted to that tool and can't work without it anymore in Visual Studio 2005.
 
 So I am happy to announce that Jetbrains finally released [ReSharper 2.5.](http://www.jetbrains.com/resharper/) This version is for Visual Studio 2005 only. So what's new on this new version?
+<!-- more -->
 
 Main focus was on the improvement of performance; faster installation and startup, faster typing (including auto-popup on Code Completions), plus speedups for code formatting, error highlighting, Live Templates, parameter info, and more.
 

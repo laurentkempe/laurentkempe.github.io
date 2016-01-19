@@ -1,11 +1,16 @@
-title: Shortening namespace declarations in XAML files
+title: "Shortening namespace declarations in XAML files"
+permalink: "Shortening-namespace-declarations-in-XAML-files"
 date: 12/15/2011 2:49:43 AM
 updated: 12/15/2011 7:30:59 AM
+disqusIdentifier: 20111215024943
 tags: ["WPF", "Silverlight"]
+alias:
+ - /post/Shortening-namespace-declarations-in-XAML-files.aspx/index.html
 ---
 [![Vue sur la tête de la femme couchée de la terrasse de la villa cannelle](http://farm6.staticflickr.com/5190/5563773074_38938ee129_m.jpg)](http://www.flickr.com/photos/laurentkempe/5563773074/ "Vue sur la tête de la femme couchée de la terrasse de la villa cannelle by Laurent Kempé, on Flickr")This afternoon I was working on [Innoveo](http://www.innoveo.com/) [Skye Editor](http://www.innoveo.com/SoftwareSolution.aspx) which is a WPF application written in C#. 
 
 The application is using [Telerik RadControls for WPF](http://www.telerik.com/products/wpf.aspx). 
+<!-- more -->
 
 I was facing the issue of having more and more namespace declarations like the following for **RadInput** and **Rad**:
 

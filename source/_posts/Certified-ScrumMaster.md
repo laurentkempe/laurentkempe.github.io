@@ -1,11 +1,16 @@
-title: Certified ScrumMaster
+title: "Certified ScrumMaster"
+permalink: "Certified-ScrumMaster"
 date: 5/5/2010 6:15:04 PM
 updated: 5/5/2010 6:15:04 PM
+disqusIdentifier: 20100505061504
 tags: ["Scrum", "innoveo solutions", "Jobping"]
+alias:
+ - /post/Certified-ScrumMaster.aspx/index.html
 ---
 As you might have read on [Didier’s blog](http://didierbeck.com/2010/01/laurent-is-a-certified-scrummaster/) or even on [Innoveo’s blog](http://blog.innoveo.com/post/Laurent-is-a-Certified-ScrumMaster!.aspx) I passed the ScrumMaster’s certification end of last year. Yeah I know I am late to post this ;-)
 
 I must say that the course held  by [Jimi Fosdick](http://www.danube.com/company/bios/jimi) was interesting and brought me some new idea.
+<!-- more -->
 
 What is Scrum? ([ScrumAlliance definition](http://www.scrumalliance.org/))
 
@@ -21,7 +26,7 @@ What is Scrum? ([ScrumAlliance definition](http://www.scrumalliance.org/))
 
 At [Jobping](http://www.jobping.com/) we are also using Scrum in a distributed way to build up [www.jobping.com](http://www.jobping.com), our new job posting web site aimed specifically at job seekers and employers who work with Microsoft technologies.
 
-![4580044891_fdac4fa445_o[1]](http://www.laurentkempe.com/image.axd?picture=4580044891_fdac4fa445_o%5B1%5D.jpg "4580044891_fdac4fa445_o[1]")
+![4580044891_fdac4fa445_o[1]](/images/4580044891_fdac4fa445_o%5B1%5D.jpg "4580044891_fdac4fa445_o[1]")
 
 I would like to thank [Didier](http://didierbeck.com/) and [Nick](http://zonenick.blogspot.com/), first to give me the possibility to attend the ScrumMaster course and certification  and for all the interesting discussions we had on change management in an organization, Scrum, Agile, Software Engineering…
 

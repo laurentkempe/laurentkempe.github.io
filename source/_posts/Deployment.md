@@ -1,12 +1,16 @@
-title: Deployment...
+title: "Deployment..."
+permalink: "Deployment"
 date: 6/27/2003 5:27:00 AM
 updated: 6/27/2003 5:27:00 AM
-tags: [""]
+disqusIdentifier: 20030627052700
+alias:
+ - /post/Deployment.aspx/index.html
 ---
 
 
 
 *3:29 AM Back home, everything is working :-)*
+<!-- more -->
 
 *1:17 AM and still deploying..... ARGHHHHHHHH*
 

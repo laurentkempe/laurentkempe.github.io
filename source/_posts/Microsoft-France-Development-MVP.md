@@ -1,11 +1,16 @@
-title: Microsoft France Development MVP
+title: "Microsoft France Development MVP"
+permalink: "Microsoft-France-Development-MVP"
 date: 9/20/2006 6:28:43 AM
 updated: 9/20/2006 6:28:43 AM
+disqusIdentifier: 20060920062843
 tags: ["Microsoft MVP"]
+alias:
+ - /post/Microsoft-France-Development-MVP.aspx/index.html
 ---
 Microsoft France just published a page on which it lists all [French Developer MVP](http://www.microsoft.com/france/msdn/communautes/mvp.mspx).
 
 A really nice idea!!!
+<!-- more -->
 
 It is funny to see [Mathieu](http://myaustraliantrip.blogspot.com/) and I listed, brothers and both MVP :-)
 

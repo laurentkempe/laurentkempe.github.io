@@ -1,11 +1,16 @@
-title: Mounting a remote Linux folder as a Windows drive through SSH
+title: "Mounting a remote Linux folder as a Windows drive through SSH"
+permalink: "Mounting-a-remote-Linux-folder-as-a-Windows-drive-through-SSH"
 date: 11/27/2010 3:39:41 AM
 updated: 11/27/2010 3:39:41 AM
+disqusIdentifier: 20101127033941
 tags: ["Tools"]
+alias:
+ - /post/Mounting-a-remote-Linux-folder-as-a-Windows-drive-through-SSH.aspx/index.html
 ---
 There are some times in which you need to come to some extreme solutions. Having two days of trials without success to have a portlet running in a local Tomcat with Day portal I came to the following solution.
 
 Shortly why I came to such a solution? I needed to work on some CSS on a portal solution, and the development cycle was taking too long. I had to commit to svn, run a teamcity build which deployed a war to weblogic to finally be able to test my CSS changes. Far too long.
+<!-- more -->
 
 So first idea was to have our portlet working locally in Day portal deployed on Tomcat. After many attempt to have this running, I have stopped with this idea.
 

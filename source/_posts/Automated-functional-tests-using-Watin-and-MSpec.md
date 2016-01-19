@@ -1,13 +1,17 @@
-title: Automated functional tests using Watin and MSpec
+title: "Automated functional tests using Watin and MSpec"
+permalink: "Automated-functional-tests-using-Watin-and-MSpec"
 date: 5/13/2010 9:54:12 AM
 updated: 5/14/2010 10:02:06 AM
-tags: [""]
+disqusIdentifier: 20100513095412
+alias:
+ - /post/Automated-functional-tests-using-Watin-and-MSpec.aspx/index.html
 ---
 I am conducting a [spike](http://searchsoftwarequality.techtarget.com/sDefinition/0,,sid92_gci1306773,00.html) for a couple of evening on the way we might automate our functional tests at [Jobping](http://www.jobping.com).  
 
 I started with [Watin](http://watin.sourceforge.net/) and [MSpec](http://github.com/machine/machine.specifications) and the MSpec excellent plugin for [ReSharper 5](http://www.jetbrains.com/resharper/index.html) which gives the following great outputs directly from Visual Studio
+<!-- more -->
 
- ![4602612162_a3a0e50945_o[1]](http://www.laurentkempe.com/image.axd?picture=4602612162_a3a0e50945_o%5B1%5D.png "4602612162_a3a0e50945_o[1]") 
+ ![4602612162_a3a0e50945_o[1]](/images/4602612162_a3a0e50945_o%5B1%5D.png "4602612162_a3a0e50945_o[1]") 
 
 After some discussion with [Alexander Groß](http://therightstuff.de/) (Thanks for your help ;) to gain some knowhow about MSpec I finally managed to have some automated functional tests running like this:
   <div style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:f10ae5ad-86e6-4131-91ed-763bab0f53d4" class="wlWriterEditableSmartContent"> <div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt"> <div style="background-color: #ffffff; overflow: auto; padding: 2px 5px; white-space: nowrap">[<span style="color:#2b91af">Subject</span>(<span style="color:#a31515">"Search"</span>)]  

@@ -1,11 +1,16 @@
-title: Silverlight 3 RTM Released
+title: "Silverlight 3 RTM Released"
+permalink: "Silverlight-3-RTM-Released"
 date: 7/10/2009 7:27:09 AM
 updated: 7/10/2009 7:27:09 AM
+disqusIdentifier: 20090710072709
 tags: ["Silverlight"]
+alias:
+ - /post/Silverlight-3-RTM-Released.aspx/index.html
 ---
 Microsoft just released Silverlight 3!
 
 You might download Microsoft® Silverlight™ 3 Tools for Visual Studio 2008 SP1 from [this page](http://www.microsoft.com/downloads/details.aspx?familyid=9442b0f2-7465-417a-88f3-5e7b5409e9dd&displaylang=en).
+<!-- more -->
 
 > #### Overview
 > 

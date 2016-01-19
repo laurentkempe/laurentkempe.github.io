@@ -1,11 +1,16 @@
-title: Tech Head Brothers 1.1 is online
+title: "Tech Head Brothers 1.1 is online"
+permalink: "Tech-Head-Brothers-11-is-online"
 date: 8/9/2003 11:30:00 PM
 updated: 8/9/2003 11:30:00 PM
+disqusIdentifier: 20030809113000
 tags: ["Tech Head Brothers"]
+alias:
+ - /post/Tech-Head-Brothers-11-is-online.aspx/index.html
 ---
 Finally it is online!!! After some weeks of work I managed to have the new version of my site online. The change was initiated by my hoster because they will not support anymore .NET Framework 1.0 by 1st of September.  
 
 Basically here are the changes:
+<!-- more -->
 
 *   .NET Framework 1.1 usage 
 

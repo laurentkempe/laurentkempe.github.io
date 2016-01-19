@@ -1,11 +1,16 @@
-title: VisualSVN and Pending Changes
+title: "VisualSVN and Pending Changes"
+permalink: "VisualSVN-and-Pending-Changes"
 date: 11/30/2009 7:09:37 PM
 updated: 11/30/2009 7:09:37 PM
+disqusIdentifier: 20091130070937
 tags: ["VisualSVN"]
+alias:
+ - /post/VisualSVN-and-Pending-Changes.aspx/index.html
 ---
 I am using and enjoying for some time now [VisualSVN](http://www.visualsvn.com/visualsvn/) plugin in Visual Studio 2008. I just discovered a nice feature that is not part of the normal menu but that you can easily add to; the pending changes window:
 
 [![4146938714_6faf5320fe_o[1]](http://weblogs.asp.net/blogs/lkempe/4146938714_6faf5320fe_o1_thumb_165F0655.png "4146938714_6faf5320fe_o[1]")](http://weblogs.asp.net/blogs/lkempe/4146938714_6faf5320fe_o1_34010721.png)  
+<!-- more -->
 
 It let’s you quickly see the files that you have modified since your last commit, and double click to open those files.
 

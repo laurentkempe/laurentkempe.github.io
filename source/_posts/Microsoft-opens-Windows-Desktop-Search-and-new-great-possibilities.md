@@ -1,7 +1,11 @@
-title: Microsoft opens Windows Desktop Search and new great possibilities
+title: "Microsoft opens Windows Desktop Search and new great possibilities"
+permalink: "Microsoft-opens-Windows-Desktop-Search-and-new-great-possibilities"
 date: 7/1/2005 4:46:00 PM
 updated: 7/1/2005 4:46:00 PM
+disqusIdentifier: 20050701044600
 tags: ["Tools"]
+alias:
+ - /post/Microsoft-opens-Windows-Desktop-Search-and-new-great-possibilities.aspx/index.html
 ---
 
 
@@ -12,6 +16,7 @@ tags: ["Tools"]
   searching the Web, and the Desktop Search results window includes rich Windows 
   Explorer features, such as multi-select, right-click, and drag-and-drop 
   functionality.
+<!-- more -->
 > 
 > Windows Desktop Search can be extended to index the contents of new file 
   types and data sources. The user interface can be extended by associating 

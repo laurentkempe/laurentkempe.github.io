@@ -1,11 +1,16 @@
-title: Notebook and ATI Drivers
+title: "Notebook and ATI Drivers"
+permalink: "Notebook-and-ATI-Drivers"
 date: 11/5/2006 6:46:34 PM
 updated: 11/5/2006 6:46:34 PM
+disqusIdentifier: 20061105064634
 tags: ["Tools"]
+alias:
+ - /post/Notebook-and-ATI-Drivers.aspx/index.html
 ---
 I have a nx8220 notebook from HP. I was facing issues with the display drivers slowing down the whole machine. I still have some issues for example when I get the notebook off or put it on the docking station. The screen can't switch resolution from external to notebook screen.
 
 I checked HP drivers and I already have the up-to-date display drivers. I checked ATI website and there is no drivers for HP notebooks. But ATI got new desktop drivers. So searching a bit I found this tool:
+<!-- more -->
 
 [**DH Mod tool V4**](http://www.driverheaven.net/modtool/ "DH Mod tool V4") 
 

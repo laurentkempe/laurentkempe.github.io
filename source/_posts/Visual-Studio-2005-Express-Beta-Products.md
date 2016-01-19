@@ -1,11 +1,16 @@
-title: Visual Studio 2005 Express Beta Products
+title: "Visual Studio 2005 Express Beta Products"
+permalink: "Visual-Studio-2005-Express-Beta-Products"
 date: 6/30/2004 6:32:00 AM
 updated: 6/30/2004 6:32:00 AM
+disqusIdentifier: 20040630063200
 tags: ["Tools", ".NET Development"]
+alias:
+ - /post/Visual-Studio-2005-Express-Beta-Products.aspx/index.html
 ---
 This evening I installed on Virtual PC:
 
 *   [Visual C# 2005 Express](http://go.microsoft.com/fwlink/?LinkId=31769&clcid=0x409)
+<!-- more -->
 *   [Visual Web Dev 2005 Express](http://go.microsoft.com/fwlink/?LinkId=31772&clcid=0x409)
 *   [SQL Server 2005 Express](http://go.microsoft.com/fwlink/?LinkId=31773&clcid=0x409)
 *   [MSDN Express Library](http://go.microsoft.com/fwlink/?linkid=30100&clcid=0x409)

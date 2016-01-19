@@ -1,11 +1,16 @@
-title: Expression Blend 3 + SketchFlow RC
+title: "Expression Blend 3 + SketchFlow RC"
+permalink: "Expression-Blend-3-2b-SketchFlow-RC"
 date: 7/10/2009 7:33:01 AM
 updated: 7/10/2009 7:33:01 AM
+disqusIdentifier: 20090710073301
 tags: ["Expression Blend"]
+alias:
+ - /post/Expression-Blend-3-2b-SketchFlow-RC.aspx/index.html
 ---
 Microsoft just released Expression Blend 3 + SketchFlow RC.
 
 This time we get SketchFlow !
+<!-- more -->
 
 You might download Microsoft Expression Blend 3 + SketchFlow RC from [this page](http://www.microsoft.com/downloads/details.aspx?displaylang=en&FamilyID=92e1db7a-5d36-449b-8c6b-d25f078f3609).
 

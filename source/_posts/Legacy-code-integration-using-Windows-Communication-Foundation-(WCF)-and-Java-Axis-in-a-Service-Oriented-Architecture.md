@@ -1,11 +1,16 @@
-title: Legacy code integration using Windows Communication Foundation (WCF) and Java Axis in a Service Oriented Architecture
+title: "Legacy code integration using Windows Communication Foundation (WCF) and Java Axis in a Service Oriented Architecture"
+permalink: "Legacy-code-integration-using-Windows-Communication-Foundation-(WCF)-and-Java-Axis-in-a-Service-Oriented-Architecture"
 date: 6/22/2007 4:17:11 AM
 updated: 6/22/2007 4:17:11 AM
+disqusIdentifier: 20070622041711
 tags: ["Web Services", "WCF", "Interoperability", "Java", "Axis", ".NET Framework 3.0", "SOA", "SOAP"]
+alias:
+ - /post/Legacy-code-integration-using-Windows-Communication-Foundation-(WCF)-and-Java-Axis-in-a-Service-Oriented-Architecture.aspx/index.html
 ---
 What are the options when you need to integrate Windows legacy code in a heterogeneous [Service Oriented Architecture](http://en.wikipedia.org/wiki/Service-oriented_architecture) (SOA)?  
 
 The proposed problem was to expose a set of Windows C++ DLLs to a global SOA platform written in Java. Those DLLs would be then exposed as backend computation services.  
+<!-- more -->
 
 One of the options used in some past projects was to use the [Microsoft SOAP Toolkit](http://msdn2.microsoft.com/en-us/webservices/aa740662.aspx). But your C++ DLLs needs to be COM Objects for that. I experienced it and still have production code running with it. It works quite well even with surprising complex data structures. But as today it is definitely not the way to go.  
 

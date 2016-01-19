@@ -1,11 +1,16 @@
-title: Unit Tests without leaving the keyboard
+title: "Unit Tests without leaving the keyboard"
+permalink: "Unit-Tests-without-leaving-the-keyboard"
 date: 10/8/2009 4:24:54 PM
 updated: 5/7/2010 7:46:47 AM
+disqusIdentifier: 20091008042454
 tags: ["Visual Studio", "ReSharper", "unit test", "TDD"]
+alias:
+ - /post/Unit-Tests-without-leaving-the-keyboard.aspx/index.html
 ---
 I like the Roy Osherove blog: [Five Whys](http://5whys.com/), Leadership in software teams.
 
 Follow up on those two posts “[How to measure programmer productivity using TDD Katas](http://feedproxy.google.com/~r/5whys/~3/EJ_zJ9h3pn0/how-to-measure-programmer-productivity-using-tdd-katas.html)” or “[Be Productive and Go Mouseless](http://feedproxy.google.com/~r/5whys/~3/3ugKivEOxAg/be-productive-and-go-mouseless.html)”. I would like to share a little keyboard shortcut which save me quite some time on my daily developments.
+<!-- more -->
 
 As you might know I am a fan of ReSharper and when I am doing Test Driven Development I hate having to switch from keyboard to mouse to run the test I just wrote. So searching for ReSharper Keyboard command I found **Resharper_UnitTest_ContextRun** which I assign to the **Ctrl+Shift+<**.
 

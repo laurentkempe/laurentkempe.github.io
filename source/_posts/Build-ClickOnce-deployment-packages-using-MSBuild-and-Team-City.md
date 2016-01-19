@@ -1,11 +1,15 @@
-title: Build ClickOnce deployment packages using MSBuild and Team City
+title: "Build ClickOnce deployment packages using MSBuild and Team City"
+permalink: "Build-ClickOnce-deployment-packages-using-MSBuild-and-Team-City"
 date: 10/27/2009 8:25:26 PM
 updated: 10/27/2009 8:25:26 PM
-tags: [""]
+disqusIdentifier: 20091027082526
+alias:
+ - /post/Build-ClickOnce-deployment-packages-using-MSBuild-and-Team-City.aspx/index.html
 ---
 The other day I was requested to automate our build process to issue different [ClickOnce](http://msdn.microsoft.com/en-us/library/t71a733d(VS.80).aspx) setup for the same application. The main difference was some configuration files pointing to different back end web services.
 
 To start I had to create new build configurations on [Team City](http://www.jetbrains.com/teamcity/index.html) which used the following settings for the Build Runner:
+<!-- more -->
 
 1.  **Targets**: Rebuild Publish 
 2.  **Configuration**:** **One per build configurations; e.g** **DeployClickOnce, integrationDeployClickOnce   

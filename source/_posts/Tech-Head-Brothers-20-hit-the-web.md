@@ -1,11 +1,16 @@
-title: Tech Head Brothers 2.0 hit the web
+title: "Tech Head Brothers 2.0 hit the web"
+permalink: "Tech-Head-Brothers-20-hit-the-web"
 date: 9/26/2006 3:29:15 AM
 updated: 9/26/2006 3:29:15 AM
+disqusIdentifier: 20060926032915
 tags: ["Tech Head Brothers", "ASP.NET"]
+alias:
+ - /post/Tech-Head-Brothers-20-hit-the-web.aspx/index.html
 ---
 It is with a **tremendous pleasure **that we launched with my brother [Mathieu](http://myaustraliantrip.blogspot.com/) the new version of [**Tech Head Brothers**](http://www.techheadbrothers.com/) portal. It has been a long journey, but finally it is online and currently received a positive response.
 
 ***Who are we?***
+<!-- more -->
 
 I am editor, founder, and still primary contributor of [Tech Head Brothers](http://www.techheadbrothers.com/). I started the project in 2001.
 

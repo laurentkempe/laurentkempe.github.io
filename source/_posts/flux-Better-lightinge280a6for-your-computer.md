@@ -1,11 +1,16 @@
-title: f.lux Better lighting…for your computer
+title: "f.lux Better lighting…for your computer"
+permalink: "flux-Better-lightinge280a6for-your-computer"
 date: 5/21/2010 5:59:54 AM
 updated: 5/21/2010 5:59:54 AM
+disqusIdentifier: 20100521055954
 tags: ["Tools"]
+alias:
+ - /post/flux-Better-lightinge280a6for-your-computer.aspx/index.html
 ---
 A couple of month ago I was introduced by a colleague to [f.lux](http://www.stereopsis.com/flux/). 
 
 At first I thought, hum ok another software that will just eat some memory for nothing. But after 2 days, in fact 2 evening, yeah I work a lot in front of monitors, I was conquered and I recommend this tool to all like me that spend their days and nights in front of monitors!
+<!-- more -->
 
 From f.lux pages
 
@@ -23,4 +28,4 @@ From f.lux pages
 > 
 > Tell f.lux what kind of lighting you have, and where you live. Then forget about it. F.lux will do the rest, automatically.
 > 
-> ![flux-shot[1]](http://www.laurentkempe.com/image.axd?picture=flux-shot%5B1%5D.png "flux-shot[1]")
+> ![flux-shot[1]](/images/flux-shot%5B1%5D.png "flux-shot[1]")

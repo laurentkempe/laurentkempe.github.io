@@ -1,11 +1,21 @@
-title: Improved my development workflow
+title: "Improved my development workflow"
+permalink: "Improved-development-workflow"
 date: 1/20/2012 12:31:06 AM
 updated: 1/27/2012 4:45:39 AM
+disqusIdentifier: 20120120123106
+coverImage: https://farm6.staticflickr.com/5176/5519564098_94ba4c29b3_b.jpg
+coverSize: partial
+thumbnailImage: https://farm6.staticflickr.com/5176/5519564098_94ba4c29b3_q.jpg
+coverCaption: "Fleur d'hibiscus à la villa cannelle, Le Diamant, Martinique"
 tags: ["DVCS", "TDD", "BDD"]
+alias:
+ - /post/Improved-development-workflow.aspx/index.html
 ---
-[![Fleur d'hibiscus à la villa cannelle](http://farm6.staticflickr.com/5176/5519564098_94ba4c29b3_m.jpg)](http://www.flickr.com/photos/laurentkempe/5519564098/ "Fleur d'hibiscus à la villa cannelle by Laurent Kempé, on Flickr")For some time now I slightly modified my development workflow and I have seen a great improvement in my developers life:
+<!-- [![Fleur d'hibiscus à la villa cannelle](http://farm6.staticflickr.com/5176/5519564098_94ba4c29b3_m.jpg)](http://www.flickr.com/photos/laurentkempe/5519564098/ "Fleur d'hibiscus à la villa cannelle by Laurent Kempé, on Flickr") -->
+For some time now I slightly modified my development workflow and I have seen a great improvement in my developers life:
 
 *   it started by using Git Svn in front of our central Svn   
+<!-- more -->
 
 *   then I introduced [NCrunch](http://www.ncrunch.net/) in my TDD/BDD   
 

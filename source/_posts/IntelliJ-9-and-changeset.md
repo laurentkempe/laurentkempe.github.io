@@ -1,11 +1,16 @@
-title: IntelliJ 9 and changeset
+title: "IntelliJ 9 and changeset"
+permalink: "IntelliJ-9-and-changeset"
 date: 5/7/2010 3:58:30 AM
 updated: 5/7/2010 3:58:30 AM
+disqusIdentifier: 20100507035830
 tags: ["innoveo solutions", "Jetbrains", "IntelliJ", "Productivity"]
+alias:
+ - /post/IntelliJ-9-and-changeset.aspx/index.html
 ---
 Day after day I find little gems in [IntelliJ 9](http://www.jetbrains.com/idea/index.html) that just make me more productive and give me more time to deal with the real interesting things.
 
 Today for example I had to change a web.xml file which I was said that I should take care not to commit because if this file would go to our customer than we would have a problem. 
+<!-- more -->
 
 We are currently using [JIRA](http://www.atlassian.com/software/jira/) and [Greenhopper](http://www.atlassian.com/software/greenhopper) and I use the excellent plugin [Atlassian Connector for IntelliJ IDEA](http://confluence.atlassian.com/display/IDEPLUGIN/Atlassian+IntelliJ+Connector+2.0+Release+Notes)
 
@@ -21,7 +26,7 @@ Back to my web.xml issue, I had to take care not to commit it. I knew it from th
 
 So immediately, having the information,  I created a new changeset named “**Do not commit**” and added the web.xml change to that changeset.
 
-![4583794252_6d251ef393_o[1]](http://www.laurentkempe.com/image.axd?picture=4583794252_6d251ef393_o%5B1%5D.png "4583794252_6d251ef393_o[1]")
+![4583794252_6d251ef393_o[1]](/images/4583794252_6d251ef393_o%5B1%5D.png "4583794252_6d251ef393_o[1]")
 
 I was then on the safe side! Why? Because after working almost the whole morning and changing hundred of files I didn’t had to remember about that possible issue because the tool will remind me that. What a mind refresher!
 

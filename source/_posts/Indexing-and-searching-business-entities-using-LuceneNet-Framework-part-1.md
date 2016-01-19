@@ -1,11 +1,16 @@
-title: Indexing and searching business entities using Lucene.Net Framework, part 1
+title: "Indexing and searching business entities using Lucene.Net Framework, part 1"
+permalink: "Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-1"
 date: 11/16/2007 5:59:02 PM
 updated: 5/7/2010 7:46:50 AM
+disqusIdentifier: 20071116055902
 tags: ["Tools", "ASP.NET 2.0", "Interoperability", "innoveo solutions", "C#", "Architecture", "Generics", "Reflection"]
+alias:
+ - /post/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-1.aspx/index.html
 ---
 *Conception using generics and reflection of a search engine to index and search content in your business entities without being intrusive.*  
 
 ### [Introduction]()
+<!-- more -->
 
 Today, one of the functionality that almost all web sites implements is a method to index content and give it users the possibility to search that content spread into its web pages. It is one of the simplest ways to improve the user experience on your web site.  
 

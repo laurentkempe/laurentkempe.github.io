@@ -1,11 +1,16 @@
-title: ASP.NET MVC 2, MSpec and Watin
+title: "ASP.NET MVC 2, MSpec and Watin"
+permalink: "ASPNET-MVC-2-MSpec-and-Watin"
 date: 5/19/2010 5:07:53 PM
 updated: 10/15/2010 11:20:48 AM
+disqusIdentifier: 20100519050753
 tags: ["Watin", "MSpec", "Jobping"]
+alias:
+ - /post/ASPNET-MVC-2-MSpec-and-Watin.aspx/index.html
 ---
 The other day I posted about “[Automated functional tests using Watin and MSpec](http://www.laurentkempe.com/post/Automated-functional-tests-using-Watin-and-MSpec.aspx)” which we do at [Jobping](http://www.jobping.com) as a spike to automate our functional tests on our ASP.NET MVC 2 site.
 
 Yesterday evening I was facing an issue in my base class **WebBaseSpec** which led to really strange side effects. Basically when I was running one unit test alone it was Green, running all or more than one unit test will fail miserably with the well known STA issue of [Watin](http://watin.sourceforge.net/).
+<!-- more -->
 
 So I thought that I had an issue with the ReSharper MSpec plugin but after some discussion with [Alexander Groß](http://therightstuff.de/)I realized that the second failing test was showing another issue than the STA issue.
 
@@ -43,4 +48,4 @@ So I modified it to the following, ensuring that the routes were registered only
 
 Now I can run all my functional tests again
 
-![4621024158_d2c99039a0_o[1]](http://www.laurentkempe.com/image.axd?picture=4621024158_d2c99039a0_o%5B1%5D.png "4621024158_d2c99039a0_o[1]")
+![4621024158_d2c99039a0_o[1]](/images/4621024158_d2c99039a0_o%5B1%5D.png "4621024158_d2c99039a0_o[1]")

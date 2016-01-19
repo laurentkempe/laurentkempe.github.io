@@ -1,11 +1,16 @@
-title: How to connect to SQL Azure
+title: "How to connect to SQL Azure"
+permalink: "How-to-connect-to-SQL-Azure"
 date: 8/21/2009 6:49:16 PM
 updated: 8/21/2009 6:49:16 PM
+disqusIdentifier: 20090821064916
 tags: ["Azure", "SQL Azure"]
+alias:
+ - /post/How-to-connect-to-SQL-Azure.aspx/index.html
 ---
 **From Microsoft SQL Server Management Studio** (tips from the [SQL Azure — Getting Started](http://social.msdn.microsoft.com/Forums/en-US/ssdsgetstarted/threads "SQL Azure — Getting Started") forum, [this post](http://social.msdn.microsoft.com/Forums/en-US/ssdsgetstarted/thread/aca1d494-0b52-4661-b022-86c4101ba6ca)) :
 
 > Please be aware that SSMS is not supported with SQL Azure yet. However, you can use the following workaround for the time being:
+<!-- more -->
 > 
 > 1. Click Cancel in Connect to Server Dialog
 > 2. Click New Query which will bring up the new connection dialog.

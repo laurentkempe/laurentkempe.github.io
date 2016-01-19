@@ -1,7 +1,11 @@
-title: Trip in the Atlas - Part 1
+title: "Trip in the Atlas - Part 1"
+permalink: "Trip-in-the-Atlas-Part-1"
 date: 6/13/2006 6:11:54 AM
 updated: 6/13/2006 6:11:54 AM
+disqusIdentifier: 20060613061154
 tags: ["Tech Head Brothers", "ASP.NET 2.0", "ASP.NET AJAX"]
+alias:
+ - /post/Trip-in-the-Atlas-Part-1.aspx/index.html
 ---
 
 
@@ -9,6 +13,7 @@ tags: ["Tech Head Brothers", "ASP.NET 2.0", "ASP.NET AJAX"]
 After a smooth integration of Atlas in the new version of [Tech Head Brothers](http://www.techheadbrothers.com/) website, I 
 decided to go a step further with a project a bit more complex then the scenario 
 developed [here](http://weblogs.asp.net/lkempe/archive/2006/04/15/443019.aspx).
+<!-- more -->
 
 The new version of the site is totally rewritten in C# and ASP.NET 2 and uses 
 the Webparts.

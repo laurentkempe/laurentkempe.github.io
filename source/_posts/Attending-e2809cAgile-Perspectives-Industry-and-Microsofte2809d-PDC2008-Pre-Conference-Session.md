@@ -1,11 +1,16 @@
-title: Attending “Agile Perspectives, Industry and Microsoft” PDC2008 Pre-Conference Session
+title: "Attending “Agile Perspectives, Industry and Microsoft” PDC2008 Pre-Conference Session"
+permalink: "Attending-e2809cAgile-Perspectives-Industry-and-Microsofte2809d-PDC2008-Pre-Conference-Session"
 date: 9/10/2008 5:10:28 AM
 updated: 9/10/2008 5:10:28 AM
+disqusIdentifier: 20080910051028
 tags: ["Scrum", "Agile"]
+alias:
+ - /post/Attending-e2809cAgile-Perspectives-Industry-and-Microsofte2809d-PDC2008-Pre-Conference-Session.aspx/index.html
 ---
 #### I just registered online to [PDC2008](http://www.microsoftpdc.com/Default.aspx) and will attend the following Pre-Conference session:
 
 > #### Agile Perspectives, Industry and Microsoft
+<!-- more -->
 > 
 > Presenter(s): Mary Poppendieck, Grigori Melnik
 > 

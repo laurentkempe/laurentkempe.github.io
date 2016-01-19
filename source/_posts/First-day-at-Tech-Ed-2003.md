@@ -1,7 +1,10 @@
-title: First day at Tech Ed 2003
+title: "First day at Tech Ed 2003"
+permalink: "First-day-at-Tech-Ed-2003"
 date: 7/1/2003 7:23:00 PM
 updated: 7/1/2003 7:23:00 PM
-tags: [""]
+disqusIdentifier: 20030701072300
+alias:
+ - /post/First-day-at-Tech-Ed-2003.aspx/index.html
 ---
 It is really really warm here!!! 
 

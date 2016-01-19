@@ -1,11 +1,16 @@
-title: Start++ 0.5 and 0.6 released
+title: "Start++ 0.5 and 0.6 released"
+permalink: "Start2b2b-05-and-06-released"
 date: 5/23/2007 4:45:38 AM
 updated: 5/23/2007 4:45:38 AM
+disqusIdentifier: 20070523044538
 tags: ["Tools"]
+alias:
+ - /post/Start2b2b-05-and-06-released.aspx/index.html
 ---
 > Start++ is an enhancement for the Start Menu in Windows Vista. It also extends the Run box and the command-line with customizable commands.  For example, typing "w Windows Vista" will take you to the Windows Vista page on Wikipedia!
 
 See the full description [on this page](http://brandontools.com/content/StartPlusPlus.aspx).
+<!-- more -->
 
 What is new from 0.4.6 to 0.6
 

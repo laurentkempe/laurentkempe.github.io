@@ -1,11 +1,16 @@
-title: Login control in an ASP.NET AJAX toolkit PopupControlExtender with a close button
+title: "Login control in an ASP.NET AJAX toolkit PopupControlExtender with a close button"
+permalink: "Login-control-in-an-ASPNET-AJAX-toolkit-PopupControlExtender-with-a-close-button"
 date: 1/28/2007 8:27:58 AM
 updated: 5/7/2010 7:51:53 AM
+disqusIdentifier: 20070128082758
 tags: ["Tech Head Brothers", "ASP.NET AJAX", "ASP.NET"]
+alias:
+ - /post/Login-control-in-an-ASPNET-AJAX-toolkit-PopupControlExtender-with-a-close-button.aspx/index.html
 ---
 I remember when I tried to [implement a Login control in a ModalPopup](http://weblogs.asp.net/lkempe/archive/2006/06/12/Trip-in-the-Atlas---Part-2.aspx) with one of the early release of what was called at that time Atlas and is now called ASP.NET AJAX. I had lots of difficulties and now it works like a charm.
 
 This time I would like to have a Login control in an ASP.NET AJAX [PopupControlExtender](http://ajax.asp.net/ajaxtoolkit/PopupControl/PopupControl.aspx) from the [ASP.NET AJAX Control Toolkit](http://ajax.asp.net/ajaxtoolkit).
+<!-- more -->
 
 <?xml:namespace prefix="asp"?><asp:panel id="loginPanel" style="display: none" runat="server"><asp:login id="LoginCtrl" runat="server" cssselectorclass="THBLogin" failuretext="Identifiant incorrect ! Essayez à nouveau..." loginbuttontext="S'identifier" passwordlabeltext="Mot de Passe" passwordrequirederrormessage="Le mot de passe est requis." remembermetext="Se souvenir de moi la prochaine fois." titletext="S'identifier" usernamelabeltext="Email" usernamerequirederrormessage="L'email est requis." createusertext="S'enregistrer" createuserurl="/Register.aspx" passwordrecoverytext="Mot de passe oublié ?" passwordrecoveryurl="/PasswordRecovery.aspx"></asp:login></asp:panel><?xml:namespace prefix="ajaxToolkit"?><ajaxtoolkit:popupcontrolextender id="PopEx" runat="server" targetcontrolid="loginHyperLink" popupcontrolid="loginPanel" position="Left"></ajaxtoolkit:popupcontrolextender>The implementation is really straight, a panel with a asp:Login in it:
 

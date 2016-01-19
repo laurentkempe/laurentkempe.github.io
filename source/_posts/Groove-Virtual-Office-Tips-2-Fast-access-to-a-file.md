@@ -1,7 +1,10 @@
-title: Groove Virtual Office Tips #2 : Fast access to a file
+title: "Groove Virtual Office Tips #2 : Fast access to a file"
+permalink: "Groove-Virtual-Office-Tips-2-Fast-access-to-a-file"
 date: 5/22/2005 10:40:00 PM
 updated: 5/22/2005 10:40:00 PM
-tags: [""]
+disqusIdentifier: 20050522104000
+alias:
+ - /post/Groove-Virtual-Office-Tips-2-Fast-access-to-a-file.aspx/index.html
 ---
 We have seen in the first tips ["Fast access 
 to Workspaces"](http://weblogs.asp.net/lkempe/archive/2005/05/21/408188.aspx), in this one we will see how to access a file saved in file 
@@ -13,6 +16,7 @@ So what you can do is:
 1.  Open the workspace, then open the file tool where your file is saved 
   Right click on the file and choose Send To / Desktop (create shortcut) 
     
+<!-- more -->
 ![](http://membres.lycos.fr/lkempe//groovetips02_01.jpg)
   Go on your desktop, you will find the shortcut  
 ![](http://membres.lycos.fr/lkempe//groovetips02_02.jpg)

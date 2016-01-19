@@ -1,11 +1,15 @@
-title: Review of 2009 blog posts
+title: "Review of 2009 blog posts"
+permalink: "Review-of-2009-blog-posts"
 date: 1/9/2010 7:12:20 PM
 updated: 1/9/2010 7:12:20 PM
-tags: [""]
+disqusIdentifier: 20100109071220
+alias:
+ - /post/Review-of-2009-blog-posts.aspx/index.html
 ---
 Find here a list of all my 38 posts for 2009! In the bold, the posts which got most traffic.
 
 January
+<!-- more -->
 
 *   [ASP.NET MVC goes RC](http://weblogs.asp.net/lkempe/archive/2009/01/27/asp-net-mvc-goes-rc.aspx) 
 *   [jQuery goes 1.3](http://weblogs.asp.net/lkempe/archive/2009/01/14/jquery-goes-1-3.aspx)  

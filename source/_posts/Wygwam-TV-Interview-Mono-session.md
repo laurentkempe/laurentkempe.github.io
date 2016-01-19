@@ -1,11 +1,16 @@
-title: Wygwam TV Interview - Mono session
+title: "Wygwam TV Interview - Mono session"
+permalink: "Wygwam-TV-Interview-Mono-session"
 date: 11/11/2006 10:55:33 PM
 updated: 11/11/2006 10:55:33 PM
+disqusIdentifier: 20061111105533
 tags: [".NET"]
+alias:
+ - /post/Wygwam-TV-Interview-Mono-session.aspx/index.html
 ---
 [![](http://www.techheadbrothers.com/images/blog/wygtv.jpg)](http://www.wygwam.com/TechEd/Default.html?cat=Interviews&vid=16) 
 
 After [mono](http://www.mono-project.com/Main_Page) session I have been interviewed in French by [Patrice](http://blogs.developpeur.org/patrice/default.aspx) from [Wygwam](http://www.wygwam.com/). You might find the interview on the [following page](http://www.wygwam.com/TechEd/Default.html?cat=Interviews&vid=16). And all the video they have recorded al [Wygwam TV](http://www.wygwam.com/TechEd/).
+<!-- more -->
 
 During the session [mono 1.2](http://www.go-mono.com/archive/1.2/) has been announced as rtm.
 

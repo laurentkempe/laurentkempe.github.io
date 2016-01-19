@@ -1,11 +1,21 @@
-title: Running Github Hubot on a Windows machine
+title: "Running Github Hubot on a Windows machine"
+permalink: "Running-Github-Hubot-on-a-Windows-machine"
 date: 4/28/2012 9:15:24 AM
 updated: 9/26/2012 2:48:36 PM
+disqusIdentifier: 20120428091524
+coverImage: https://farm8.staticflickr.com/7053/6975717721_1eaca89dcc_h.jpg
+coverSize: partial
+thumbnailImage: https://farm8.staticflickr.com/7053/6975717721_11b528a835_q.jpg
+coverCaption: "Anse Cafard, Martinique"
 tags: ["hubot", "GitHub", "Windows 7"]
+alias:
+ - /post/Running-Github-Hubot-on-a-Windows-machine.aspx/index.html
 ---
-[![IMG_0063](http://farm8.staticflickr.com/7053/6975717721_11b528a835_m.jpg)](http://www.flickr.com/photos/laurentkempe/6975717721/ "IMG_0063 by Laurent Kempé, on Flickr")I finally managed to get [Github Hubot](http://hubot.github.com/) running on my Windows 7 64 bits machine. Thanks to  [Sean Copenhaver](https://github.com/copenhas) & [Thomas Kahlow](https://github.com/kahlow) which pointed me to the correct direction on the ‘[Run hubot on windows](https://github.com/github/hubot/issues/166#issuecomment-5391161)’ discussion.
+<!-- [![IMG_0063](http://farm8.staticflickr.com/7053/6975717721_11b528a835_m.jpg)](http://www.flickr.com/photos/laurentkempe/6975717721/ "IMG_0063 by Laurent Kempé, on Flickr") -->
+I finally managed to get [Github Hubot](http://hubot.github.com/) running on my Windows 7 64 bits machine. Thanks to  [Sean Copenhaver](https://github.com/copenhas) & [Thomas Kahlow](https://github.com/kahlow) which pointed me to the correct direction on the ‘[Run hubot on windows](https://github.com/github/hubot/issues/166#issuecomment-5391161)’ discussion.
 
 So here is how I did it.
+<!-- more -->
 
 First of all download and install [nodejs 0.6.15](http://nodejs.org/). This will also install [npm 1.1.16](http://npmjs.org/) which is the node package manager.
 

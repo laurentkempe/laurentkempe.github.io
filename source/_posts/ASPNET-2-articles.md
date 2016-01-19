@@ -1,11 +1,16 @@
-title: ASP.NET 2 articles
+title: "ASP.NET 2 articles"
+permalink: "ASPNET-2-articles"
 date: 7/18/2004 10:19:00 PM
 updated: 7/18/2004 10:19:00 PM
+disqusIdentifier: 20040718101900
 tags: ["Whidbey"]
+alias:
+ - /post/ASPNET-2-articles.aspx/index.html
 ---
 This is a list of ASP.NET 2 articles (more to come):
 
 <strong>Quickstart</strong>
+<!-- more -->
 
 
 <ul>

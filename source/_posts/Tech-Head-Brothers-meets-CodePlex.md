@@ -1,11 +1,16 @@
-title: Tech Head Brothers meets CodePlex
+title: "Tech Head Brothers meets CodePlex"
+permalink: "Tech-Head-Brothers-meets-CodePlex"
 date: 6/30/2006 6:56:00 AM
 updated: 6/30/2006 6:56:00 AM
+disqusIdentifier: 20060630065600
 tags: ["Tech Head Brothers", "Team System"]
+alias:
+ - /post/Tech-Head-Brothers-meets-CodePlex.aspx/index.html
 ---
 That's it!!! I decided to open the code of the second release of my authoring/publishing tool used on [Tech Head Brothers](http://www.techheadbrothers.com) portal.
 
 You might read more about the new version here:
+<!-- more -->
 
 <ul>
 <li>[Yeah!!! :-) Publications are working](/lkempe/archive/2006/03/18/440548.aspx) 

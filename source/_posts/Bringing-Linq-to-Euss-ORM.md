@@ -1,11 +1,16 @@
-title: Bringing Linq to Euss ORM
+title: "Bringing Linq to Euss ORM"
+permalink: "Bringing-Linq-to-Euss-ORM"
 date: 5/16/2008 1:53:12 AM
 updated: 5/16/2008 1:53:12 AM
+disqusIdentifier: 20080516015312
 tags: ["Tech Head Brothers", "NDepend", "Euss", "ORM", "Linq"]
+alias:
+ - /post/Bringing-Linq-to-Euss-ORM.aspx/index.html
 ---
 [Euss stand for Evaluant Universal Storage Services](http://euss.evaluant.com/), it's a great open source (MIT License) Object-Relational mapping framework.
 
 I use Euss on [Tech Head Brothers](http://www.techheadbrothers.com/) portal since a long time now.
+<!-- more -->
 
 Four days ago I went to [Sébastien Ros](http://www.dotnetguru2.org/sebastienros/), the architect of Euss, with a first draft implementation of IQueryable<T> for Euss. Almost everything was already implemented but it was missing the IQueryable<T>. Today Sébastien came back to me with a first implementation that I could quickly integrate.
 

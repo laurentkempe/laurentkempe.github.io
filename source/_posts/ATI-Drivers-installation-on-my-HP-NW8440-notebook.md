@@ -1,11 +1,15 @@
-title: ATI Drivers installation on my HP NW8440 notebook
+title: "ATI Drivers installation on my HP NW8440 notebook"
+permalink: "ATI-Drivers-installation-on-my-HP-NW8440-notebook"
 date: 4/10/2009 4:32:53 PM
 updated: 4/10/2009 4:32:53 PM
-tags: [""]
+disqusIdentifier: 20090410043253
+alias:
+ - /post/ATI-Drivers-installation-on-my-HP-NW8440-notebook.aspx/index.html
 ---
 From quite some time I had a crash when running the ATI Catalyst installer and I finally found what was the issue.
 
 > Follow the steps in the Knowledge Base (KB) article to solve the problem with the Microsoft Visual Studio mfc80u.dll or mfc80.dll module
+<!-- more -->
 > 
 > This problem was caused by **the Microsoft Visual Studio mfc80u.dll or mfc80.dll module**, which was created by **Microsoft Corporation**.
 > 

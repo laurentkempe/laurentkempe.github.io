@@ -1,11 +1,16 @@
-title: Video of Tech Head Brothers new authoring tool based on Word 2007
+title: "Video of Tech Head Brothers new authoring tool based on Word 2007"
+permalink: "Video-of-Tech-Head-Brothers-new-authoring-tool-based-on-Word-2007"
 date: 9/7/2008 8:18:16 PM
 updated: 9/7/2008 8:18:16 PM
+disqusIdentifier: 20080907081816
 tags: ["Tech Head Brothers", "VSTO", "WCF", "SOAP", "Office 2007", "Open XML", "WordML"]
+alias:
+ - /post/Video-of-Tech-Head-Brothers-new-authoring-tool-based-on-Word-2007.aspx/index.html
 ---
 In the following video I present the different features of the new authoring tool for my portal [Tech Head Brothers](http://www.techheadbrothers.com/). 
 
 First you will see the use of [ClickOnce](http://msdn.microsoft.com/en-us/library/t71a733d(VS.80).aspx) to enable easy installation on the author computer. This will also allow an easy update scenario. A great plus compared to the past.
+<!-- more -->
 
 Then you will see the Word 2007 template using to author the content of an article. It shows:
 

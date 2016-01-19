@@ -1,11 +1,16 @@
-title: AJAX Control Toolkit updated
+title: "AJAX Control Toolkit updated"
+permalink: "AJAX-Control-Toolkit-updated"
 date: 3/1/2008 4:25:22 PM
 updated: 3/1/2008 4:25:22 PM
+disqusIdentifier: 20080301042522
 tags: ["ASP.NET AJAX", "ASP.NET AJAX Control Toolkit "]
+alias:
+ - /post/AJAX-Control-Toolkit-updated.aspx/index.html
 ---
 No new controls but some great fixes! 
 
 > **<u>Installation Files</u>**
+<!-- more -->
 > 
 > Please visit the [AJAX Control Toolkit Project Page](http://www.codeplex.com/Wiki/View.aspx?ProjectName=AtlasControlToolkit) on CodePlex
 > 

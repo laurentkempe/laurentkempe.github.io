@@ -1,7 +1,10 @@
-title: France is qualified!!! On the Road to World Cup 2006 in Germany.
+title: "France is qualified!!! On the Road to World Cup 2006 in Germany."
+permalink: "France-is-qualified!!!-On-the-Road-to-World-Cup-2006-in-Germany"
 date: 10/13/2005 6:04:00 AM
 updated: 10/13/2005 6:04:00 AM
-tags: [""]
+disqusIdentifier: 20051013060400
+alias:
+ - /post/France-is-qualified!!!-On-the-Road-to-World-Cup-2006-in-Germany.aspx/index.html
 ---
 It was tough but they finally managed to do it!!! Don't play with my nerves 
 like that again...

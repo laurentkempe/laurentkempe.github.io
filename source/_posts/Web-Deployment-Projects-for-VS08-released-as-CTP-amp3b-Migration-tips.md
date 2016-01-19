@@ -1,11 +1,16 @@
-title: Web Deployment Projects for VS08 released as CTP &amp; Migration tips
+title: "Web Deployment Projects for VS08 released as CTP & Migration tips"
+permalink: "Web-Deployment-Projects-for-VS08-released-as-CTP-amp3b-Migration-tips"
 date: 12/2/2007 4:59:02 PM
 updated: 12/2/2007 4:59:02 PM
+disqusIdentifier: 20071202045902
 tags: ["Tech Head Brothers", "ASP.NET 2.0", "Visual Studio", "ASP.NET"]
+alias:
+ - /post/Web-Deployment-Projects-for-VS08-released-as-CTP-amp3b-Migration-tips.aspx/index.html
 ---
 My old build script wasn't working after the migration to this new version and you will find in this post the different adaptation that I had to do.
 
 Add missing ToolsVersion as following:
+<!-- more -->
 [](http://11011.net/software/vspaste)
 
 <span style="color: rgb(0,0,255)"><</span><span style="color: rgb(163,21,21)">Project</span><span style="color: rgb(0,0,255)"> </span><span style="color: rgb(255,0,0)">DefaultTargets</span><span style="color: rgb(0,0,255)">=</span>"<span style="color: rgb(0,0,255)">Build</span>"<span style="color: rgb(0,0,255)"> 
