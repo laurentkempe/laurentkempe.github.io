@@ -12,28 +12,18 @@ alias:
 Read more on Patrick’s blog post, “[NDepend v3 is now 100% integrated in Visual Studio](http://codebetter.com/blogs/patricksmacchia/archive/2010/01/28/ndepend-v3-is-now-100-integrated-in-visual-studio.aspx)“
 <!-- more -->
 
-> **Even on large code base, made of hundreds of thousands of lines of code and dozens of VS projects, Visual Studio is not noticeably slow down by the NDepend v3 addin.**
+> * Even on large code base, made of hundreds of thousands of lines of code and dozens of VS projects, Visual Studio is not noticeably slow down by the NDepend v3 addin.
+> * VisualStudio 2010, 2008 and 2005
+> * Simply put, what NDepend v2 does in the Continuous Integration/Build process, NDepend v3 does it live at development-time inside Visual Studio
+> * Multi VS solutions wide-analysis and collaboration*
+> * Rich Code Search in VS
+> * Multi CQL Query Edition in VS
+> * Code visualization in VS *
+> * Continuous comparison with a base line in VS
+> * Reflector disassembly’s comparison
+> * Deep VS Integration
+> * NDepend Session state preserved
 > 
-> **VisualStudio 2010, 2008 and 2005**
-> 
-> **Simply put, what NDepend v2 does in the Continuous Integration/Build process, NDepend v3 does it live at development-time inside Visual Studio**
-> 
-> **Multi VS solutions wide-analysis and collaboration**
-> 
-> **Rich Code Search in VS**
-> 
-> **Multi CQL Query Edition in VS**
-> 
-> **Code visualization in VS**
-> 
-> **Continuous comparison with a base line in VS**
-> 
-> **Reflector disassembly’s comparison**
-> 
-> **Deep VS Integration**
-> 
-> **NDepend Session state preserved**
-> 
-> [![ProgressCircleTooltip[1]](http://weblogs.asp.net/blogs/lkempe/ProgressCircleTooltip1_thumb_407AD1D9.png "ProgressCircleTooltip[1]")](http://weblogs.asp.net/blogs/lkempe/ProgressCircleTooltip1_143E4AF5.png)
+> ![](/images/ProgressCircleTooltip1_143E4AF5.png)
 
 Well done Patrick!

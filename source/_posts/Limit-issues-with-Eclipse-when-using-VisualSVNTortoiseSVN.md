@@ -13,6 +13,6 @@ Today I faced the following crazy issue, from a file browse window opened throug
 
 So to avoid this, I configured [TortoiseSvn Exclude Paths](http://tortoisesvn.net/docs/nightly/TortoiseSVN_en/ch05s25.html) not to show me this folder and subfolder with icon overlays:
 
-[![4253062219_8a93a90c4d_o[1]](http://weblogs.asp.net/blogs/lkempe/4253062219_8a93a90c4d_o1_thumb_54E797AB.png "4253062219_8a93a90c4d_o[1]")](http://weblogs.asp.net/blogs/lkempe/4253062219_8a93a90c4d_o1_250CF5EA.png) 
+![](/images/4253062219_8a93a90c4d_o1_250CF5EA.png) 
 
 I hope this will save me from those crazy situations!

@@ -12,7 +12,7 @@ As you might now from reading my blog I tend to automate as much as I can.
 Why? Because I hate to do repetitive tasks. First because it is boring, at least for me, and as a developer we have more interesting things to do. Second because executing repetitive tasks tend to be error prone. 
 <!-- more -->
 
-So last week I decided that it was enough for me to have to create manually a subversion tag for [Jobping](http://www.jobping.com "Job posting web site aimed specifically at job seekers and employers who work with Microsoft technologies")web site then also took the time to do the same for my portal [Tech Head Brothers](http://www.techheadbrothers.com/).
+So last week I decided that it was enough for me to have to create manually a subversion tag for [Jobping](http://www.jobping.com "Job posting web site aimed specifically at job seekers and employers who work with Microsoft technologies") web site then also took the time to do the same for my portal [Tech Head Brothers](http://www.techheadbrothers.com/).
 
 At [Jobping](http://www.jobping.com/ "Job posting web site aimed specifically at job seekers and employers who work with Microsoft technologies") we are using [TeamCity](http://www.jetbrains.com/teamcity/index.html) and Subversion. We use it as our Continuous Integration system but also to deploy to production server in one click. Something I promised to talk later on in more details.
 
@@ -28,11 +28,11 @@ At this point I realized that I missed a point with TeamCity VCS Root is that it
 
 And here comes the [VCS Checkout rules](http://confluence.jetbrains.net/display/TCD5/VCS+Checkout+Rules), which you can configure on every project which is using the VCS Root
 
-![4663096481_231787d2d1_o[1]](/images/4663096481_231787d2d1_o%5B1%5D.png "4663096481_231787d2d1_o[1]") 
+![Build and Deployment automation, VCS Root and Labeling in TeamCity 1](https://farm2.staticflickr.com/1462/24579562215_0c560155da_o.png)
 
 So in my case it looks like that
 
-![4663731014_a4945d38d0_o[1]](/images/4663731014_a4945d38d0_o%5B1%5D.png "4663731014_a4945d38d0_o[1]") 
+![Build and Deployment automation, VCS Root and Labeling in TeamCity 2](https://farm2.staticflickr.com/1513/24497267931_83cf76a446_o.png)
 
 Which specify that for that particular build I want to checkout from my VCS Root extended with trunk to the build folder /. So with that I restrict the checkout to the trunk. Good
 
@@ -40,13 +40,13 @@ Now back to my first topic, which was to automate the subversion tag creation wh
 
 Here is how we set it up for our staging build
 
-![4663125553_c725cbc3dc_o[1]](/images/4663125553_c725cbc3dc_o%5B1%5D.png "4663125553_c725cbc3dc_o[1]") 
+![Build and Deployment automation, VCS Root and Labeling in TeamCity 3](https://farm2.staticflickr.com/1636/24471243112_136c3c3d4e_o.png)
 
 For sure we have another one for our production build.
 
 And here is the result in Subversion
 
-![4663756592_592d22d287_o[1]](/images/4663756592_592d22d287_o%5B1%5D.png "4663756592_592d22d287_o[1]") 
+![Build and Deployment automation, VCS Root and Labeling in TeamCity 4](https://farm2.staticflickr.com/1527/24579562315_bb8aa7385e_o.png)
 
 Another thing that I will not forget as it is automated
 

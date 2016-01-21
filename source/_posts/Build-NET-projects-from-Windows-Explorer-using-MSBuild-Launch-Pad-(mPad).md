@@ -20,6 +20,6 @@ The added value for me is that it maintained project, 1.0 was released on May 21
 
 I also very much like that when I right click and say build I get the control on the .NET framework version I want to use and if it is a Release, Debug or what so ever.
 
-![4668737460_d5f6fd3791_o[1]](/images/4668737460_d5f6fd3791_o%5B1%5D.png "4668737460_d5f6fd3791_o[1]") 
+![Build .NET projects from Windows Explorer using MSBuild Launch Pad (mPad)](https://farm2.staticflickr.com/1637/24579513125_c928206b6f_o.png) 
 
 Nice little productivity booster tool.

@@ -34,7 +34,7 @@ The [LX Dual Side-by-Side Arm](http://www.ergotron.com/Products/tabid/65/PRDID/3
 
 [![Ergotron LX Dual Side-by-Side Arm packaging](http://farm5.static.flickr.com/4095/4785836003_d16db20114_m.jpg)](http://www.flickr.com/photos/laurentkempe/4785836003/ "Ergotron LX Dual Side-by-Side Arm packaging by Laurent Kempé, on Flickr")
 
-I also got [Ergotron VESA Bracket Adaptor Kit](http://www.ergotron.com/Products/tabid/65/PRDID/253/Language/en-US/Default.aspx)to be able to adapt the VESA bracket of my monitors to the arms.
+I also got [Ergotron VESA Bracket Adaptor Kit](http://www.ergotron.com/Products/tabid/65/PRDID/253/Language/en-US/Default.aspx) to be able to adapt the VESA bracket of my monitors to the arms.
 
 [![Ergotron VESA Bracket Adaptor Kit](http://farm5.static.flickr.com/4098/4786466628_c1fc966508_m.jpg)](http://www.flickr.com/photos/laurentkempe/4786466628/ "Ergotron VESA Bracket Adaptor Kit by Laurent Kempé, on Flickr")
 
@@ -42,7 +42,7 @@ First step was to dismount the monitor from the now obsolete feet
 
 [![alt](http://farm5.static.flickr.com/4140/4786482678_cf430f6212.jpg)](http://www.flickr.com/photos/laurentkempe/4786482678/ "Untitled by Laurent Kempé, on Flickr") 
 
-Then mounting the [Ergotron VESA Bracket Adaptor Kit](http://www.ergotron.com/Products/tabid/65/PRDID/253/Language/en-US/Default.aspx)was super easy !
+Then mounting the [Ergotron VESA Bracket Adaptor Kit](http://www.ergotron.com/Products/tabid/65/PRDID/253/Language/en-US/Default.aspx) was super easy !
 
 Finally attaching the [LX Dual Side-by-Side Arm](http://www.ergotron.com/Products/tabid/65/PRDID/354/language/en-US/Default.aspx) to the VESA Bracket Adaptor.
  First result without tuning the arms !  

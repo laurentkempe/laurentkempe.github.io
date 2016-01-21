@@ -17,7 +17,7 @@ Tonight we got the following issue on our [TeamCity](http://www.jetbrains.com/te
 
 Checking the certificate used by our project I found that the expiration date was yesterday:
 
-[![4267117780_617c4d5071_o[1]](http://weblogs.asp.net/blogs/lkempe/4267117780_617c4d5071_o1_thumb_74625FDD.png "4267117780_617c4d5071_o[1]")](http://weblogs.asp.net/blogs/lkempe/4267117780_617c4d5071_o1_2F2A08B4.png) 
+![](/images/4267117780_617c4d5071_o1_2F2A08B4.png) 
 
 So I had first to create a new test certificate.
 

@@ -12,6 +12,6 @@ Some time ago when I had to reinstall our [Jobping](http://www.jobping.com) Cont
 Here is the configuration that I used, which worked perfectly for me
 <!-- more -->
 
-![4656773327_09a7eed279_o[1]](/images/4656773327_09a7eed279_o%5B1%5D.png "4656773327_09a7eed279_o[1]") 
+![Using Gmail as TeamCity smtp server](https://farm2.staticflickr.com/1485/24497496361_1ec3489db5_o.png)
 
 Use SMTP port 465 and TLS (SSL) !

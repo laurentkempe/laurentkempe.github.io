@@ -3,10 +3,14 @@ permalink: "Cleaning-BlogEngineNET-spam"
 date: 10/30/2011 8:45:39 PM
 updated: 11/6/2011 12:28:19 AM
 disqusIdentifier: 20111030084539
+coverImage: https://farm6.staticflickr.com/5266/5561291406_3371746e56_b.jpg
+coverSize: partial
+thumbnailImage: https://farm6.staticflickr.com/5266/5561291406_3371746e56_q.jpg
+coverCaption: "La savane des pétrification, Martinique"
 alias:
  - /post/Cleaning-BlogEngineNET-spam.aspx/index.html
 ---
-[![Martinique 2011](http://farm6.static.flickr.com/5136/5561350588_1d52c313f9_m.jpg)](http://www.flickr.com/photos/laurentkempe/5561350588/ "Martinique 2011 by Laurent Kempé, on Flickr")
+<!--[![Martinique 2011](http://farm6.static.flickr.com/5136/5561350588_1d52c313f9_m.jpg)](http://www.flickr.com/photos/laurentkempe/5561350588/ "Martinique 2011 by Laurent Kempé, on Flickr")-->
 
 I just migrated [my blog](http://http://www.laurentkempe.com/) to the latest version of [BlogEngine.NET](http://www.dotnetblogengine.net/) 2.5.0.6.
 <!-- more -->
@@ -37,7 +41,34 @@ Quite a difference ! And BlogEngine showing me the results
 
 And here is the code, it is using .NET Framework 4 and the parallelization of queries to treat files:
 
-<span class="preproc">#region</span> <span class="kwrd">using</span>
+<style type="text/css">
+.csharpcode, .csharpcode pre
+{
+	font-size: small;
+	color: black;
+	font-family: consolas, "Courier New", courier, monospace;
+	background-color: #ffffff;
+	/*white-space: pre;*/
+    line-height: 135%;
+}
+.csharpcode pre { margin: 0em; }
+.csharpcode .rem { color: #008000; }
+.csharpcode .kwrd { color: #0000ff; }
+.csharpcode .str { color: #006080; }
+.csharpcode .op { color: #0000c0; }
+.csharpcode .preproc { color: #cc6633; }
+.csharpcode .asp { background-color: #ffff00; }
+.csharpcode .html { color: #800000; }
+.csharpcode .attr { color: #ff0000; }
+.csharpcode .alt 
+{
+	background-color: #f4f4f4;
+	width: 100%;
+	margin: 0em;
+}
+.csharpcode .lnum { color: #606060; }</style>
+
+<pre class="csharpcode"><span class="preproc">#region</span> <span class="kwrd">using</span>
 
 <span class="kwrd">using</span> System;
 <span class="kwrd">using</span> System.IO;
@@ -91,7 +122,7 @@ And here is the code, it is using .NET Framework 4 and the parallelization of qu
 
         <span class="kwrd">private</span> <span class="kwrd">static</span> <span class="kwrd">bool</span> ShouldDeleteSpam(CommentState commentState)
         {
-            <span class="kwrd">return</span> !commentState.Approved && 
+            <span class="kwrd">return</span> !commentState.Approved &amp;&amp; 
                    (commentState.Spam || commentState.Deleted);
         }
         
@@ -116,38 +147,6 @@ And here is the code, it is using .NET Framework 4 and the parallelization of qu
             <span class="kwrd">public</span> <span class="kwrd">bool</span> Deleted { get; <span class="kwrd">private</span> set; }
         }
     }
-}
-
-<style type="text/css">
-
-
-
-
-.csharpcode, .csharpcode pre
-{
-	font-size: small;
-	color: black;
-	font-family: consolas, "Courier New", courier, monospace;
-	background-color: #ffffff;
-	/*white-space: pre;*/
-}
-.csharpcode pre { margin: 0em; }
-.csharpcode .rem { color: #008000; }
-.csharpcode .kwrd { color: #0000ff; }
-.csharpcode .str { color: #006080; }
-.csharpcode .op { color: #0000c0; }
-.csharpcode .preproc { color: #cc6633; }
-.csharpcode .asp { background-color: #ffff00; }
-.csharpcode .html { color: #800000; }
-.csharpcode .attr { color: #ff0000; }
-.csharpcode .alt 
-{
-	background-color: #f4f4f4;
-	width: 100%;
-	margin: 0em;
-}
-.csharpcode .lnum { color: #606060; }</style>
-
-
+}</pre>
 
 **Update**: I also posted the code on bitbucket: [https://bitbucket.org/lkempe/blogenginespamdelete](https://bitbucket.org/lkempe/blogenginespamdelete)

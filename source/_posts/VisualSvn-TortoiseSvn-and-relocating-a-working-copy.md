@@ -9,8 +9,8 @@ alias:
 ---
 Whenever you have to relocate your svn working copy because the svn server url or protocol as changed, you need to use [TortoiseSvn](http://tortoisesvn.net/) [relocate](http://tortoisesvn.net/docs/release/TortoiseSVN_en/tsvn-dug-relocate.html). If, like me, you use [VisualSvn](http://www.visualsvn.com/visualsvn/) plugin then you would need to quit Visual Studio and come back to Windows Explorer and [TortoiseSvn](http://tortoisesvn.net/), right click your project folder then find Relocate command:
 
-[![4311387612_f21c311484_o[1]](http://weblogs.asp.net/blogs/lkempe/4311387612_f21c311484_o1_thumb_020E2270.png "4311387612_f21c311484_o[1]")](http://weblogs.asp.net/blogs/lkempe/4311387612_f21c311484_o1_431CA1D4.png) 
 <!-- more -->
+![](/images/4311387612_f21c311484_o1_431CA1D4.png)
 
 Type in the dialog which open the new url of the svn repository, then click Ok.
 
@@ -26,28 +26,15 @@ Read the [documentation on the following page](http://tortoisesvn.net/docs/relea
 > 
 > *This is a very infrequently used operation*. The relocate command is*only* used if the URL of the repository root has changed. Possible reasons are:
 > 
-> *
-> 
-> The IP address of the server has changed.
-> 
-> *
-> 
-> The protocol has changed (e.g. http:// to https://).
-> 
-> *
-> 
-> The repository root path in the server setup has changed.
+> * The IP address of the server has changed.
+> * The protocol has changed (e.g. http:// to https://).
+> * The repository root path in the server setup has changed.
 > 
 > Put another way, you need to relocate when your working copy is referring to the same location in the same repository, but the repository itself has moved.
 > 
 > It does not apply if:
 > 
-> *
-> 
-> You want to move to a different Subversion repository. In that case you should perform a clean checkout from the new repository location.
-> 
-> *
-> 
-> You want to switch to a different branch or directory within the same repository. To do that you should use TortoiseSVN →Switch.... Read [the section called “To Checkout or to Switch...”](http://tortoisesvn.net/tsvn-dug-branchtag.html#tsvn-dug-switch-1) for more information.
+> * You want to move to a different Subversion repository. In that case you should perform a clean checkout from the new repository location.
+> * You want to switch to a different branch or directory within the same repository. To do that you should use TortoiseSVN →Switch.... Read [the section called “To Checkout or to Switch...”](http://tortoisesvn.net/tsvn-dug-branchtag.html#tsvn-dug-switch-1) for more information.
 > 
 > If you use relocate in either of the cases above, it *will corrupt your working copy* and you will get many unexplainable error messages while updating, committing, etc. Once that has happened, the only fix is a fresh checkout.
