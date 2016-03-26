@@ -24,6 +24,18 @@ global:
     search_category: "Search category"
     search_tag: "Search tag"
     search_date: "Search date (YYYY/MM/DD)"
+    posts_found:
+        zero: "no post found"
+        one: "1 post found"
+        other: "{n} posts found"
+    categories_found:
+        zero: "no category found"
+        one: "1 cartegory found"
+        other: "{n} categories found"
+    tags_found:
+        zero: "no tag found"
+        one: "1 tag found"
+        other: "{n} tags found"
 
 pagination:
     page: "page %d"
@@ -43,7 +55,7 @@ post:
     comment_and_share: "Comment and share"
 
 author:
-    # Your biography in english (Markdown and HTML supported)
+    # Your biography (Markdown and HTML supported)
     bio: "I am an experienced Team Leader & Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward."
     # Your job in english
-    job: "Senior Solutions Architect"
+    job: "Team Leader, Senior Solutions Architect"

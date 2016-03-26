@@ -2,7 +2,7 @@
 
 A gorgeous responsive theme for Hexo blog framework 
 
-![Tranquilpeak](http://d1u9biwaxjngwg.cloudfront.net/showcases/showcase-v1.6.jpg)
+[![Tranquilpeak](http://d1u9biwaxjngwg.cloudfront.net/showcases/showcase-v1.7.jpg)](http://louisbarranqueiro.github.io/hexo-theme-tranquilpeak)
 
 Tranquilpeak theme is compatible with Hexo v3.0.x. The theme is compatible with higher versions of Hexo but these versions have some bugs with generation of relative urls so I recommend to use Hexo 3.0.x for the moment.
 
@@ -22,7 +22,7 @@ If you want to report a bug or ask a question, [create an issue](https://github.
     * [Enable RSS feed](#enable-rss-feed)
     * [Define global keywords](#define-global-keywords)
 - [Tranquilpeak configuration](#tranquilpeak-configuration)
-    - [Languages configuration](#languages-configuration)
+    - [Language configuration](#language-configuration)
     - [Theme configuration](#theme-configuration)
         * [Sidebar](#sidebar)
         * [Header](#header)
@@ -30,12 +30,15 @@ If you want to report a bug or ask a question, [create an issue](https://github.
         * [Customization](#customization)
         * [Integrated services](#integrated-services)
         * [Enable pages](#enable-pages)
-            * [Enable all-categories page](#enable-all-categories-page)
-            * [Enable all-tags page](#enable-all-tags-page)
-            * [Enable all-archives page](#enable-all-archives-page)
 - [Integrated services configuration](#integrated-services-configuration)
     * [Google Analytics](#google-analytics)
-        * [Exclude hostname (localhost) while writing articles](#exclude-hostname-\(localhost\)-while-wirting-articles)
+        * [Exclude hostname (localhost) while writing articles](#exclude-hostname-localhost-while-writing-articles)
+- [Quick & easy modifications](#quick--easy-modifications)  
+    * [Prerequisites](#prerequisites)
+    * [Change global style](#change-global-style)
+    * [Change code coloration (Highlight.js theme)](#change-code-coloration-highlightjs-theme)
+- [Migrating posts](#migrating-posts)
+    * [v1.3.0 or lower to v1.4.0 or higher](#v130-or-lower-to-v140-or-higher)
 - [Writing posts](#writing-posts)
     * [Front-matter settings](#front-matter-settings)
     * [Define post excerpt](#define-post-excerpt)
@@ -45,6 +48,7 @@ If you want to report a bug or ask a question, [create an issue](https://github.
         * [Alert](#alert)
         * [Highlight text](#highlight-text)
         * [Image](#image)
+        * [Tabbed code block](#tabbed-code-block)
         * [Wide image](#wide-image)
         * [Fancybox](#fancybox)
 - [Running](#running)  
@@ -52,42 +56,44 @@ If you want to report a bug or ask a question, [create an issue](https://github.
 ## General ##
 
 - **Author** : Louis Barranqueiro
-- **Version** : 1.6.1
+- **Version** : 1.7.0
 - **Compatibility** : Hexo 3.0.0 or later
 
 ## Features ##
 
 **General features :**  
-- Fully responsive  
-- Optimized for tablets & mobiles  
-- Configurable menu of the sidebar  
-- Pages to filter tags, categories and archives  
-- Background cover image  
-- Beautiful about page  
-- Support Open Graph protocol  
-- Support internationalization (i18n)
-  
+
+- Fully responsive
+- Optimized for tablets & mobiles
+- Configurable menu of the sidebar
+- Pages to filter tags, categories and archives
+- Background cover image
+- Beautiful about page
+- Support Open Graph protocol
+- Support internationalization (i18
+- Easily customizable (fonts, colors, layout elements, code coloration, etc..
   
 **Posts features :**  
-- Thumbnail image  
-- Cover image  
-- Responsive videos & images  
-- Sharing options  
-- Navigation menu  
-- GitHub theme for code highlighting  
-- Image gallery  
-- Image generator helpers
+
+- Thumbnail image
+- Cover image
+- Responsive videos & images
+- Sharing options
+- Navigation menu
+- GitHub theme for code highlighting (customizable)
+- Image gallery
+- Tags for images (FancyBox), wide images, tabbed code blocks, highlighted text, alerts
 - Table of contents  
   
-  
 **Integrated services :**  
-- Disqus  
-- Duoshuo  
-- Google analytics  
-- Baidu analytics  
-- Gravatar  
-- Swiftype  
-- Facebook Insights  
+
+- Disqus
+- Duoshuo
+- Google analytics
+- Baidu analytics
+- Gravatar
+- Swiftype
+- Facebook Insights
 
 ## Requirements ##
 
@@ -96,8 +102,8 @@ If you want to report a bug or ask a question, [create an issue](https://github.
 
 ## Installation ##
 
-1. Download the latest version built and ready for production here : [hexo-theme-tranquilpeak-built-for-production-1.6.2]
-(https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak/releases/download/v1.6.2/hexo-theme-tranquilpeak-prod-1.6.2.zip)
+1. Download the latest version built and ready for production here : [hexo-theme-tranquilpeak-built-for-production-1.7.0]
+(https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak/releases/download/v1.7.0/hexo-theme-tranquilpeak-built-for-production-1.7.0.zip)
 2. Rename the folder in `tranquilpeak` and place it in `themes` folder of your Hexo blog
 
 ## Hexo configuration ##
@@ -130,7 +136,7 @@ feed:
 - **path** : Feed path (Default: atom.xml/rss2.xml)
 - **limit** : Maximum number of posts in the feed (Use `0` or `false` to show all posts)
 
-If you want more informations on this plugin : [hexo-generator-feed](https://github.com/hexojs/hexo-generator-feed)
+If you want more information on this plugin : [hexo-generator-feed](https://github.com/hexojs/hexo-generator-feed)
 
 ### Define global keywords ###
 
@@ -150,6 +156,7 @@ If you are new to Hexo and internationalization (i18n), please read [Hexo docume
 
 Currently, the theme is delivered with english (en), chinese (zh-cn), french (fr-FR) and portuguese (pt-br) language file. 
 If your language is not available, follow this guidelines (E.g : add russian language (ru) :  
+
 1. Set `language` to `ru` in Hexo configuration file `_config.yml`  
 2. Create `ru.yml` file in `theme/tranquilpeak/languages/` folder  
 3. Copy the content of `theme/tranquilpeak/languages/en.yml` and paste it to `ru.yml` file  
@@ -158,14 +165,13 @@ If your language is not available, follow this guidelines (E.g : add russian lan
 
 Otherwise, complete your description and your job in the right language file(s) in `theme/tranquilpeak/languages`.
 
-**Tranquilpeak theme is currently not ready to support multi-languages. It will be the next release.**
+**Tranquilpeak theme is currently not ready to support multi-languages. It will be in a next release.**
 
 ### Theme configuration ###
 
 Complete `theme/tranquilpeak/_config.yml` with your information. Read above sections to have more information.
 
-
-#### Sidebar ####
+#### Sidebar
 
 The sidebar is powerful and easily configurable.
 DON'T modify variables name `sidebar`, `title`, `url` and `icon`.  
@@ -243,8 +249,7 @@ sidebar:
 - **icon** : Name of the font awesome icon class without the `fa-` (Go to [font-awesome icons](http://fontawesome.io/icons/) to find class name of icon)
 - **class** (optional) : CSS Class added to the `a` link tag
 
-
-#### Header ####
+#### Header
 
 The right link of the header is customizable. You can add a link (as an icon) at the right of the header instead of the author's gravatar image or author's picture. By default, author's gravatar or author's picture is displayed if `icon` is empty DON'T edit `header`, `right_link`, `url`, `icon` and `class` variable name.  
 E.g to display a shortcut to open swiftype search window :
@@ -260,7 +265,7 @@ header:
 - **icon** : Name of the font awesome icon class without the `fa-` (Go to [font-awesome icons](http://fontawesome.io/icons/) to find class name of icon)
 - **class** : CSS Class added to the link
 
-#### Author ####
+#### Author
 
 ``` yaml
 # Author
@@ -280,7 +285,7 @@ author:
 - **twitter** : Your Twitter username without the @. E.g : `tranquilpeak`
 - **google_plus** : Your google plus profile id. E.g : `+TranquilPeak` or `123812884128439`
 
-#### Customization ####
+#### Customization
 
 ``` yaml
 # Customization
@@ -317,7 +322,7 @@ Default image is on AWS S3 and delivered by AWS CloudFront. Otherwise put your i
 - **category_pagination** :  Displaying style of category pages. (false: pagination disabled, true: pagination enabled)
 - **tag_pagination** :  Displaying style of tag pages. (false: pagination disabled, true: pagination enabled)
 
-Example :  
+E.g :  
 A category page look like this with `category_pagination: true` :  
 ![archives false](http://d1u9biwaxjngwg.cloudfront.net/docs/1.4.0/ud-archives-true-300.png)  
 
@@ -325,7 +330,7 @@ The same page with `category_pagination: false`:
 ![archives false](http://d1u9biwaxjngwg.cloudfront.net/docs/1.4.0/ud-archives-false-300.png)  
 
 
-#### Integrated services ####
+#### Integrated services
 
 ``` yaml
 # Integrated services
@@ -350,10 +355,11 @@ fb_app_id:
 Tranquilpeak provides you 3 pages to display all posts title and date by tags, by categories, by date and an about page. To enable one of this pages, 
 read following step.
 
-#### Enable all-categories page ####
+#### Enable all-categories page
 
-To enable `all-categories` page :  
-1. Run `hexo new page "all-categories"`. A new folder named `all-categories` will be created in `source/`  
+To enable `all-categories` page :
+
+1. Run `hexo new page "all-categories"`. A new folder named `all-categories` will be created in `source/`
 2. Replace `source/all-categories/index.md` content with :
  
 ``` markdown
@@ -366,10 +372,11 @@ comments: false
 
 New page will be reach at : `/all-categories`. On this page, users will be able to search and filter categories.
 
-#### Enable all-tags page ####
+#### Enable all-tags page
 
-To enable `all-tags` page :  
-1. Run `hexo new page "all-tags"`. A new folder named `all-tags` will be created in `source/`  
+To enable `all-tags` page :
+
+1. Run `hexo new page "all-tags"`. A new folder named `all-tags` will be created in `source/`
 2. Replace `source/all-tags/index.md` content with :
  
 ``` markdown
@@ -382,10 +389,11 @@ comments: false
 
 New page will be reach at : `/all-tags`. On this page, users will be able to search and filter tags.
 
-#### Enable all-archives page ####
+#### Enable all-archives page
 
-To enable `all-archives` page :  
-1. Run `hexo new page "all-archives"`. A new folder named `all-archives` will be created in `source/`  
+To enable `all-archives` page :
+
+1. Run `hexo new page "all-archives"`. A new folder named `all-archives` will be created in `source/`
 2. Replace `source/all-archives/index.md` content with :
  
 ``` markdown
@@ -404,32 +412,97 @@ On this page, users will be able to search and filter posts.
 
 ### Google Analytics ###
 
-#### Exclude hostname (localhost) while writing articles ####
+#### Exclude hostname (localhost) while writing articles
 
 While you are writing articles, you need to check the result a lot of times before deploying your site.
 If you have enable Google analytics service, Google will include all requests done, even when hostname is localhost and this can greatly skew the results.
 To overcome this, you have to add a filter on Google Analytics website.
    
-Follow these steps, to add new filter :   
-1. Sign in to your Google Analytics account 
-2. Select the **Admin** tab and navigate to the **property** in which you want to create the filter **(Account > Property > View)**  
-3. In **View** column, click on **Filters** button  
-4. Click on **+ NEW FILTER** button  
-6. Enter a name for the filter  
-7. Select **Custom filter**, **Filter Field** : `Hostname`, **Filter Pattern** :  `(.*?localhost.*?)`  
-8. Click on **Save** button   
+Follow these steps, to add new filter :
 
+1. Sign in to your Google Analytics account
+2. Select the **Admin** tab and navigate to the **property** in which you want to create the filter **(Account > Property > View)**
+3. In **View** column, click on **Filters** button
+4. Click on **+ NEW FILTER** button
+6. Enter a name for the filter
+7. Select **Custom filter**, **Filter Field** : `Hostname`, **Filter Pattern** :  `(.*?localhost.*?)`
+8. Click on **Save** button
+
+## Quick & easy modifications ##
+
+### Prerequisites ###
+
+Since you are going to edit the theme, you have to build it to see changes. So follow this steps to install the necessary :
+
+1. Install requirements : [developer documentation - requirements](https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak/blob/master/docs/developer.md#requirements)
+2. Install npm dependencies with `npm install`
+3. Install bower dependencies with `bower install`
+
+**Run all commands in theme folder : `hexo-blog/themes/tranquilpeak`**
+
+### Change global style ###
+
+If you want to change font families, font size, sidebar color, things like that, take a look at `source/_css/utils/_variables.scss` file. This file contains global variables used in this theme. **Build the theme after changes to see changes.**
+
+### Change code coloration (Highlight.js theme) ###
+
+Tranquilpeak integrate its own highlight.js theme inspired by GitHub. 
+Of course, you can replace it with an other theme found on highlight.js repository. Since Hexo use different CSS class names, all theme are not ready out of the box, but it is very easy to make them compatible. 
+
+Follow these steps :
+
+1. Get your theme here : [Highlight.js theme](https://github.com/isagalaev/highlight.js/tree/master/src/styles) or create yours
+2. Follow guidelines in `source/_css/themes/hljs-custom.scss` file
+3. Build the theme with `grunt buildProd`. Learn more about grunt tasks : [developer documentation - grunt tasks](https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak/blob/master/docs/developer.md#grunt-tasks)
+
+## Migrating posts ##
+
+### Prerequisites ###
+
+Since you are going to edit the theme, you have to build it to see changes. So follow this steps to install the necessary :
+
+1. Install requirements : [developer documentation - requirements](https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak/blob/master/docs/developer.md#requirements)
+2. Install npm dependencies with `npm install`
+
+### v1.3.0 or lower to v1.4.0 or higher ###
+
+If you used Tranquilpeak v1.3.0 or lower, you used maybe the  auto excerpt feature  : If there is no tag `<!-- more -->` in your post, so the excerpt is defined by cut the content after 250 characters.
+  
+Auto excerpt feature doesn't exist anymore since Tranquilpeak v1.4.0. And now, when there is no tag `<-- more -->` and `<!-- excerpt -->` in your post, the post is not cut and it will be displayed entirely on index page. 
+Maybe, you don't want to display entirely all of your old posts. So If you have a lot of posts to edit and you don't want to do to define the excerpt manually, use our script to automate this task.
+  
+With the migration script, the `<!-- excerpt -->` tag will be inserted at the end of the line of each posts which don't have an excerpt tag (more and excerpt).
+
+1. Run `hexo migrate 1.4.0` in your blog directory. 
+2. It will ask you :
+  * The name of the directory that contains all of your post (default: **_posts**) 
+  * The date of your last post written with a version of Tranquil anterior to 1.4.0
+3. Your old posts will be put in **_1.4.0_old_posts** directory and the new posts in **_posts**
+
+#### Known issues
+
+##### The migration stopped after **Checking for posts without `<-- more -->` and `<!-- excerpt -->` tag** step
+
+We don't know if it come from Node.js (from specific version or not) or permissions of the directory which contains posts but follow these steps to fix this issue :
+
+1. Rename your posts directory
+2. Create a directory : **_posts**
+3. Move all of your posts in **_posts** directory
+4. Re-run migration script
+ 
 ## Writing posts ##
 
 To write articles, you have to user Markdown langague. [Here](https://guides.github.com/features/mastering-markdown/#examples) you can find the main basics of Markdown syntax.   
 Please note, there are many different versions of Markdown and some of them are not supported by Hexo.  
 To use tags plugins to highlight code or add Fancybox image, please read [Hexo docs](https://hexo.io/docs/tag-plugins.html)
 
- **I STRONGLY recommend you to use a CDN to speed up loading of pages. There is many free CDN like Cloudinary or you can also use indirectly by using services like Google Photos.**
+**I STRONGLY recommend you to use a CDN to speed up loading of pages. There is many free CDN like Cloudinary or you can also use indirectly by using services like Google Photos.**
 
 ### Front-matter settings ###
 
 Tranquilpeak introduces new variables to give you a lot of possibilities.  
+
+**Since Tranquilpeak 1.7, if you declare some photos in `photos` varible with a caption or an thumbnail url, please use `gallery` variable name instead of `photos` otherwise Hexo will generate wrong url for these images in open graph meta tag.**
   
 Example :  
 ``` markdown
@@ -446,11 +519,11 @@ coverImage: image-2.png
 coverCaption: "A beautiful sunrise"
 coverMeta: out
 coverImage: image-2.png
-photos:
+gallery:
     - image-3.jpg "New York"
     - image-4.png "Paris"
     - http://i.imgur.com/o9r19kD.jpg "Dubai"
-    - https://lh3.googleusercontent.com/1GLR8xt-w1024-h686-no "Sidney"
+    - https://example.com/orignal.jpg https://example.com/thumbnail.jpg "Sidney"
 comments: false
 ```
 
@@ -476,7 +549,7 @@ The same with : `thumbnailImagePosition` set to `left`:
 - **coverSize**: `partial`: cover image take a part of the screen height (60%), `full`: cover image take the entire screen height.
 - **coverCaption** : Add a caption under the cover image : [Cover caption demo](http://louisbarranqueiro.github.io/hexo-theme-tranquilpeak/2015/05/13/Cover-image-showcase/)
 - **coverMeta** : `in`: display post meta (title, date and categories) on cover image, `out`: display meta (title, date and categories) under cover image as usual. Default behavior : `in`
-- **photos** : Images displayed in an image gallery (with fancybox) at the end of the post. If thumbnail image is not configured and cover image too, the first photo is used as thumbnail image. format: `url [caption]`, E.g : `https://lh3.googleusercontent.com/1GLR8xt-w1024-h686-no "New York"`
+- **gallery** : **Formerly **photos**. Images displayed in an image gallery (with fancybox) at the end of the post. If thumbnail image is not configured and cover image too, the first photo is used as thumbnail image. format: `original url [thumbnail url] [caption]`, E.g : `https://example.com/original.jpg https://example.com/thumbnail.jpg "New York"`
 - **comments** : Disable the comment of the post.
 
 **The relative path of images entered is : `source/_posts/{YOUR_POST_TITLE}/`, you just have to enter the name of the image without domain name and path like written just above.  
@@ -490,7 +563,7 @@ Tranquilpeak v1.4.0 introduce a new way to define post excerpt with `<!-- excerp
 
 ### Display all post content ###
 
-** To display all post content on index page, don't put `<!-- more -->` and `<!-- excerpt -->` comment in your post content.**
+**To display all post content on index page, don't put `<!-- more -->` and `<!-- excerpt -->` comment in your post content.**
 
 ### Display table of contents ###
 
@@ -504,7 +577,7 @@ Here is what looks like the table of contents generated:
 Tranquilpeak introduce new tags to display alert messages, images in full width and create beautiful galleries.
 **DON'T use anymore fancybox tag**. Please use `image` tag with `fancybox` class to generate them. More information here : [Image tag](#image) 
 
-#### Alert ###
+#### Alert
 
 ![alert-tag](https://s3-ap-northeast-1.amazonaws.com/tranquilpeak-hexo-theme/docs/1.6/alert-tag.png)
 
@@ -531,7 +604,7 @@ Here is a danger alert without icon
         - **danger** : danger style  
         - **no-icon** : hide icon of alert  
 
-#### Highlight Text ####
+#### Highlight Text
 
 ![highlight_text-tag](https://s3-ap-northeast-1.amazonaws.com/tranquilpeak-hexo-theme/docs/1.6/highlight_text-tag.png)
 
@@ -579,14 +652,13 @@ E.g (rgba color) :
 <p>Sed imperdiet urna et quam ultrices {% hl_text rgba(12, 12, 12, 0.4) %}your highlighted text{% endhl_text %} dignissim ultrices libero.</p>
 ```
 
-#### Image ####
+#### Image
 
 Image tag is useful to add images and create beautiful galleries. Check what are the possibilities here : [Image tag demo](http://louisbarranqueiro.github.io/hexo-theme-tranquilpeak/2014/10/29/Tags-plugins-showcase/#Images)
 
-Syntax : `{% image [classes] /path/to/image [/path/to/thumbnail] [width of thumbnail] [height of thumbnail] [title text] %}`  
-E.g : `{% image fancybox right clear image2.png http://google.fr/images/image125.png 150px 300px "A beautiful sunrise" %}`  
-
-- **classes (optionnal)** : You can add css classes to stylize the image. Separate class with whitespace. Tranquilpeak integrate many css class to create nice effects :  
+Syntax : `{% image [classes] group:group-name /path/to/image [/path/to/thumbnail] [width of thumbnail] [height of thumbnail] [title text] %}`  
+E.g : `{% image fancybox right clear group:travel image2.png http://google.fr/images/image125.png 150px 300px "A beautiful sunrise" %}`
+- **classes (optional)** : You can add css classes to stylize the image. Separate class with whitespace. Tranquilpeak integrate many css class to create nice effects :  
         - **fancybox** : Generate a fancybox image.  
         - **nocaption** : Caption of the image will not be displayed.  
         - **left** : Image will float at the left.  
@@ -599,13 +671,49 @@ E.g : `{% image fancybox right clear image2.png http://google.fr/images/image125
         - **fig-75** : Image will take 75% of the width of post width and automatically float at left.  
         - **fig-100** : Image will take 100% of the width of post width.  
         - **clear** : Add a div with `clear:both;` style attached after the image to retrieve the normal flow of the post.  
+- **Group** : Name of a group, used to create a gallery. **Only for image with `fancybox` css class** (optional) 
 - **Orignal image** : Path to the original image.  
-- **Thumbnail image (optionnal)** : Path to the thumbnail image. If empty, the orignal image will be displayed.  
-- **Width of thumbnail image (optionnal)** : Width to the thumbnail image. If the thumbnail image is empty, width will be attached to thumbnail image created from original image. E.g : `150px` or `85%`.  
-- **Height of thumbnail image (optionnal)** : Height to the thumbnail image. If the thumbnail image is empty, height will be attached to thumbnail image created from original image. E.g : `300px` or `20%`.  
-- **Title (optionnal)** : Title of image displayed in a caption under image. `Alt` HTML attribute will use this title. E.g : `"A beautiful sunrise"`.  
-  
-#### Wide image ####
+- **Thumbnail image (optional)** : Path to the thumbnail image. If empty, the orignal image will be displayed.  
+- **Width of thumbnail image (optional)** : Width to the thumbnail image. If the thumbnail image is empty, width will be attached to thumbnail image created from original image. E.g : `150px` or `85%`.  
+- **Height of thumbnail image (optional)** : Height to the thumbnail image. If the thumbnail image is empty, height will be attached to thumbnail image created from original image. E.g : `300px` or `20%`.  
+- **Title (optional)** : Title of image displayed in a caption under image. `Alt` HTML attribute will use this title. E.g : `"A beautiful sunrise"`.  
+ 
+#### Tabbed code block
+
+Tabbed code blocks are useful to group multiple code blocks related. For example, the source code of a web component (html, css and js). Or compare a source code in different languages.
+
+![tabbed_codeblock-tag](https://s3-ap-northeast-1.amazonaws.com/tranquilpeak-hexo-theme/docs/1.7/tabbed_codeblock-tag.png)
+
+Check it live : [tabbed code block demo](http://louisbarranqueiro.github.io/hexo-theme-tranquilpeak/2014/10/29/Tags-plugins-showcase/#Tabbed-code-block)
+
+Syntax :
+``` js
+  {% tabbed_codeblock [name] [link] %}
+      <!-- tab [lang] -->
+          source code
+      <!-- endtab -->
+  {% endtabbed_codeblock %}
+```
+
+E.g :  
+``` js
+  {% tabbed_codeblock example http://example.com %}
+      <!-- tab js -->
+          var test = 'test';
+      <!-- endtab -->
+      <!-- tab css -->
+          .btn {
+              color: red;
+          }
+      <!-- endtab -->
+  {% endtabbed_codeblock %}
+``` 
+
+- **name (optional)** :  Name of the code block, or of the file
+- **link (optional)** :  Link to a demo, or a file
+- **lang (optional)** :  Programming language use for the current tab
+
+#### Wide image
 
 Wide image tag is useful to display wide images in full width. It take the entire window width. Check the the result : [Wide image tag demo](http://louisbarranqueiro.github.io/hexo-theme-tranquilpeak/2014/10/29/Tags-plugins-showcase/#Wide-images)
 
@@ -613,12 +721,12 @@ Syntax : `{% wide_image /path/to/image [title text] %}`
 E.g : `{% wide_image http://google.fr/images/image125.png "A beautiful sunrise" %}`  
 
 - **image** : Path to the original image.  
-- **Title (optionnal)** : Title of image displayed in a caption under image. `Alt` HTML attribute will use this title. E.g : `"A beautiful sunrise"`.  
+- **Title (optional)** : Title of image displayed in a caption under image. `Alt` HTML attribute will use this title. E.g : `"A beautiful sunrise"`.  
 
-#### Fancybox ####
+#### Fancybox
 
 `fancybox` tag is deprecated since Tranquilpeak 1.3. Please use `image` tag with `fancybox` class to generate them. More information here : [Image tag](#image) 
-        
+  
 ## Running ##
 
 Run `hexo server` and start writing! :)
