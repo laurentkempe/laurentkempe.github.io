@@ -65,6 +65,8 @@ pagination_dir: page
 ## Themes: http://hexo.io/themes/
 theme: tranquilpeak
 
+cname: laurentkempe.com
+
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
