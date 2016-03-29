@@ -89,7 +89,7 @@ sidebar:
     rss:
         rss:
             title: global.rss
-            url: /atom.xml
+            url: http://feeds.feedburner.com/laurentkempe
             icon: rss
 
 
