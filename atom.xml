@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://laurentkempe.com/"/>
-  <updated>2018-05-29T15:42:44.712Z</updated>
+  <updated>2018-05-30T20:20:28.800Z</updated>
   <id>https://laurentkempe.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Automating my development machine installation</title>
+    <link href="https://laurentkempe.com/2018/05/30/Automating-development-machine-installation/"/>
+    <id>https://laurentkempe.com/2018/05/30/Automating-development-machine-installation/</id>
+    <published>2018-05-30T16:27:11.000Z</published>
+    <updated>2018-05-30T20:20:28.800Z</updated>
+    
+    <content type="html"><![CDATA[<p>Since Microsoft went to <a href="https://docs.microsoft.com/en-us/windows/deployment/update/waas-quick-start" target="_blank" rel="noopener">Windows as a service</a>, so since Windows 10, I fully re-install my development machine, a Surface Book, with each main release of Windows.</p><p>As I hate to loose time, I quickly searched a way to automate it, so that it is fast, repeatable and does the work, not me.</p><a id="more"></a><p>Continue with text displayed on the blog page</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Since Microsoft went to &lt;a href=&quot;https://docs.microsoft.com/en-us/windows/deployment/update/waas-quick-start&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Windows as a service&lt;/a&gt;, so since Windows 10, I fully re-install my development machine, a Surface Book, with each main release of Windows.&lt;/p&gt;
+&lt;p&gt;As I hate to loose time, I quickly searched a way to automate it, so that it is fast, repeatable and does the work, not me.&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Windows" scheme="https://laurentkempe.com/tags/Windows/"/>
+    
+      <category term="PowerShell" scheme="https://laurentkempe.com/tags/PowerShell/"/>
+    
+  </entry>
   
   <entry>
     <title>Debugging into ASP.NET Core 2.0 source code</title>
@@ -462,26 +485,6 @@
       <category term="Jetbrains" scheme="https://laurentkempe.com/tags/Jetbrains/"/>
     
       <category term="Scala" scheme="https://laurentkempe.com/tags/Scala/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Uninstalling a program which doesn&#39;t want to on Windows 8.1</title>
-    <link href="https://laurentkempe.com/2013/09/19/Uninstalling-a-program-which-doesnt-want-to-on-Windows-81/"/>
-    <id>https://laurentkempe.com/2013/09/19/Uninstalling-a-program-which-doesnt-want-to-on-Windows-81/</id>
-    <published>2013-09-19T17:37:00.000Z</published>
-    <updated>2013-09-19T17:40:02.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>I updated to Windows 8.1 RTM a week ago and since that time I had the issue that AMD Radeon™ RAMDisk was not running but even worse I could not uninstall it because the uninstaller was saying that it was the wrong version of the operating system!<br>I was using it on Windows 8, it was working great on it but after the update it wasn’t anymore.</p><a id="more"></a><p>The solution I found is to use <a href="http://support.microsoft.com/mats/program_install_and_uninstall/" target="_blank" rel="noopener"><strong>Microsoft Fix It – “Fix problems with programs that can’t be installed or uninstalled”</strong></a>. I followed the wizard, could pick up that I had an uninstall issue then I could choose which software was in trouble and finally could uninstall it!</p><p>Great tool! Thanks <strong>Microsoft Fix it!</strong></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;I updated to Windows 8.1 RTM a week ago and since that time I had the issue that AMD Radeon™ RAMDisk was not running but even worse I could not uninstall it because the uninstaller was saying that it was the wrong version of the operating system!&lt;br&gt;I was using it on Windows 8, it was working great on it but after the update it wasn’t anymore.&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Windows" scheme="https://laurentkempe.com/tags/Windows/"/>
     
   </entry>
   

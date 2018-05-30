@@ -211,6 +211,54 @@
                 <section class="postShorten-group main-content-wrap">
     
     
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2010/05/22/Missing-a-little-FileAccessRead-and-it-doesne28099t-work/">
+                            Missing a little FileAccess.Read and it doesn’t work
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2010-05-22T01:19:21+02:00">
+	
+		    May 22, 2010
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p>What is the difference between this code</p>
+<div style="line-height:135%; padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:4f938988-5f57-401f-aa50-3fabd8f1c6ed" class="wlWriterEditableSmartContent"> <div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt"> <div style="background-color: #ffffff; overflow: auto; padding: 2px 5px; white-space: nowrap"><span style="color:#0000ff">using</span> (<span style="color:#0000ff">var</span> fileStream = <span style="color:#0000ff">new</span> <span style="color:#2b91af">FileStream</span>(settingsFilename,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#2b91af">FileMode</span>.Open))<br> {<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000ff">return</span> ReadSettings(fileStream);<br> }</div> </div> </div><br>And this code<br><br><div style="line-height:135%; padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:d23edba0-0809-4467-80de-7e73647d4a04" class="wlWriterEditableSmartContent"> <div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt"> <div style="background-color: #ffffff; overflow: auto; padding: 2px 5px; white-space: nowrap"><span style="color:#0000ff">using</span> (<span style="color:#0000ff">var</span> fileStream = <span style="color:#0000ff">new</span> <span style="color:#2b91af">FileStream</span>(settingsFilename,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#2b91af">FileMode</span>.Open,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#2b91af">FileAccess</span>.Read))<br> {<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000ff">return</span> ReadSettings(fileStream);<br> }</div> </div> </div>  
+
+<p>Almost nothing, just a little <strong>FileAccess.Read</strong> !</p>
+<p>But this little thing makes a big difference when you run your software in a secured environment.</p>
+<p>The application with this piece of code was deployed to a customer reporting that the application was crashing at a the point of reading the settings. Weird, really weird. After getting back the log and I finally discovered that using juste FileMode.Open needs modify rights and that’s was the issue because the customer deploy the settings file on a folder in which the user doesn’t have the modify rights.</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2010/05/22/Missing-a-little-FileAccessRead-and-it-doesne28099t-work/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
     <article class="postShorten postShorten--thumbnailimg-right">
         <div class="postShorten-wrap">
             
@@ -542,45 +590,6 @@
 <p>The project goal was to have our own branded short URL service: <a href="http://jobp.in" target="_blank" rel="noopener">http://jobp.in</a><br>
                     
                         <a href="/2010/05/04/Jobping-Open-Source-Short-URLs-Service/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2010/04/27/Press-Release-Jobping-launches-niche-job-website-listing-Microsoft-skilled-vacancies/">
-                            Press Release - Jobping launches niche job website listing Microsoft skilled vacancies
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2010-04-27T17:03:57+02:00">
-	
-		    Apr 27, 2010
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p><a href="http://blog.jobping.com/2010/04/jobping-launches-niche-job-website.html" target="_blank" rel="noopener">Press Release</a></p>
-<blockquote>
-<p><em>Sydney, Australia - April 22, 2010<strong> - </strong>Last week, Jobping, a new job posting web site aimed specifically at job seekers and employers who work with Microsoft technologies, was released into public beta.</em><br>
-                    
-                        <a href="/2010/04/27/Press-Release-Jobping-launches-niche-job-website-listing-Microsoft-skilled-vacancies/" class="postShorten-excerpt_link link">
                             Continue reading
                         </a>
                         
