@@ -1,0 +1,530 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>NFOP new way of creating the Pdf - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"I was asked about the new way to work with NFOP to generate the pdf withoutthe old Engine class. So here is what I am doing:\n  1 #region Using  2  3 using System.Net;  4 using System.Reflection;  5 using System.Xml;  6 using System.Xml.Xsl;  7 using java.io;  8 using log4net;  9 using org.apache.fop.apps; 10 using org.xml.sax; 11 using TechHeadBrothers.Portal.UI; 12 using StringWriter = System.IO.StringWriter; 13 14 #endregion 15 16 namespace TechHeadBrothers.TechHeadBrothers.Portal.UI 17 { 18     ///  19     /// Strategy to print PDF using FOP 20     ///  21     public class FOPPrintStrategy : PrintStrategy 22     { 23         #region Logging Definition 24 25         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType); 26 27         #endregion 28 29         protected override void Print(PrintArticle page, string xmlpath, string xslpah, XsltArgumentList xsltargs) 30         { 31             string fullFoDoc = XmlContentToFoContent(page, xmlpath, xslpah); 32 33             InputSource source = new InputSource(fullFoDoc); 34             ByteArrayOutputStream output = new ByteArrayOutputStream(); 35 36             try 37             { 38                 Driver driver = new Driver(source, output); 39                 driver.setRenderer(Driver.RENDER_PDF); 40                 driver.run(); 41                 output.close(); 42 43                 int sz = output.buf.Length; 44                 byte[] pdf = new byte[sz]; 45                 for (int i = 0; i &lt; sz; i++) 46                     pdf[i] = (byte) output.buf[i]; 47 48                 page.Response.ClearHeaders(); 49                 page.Response.Clear(); 50 51                 page.Response.AddHeader(“Content-Disposition”, “attachment; filename=TechHeadBrothers.pdf”); 52                 page.Response.ContentType = “application/octet-stream”; 53 54                 page.Response.Flush(); 55                 page.Response.BinaryWrite(pdf); 56                 page.Response.End(); 57             } 58             catch (FOPException fope) 59             { 60                 if (log.IsDebugEnabled) 61                     log.Debug(fope.getMessage()); 62             } 63         } 64 }\n","dateCreated":"2005-03-18T03:26:00+01:00","dateModified":"2005-03-18T03:26:00+01:00","datePublished":"2005-03-18T03:26:00+01:00","description":"","headline":"NFOP new way of creating the Pdf","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2005/03/18/NFOP-new-way-of-creating-the-Pdf/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2005/03/18/NFOP-new-way-of-creating-the-Pdf/","keywords":"Tech Head Brothers, .NET Development"}</script>
+    <meta name="description" content="I was asked about the new way to work with NFOP to generate the pdf withoutthe old Engine class. So here is what I am doing:   1 #region Using  2  3 using System.Net;  4 using System.Reflection;  5 us">
+<meta name="keywords" content="Tech Head Brothers,.NET Development">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="NFOP new way of creating the Pdf">
+<meta property="og:url" content="https://laurentkempe.com/2005/03/18/NFOP-new-way-of-creating-the-Pdf/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="I was asked about the new way to work with NFOP to generate the pdf withoutthe old Engine class. So here is what I am doing:   1 #region Using  2  3 using System.Net;  4 using System.Reflection;  5 us">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2005-03-18T02:26:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NFOP new way of creating the Pdf">
+<meta name="twitter:description" content="I was asked about the new way to work with NFOP to generate the pdf withoutthe old Engine class. So here is what I am doing:   1 #region Using  2  3 using System.Net;  4 using System.Reflection;  5 us">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            NFOP new way of creating the Pdf
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2005-03-18T03:26:00+01:00">
+	
+		    Mar 18, 2005
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>I was asked about the new way to work with <a href="http://nfop.sourceforge.net/" target="_blank" rel="noopener">NFOP</a> to generate the pdf without<br>the old Engine class. So here is what I am doing:</p>
+<p><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  1</span> <font color="blue">#region</font> Using<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  2</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  3</span> <font color="blue">using</font> System.Net;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  4</span> <font color="blue">using</font> System.Reflection;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  5</span> <font color="blue">using</font> System.Xml;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  6</span> <font color="blue">using</font> System.Xml.Xsl;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  7</span> <font color="blue">using</font> java.io;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  8</span> <font color="blue">using</font> log4net;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  9</span> <font color="blue">using</font> org.apache.fop.apps;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 10</span> <font color="blue">using</font> org.xml.sax;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 11</span> <font color="blue">using</font> TechHeadBrothers.Portal.UI;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 12</span> <font color="blue">using</font> StringWriter = System.IO.StringWriter;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 13</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 14</span> <font color="blue">#endregion</font><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 15</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 16</span> <font color="blue">namespace</font> TechHeadBrothers.TechHeadBrothers.Portal.UI<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 17</span> {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 18</span>     <font color="gray">/// <summary><br></summary></font><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 19</span>     <font color="gray">/// Strategy to print PDF using FOP<br></font><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 20</span>     <font color="gray">/// <br></font><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 21</span>     <font color="blue">public</font> <font color="blue">class</font> FOPPrintStrategy : PrintStrategy<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 22</span>     {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 23</span>         <font color="blue">#region</font> Logging Definition<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 24</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 25</span>         <font color="blue">private</font> <font color="blue">static</font> <font color="blue">readonly</font> ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 26</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 27</span>         <font color="blue">#endregion</font><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 28</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 29</span>         <font color="blue">protected</font> <font color="blue">override</font> <font color="blue">void</font> Print(PrintArticle page, <font color="blue">string</font> xmlpath, <font color="blue">string</font> xslpah, XsltArgumentList xsltargs)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 30</span>         {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 31</span>             <font color="blue">string</font> fullFoDoc = XmlContentToFoContent(page, xmlpath, xslpah);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 32</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 33</span>             InputSource source = <font color="blue">new</font> InputSource(fullFoDoc);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 34</span>             ByteArrayOutputStream output = <font color="blue">new</font> ByteArrayOutputStream();<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 35</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 36</span>             <font color="blue">try</font><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 37</span>             {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 38</span>                 Driver driver = <font color="blue">new</font> Driver(source, output);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 39</span>                 driver.setRenderer(Driver.RENDER_PDF);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 40</span>                 driver.run();<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 41</span>                 output.close();<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 42</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 43</span>                 <font color="blue">int</font> sz = output.buf.Length;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 44</span>                 <font color="blue">byte</font>[] pdf = <font color="blue">new</font> <font color="blue">byte</font>[sz];<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 45</span>                 <font color="blue">for</font> (<font color="blue">int</font> i = <font color="maroon">0</font>; i &lt; sz; i++)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 46</span>                     pdf[i] = (<font color="blue">byte</font>) output.buf[i];<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 47</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 48</span>                 page.Response.ClearHeaders();<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 49</span>                 page.Response.Clear();<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 50</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 51</span>                 page.Response.AddHeader(<font color="maroon">“Content-Disposition”</font>, <font color="maroon">“attachment; filename=TechHeadBrothers.pdf”</font>);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 52</span>                 page.Response.ContentType = <font color="maroon">“application/octet-stream”</font>;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 53</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 54</span>                 page.Response.Flush();<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 55</span>                 page.Response.BinaryWrite(pdf);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 56</span>                 page.Response.End();<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 57</span>             }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 58</span>             <font color="blue">catch</font> (FOPException fope)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 59</span>             {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 60</span>                 <font color="blue">if</font> (log.IsDebugEnabled)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 61</span>                     log.Debug(fope.getMessage());<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 62</span>             }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 63</span>         }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 64</span> }</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/NET-Development/">.NET Development</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tech-Head-Brothers/">Tech Head Brothers</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2005/03/18/8-(-8-(-8-(-8-(-8-(-8-(-FURIOUS-!!!!!-(-(-(-(-(-(-(-/" data-tooltip="8-( 8-( 8-( 8-( 8-( 8-(  FURIOUS !!!!! :-( :-( :-( :-( :-( :-( :-( " aria-label="PREVIOUS: 8-( 8-( 8-( 8-( 8-( 8-(  FURIOUS !!!!! :-( :-( :-( :-( :-( :-( :-( ">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2005/03/16/Creating-PDF-with-NET/" data-tooltip="Creating PDF with .NET" aria-label="NEXT: Creating PDF with .NET">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2005/03/18/NFOP-new-way-of-creating-the-Pdf/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2005/03/18/NFOP-new-way-of-creating-the-Pdf/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2005/03/18/NFOP-new-way-of-creating-the-Pdf/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2005/03/18/8-(-8-(-8-(-8-(-8-(-8-(-FURIOUS-!!!!!-(-(-(-(-(-(-(-/" data-tooltip="8-( 8-( 8-( 8-( 8-( 8-(  FURIOUS !!!!! :-( :-( :-( :-( :-( :-( :-( " aria-label="PREVIOUS: 8-( 8-( 8-( 8-( 8-( 8-(  FURIOUS !!!!! :-( :-( :-( :-( :-( :-( :-( ">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2005/03/16/Creating-PDF-with-NET/" data-tooltip="Creating PDF with .NET" aria-label="NEXT: Creating PDF with .NET">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2005/03/18/NFOP-new-way-of-creating-the-Pdf/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2005/03/18/NFOP-new-way-of-creating-the-Pdf/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2005/03/18/NFOP-new-way-of-creating-the-Pdf/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2005/03/18/NFOP-new-way-of-creating-the-Pdf/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2005/03/18/NFOP-new-way-of-creating-the-Pdf/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2005/03/18/NFOP-new-way-of-creating-the-Pdf/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2005/03/18/NFOP-new-way-of-creating-the-Pdf/';
+                 
+                    this.page.identifier = '20050318032600';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

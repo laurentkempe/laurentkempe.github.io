@@ -1,0 +1,612 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Build ClickOnce deployment packages using MSBuild and Team City - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"The other day I was requested to automate our build process to issue different ClickOnce.aspx) setup for the same application. The main difference was some configuration files pointing to different back end web services.\nTo start I had to create new build configurations on Team City which used the following settings for the Build Runner:\n\nTargets: Rebuild Publish \nConfiguration: One per build configurations; e.g DeployClickOnce, integrationDeployClickOnce   \n\n \nThen in my Visual Studio 2008 solution I created several Solution configuration reflecting the different configurations that I needed during my deployment, e.g. DeployClickOnce\n \nThen using the project properties from the solution explorer in Visual Studio I had to set all Publish options I was interested in; Publish Location, Installation Folder Url, Install Mode and Settings, Prerequisites…\n[](http://weblogs.asp.net/blogs/lkempe/4048988539_2a9f77285f_o1_1B4BC744.png)\nThe issue now is that the Publish Version automatically increment the revision with each publish. But this doesn’t work with our continuous integration server Team City as it would need to checkin the modified file back to subversion. SO a different approach was needed.\nThe solution I used is to use the Build Number offered by Team City, so I had to modify the MSBuild script to use the the BUILD_NUMBER. To do that, right click in the Solution Explorer on our project and select Edit Project File:\n[](http://weblogs.asp.net/blogs/lkempe/4049748852_2ea06972ca_o1_650A035A.png) \nThen you will face the your MSBuild script, and you will have to search for the configuration that we defined some steps before:     \n\n&lt;PropertyGroup Condition=“ ‘$(Configuration)|$(Platform)’ == ‘DeployClickOnce|AnyCPU’ “&gt;     \n\nThen before the end of the closing PropertyGroupd tag add the following lines:     \n\n\n&lt;ApplicationRevision&gt;$(BUILD_NUMBER)&lt;/ApplicationRevision&gt;\n&lt;InstallUrl&gt;http://myserver.com/&lt;/InstallUrl&gt;\n&lt;/PropertyGroup&gt;     \n\nApplicationRevision will overwrite the Application revision using the BUILD_NUMBER defined by Team City.\nInstallUrl is another configuration that we want to override because we want to create multiple ClickOnce setup installed from different urls. So for DeployClickOnce you will have an InstallURL and for integrationDeployClickOnce you will have another one.\nNow we are ready for the final step in which we want to exchange some configuration files related to the different ClickOnce builds and Publish the output to an IIS server so that our testers can access the different ClickOnce package for the different stages.\nClickOnce secure the different files that are created with checksums so that they cannot be mitigated during the installment transfer. So the only option we have to be able to exchange our configuration files is before compilation. So we had a Target to our MSBuild script:     \n\n&lt;Target Name=“BeforeCompile“&gt;\n&lt;CallTarget Targets=“ExchangeDefaultSettings“ ContinueOnError=“false“ /&gt;\n&lt;CallTarget Targets=“ExchangeAppConfig“ ContinueOnError=“false“ /&gt;\n&lt;/Target&gt;     \n\nThe BeforeCompile target will be called before each build and will exchange our App.config and another settings file containing stage dependant configuration.\nHere is the simple target which exchanges the App.config stored in a configs folder:     \n\n&lt;Target Name=“ExchangeAppConfig“&gt;\n&lt;Message Text=“####### CONFIG Exchange $(Configuration)|$(Platform)  ———#“ /&gt;\n&lt;Copy Condition=“ ‘$(Configuration)’ == ‘DeployClickOnce’ “ \nSourceFiles=“$(SolutionFolder)\\Sources\\Application\\configs\\localhost.App.config“ \nDestinationFiles=“$(SolutionFolder)\\Sources\\Application\\App.config“ \nContinueOnError=“false“ /&gt;\n&lt;Copy Condition=“ ‘$(Configuration)’ == ‘integrationDeployClickOnce’ “ \nSourceFiles=“$(SolutionFolder)\\Sources\\Application\\configs\\integration.App.config“ \nDestinationFiles=“$(SolutionFolder)\\Sources\\Application\\App.config“ \nContinueOnError=“false“ /&gt;\n&lt;/Target&gt;     \n\nThe ExchangeDefaultSettings Target works the same.\nSo before any compilation of our solution using the DeployClickOnce, integrationDeployClickOnce solution configuration the App.config and the default settings file are exchanged. So after the compilation they will be correct according to the stage that we target.\nThe final step is to Publish the ClickOnce package created to the IIS server. As we defined the Targets: Rebuild Publish, there will be a Rebuild and then a Publish phase in our build script. So now we have to take care of the Publish target.\nSo we add a Target Publish as here:     \n\n&lt;Target Name=“Publish“&gt;\n&lt;CallTarget Condition=“ ‘$(Configuration)’ == ‘DeployClickOnce’ “ \nTargets=“DeployClickOnce“ \nContinueOnError=“false“ /&gt;\n&lt;CallTarget Condition=“ ‘$(Configuration)’ == ‘integrationDeployClickOnce’ “ \nTargets=“DeployClickOnce“ \nContinueOnError=“false“ /&gt;\n&lt;/Target&gt;     \n\nWhich just call a Target DeployClickOnce for the configuration we are interested in: DeployClickOnce and integrationDeployClickOnce.\nThe DeployClickOnce Target is responsible to xcopy the packages created by the Publish Target to the different IIS path used to host our ClickOnce deployment setup:     \n\n\n&lt;Target Name=“DeployClickOnce“&gt;\n&lt;Message Text=“####### Deploy ClickOnce $(Configuration)|$(Platform)  ———#“ /&gt;\n&lt;Exec Command=“xcopy /E /Y $(ClickOnceSrc)*.* $(ClickOnceDestination)“ /&gt;\n&lt;/Target&gt;     \n\nThis is achieved by using two variables ClickOnceSrc and ClickOnceDestination which are also defined per solution configuration like the ApplicationUrl and InstallUrl. The destination is a folder on a IIS server which already has a manually customized Publish.htm file.     \n\n&lt;PropertyGroup Condition=“ ‘$(Configuration)|$(Platform)’ == ‘DeployClickOnce|AnyCPU’ “&gt;\n&lt;ClickOnceSrc&gt;$(TestsFolder)\\Output\\$(OutputPath)app.publish&lt;/ClickOnceSrc&gt;\n&lt;ClickOnceDestination&gt;E:\\Inetpub\\Application&lt;/ClickOnceDestination&gt;     \n\nAnd     \n\n&lt;PropertyGroup Condition=“ ‘$(Configuration)|$(Platform)’ == ‘integrationDeployClickOnce|AnyCPU’ “&gt;\n&lt;ClickOnceSrc&gt;$(TestsFolder)\\Output\\$(OutputPath)app.publish&lt;/ClickOnceSrc&gt;\n&lt;ClickOnceDestination&gt;E:\\Inetpub\\Application\\integration&lt;/ClickOnceDestination&gt;     \n\nNow you have two build configurations which output two valid ClickOnce setup packages using different stage dependant configurations that your tester can install directly from your ClickOnce web site. And if you have configured the automatic update of the application through the ClickOnce Application Updates then the applciation will be updated automatically when a tester start you application.\nEnjoy!\n","dateCreated":"2009-10-27T20:25:26+01:00","dateModified":"2009-10-27T20:25:26+01:00","datePublished":"2009-10-27T20:25:26+01:00","description":"The other day I was requested to automate our build process to issue different ClickOnce.aspx) setup for the same application. The main difference was some configuration files pointing to different back end web services.\nTo start I had to create new build configurations on Team City which used the following settings for the Build Runner:","headline":"Build ClickOnce deployment packages using MSBuild and Team City","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2009/10/27/Build-ClickOnce-deployment-packages-using-MSBuild-and-Team-City/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2009/10/27/Build-ClickOnce-deployment-packages-using-MSBuild-and-Team-City/"}</script>
+    <meta name="description" content="The other day I was requested to automate our build process to issue different ClickOnce.aspx) setup for the same application. The main difference was some configuration files pointing to different ba">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Build ClickOnce deployment packages using MSBuild and Team City">
+<meta property="og:url" content="https://laurentkempe.com/2009/10/27/Build-ClickOnce-deployment-packages-using-MSBuild-and-Team-City/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="The other day I was requested to automate our build process to issue different ClickOnce.aspx) setup for the same application. The main difference was some configuration files pointing to different ba">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://weblogs.asp.net/blogs/lkempe/4049721154_08aa444fd1_o1_thumb_12F817BA.png">
+<meta property="og:image" content="http://weblogs.asp.net/blogs/lkempe/4048977891_8fef52e1df_o1_thumb_4F606697.png">
+<meta property="og:image" content="http://weblogs.asp.net/blogs/lkempe/4048988539_2a9f77285f_o1_thumb_614C5E8A.png">
+<meta property="og:image" content="http://weblogs.asp.net/blogs/lkempe/4049748852_2ea06972ca_o1_thumb_238F5101.png">
+<meta property="og:updated_time" content="2009-10-27T19:25:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Build ClickOnce deployment packages using MSBuild and Team City">
+<meta name="twitter:description" content="The other day I was requested to automate our build process to issue different ClickOnce.aspx) setup for the same application. The main difference was some configuration files pointing to different ba">
+<meta name="twitter:image" content="http://weblogs.asp.net/blogs/lkempe/4049721154_08aa444fd1_o1_thumb_12F817BA.png">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Build ClickOnce deployment packages using MSBuild and Team City
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2009-10-27T20:25:26+01:00">
+	
+		    Oct 27, 2009
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>The other day I was requested to automate our build process to issue different <a href="http://msdn.microsoft.com/en-us/library/t71a733d(VS.80" target="_blank" rel="noopener">ClickOnce</a>.aspx) setup for the same application. The main difference was some configuration files pointing to different back end web services.</p>
+<p>To start I had to create new build configurations on <a href="http://www.jetbrains.com/teamcity/index.html" target="_blank" rel="noopener">Team City</a> which used the following settings for the Build Runner:<br><a id="more"></a></p>
+<ol>
+<li><strong>Targets</strong>: Rebuild Publish </li>
+<li><strong>Configuration</strong>:<strong> </strong>One per build configurations; e.g<strong> </strong>DeployClickOnce, integrationDeployClickOnce   </li>
+</ol>
+<p><a href="http://weblogs.asp.net/blogs/lkempe/4049721154_08aa444fd1_o1_1C3452FB.png" target="_blank" rel="noopener"><img src="http://weblogs.asp.net/blogs/lkempe/4049721154_08aa444fd1_o1_thumb_12F817BA.png" alt="Targets and Configuration" title="Targets and Configuration"></a> </p>
+<p>Then in my Visual Studio 2008 solution I created several Solution configuration reflecting the different configurations that I needed during my deployment, e.g. DeployClickOnce</p>
+<p><a href="http://weblogs.asp.net/blogs/lkempe/4048977891_8fef52e1df_o1_2D580AD1.png" target="_blank" rel="noopener"><img src="http://weblogs.asp.net/blogs/lkempe/4048977891_8fef52e1df_o1_thumb_4F606697.png" alt="Visual Studio 2008 solutions" title="Visual Studio 2008 solutions"></a> </p>
+<p>Then using the project properties from the solution explorer in Visual Studio I had to set all Publish options I was interested in; Publish Location, Installation Folder Url, Install Mode and Settings, Prerequisites…</p>
+<p>[<img src="http://weblogs.asp.net/blogs/lkempe/4048988539_2a9f77285f_o1_thumb_614C5E8A.png" alt="4048988539_2a9f77285f_o[1]" title="4048988539_2a9f77285f_o[1]">](<a href="http://weblogs.asp.net/blogs/lkempe/4048988539_2a9f77285f_o1_1B4BC744.png" target="_blank" rel="noopener">http://weblogs.asp.net/blogs/lkempe/4048988539_2a9f77285f_o1_1B4BC744.png</a>)</p>
+<p>The issue now is that the Publish Version automatically increment the revision with each publish. But this doesn’t work with our continuous integration server Team City as it would need to checkin the modified file back to subversion. SO a different approach was needed.</p>
+<p>The solution I used is to use the <a href="http://www.jetbrains.net/confluence/display/TCD4/Predefined+Properties#PredefinedProperties-buildNumber" target="_blank" rel="noopener">Build Number</a> offered by Team City, so I had to modify the MSBuild script to use the the BUILD_NUMBER. To do that, right click in the Solution Explorer on our project and select Edit Project File:</p>
+<p>[<img src="http://weblogs.asp.net/blogs/lkempe/4049748852_2ea06972ca_o1_thumb_238F5101.png" alt="4049748852_2ea06972ca_o[1]" title="4049748852_2ea06972ca_o[1]">](<a href="http://weblogs.asp.net/blogs/lkempe/4049748852_2ea06972ca_o1_650A035A.png" target="_blank" rel="noopener">http://weblogs.asp.net/blogs/lkempe/4049748852_2ea06972ca_o1_650A035A.png</a>) </p>
+<p>Then you will face the your MSBuild script, and you will have to search for the configuration that we defined some steps before:<br>  <div style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:68c8585d-4f35-4bb1-bc7f-3e5d6368c615" class="wlWriterEditableSmartContent"> <div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt"> <div style="background: #fff; max-height: 300px; overflow: auto"> </div></div></div></p>
+<ol>
+<li><span style="color:#0000ff">&lt;</span><span style="color:#a31515">PropertyGroup</span><span style="color:#0000ff"> </span><span style="color:#ff0000">Condition</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff"> ‘$(Configuration)|$(Platform)’ == ‘DeployClickOnce|AnyCPU’ </span>“<span style="color:#0000ff">&gt;</span>     </li>
+</ol>
+<p>Then before the end of the closing PropertyGroupd tag add the following lines:<br>  <div style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:79a05921-b262-4485-a7bb-7cce56f4a693" class="wlWriterEditableSmartContent"> <div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt"> <div style="background: #fff; max-height: 300px; overflow: auto"> </div></div></div></p>
+<ol>
+<li><span style="color:#0000ff"><!--</span><span style="color:#008000"> ClickOnce getting build number from Team City </span><span style="color:#0000ff">--></span></li>
+<li><span style="color:#0000ff">&lt;</span><span style="color:#a31515">ApplicationRevision</span><span style="color:#0000ff">&gt;</span>$(BUILD_NUMBER)<span style="color:#0000ff">&lt;/</span><span style="color:#a31515">ApplicationRevision</span><span style="color:#0000ff">&gt;</span></li>
+<li><span style="color:#0000ff">&lt;</span><span style="color:#a31515">InstallUrl</span><span style="color:#0000ff">&gt;</span><a href="http://myserver.com/" target="_blank" rel="noopener">http://myserver.com/</a><span style="color:#0000ff">&lt;/</span><span style="color:#a31515">InstallUrl</span><span style="color:#0000ff">&gt;</span></li>
+<li><span style="color:#0000ff">&lt;/</span><span style="color:#a31515">PropertyGroup</span><span style="color:#0000ff">&gt;</span>     </li>
+</ol>
+<p><strong>ApplicationRevision </strong>will overwrite the Application revision using the BUILD_NUMBER defined by Team City.</p>
+<p><strong>InstallUrl </strong>is another configuration that we want to override because we want to create multiple ClickOnce setup installed from different urls. So for DeployClickOnce you will have an InstallURL and for integrationDeployClickOnce you will have another one.</p>
+<p>Now we are ready for the final step in which we want to exchange some configuration files related to the different ClickOnce builds and Publish the output to an IIS server so that our testers can access the different ClickOnce package for the different stages.</p>
+<p>ClickOnce secure the different files that are created with checksums so that they cannot be mitigated during the installment transfer. So the only option we have to be able to exchange our configuration files is before compilation. So we had a Target to our MSBuild script:<br>  <div style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:416854f2-ad0a-41c8-8f7f-714d3c50093d" class="wlWriterEditableSmartContent"> <div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt"> <div style="background: #fff; max-height: 300px; overflow: auto"> </div></div></div></p>
+<ol>
+<li><span style="color:#0000ff">&lt;</span><span style="color:#a31515">Target</span><span style="color:#0000ff"> </span><span style="color:#ff0000">Name</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff">BeforeCompile</span>“<span style="color:#0000ff">&gt;</span></li>
+<li><span style="color:#0000ff">&lt;</span><span style="color:#a31515">CallTarget</span><span style="color:#0000ff"> </span><span style="color:#ff0000">Targets</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff">ExchangeDefaultSettings</span>“<span style="color:#0000ff"> </span><span style="color:#ff0000">ContinueOnError</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff">false</span>“<span style="color:#0000ff"> /&gt;</span></li>
+<li><span style="color:#0000ff">&lt;</span><span style="color:#a31515">CallTarget</span><span style="color:#0000ff"> </span><span style="color:#ff0000">Targets</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff">ExchangeAppConfig</span>“<span style="color:#0000ff"> </span><span style="color:#ff0000">ContinueOnError</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff">false</span>“<span style="color:#0000ff"> /&gt;</span></li>
+<li><span style="color:#0000ff">&lt;/</span><span style="color:#a31515">Target</span><span style="color:#0000ff">&gt;</span>     </li>
+</ol>
+<p>The BeforeCompile target will be called before each build and will exchange our App.config and another settings file containing stage dependant configuration.</p>
+<p>Here is the simple target which exchanges the App.config stored in a configs folder:<br>  <div style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:c416415d-7f09-45ef-86d7-5b284b6bb880" class="wlWriterEditableSmartContent"> <div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt"> <div style="background: #fff; max-height: 300px; overflow: auto"> </div></div></div></p>
+<ol>
+<li><span style="color:#0000ff">&lt;</span><span style="color:#a31515">Target</span><span style="color:#0000ff"> </span><span style="color:#ff0000">Name</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff">ExchangeAppConfig</span>“<span style="color:#0000ff">&gt;</span></li>
+<li><span style="color:#0000ff">&lt;</span><span style="color:#a31515">Message</span><span style="color:#0000ff"> </span><span style="color:#ff0000">Text</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff">####### CONFIG Exchange $(Configuration)|$(Platform)  ———#</span>“<span style="color:#0000ff"> /&gt;</span></li>
+<li><span style="color:#0000ff">&lt;</span><span style="color:#a31515">Copy</span><span style="color:#0000ff"> </span><span style="color:#ff0000">Condition</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff"> ‘$(Configuration)’ == ‘DeployClickOnce’ </span>“<span style="color:#0000ff"> </span></li>
+<li><span style="color:#0000ff"></span><span style="color:#ff0000">SourceFiles</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff">$(SolutionFolder)\Sources\Application\configs\localhost.App.config</span>“<span style="color:#0000ff"> </span></li>
+<li><span style="color:#0000ff"></span><span style="color:#ff0000">DestinationFiles</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff">$(SolutionFolder)\Sources\Application\App.config</span>“<span style="color:#0000ff"> </span></li>
+<li><span style="color:#0000ff"></span><span style="color:#ff0000">ContinueOnError</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff">false</span>“<span style="color:#0000ff"> /&gt;</span></li>
+<li><span style="color:#0000ff">&lt;</span><span style="color:#a31515">Copy</span><span style="color:#0000ff"> </span><span style="color:#ff0000">Condition</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff"> ‘$(Configuration)’ == ‘integrationDeployClickOnce’ </span>“<span style="color:#0000ff"> </span></li>
+<li><span style="color:#0000ff"></span><span style="color:#ff0000">SourceFiles</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff">$(SolutionFolder)\Sources\Application\configs\integration.App.config</span>“<span style="color:#0000ff"> </span></li>
+<li><span style="color:#0000ff"></span><span style="color:#ff0000">DestinationFiles</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff">$(SolutionFolder)\Sources\Application\App.config</span>“<span style="color:#0000ff"> </span></li>
+<li><span style="color:#0000ff"></span><span style="color:#ff0000">ContinueOnError</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff">false</span>“<span style="color:#0000ff"> /&gt;</span></li>
+<li><span style="color:#0000ff">&lt;/</span><span style="color:#a31515">Target</span><span style="color:#0000ff">&gt;</span>     </li>
+</ol>
+<p>The ExchangeDefaultSettings Target works the same.</p>
+<p>So before any compilation of our solution using the DeployClickOnce, integrationDeployClickOnce solution configuration the App.config and the default settings file are exchanged. So after the compilation they will be correct according to the stage that we target.</p>
+<p>The final step is to Publish the ClickOnce package created to the IIS server. As we defined the <strong>Targets</strong>: Rebuild Publish, there will be a Rebuild and then a Publish phase in our build script. So now we have to take care of the Publish target.</p>
+<p>So we add a Target Publish as here:<br>  <div style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:0cd3c3b1-a3d4-4711-a329-267c0e87cd04" class="wlWriterEditableSmartContent"> <div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt"> <div style="background: #fff; max-height: 300px; overflow: auto"> </div></div></div></p>
+<ol>
+<li><span style="color:#0000ff">&lt;</span><span style="color:#a31515">Target</span><span style="color:#0000ff"> </span><span style="color:#ff0000">Name</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff">Publish</span>“<span style="color:#0000ff">&gt;</span></li>
+<li><span style="color:#0000ff">&lt;</span><span style="color:#a31515">CallTarget</span><span style="color:#0000ff"> </span><span style="color:#ff0000">Condition</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff"> ‘$(Configuration)’ == ‘DeployClickOnce’ </span>“<span style="color:#0000ff"> </span></li>
+<li><span style="color:#0000ff"></span><span style="color:#ff0000">Targets</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff">DeployClickOnce</span>“<span style="color:#0000ff"> </span></li>
+<li><span style="color:#0000ff"></span><span style="color:#ff0000">ContinueOnError</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff">false</span>“<span style="color:#0000ff"> /&gt;</span></li>
+<li><span style="color:#0000ff">&lt;</span><span style="color:#a31515">CallTarget</span><span style="color:#0000ff"> </span><span style="color:#ff0000">Condition</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff"> ‘$(Configuration)’ == ‘integrationDeployClickOnce’ </span>“<span style="color:#0000ff"> </span></li>
+<li><span style="color:#0000ff"></span><span style="color:#ff0000">Targets</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff">DeployClickOnce</span>“<span style="color:#0000ff"> </span></li>
+<li><span style="color:#0000ff"></span><span style="color:#ff0000">ContinueOnError</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff">false</span>“<span style="color:#0000ff"> /&gt;</span></li>
+<li><span style="color:#0000ff">&lt;/</span><span style="color:#a31515">Target</span><span style="color:#0000ff">&gt;</span>     </li>
+</ol>
+<p>Which just call a Target DeployClickOnce for the configuration we are interested in: DeployClickOnce and integrationDeployClickOnce.</p>
+<p>The DeployClickOnce Target is responsible to xcopy the packages created by the Publish Target to the different IIS path used to host our ClickOnce deployment setup:<br>  <div style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:833c691d-8a00-4ec6-86af-582367848b49" class="wlWriterEditableSmartContent"> <div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt"> <div style="background: #fff; max-height: 300px; overflow: auto"> </div></div></div></p>
+<ol>
+<li><span style="color:#0000ff"><!--</span><span style="color:#008000"> Deploy Click Once</span><span style="color:#0000ff">--></span></li>
+<li><span style="color:#0000ff">&lt;</span><span style="color:#a31515">Target</span><span style="color:#0000ff"> </span><span style="color:#ff0000">Name</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff">DeployClickOnce</span>“<span style="color:#0000ff">&gt;</span></li>
+<li><span style="color:#0000ff">&lt;</span><span style="color:#a31515">Message</span><span style="color:#0000ff"> </span><span style="color:#ff0000">Text</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff">####### Deploy ClickOnce $(Configuration)|$(Platform)  ———#</span>“<span style="color:#0000ff"> /&gt;</span></li>
+<li><span style="color:#0000ff">&lt;</span><span style="color:#a31515">Exec</span><span style="color:#0000ff"> </span><span style="color:#ff0000">Command</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff">xcopy /E /Y $(ClickOnceSrc)*.* $(ClickOnceDestination)</span>“<span style="color:#0000ff"> /&gt;</span></li>
+<li><span style="color:#0000ff">&lt;/</span><span style="color:#a31515">Target</span><span style="color:#0000ff">&gt;</span>     </li>
+</ol>
+<p>This is achieved by using two variables <strong>ClickOnceSrc</strong> and <strong>ClickOnceDestination</strong> which are also defined per solution configuration like the <strong>ApplicationUrl</strong> and <strong>InstallUrl</strong>. The destination is a folder on a IIS server which already has a manually customized Publish.htm file.<br>  <div style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:71ce7464-b98f-44e5-8d30-8f9bd908a5cf" class="wlWriterEditableSmartContent"> <div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt"> <div style="background: #fff; max-height: 300px; overflow: auto"> </div></div></div></p>
+<ol>
+<li><span style="color:#0000ff">&lt;</span><span style="color:#a31515">PropertyGroup</span><span style="color:#0000ff"> </span><span style="color:#ff0000">Condition</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff"> ‘$(Configuration)|$(Platform)’ == ‘DeployClickOnce|AnyCPU’ </span>“<span style="color:#0000ff">&gt;</span></li>
+<li><span style="color:#0000ff">&lt;</span><span style="color:#a31515">ClickOnceSrc</span><span style="color:#0000ff">&gt;</span>$(TestsFolder)\Output\$(OutputPath)app.publish<span style="color:#0000ff">&lt;/</span><span style="color:#a31515">ClickOnceSrc</span><span style="color:#0000ff">&gt;</span></li>
+<li><span style="color:#0000ff">&lt;</span><span style="color:#a31515">ClickOnceDestination</span><span style="color:#0000ff">&gt;</span>E:\Inetpub\Application<span style="color:#0000ff">&lt;/</span><span style="color:#a31515">ClickOnceDestination</span><span style="color:#0000ff">&gt;</span>     </li>
+</ol>
+<p>And<br>  <div style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:6b8dc035-17de-4b4c-b11f-120a7f8168ca" class="wlWriterEditableSmartContent"> <div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt"> <div style="background: #fff; max-height: 300px; overflow: auto"> </div></div></div></p>
+<ol>
+<li><span style="color:#0000ff">&lt;</span><span style="color:#a31515">PropertyGroup</span><span style="color:#0000ff"> </span><span style="color:#ff0000">Condition</span><span style="color:#0000ff">=</span>“<span style="color:#0000ff"> ‘$(Configuration)|$(Platform)’ == ‘integrationDeployClickOnce|AnyCPU’ </span>“<span style="color:#0000ff">&gt;</span></li>
+<li><span style="color:#0000ff">&lt;</span><span style="color:#a31515">ClickOnceSrc</span><span style="color:#0000ff">&gt;</span>$(TestsFolder)\Output\$(OutputPath)app.publish<span style="color:#0000ff">&lt;/</span><span style="color:#a31515">ClickOnceSrc</span><span style="color:#0000ff">&gt;</span></li>
+<li><span style="color:#0000ff">&lt;</span><span style="color:#a31515">ClickOnceDestination</span><span style="color:#0000ff">&gt;</span>E:\Inetpub\Application\integration<span style="color:#0000ff">&lt;/</span><span style="color:#a31515">ClickOnceDestination</span><span style="color:#0000ff">&gt;</span>     </li>
+</ol>
+<p>Now you have two build configurations which output two valid ClickOnce setup packages using different stage dependant configurations that your tester can install directly from your ClickOnce web site. And if you have configured the automatic update of the application through the ClickOnce Application Updates then the applciation will be updated automatically when a tester start you application.</p>
+<p>Enjoy!</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2009/11/03/TeamCity-migration-tip/" data-tooltip="TeamCity migration tip" aria-label="PREVIOUS: TeamCity migration tip">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2009/10/20/Daily-stand-up-meeting-using-Skype/" data-tooltip="Daily stand up meeting using Skype" aria-label="NEXT: Daily stand up meeting using Skype">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2009/10/27/Build-ClickOnce-deployment-packages-using-MSBuild-and-Team-City/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2009/10/27/Build-ClickOnce-deployment-packages-using-MSBuild-and-Team-City/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2009/10/27/Build-ClickOnce-deployment-packages-using-MSBuild-and-Team-City/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2009/11/03/TeamCity-migration-tip/" data-tooltip="TeamCity migration tip" aria-label="PREVIOUS: TeamCity migration tip">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2009/10/20/Daily-stand-up-meeting-using-Skype/" data-tooltip="Daily stand up meeting using Skype" aria-label="NEXT: Daily stand up meeting using Skype">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2009/10/27/Build-ClickOnce-deployment-packages-using-MSBuild-and-Team-City/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2009/10/27/Build-ClickOnce-deployment-packages-using-MSBuild-and-Team-City/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2009/10/27/Build-ClickOnce-deployment-packages-using-MSBuild-and-Team-City/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2009/10/27/Build-ClickOnce-deployment-packages-using-MSBuild-and-Team-City/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2009/10/27/Build-ClickOnce-deployment-packages-using-MSBuild-and-Team-City/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2009/10/27/Build-ClickOnce-deployment-packages-using-MSBuild-and-Team-City/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2009/10/27/Build-ClickOnce-deployment-packages-using-MSBuild-and-Team-City/';
+                 
+                    this.page.identifier = '20091027082526';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

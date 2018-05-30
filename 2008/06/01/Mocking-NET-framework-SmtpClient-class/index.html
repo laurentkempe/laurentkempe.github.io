@@ -1,0 +1,798 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Mocking .NET framework SmtpClient class - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"This Saturday like the last two I planned to work on my wooden terrace, but with the weather we have for this year’s spring, it was almost impossible. So I replaced that with some development.\nI am using Rhino.Mocks as mock object framework and went to the following solution to mock SmtpClient.\nCapabilities of Rhino.Mock are to mock interfaces, delegates and virtual methods of classes!\nMy goal was to test my MailService class which use SmtpClient and in particular the method SendAsync, which is not a virtual method. SmtpClient inherit from System.Object so no way to use an interface for the unit test. \nNext step was then to make an interface, ISmtpClient, out of the SmtpClient of the .NET Framework using Reflector for .Net. Then I modified the dependency of my MailService class from SmtpClient of the .NET framework to my interface ISmtpClient.     \nusing System.Net;\nusing System.Net.Mail;\nusing System.Security.Cryptography.X509Certificates;\nusing System.Security.Permissions;\nnamespace TechHeadBrothers.Portal.Services.Mail\n{\n&lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;interface&lt;/span&gt; &lt;span style=&quot;color: #6897bb&quot;&gt;ISmtpClient&lt;/span&gt;\n\n{\n\n    &lt;span style=&quot;color: gray&quot;&gt;// Events&lt;/span&gt;\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;event&lt;/span&gt; &lt;span style=&quot;color: #6897bb&quot;&gt;SendCompletedEventHandler&lt;/span&gt; SendCompleted;\n\n    &lt;span style=&quot;color: gray&quot;&gt;// Properties&lt;/span&gt;\n\n    &lt;span style=&quot;color: #ffc66d&quot;&gt;X509CertificateCollection&lt;/span&gt; ClientCertificates { &lt;span style=&quot;color: #cc7832&quot;&gt;get&lt;/span&gt;; }\n\n    &lt;span style=&quot;color: #6897bb&quot;&gt;ICredentialsByHost&lt;/span&gt; Credentials { &lt;span style=&quot;color: #cc7832&quot;&gt;get&lt;/span&gt;; &lt;span style=&quot;color: #cc7832&quot;&gt;set&lt;/span&gt;; }\n\n    &lt;span style=&quot;color: #6897bb&quot;&gt;SmtpDeliveryMethod&lt;/span&gt; DeliveryMethod { &lt;span style=&quot;color: #cc7832&quot;&gt;get&lt;/span&gt;; &lt;span style=&quot;color: #cc7832&quot;&gt;set&lt;/span&gt;; }\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;bool&lt;/span&gt; EnableSsl { &lt;span style=&quot;color: #cc7832&quot;&gt;get&lt;/span&gt;; &lt;span style=&quot;color: #cc7832&quot;&gt;set&lt;/span&gt;; }\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;string&lt;/span&gt; Host { &lt;span style=&quot;color: #cc7832&quot;&gt;get&lt;/span&gt;; &lt;span style=&quot;color: #cc7832&quot;&gt;set&lt;/span&gt;; }\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;string&lt;/span&gt; PickupDirectoryLocation { &lt;span style=&quot;color: #cc7832&quot;&gt;get&lt;/span&gt;; &lt;span style=&quot;color: #cc7832&quot;&gt;set&lt;/span&gt;; }\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;int&lt;/span&gt; Port { &lt;span style=&quot;color: #cc7832&quot;&gt;get&lt;/span&gt;; &lt;span style=&quot;color: #cc7832&quot;&gt;set&lt;/span&gt;; }\n\n    &lt;span style=&quot;color: #ffc66d&quot;&gt;ServicePoint&lt;/span&gt; ServicePoint { &lt;span style=&quot;color: #cc7832&quot;&gt;get&lt;/span&gt;; }\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;int&lt;/span&gt; Timeout { &lt;span style=&quot;color: #cc7832&quot;&gt;get&lt;/span&gt;; &lt;span style=&quot;color: #cc7832&quot;&gt;set&lt;/span&gt;; }\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;bool&lt;/span&gt; UseDefaultCredentials { &lt;span style=&quot;color: #cc7832&quot;&gt;get&lt;/span&gt;; &lt;span style=&quot;color: #cc7832&quot;&gt;set&lt;/span&gt;; }\n\n    &lt;span style=&quot;color: gray&quot;&gt;// Methods&lt;/span&gt;\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;void&lt;/span&gt; Send(&lt;span style=&quot;color: #ffc66d&quot;&gt;MailMessage&lt;/span&gt; message);\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;void&lt;/span&gt; Send(&lt;span style=&quot;color: #cc7832&quot;&gt;string&lt;/span&gt; from, &lt;span style=&quot;color: #cc7832&quot;&gt;string&lt;/span&gt; recipients, &lt;span style=&quot;color: #cc7832&quot;&gt;string&lt;/span&gt; subject, &lt;span style=&quot;color: #cc7832&quot;&gt;string&lt;/span&gt; body);\n\n    [&lt;span style=&quot;color: #ffc66d&quot;&gt;HostProtection&lt;/span&gt;(&lt;span style=&quot;color: #6897bb&quot;&gt;SecurityAction&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;.LinkDemand, ExternalThreading = &lt;/span&gt;&lt;span style=&quot;color: #cc7832&quot;&gt;true&lt;/span&gt;)]\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;void&lt;/span&gt; SendAsync(&lt;span style=&quot;color: #ffc66d&quot;&gt;MailMessage&lt;/span&gt; message, &lt;span style=&quot;color: #cc7832&quot;&gt;object&lt;/span&gt; userToken);\n\n    [&lt;span style=&quot;color: #ffc66d&quot;&gt;HostProtection&lt;/span&gt;(&lt;span style=&quot;color: #6897bb&quot;&gt;SecurityAction&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;.LinkDemand, ExternalThreading = &lt;/span&gt;&lt;span style=&quot;color: #cc7832&quot;&gt;true&lt;/span&gt;)]\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;void&lt;/span&gt; SendAsync(&lt;span style=&quot;color: #cc7832&quot;&gt;string&lt;/span&gt; from, &lt;span style=&quot;color: #cc7832&quot;&gt;string&lt;/span&gt; recipients, &lt;span style=&quot;color: #cc7832&quot;&gt;string&lt;/span&gt; subject, &lt;span style=&quot;color: #cc7832&quot;&gt;string&lt;/span&gt; body, &lt;span style=&quot;color: #cc7832&quot;&gt;object&lt;/span&gt; userToken);\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;void&lt;/span&gt; SendAsyncCancel();\n\n}\n}   \nThen I wrote the class SmtpClientProxy. It is based on the design pattern Proxy. So it basically maintains a reference, and controls access, to the real SmtpClient so it can be used in place of the real SmtpClient.     \nnamespace TechHeadBrothers.Portal.Services.Mail\n{\n&lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;class&lt;/span&gt; &lt;span style=&quot;color: #ffc66d&quot;&gt;SmtpClientProxy&lt;/span&gt; : &lt;span style=&quot;color: #6897bb&quot;&gt;ISmtpClient&lt;/span&gt;\n\n{\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;private&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;readonly&lt;/span&gt; &lt;span style=&quot;color: #ffc66d&quot;&gt;SmtpClient&lt;/span&gt; smtpClient;\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; SmtpClientProxy()\n\n    {\n\n        smtpClient = &lt;span style=&quot;color: #cc7832&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color: #ffc66d&quot;&gt;SmtpClient&lt;/span&gt;();\n\n        smtpClient.SendCompleted += smtpClient_SendCompleted;\n\n    }\n        #region ISmtpClient Members\n&lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;event&lt;/span&gt; &lt;span style=&quot;color: #6897bb&quot;&gt;SendCompletedEventHandler&lt;/span&gt; SendCompleted;\n\n&lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #ffc66d&quot;&gt;X509CertificateCollection&lt;/span&gt; ClientCertificates\n\n{\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;get&lt;/span&gt; { &lt;span style=&quot;color: #cc7832&quot;&gt;return&lt;/span&gt; smtpClient.ClientCertificates; }\n\n}\n\n&lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #6897bb&quot;&gt;ICredentialsByHost&lt;/span&gt; Credentials\n\n{\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;get&lt;/span&gt; { &lt;span style=&quot;color: #cc7832&quot;&gt;return&lt;/span&gt; smtpClient.Credentials; }\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;set&lt;/span&gt; { smtpClient.Credentials = &lt;span style=&quot;color: #cc7832&quot;&gt;value&lt;/span&gt;; }\n\n}\n   \nFinally my MailService class with the dependency injection of ISmtpClient interface and a default constructor using my SmtpClientProxy :     \nnamespace TechHeadBrothers.Portal.Services.Mail\n{\n&lt;span style=&quot;color: gray&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: green&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: gray&quot;&gt;&lt;summary&gt;&lt;/span&gt;\n\n&lt;span style=&quot;color: gray&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: green&quot;&gt; Service to deliver Emails&lt;/span&gt;\n\n&lt;span style=&quot;color: gray&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: green&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: gray&quot;&gt;&lt;/summary&gt;&lt;/span&gt;\n\n&lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;class&lt;/span&gt; &lt;span style=&quot;color: #ffc66d&quot;&gt;MailService&lt;/span&gt; : &lt;span style=&quot;color: #6897bb&quot;&gt;IMailService&lt;/span&gt;\n\n{\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;private&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;readonly&lt;/span&gt; &lt;span style=&quot;color: #6897bb&quot;&gt;ISmtpClient&lt;/span&gt; smtpClient;\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; MailService() : &lt;span style=&quot;color: #cc7832&quot;&gt;this&lt;/span&gt;(&lt;span style=&quot;color: #cc7832&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color: #ffc66d&quot;&gt;SmtpClientProxy&lt;/span&gt;())\n\n    {\n\n    }\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; MailService(&lt;span style=&quot;color: #6897bb&quot;&gt;ISmtpClient&lt;/span&gt; smtpClient)\n\n    {\n\n        &lt;span style=&quot;color: #cc7832&quot;&gt;this&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;.smtpClient = smtpClient;&lt;/span&gt;\n\n    }\n   \nIn my unit test I will use the constructor in which I can specify the mock of ISmtpClient, otherwise I will use the default constructor.\nSo that was for the first issue; having the possibility to mock SmtpClient. Now you certainly have realized the second issue that popped up. In my ISmtpClient I have one event:     \n&lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;interface&lt;/span&gt; &lt;span style=&quot;color: #6897bb&quot;&gt;ISmtpClient&lt;/span&gt;\n\n{\n\n    &lt;span style=&quot;color: gray&quot;&gt;// Events&lt;/span&gt;\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;event&lt;/span&gt; &lt;span style=&quot;color: #6897bb&quot;&gt;SendCompletedEventHandler&lt;/span&gt; SendCompleted;\n   \nThis event is for sure also in my proxy class, SmtpClientProxy as it inherit form ISmtpClient. In the constructor of SmtpClientProxy I add an event handler on the SendCompleted event of the SmtpClient. This event handler just fires the event exposed by the proxy class, so that I can have an event handler in MailService class to handle the SendComplete event.     \n&lt;span style=&quot;color: #cc7832&quot;&gt;private&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;void&lt;/span&gt; smtpClient_SendCompleted(&lt;span style=&quot;color: #cc7832&quot;&gt;object&lt;/span&gt; sender, &lt;span style=&quot;color: #ffc66d&quot;&gt;AsyncCompletedEventArgs&lt;/span&gt; e)\n\n{\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;if&lt;/span&gt; (SendCompleted != &lt;span style=&quot;color: #cc7832&quot;&gt;null&lt;/span&gt;)\n\n        SendCompleted(sender, e);\n\n}\n   \nNothing really special. But now the question rise! I need to mock ISmtpClient in my unit test. But my MailService SendMailMessage method call the SmtpClient.SendAsync method and also add an event handler to SmtpClient.SendCompleted event.     \n&lt;span style=&quot;color: gray&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: green&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: gray&quot;&gt;&lt;summary&gt;&lt;/span&gt;\n\n&lt;span style=&quot;color: gray&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: green&quot;&gt; Sends a MailMessage object using the SMTP settings.&lt;/span&gt;\n\n&lt;span style=&quot;color: gray&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: green&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: gray&quot;&gt;&lt;/summary&gt;&lt;/span&gt;\n\n&lt;span style=&quot;color: gray&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: green&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: gray&quot;&gt;&lt;param name=&quot;mailMessage&quot;&gt;&lt;/span&gt;&lt;span style=&quot;color: green&quot;&gt;Email message to be sent&lt;/span&gt;&lt;span style=&quot;color: gray&quot;&gt;&lt;/param&gt;&lt;/span&gt;\n\n&lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;void&lt;/span&gt; SendMailMessage(&lt;span style=&quot;color: #ffc66d&quot;&gt;MailMessage&lt;/span&gt; mailMessage)\n\n{\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;try&lt;/span&gt;\n\n    {\n\n        mailMessage.IsBodyHtml = &lt;span style=&quot;color: #cc7832&quot;&gt;true&lt;/span&gt;;\n\n        mailMessage.BodyEncoding = &lt;span style=&quot;color: #ffc66d&quot;&gt;Encoding&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;.UTF8;&lt;/span&gt;\n\n        &lt;span style=&quot;color: #cc7832&quot;&gt;this&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;.message = mailMessage;&lt;/span&gt;\n\n        smtpClient.SendCompleted += smtpClient_SendCompleted;\n\n        smtpClient.SendAsync(mailMessage, &lt;span style=&quot;color: #cc7832&quot;&gt;null&lt;/span&gt;);\n\n    }\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;catch&lt;/span&gt; (&lt;span style=&quot;color: #ffc66d&quot;&gt;SmtpException&lt;/span&gt;)\n\n    {\n\n        &lt;span style=&quot;color: #cc7832&quot;&gt;this&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;.OnEmailFailed(mailMessage);&lt;/span&gt;\n\n    }\n\n}\n\n&lt;span style=&quot;color: #cc7832&quot;&gt;private&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;void&lt;/span&gt; smtpClient_SendCompleted(&lt;span style=&quot;color: #cc7832&quot;&gt;object&lt;/span&gt; sender, &lt;span style=&quot;color: #ffc66d&quot;&gt;AsyncCompletedEventArgs&lt;/span&gt; e)\n\n{\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;this&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;.OnEmailSent(message);&lt;/span&gt;\n\n}\n   \nIn my mock then I need to have the same thing happening, even if I mock the interface ISmtpClient.\nHere is the solution I came to:     \nnamespace TechHeadBrothers.Portal.Services.Tests.Mail\n{\n[&lt;span style=&quot;color: #ffc66d&quot;&gt;TestFixture&lt;/span&gt;]\n\n&lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;class&lt;/span&gt; &lt;span style=&quot;color: #ffc66d&quot;&gt;MailServiceTest&lt;/span&gt;\n\n{\n        #region Setup/Teardown\n[&lt;span style=&quot;color: #ffc66d&quot;&gt;SetUp&lt;/span&gt;]\n\n&lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;void&lt;/span&gt; SetUp()\n\n{\n\n    mocks = &lt;span style=&quot;color: #cc7832&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color: #ffc66d&quot;&gt;MockRepository&lt;/span&gt;();\n\n}\n        #endregion\n    &lt;span style=&quot;color: #cc7832&quot;&gt;private&lt;/span&gt; &lt;span style=&quot;color: #ffc66d&quot;&gt;MockRepository&lt;/span&gt; mocks;\n\n    [&lt;span style=&quot;color: #ffc66d&quot;&gt;Test&lt;/span&gt;]\n\n    &lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;void&lt;/span&gt; SendMailMessageRaiseEmailSentEvent()\n\n    {\n\n        &lt;span style=&quot;color: #cc7832&quot;&gt;bool&lt;/span&gt; emailSentRaised = &lt;span style=&quot;color: #cc7832&quot;&gt;false&lt;/span&gt;;\n\n        &lt;span style=&quot;color: #cc7832&quot;&gt;var&lt;/span&gt; message = &lt;span style=&quot;color: #cc7832&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color: #ffc66d&quot;&gt;MailMessage&lt;/span&gt;(&lt;span style=&quot;color: #a5c25c&quot;&gt;&quot;lk@test.com&quot;&lt;/span&gt;, &lt;span style=&quot;color: #a5c25c&quot;&gt;&quot;mk@test.com&quot;&lt;/span&gt;);\n\n        &lt;span style=&quot;color: #cc7832&quot;&gt;var&lt;/span&gt; smtpClient = mocks.Stub&lt;&lt;span style=&quot;color: #6897bb&quot;&gt;ISmtpClient&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;&gt;();&lt;/span&gt;\n\n        &lt;span style=&quot;color: #cc7832&quot;&gt;var&lt;/span&gt; mailService = &lt;span style=&quot;color: #cc7832&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color: #ffc66d&quot;&gt;MailService&lt;/span&gt;(smtpClient);\n\n        mailService.EmailSent += ((sender, e) =&gt; { emailSentRaised = &lt;span style=&quot;color: #cc7832&quot;&gt;true&lt;/span&gt;; });\n\n        &lt;span style=&quot;color: #cc7832&quot;&gt;using&lt;/span&gt; (mocks.Record())\n\n        {\n\n            &lt;span style=&quot;color: #cc7832&quot;&gt;var&lt;/span&gt; raiser = &lt;span style=&quot;color: #ffc66d&quot;&gt;Expect&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;.Call(() =&gt; smtpClient.SendCompleted += &lt;/span&gt;&lt;span style=&quot;color: #cc7832&quot;&gt;null&lt;/span&gt;)\n\n                               .IgnoreArguments().GetEventRaiser();\n\n            &lt;span style=&quot;color: #ffc66d&quot;&gt;Expect&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;.Call(() =&gt; smtpClient.SendAsync(message, &lt;/span&gt;&lt;span style=&quot;color: #cc7832&quot;&gt;null&lt;/span&gt;))\n\n                  .Do((&lt;span style=&quot;color: #6897bb&quot;&gt;Action&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;&lt;&lt;/span&gt;&lt;span style=&quot;color: #ffc66d&quot;&gt;MailMessage&lt;/span&gt;, &lt;span style=&quot;color: #cc7832&quot;&gt;object&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;&gt;) ((arg1, arg2) =&gt; raiser.Raise(message, &lt;/span&gt;&lt;span style=&quot;color: #cc7832&quot;&gt;null&lt;/span&gt;)));\n\n        }\n\n        &lt;span style=&quot;color: #cc7832&quot;&gt;using&lt;/span&gt; (mocks.Playback())\n\n        {\n\n            mailService.SendMailMessage(message);\n\n            &lt;span style=&quot;color: #ffc66d&quot;&gt;Assert&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;.That(emailSentRaised, &lt;/span&gt;&lt;span style=&quot;color: #ffc66d&quot;&gt;Is&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;.EqualTo(&lt;/span&gt;&lt;span style=&quot;color: #cc7832&quot;&gt;true&lt;/span&gt;));\n\n        }\n\n    }\n\n}\n}   \nI create a mock of the interface ISmtpClient. Then I inject this mock into my MailService class. I create a event handler for my MailService.EmailSent event using a lambda. This lambda, if called, will change the boolean value emailSentRaised from false to true. This exactly what I want to test in that unit test; that the EmailSent event is raised.\nThen I get raiser object, a Rhino Mock IEventRaiser, from smtpClient.SendCompleted event.\nFinally I set an expectation on smtpClient.SendAsync method adding a Do() handler+Handler.ashx) that will raise the SendCompleted event.\nLast point is using the mailService object, calling the SendMailMessage method and asserting that my boolean emailSentRaised went from false to true.\nAnd here is the result in ReSharper Unit Test Session window. Green!\n \nUpdate: By the way, I forgot to add a link to a post from Phil Haack “Using Rhino Mocks To Unit Test Events on Interfaces“ and another link to a post from Jean-Paul S. Boodhoo “Raising events (from a mock) using Rhino Mocks“. To great post to read!\n","dateCreated":"2008-06-01T07:41:20+02:00","dateModified":"2010-05-07T07:52:14+02:00","datePublished":"2008-06-01T07:41:20+02:00","description":"This Saturday like the last two I planned to work on my wooden terrace, but with the weather we have for this year’s spring, it was almost impossible. So I replaced that with some development.\nI am using Rhino.Mocks as mock object framework and went to the following solution to mock SmtpClient.","headline":"Mocking .NET framework SmtpClient class","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/06/01/Mocking-NET-framework-SmtpClient-class/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2008/06/01/Mocking-NET-framework-SmtpClient-class/","keywords":"unit test, mock"}</script>
+    <meta name="description" content="This Saturday like the last two I planned to work on my wooden terrace, but with the weather we have for this year’s spring, it was almost impossible. So I replaced that with some development. I am us">
+<meta name="keywords" content="unit test,mock">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Mocking .NET framework SmtpClient class">
+<meta property="og:url" content="https://laurentkempe.com/2008/06/01/Mocking-NET-framework-SmtpClient-class/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="This Saturday like the last two I planned to work on my wooden terrace, but with the weather we have for this year’s spring, it was almost impossible. So I replaced that with some development. I am us">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://farm4.static.flickr.com/3251/2540010420_6643d7e119_o.png">
+<meta property="og:updated_time" content="2010-05-07T05:52:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mocking .NET framework SmtpClient class">
+<meta name="twitter:description" content="This Saturday like the last two I planned to work on my wooden terrace, but with the weather we have for this year’s spring, it was almost impossible. So I replaced that with some development. I am us">
+<meta name="twitter:image" content="http://farm4.static.flickr.com/3251/2540010420_6643d7e119_o.png">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Mocking .NET framework SmtpClient class
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2008-06-01T07:41:20+02:00">
+	
+		    Jun 01, 2008
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>This Saturday like the last two I planned to work on my wooden terrace, but with the weather we have for this year’s spring, it was almost impossible. So I replaced that with some development.</p>
+<p>I am using <a href="http://www.ayende.com/projects/rhino-mocks.aspx" target="_blank" rel="noopener">Rhino.Mocks</a> as mock object framework and went to the following solution to mock <a href="http://msdn.microsoft.com/en-us/library/system.net.mail.smtpclient.aspx" target="_blank" rel="noopener">SmtpClient</a>.<br><a id="more"></a></p>
+<p>Capabilities of Rhino.Mock are to mock interfaces, delegates and virtual methods of classes!</p>
+<p>My goal was to test my MailService class which use <a href="http://msdn.microsoft.com/en-us/library/system.net.mail.smtpclient.aspx" target="_blank" rel="noopener">SmtpClient</a> and in particular the method <a href="http://msdn.microsoft.com/en-us/library/x5x13z6h.aspx" target="_blank" rel="noopener">SendAsync</a>, which is not a virtual method. SmtpClient inherit from System.Object so no way to use an interface for the unit test. </p>
+<p>Next step was then to make an interface, ISmtpClient, out of the SmtpClient of the .NET Framework using <a href="http://www.aisto.com/roeder/dotnet/" target="_blank" rel="noopener">Reflector for .Net</a>. Then I modified the dependency of my MailService class from SmtpClient of the .NET framework to my interface ISmtpClient.<br>  <div style="font-weight: bold; font-size: 10pt; background: black; color: white; font-family: consolas">   </div></p>
+<p><span style="color: #cc7832">using</span> System.Net;</p>
+<p><span style="color: #cc7832">using</span> System.Net.Mail;</p>
+<p><span style="color: #cc7832">using</span> System.Security.Cryptography.X509Certificates;</p>
+<p><span style="color: #cc7832">using</span> System.Security.Permissions;</p>
+<p><span style="color: #cc7832">namespace</span> TechHeadBrothers.Portal.Services.Mail</p>
+<p>{</p>
+<pre><code>&lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;interface&lt;/span&gt; &lt;span style=&quot;color: #6897bb&quot;&gt;ISmtpClient&lt;/span&gt;
+
+{
+
+    &lt;span style=&quot;color: gray&quot;&gt;// Events&lt;/span&gt;
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;event&lt;/span&gt; &lt;span style=&quot;color: #6897bb&quot;&gt;SendCompletedEventHandler&lt;/span&gt; SendCompleted;
+
+    &lt;span style=&quot;color: gray&quot;&gt;// Properties&lt;/span&gt;
+
+    &lt;span style=&quot;color: #ffc66d&quot;&gt;X509CertificateCollection&lt;/span&gt; ClientCertificates { &lt;span style=&quot;color: #cc7832&quot;&gt;get&lt;/span&gt;; }
+
+    &lt;span style=&quot;color: #6897bb&quot;&gt;ICredentialsByHost&lt;/span&gt; Credentials { &lt;span style=&quot;color: #cc7832&quot;&gt;get&lt;/span&gt;; &lt;span style=&quot;color: #cc7832&quot;&gt;set&lt;/span&gt;; }
+
+    &lt;span style=&quot;color: #6897bb&quot;&gt;SmtpDeliveryMethod&lt;/span&gt; DeliveryMethod { &lt;span style=&quot;color: #cc7832&quot;&gt;get&lt;/span&gt;; &lt;span style=&quot;color: #cc7832&quot;&gt;set&lt;/span&gt;; }
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;bool&lt;/span&gt; EnableSsl { &lt;span style=&quot;color: #cc7832&quot;&gt;get&lt;/span&gt;; &lt;span style=&quot;color: #cc7832&quot;&gt;set&lt;/span&gt;; }
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;string&lt;/span&gt; Host { &lt;span style=&quot;color: #cc7832&quot;&gt;get&lt;/span&gt;; &lt;span style=&quot;color: #cc7832&quot;&gt;set&lt;/span&gt;; }
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;string&lt;/span&gt; PickupDirectoryLocation { &lt;span style=&quot;color: #cc7832&quot;&gt;get&lt;/span&gt;; &lt;span style=&quot;color: #cc7832&quot;&gt;set&lt;/span&gt;; }
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;int&lt;/span&gt; Port { &lt;span style=&quot;color: #cc7832&quot;&gt;get&lt;/span&gt;; &lt;span style=&quot;color: #cc7832&quot;&gt;set&lt;/span&gt;; }
+
+    &lt;span style=&quot;color: #ffc66d&quot;&gt;ServicePoint&lt;/span&gt; ServicePoint { &lt;span style=&quot;color: #cc7832&quot;&gt;get&lt;/span&gt;; }
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;int&lt;/span&gt; Timeout { &lt;span style=&quot;color: #cc7832&quot;&gt;get&lt;/span&gt;; &lt;span style=&quot;color: #cc7832&quot;&gt;set&lt;/span&gt;; }
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;bool&lt;/span&gt; UseDefaultCredentials { &lt;span style=&quot;color: #cc7832&quot;&gt;get&lt;/span&gt;; &lt;span style=&quot;color: #cc7832&quot;&gt;set&lt;/span&gt;; }
+
+    &lt;span style=&quot;color: gray&quot;&gt;// Methods&lt;/span&gt;
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;void&lt;/span&gt; Send(&lt;span style=&quot;color: #ffc66d&quot;&gt;MailMessage&lt;/span&gt; message);
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;void&lt;/span&gt; Send(&lt;span style=&quot;color: #cc7832&quot;&gt;string&lt;/span&gt; from, &lt;span style=&quot;color: #cc7832&quot;&gt;string&lt;/span&gt; recipients, &lt;span style=&quot;color: #cc7832&quot;&gt;string&lt;/span&gt; subject, &lt;span style=&quot;color: #cc7832&quot;&gt;string&lt;/span&gt; body);
+
+    [&lt;span style=&quot;color: #ffc66d&quot;&gt;HostProtection&lt;/span&gt;(&lt;span style=&quot;color: #6897bb&quot;&gt;SecurityAction&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;.LinkDemand, ExternalThreading = &lt;/span&gt;&lt;span style=&quot;color: #cc7832&quot;&gt;true&lt;/span&gt;)]
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;void&lt;/span&gt; SendAsync(&lt;span style=&quot;color: #ffc66d&quot;&gt;MailMessage&lt;/span&gt; message, &lt;span style=&quot;color: #cc7832&quot;&gt;object&lt;/span&gt; userToken);
+
+    [&lt;span style=&quot;color: #ffc66d&quot;&gt;HostProtection&lt;/span&gt;(&lt;span style=&quot;color: #6897bb&quot;&gt;SecurityAction&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;.LinkDemand, ExternalThreading = &lt;/span&gt;&lt;span style=&quot;color: #cc7832&quot;&gt;true&lt;/span&gt;)]
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;void&lt;/span&gt; SendAsync(&lt;span style=&quot;color: #cc7832&quot;&gt;string&lt;/span&gt; from, &lt;span style=&quot;color: #cc7832&quot;&gt;string&lt;/span&gt; recipients, &lt;span style=&quot;color: #cc7832&quot;&gt;string&lt;/span&gt; subject, &lt;span style=&quot;color: #cc7832&quot;&gt;string&lt;/span&gt; body, &lt;span style=&quot;color: #cc7832&quot;&gt;object&lt;/span&gt; userToken);
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;void&lt;/span&gt; SendAsyncCancel();
+
+}
+</code></pre><p>}<br>   </p>
+<p>Then I wrote the class SmtpClientProxy. It is based on the <a href="http://en.wikipedia.org/wiki/Proxy_pattern" target="_blank" rel="noopener">design pattern Proxy</a>. So it basically maintains a reference, and controls access, to the real SmtpClient so it can be used in place of the real SmtpClient.<br>  <div style="font-weight: bold; font-size: 10pt; background: black; color: white; font-family: consolas">   </div></p>
+<p><span style="color: #cc7832">namespace</span> TechHeadBrothers.Portal.Services.Mail</p>
+<p>{</p>
+<pre><code>&lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;class&lt;/span&gt; &lt;span style=&quot;color: #ffc66d&quot;&gt;SmtpClientProxy&lt;/span&gt; : &lt;span style=&quot;color: #6897bb&quot;&gt;ISmtpClient&lt;/span&gt;
+
+{
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;private&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;readonly&lt;/span&gt; &lt;span style=&quot;color: #ffc66d&quot;&gt;SmtpClient&lt;/span&gt; smtpClient;
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; SmtpClientProxy()
+
+    {
+
+        smtpClient = &lt;span style=&quot;color: #cc7832&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color: #ffc66d&quot;&gt;SmtpClient&lt;/span&gt;();
+
+        smtpClient.SendCompleted += smtpClient_SendCompleted;
+
+    }
+</code></pre><p><span style="color: #da4832">        #region</span> ISmtpClient Members</p>
+<pre><code>&lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;event&lt;/span&gt; &lt;span style=&quot;color: #6897bb&quot;&gt;SendCompletedEventHandler&lt;/span&gt; SendCompleted;
+
+&lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #ffc66d&quot;&gt;X509CertificateCollection&lt;/span&gt; ClientCertificates
+
+{
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;get&lt;/span&gt; { &lt;span style=&quot;color: #cc7832&quot;&gt;return&lt;/span&gt; smtpClient.ClientCertificates; }
+
+}
+
+&lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #6897bb&quot;&gt;ICredentialsByHost&lt;/span&gt; Credentials
+
+{
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;get&lt;/span&gt; { &lt;span style=&quot;color: #cc7832&quot;&gt;return&lt;/span&gt; smtpClient.Credentials; }
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;set&lt;/span&gt; { smtpClient.Credentials = &lt;span style=&quot;color: #cc7832&quot;&gt;value&lt;/span&gt;; }
+
+}
+</code></pre><p>   </p>
+<p>Finally my MailService class with the dependency injection of ISmtpClient interface and a default constructor using my SmtpClientProxy :<br>  <div style="font-weight: bold; font-size: 10pt; background: black; color: white; font-family: consolas">   </div></p>
+<p><span style="color: #cc7832">namespace</span> TechHeadBrothers.Portal.Services.Mail</p>
+<p>{</p>
+<pre><code>&lt;span style=&quot;color: gray&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: green&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: gray&quot;&gt;&lt;summary&gt;&lt;/span&gt;
+
+&lt;span style=&quot;color: gray&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: green&quot;&gt; Service to deliver Emails&lt;/span&gt;
+
+&lt;span style=&quot;color: gray&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: green&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: gray&quot;&gt;&lt;/summary&gt;&lt;/span&gt;
+
+&lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;class&lt;/span&gt; &lt;span style=&quot;color: #ffc66d&quot;&gt;MailService&lt;/span&gt; : &lt;span style=&quot;color: #6897bb&quot;&gt;IMailService&lt;/span&gt;
+
+{
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;private&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;readonly&lt;/span&gt; &lt;span style=&quot;color: #6897bb&quot;&gt;ISmtpClient&lt;/span&gt; smtpClient;
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; MailService() : &lt;span style=&quot;color: #cc7832&quot;&gt;this&lt;/span&gt;(&lt;span style=&quot;color: #cc7832&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color: #ffc66d&quot;&gt;SmtpClientProxy&lt;/span&gt;())
+
+    {
+
+    }
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; MailService(&lt;span style=&quot;color: #6897bb&quot;&gt;ISmtpClient&lt;/span&gt; smtpClient)
+
+    {
+
+        &lt;span style=&quot;color: #cc7832&quot;&gt;this&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;.smtpClient = smtpClient;&lt;/span&gt;
+
+    }
+</code></pre><p>   </p>
+<p>In my unit test I will use the constructor in which I can specify the mock of ISmtpClient, otherwise I will use the default constructor.</p>
+<p>So that was for the first issue; having the possibility to mock SmtpClient. Now you certainly have realized the second issue that popped up. In my ISmtpClient I have one event:<br>  <div style="font-weight: bold; font-size: 10pt; background: black; color: white; font-family: consolas">   </div></p>
+<pre><code>&lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;interface&lt;/span&gt; &lt;span style=&quot;color: #6897bb&quot;&gt;ISmtpClient&lt;/span&gt;
+
+{
+
+    &lt;span style=&quot;color: gray&quot;&gt;// Events&lt;/span&gt;
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;event&lt;/span&gt; &lt;span style=&quot;color: #6897bb&quot;&gt;SendCompletedEventHandler&lt;/span&gt; SendCompleted;
+</code></pre><p>   </p>
+<p>This event is for sure also in my proxy class, SmtpClientProxy as it inherit form ISmtpClient. In the constructor of SmtpClientProxy I add an event handler on the SendCompleted event of the SmtpClient. This event handler just fires the event exposed by the proxy class, so that I can have an event handler in MailService class to handle the SendComplete event.<br>  <div style="font-weight: bold; font-size: 10pt; background: black; color: white; font-family: consolas">   </div></p>
+<pre><code>&lt;span style=&quot;color: #cc7832&quot;&gt;private&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;void&lt;/span&gt; smtpClient_SendCompleted(&lt;span style=&quot;color: #cc7832&quot;&gt;object&lt;/span&gt; sender, &lt;span style=&quot;color: #ffc66d&quot;&gt;AsyncCompletedEventArgs&lt;/span&gt; e)
+
+{
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;if&lt;/span&gt; (SendCompleted != &lt;span style=&quot;color: #cc7832&quot;&gt;null&lt;/span&gt;)
+
+        SendCompleted(sender, e);
+
+}
+</code></pre><p>   </p>
+<p>Nothing really special. But now the question rise! I need to mock ISmtpClient in my unit test. But my MailService SendMailMessage method call the SmtpClient.SendAsync method and also add an event handler to SmtpClient.SendCompleted event.<br>  <div style="font-weight: bold; font-size: 10pt; background: black; color: white; font-family: consolas">   </div></p>
+<pre><code>&lt;span style=&quot;color: gray&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: green&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: gray&quot;&gt;&lt;summary&gt;&lt;/span&gt;
+
+&lt;span style=&quot;color: gray&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: green&quot;&gt; Sends a MailMessage object using the SMTP settings.&lt;/span&gt;
+
+&lt;span style=&quot;color: gray&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: green&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: gray&quot;&gt;&lt;/summary&gt;&lt;/span&gt;
+
+&lt;span style=&quot;color: gray&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: green&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: gray&quot;&gt;&lt;param name=&quot;mailMessage&quot;&gt;&lt;/span&gt;&lt;span style=&quot;color: green&quot;&gt;Email message to be sent&lt;/span&gt;&lt;span style=&quot;color: gray&quot;&gt;&lt;/param&gt;&lt;/span&gt;
+
+&lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;void&lt;/span&gt; SendMailMessage(&lt;span style=&quot;color: #ffc66d&quot;&gt;MailMessage&lt;/span&gt; mailMessage)
+
+{
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;try&lt;/span&gt;
+
+    {
+
+        mailMessage.IsBodyHtml = &lt;span style=&quot;color: #cc7832&quot;&gt;true&lt;/span&gt;;
+
+        mailMessage.BodyEncoding = &lt;span style=&quot;color: #ffc66d&quot;&gt;Encoding&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;.UTF8;&lt;/span&gt;
+
+        &lt;span style=&quot;color: #cc7832&quot;&gt;this&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;.message = mailMessage;&lt;/span&gt;
+
+        smtpClient.SendCompleted += smtpClient_SendCompleted;
+
+        smtpClient.SendAsync(mailMessage, &lt;span style=&quot;color: #cc7832&quot;&gt;null&lt;/span&gt;);
+
+    }
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;catch&lt;/span&gt; (&lt;span style=&quot;color: #ffc66d&quot;&gt;SmtpException&lt;/span&gt;)
+
+    {
+
+        &lt;span style=&quot;color: #cc7832&quot;&gt;this&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;.OnEmailFailed(mailMessage);&lt;/span&gt;
+
+    }
+
+}
+
+&lt;span style=&quot;color: #cc7832&quot;&gt;private&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;void&lt;/span&gt; smtpClient_SendCompleted(&lt;span style=&quot;color: #cc7832&quot;&gt;object&lt;/span&gt; sender, &lt;span style=&quot;color: #ffc66d&quot;&gt;AsyncCompletedEventArgs&lt;/span&gt; e)
+
+{
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;this&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;.OnEmailSent(message);&lt;/span&gt;
+
+}
+</code></pre><p>   </p>
+<p>In my mock then I need to have the same thing happening, even if I mock the interface ISmtpClient.</p>
+<p>Here is the solution I came to:<br>  <div style="font-weight: bold; font-size: 10pt; background: black; color: white; font-family: consolas">   </div></p>
+<p><span style="color: #cc7832">namespace</span> TechHeadBrothers.Portal.Services.Tests.Mail</p>
+<p>{</p>
+<pre><code>[&lt;span style=&quot;color: #ffc66d&quot;&gt;TestFixture&lt;/span&gt;]
+
+&lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;class&lt;/span&gt; &lt;span style=&quot;color: #ffc66d&quot;&gt;MailServiceTest&lt;/span&gt;
+
+{
+</code></pre><p><span style="color: #da4832">        #region</span> Setup/Teardown</p>
+<pre><code>[&lt;span style=&quot;color: #ffc66d&quot;&gt;SetUp&lt;/span&gt;]
+
+&lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;void&lt;/span&gt; SetUp()
+
+{
+
+    mocks = &lt;span style=&quot;color: #cc7832&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color: #ffc66d&quot;&gt;MockRepository&lt;/span&gt;();
+
+}
+</code></pre><p><span style="color: #da4832">        #endregion</span></p>
+<pre><code>    &lt;span style=&quot;color: #cc7832&quot;&gt;private&lt;/span&gt; &lt;span style=&quot;color: #ffc66d&quot;&gt;MockRepository&lt;/span&gt; mocks;
+
+    [&lt;span style=&quot;color: #ffc66d&quot;&gt;Test&lt;/span&gt;]
+
+    &lt;span style=&quot;color: #cc7832&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #cc7832&quot;&gt;void&lt;/span&gt; SendMailMessageRaiseEmailSentEvent()
+
+    {
+
+        &lt;span style=&quot;color: #cc7832&quot;&gt;bool&lt;/span&gt; emailSentRaised = &lt;span style=&quot;color: #cc7832&quot;&gt;false&lt;/span&gt;;
+
+        &lt;span style=&quot;color: #cc7832&quot;&gt;var&lt;/span&gt; message = &lt;span style=&quot;color: #cc7832&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color: #ffc66d&quot;&gt;MailMessage&lt;/span&gt;(&lt;span style=&quot;color: #a5c25c&quot;&gt;&quot;lk@test.com&quot;&lt;/span&gt;, &lt;span style=&quot;color: #a5c25c&quot;&gt;&quot;mk@test.com&quot;&lt;/span&gt;);
+
+        &lt;span style=&quot;color: #cc7832&quot;&gt;var&lt;/span&gt; smtpClient = mocks.Stub&lt;&lt;span style=&quot;color: #6897bb&quot;&gt;ISmtpClient&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;&gt;();&lt;/span&gt;
+
+        &lt;span style=&quot;color: #cc7832&quot;&gt;var&lt;/span&gt; mailService = &lt;span style=&quot;color: #cc7832&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color: #ffc66d&quot;&gt;MailService&lt;/span&gt;(smtpClient);
+
+        mailService.EmailSent += ((sender, e) =&gt; { emailSentRaised = &lt;span style=&quot;color: #cc7832&quot;&gt;true&lt;/span&gt;; });
+
+        &lt;span style=&quot;color: #cc7832&quot;&gt;using&lt;/span&gt; (mocks.Record())
+
+        {
+
+            &lt;span style=&quot;color: #cc7832&quot;&gt;var&lt;/span&gt; raiser = &lt;span style=&quot;color: #ffc66d&quot;&gt;Expect&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;.Call(() =&gt; smtpClient.SendCompleted += &lt;/span&gt;&lt;span style=&quot;color: #cc7832&quot;&gt;null&lt;/span&gt;)
+
+                               .IgnoreArguments().GetEventRaiser();
+
+            &lt;span style=&quot;color: #ffc66d&quot;&gt;Expect&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;.Call(() =&gt; smtpClient.SendAsync(message, &lt;/span&gt;&lt;span style=&quot;color: #cc7832&quot;&gt;null&lt;/span&gt;))
+
+                  .Do((&lt;span style=&quot;color: #6897bb&quot;&gt;Action&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;&lt;&lt;/span&gt;&lt;span style=&quot;color: #ffc66d&quot;&gt;MailMessage&lt;/span&gt;, &lt;span style=&quot;color: #cc7832&quot;&gt;object&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;&gt;) ((arg1, arg2) =&gt; raiser.Raise(message, &lt;/span&gt;&lt;span style=&quot;color: #cc7832&quot;&gt;null&lt;/span&gt;)));
+
+        }
+
+        &lt;span style=&quot;color: #cc7832&quot;&gt;using&lt;/span&gt; (mocks.Playback())
+
+        {
+
+            mailService.SendMailMessage(message);
+
+            &lt;span style=&quot;color: #ffc66d&quot;&gt;Assert&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;.That(emailSentRaised, &lt;/span&gt;&lt;span style=&quot;color: #ffc66d&quot;&gt;Is&lt;/span&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;.EqualTo(&lt;/span&gt;&lt;span style=&quot;color: #cc7832&quot;&gt;true&lt;/span&gt;));
+
+        }
+
+    }
+
+}
+</code></pre><p>}<br>   </p>
+<p>I create a mock of the interface ISmtpClient. Then I inject this mock into my MailService class. I create a event handler for my MailService.EmailSent event using a lambda. This lambda, if called, will change the boolean value emailSentRaised from false to true. This exactly what I want to test in that unit test; that the EmailSent event is raised.</p>
+<p>Then I get raiser object, a Rhino Mock <a href="http://www.ayende.com/wiki/Rhino+Mocks+IEventRaiser.ashx" target="_blank" rel="noopener">IEventRaiser</a>, from smtpClient.SendCompleted event.</p>
+<p>Finally I set an expectation on smtpClient.SendAsync method adding a <a href="http://www.ayende.com/wiki/Rhino+Mocks+The+Do(" target="_blank" rel="noopener">Do() handler</a>+Handler.ashx) that will raise the SendCompleted event.</p>
+<p>Last point is using the mailService object, calling the SendMailMessage method and asserting that my boolean emailSentRaised went from false to true.</p>
+<p>And here is the result in <a href="http://www.jetbrains.com/resharper" target="_blank" rel="noopener">ReSharper</a> Unit Test Session window. Green!</p>
+<p><img src="http://farm4.static.flickr.com/3251/2540010420_6643d7e119_o.png" alt=""> </p>
+<p><u><strong>Update</strong></u>: By the way, I forgot to add a link to a post from <a href="http://haacked.com/articles/AboutHaacked.aspx" target="_blank" rel="noopener">Phil Haack</a> “<a href="http://haacked.com/archive/2006/06/23/usingrhinomockstounittesteventsoninterfaces.aspx" target="_blank" rel="noopener">Using Rhino Mocks To Unit Test Events on Interfaces</a>“ and another link to a post from <a href="http://codebetter.com/blogs/jean-paul_boodhoo/default.aspx" target="_blank" rel="noopener">Jean-Paul S. Boodhoo</a> “<a href="http://codebetter.com/blogs/jean-paul_boodhoo/archive/2007/05/07/raising-events-from-a-mock-using-rhino-mocks.aspx" target="_blank" rel="noopener">Raising events (from a mock) using Rhino Mocks</a>“. To great post to read!</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/mock/">mock</a> <a class="tag tag--primary tag--small t-link" href="/tags/unit-test/">unit test</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2008/06/07/MSBuild-and-Silverlight-20-Beta-2-SDK-running-in-Team-City/" data-tooltip="MSBuild and Silverlight 2.0 Beta 2 SDK running in Team City" aria-label="PREVIOUS: MSBuild and Silverlight 2.0 Beta 2 SDK running in Team City">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2008/05/31/Two-Great-news-from-Silverlight-Streaming!/" data-tooltip="Two Great news from Silverlight Streaming!" aria-label="NEXT: Two Great news from Silverlight Streaming!">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2008/06/01/Mocking-NET-framework-SmtpClient-class/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2008/06/01/Mocking-NET-framework-SmtpClient-class/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2008/06/01/Mocking-NET-framework-SmtpClient-class/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2008/06/07/MSBuild-and-Silverlight-20-Beta-2-SDK-running-in-Team-City/" data-tooltip="MSBuild and Silverlight 2.0 Beta 2 SDK running in Team City" aria-label="PREVIOUS: MSBuild and Silverlight 2.0 Beta 2 SDK running in Team City">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2008/05/31/Two-Great-news-from-Silverlight-Streaming!/" data-tooltip="Two Great news from Silverlight Streaming!" aria-label="NEXT: Two Great news from Silverlight Streaming!">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2008/06/01/Mocking-NET-framework-SmtpClient-class/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2008/06/01/Mocking-NET-framework-SmtpClient-class/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2008/06/01/Mocking-NET-framework-SmtpClient-class/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2008/06/01/Mocking-NET-framework-SmtpClient-class/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2008/06/01/Mocking-NET-framework-SmtpClient-class/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2008/06/01/Mocking-NET-framework-SmtpClient-class/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2008/06/01/Mocking-NET-framework-SmtpClient-class/';
+                 
+                    this.page.identifier = '20080601074120';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

@@ -1,0 +1,545 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Indexing and searching business entities using Lucene.Net Framework, part 2 - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":" \nConception using generics and reflection of a search engine to index and search content in your business entities without being intrusive.\nPart 1 is available following this link Indexing and searching business entities using Lucene.Net Framework, part 1\nLucene.Net presentationLucene.Net is an open source project coming from the Java world currently incubating at the Apache Software Foundation (ASF). It is a source code port on the .NET platform using C#, done class-by-class, API-per-API, of the indexing and searching engine algorithms of Java Lucene.  \nApache Lucene is an efficient indexing and searching engine for text data. However it is not offering integrated support for document like Office Word or PDF, you need to use extensions able to extract the text content of a document in order to be able index it. This is also mandatory for markup documents like HTML.  \nLucene.Net follows scrupulously the APIs defined in the classes of the original Lucene Java version. The API names as well as the class names are preserved with the intention to follow naming guidelines of the C# language. For example, the method Hits.length() of the Java implementation is written Hits.Length() in its C# version.  \nLike the port of the APIs and the classes in C#, the algorithm of the Java version of Lucene is also ported in the C# version. This means that an index created using the Java version of Lucene is 100% compatible with it C# version, in reading, writing and updating. Therefore two processes, one written in Java and the other in C#, could achieve concurrent searches using the same index.  \nYou might consult the documentation of the last stable version, version 2.0, on the following page. To download the last stable version browse to this page. To get more information about Lucene I recommend using the pages dedicated to the Java version of Lucene which are much more consistent.  \nLucene.Net Architecture  \n\nThe lower layer is the data access layer (Storage). Then, the upper layer is about accessing the index files (data access). This layer is used by the indexing system and the searching system. On top of those we find a layer for searching and a search request parser layer used by the searching part of Lucene.Net. Identically we found a parser layer and a document layer used for the indexation part of Lucene.Net. \nTo get more information about Lucene I recommend reading the presentation on Lucene website.  \nNow that we got a better view on what is Lucene.Net about we will see in the next part how we will use it to index the properties of our business entities.  \nThis post is cross-posted on innoveo blog **and in French on my .NET community portal Tech Head Brothers.\n","dateCreated":"2008-03-07T18:16:32+01:00","dateModified":"2008-03-07T18:16:32+01:00","datePublished":"2008-03-07T18:16:32+01:00","description":" \nConception using generics and reflection of a search engine to index and search content in your business entities without being intrusive.","headline":"Indexing and searching business entities using Lucene.Net Framework, part 2","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-2/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-2/","keywords":"innoveo solutions, ASP.NET 2.0, Tools, Interoperability, C#, Architecture, Generics, Reflection"}</script>
+    <meta name="description" content="Conception using generics and reflection of a search engine to index and search content in your business entities without being intrusive.">
+<meta name="keywords" content="innoveo solutions,ASP.NET 2.0,Tools,Interoperability,C#,Architecture,Generics,Reflection">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Indexing and searching business entities using Lucene.Net Framework, part 2">
+<meta property="og:url" content="https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-2/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="Conception using generics and reflection of a search engine to index and search content in your business entities without being intrusive.">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://farm3.static.flickr.com/2032/2105387404_33d2e9ed92_o.gif">
+<meta property="og:image" content="http://farm3.static.flickr.com/2412/2316420682_b2fe668382_o.jpg">
+<meta property="og:updated_time" content="2008-03-07T17:16:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Indexing and searching business entities using Lucene.Net Framework, part 2">
+<meta name="twitter:description" content="Conception using generics and reflection of a search engine to index and search content in your business entities without being intrusive.">
+<meta name="twitter:image" content="http://farm3.static.flickr.com/2032/2105387404_33d2e9ed92_o.gif">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Indexing and searching business entities using Lucene.Net Framework, part 2
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2008-03-07T18:16:32+01:00">
+	
+		    Mar 07, 2008
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p><em><img src="http://farm3.static.flickr.com/2032/2105387404_33d2e9ed92_o.gif" alt=""> </em></p>
+<p><em>Conception using generics and reflection of a search engine to index and search content in your business entities without being intrusive.</em><br><a id="more"></a></p>
+<p>Part 1 is available following this link <a href="http://weblogs.asp.net/lkempe/archive/2007/11/16/indexing-and-searching-business-entities-using-lucene-net-framework-part-1.aspx" target="_blank" rel="noopener">Indexing and searching business entities using Lucene.Net Framework, part 1</a></p>
+<h3 id="Lucene-Net-presentation"><a href="#Lucene-Net-presentation" class="headerlink" title="Lucene.Net presentation"></a>Lucene.Net presentation</h3><p><a href="http://incubator.apache.org/lucene.net/" target="_blank" rel="noopener">Lucene.Net</a> is an open source project coming from the Java world currently incubating at the Apache Software Foundation (ASF). It is a source code port on the .NET platform using C#, done class-by-class, API-per-API, of the indexing and searching engine algorithms of Java <a href="http://lucene.apache.org/java/docs/index.html" target="_blank" rel="noopener">Lucene</a>.  </p>
+<p>Apache Lucene is an efficient indexing and searching engine for text data. However it is not offering integrated support for document like <a href="http://wiki.apache.org/lucene-java/LuceneFAQ#head-37523379241b88fd90bcd1de81b74e7ec8843f72" target="_blank" rel="noopener">Office Word</a> or <a href="http://wiki.apache.org/lucene-java/LuceneFAQ#head-c45f8b25d786f4e384936fa93ce1137a23b7e422" target="_blank" rel="noopener">PDF</a>, you need to use extensions able to extract the text content of a document in order to be able index it. This is also mandatory for markup documents like <a href="http://wiki.apache.org/lucene-java/LuceneFAQ#head-e7d23f91df094d7baeceb46b04d518dc426d7d2e" target="_blank" rel="noopener">HTML</a>.  </p>
+<p>Lucene.Net follows scrupulously the APIs defined in the classes of the original Lucene Java version. The API names as well as the class names are preserved with the intention to follow naming guidelines of the C# language. For example, the method <em>Hits.length()</em> of the Java implementation is written <em>Hits.Length()</em> in its C# version.  </p>
+<p>Like the port of the APIs and the classes in C#, the algorithm of the Java version of Lucene is also ported in the C# version. This means that an index created using the Java version of Lucene is 100% compatible with it C# version, in reading, writing and updating. Therefore two processes, one written in Java and the other in C#, could achieve concurrent searches using the same index.  </p>
+<p>You might consult the documentation of the last stable version, version 2.0, <a href="http://incubator.apache.org/lucene.net/docs/2.0/Lucene.Net/" target="_blank" rel="noopener">on the following page</a>. To download the last stable version <a href="http://incubator.apache.org/lucene.net/download/" target="_blank" rel="noopener">browse to this page</a>. To get more information about Lucene I recommend using the <a href="http://lucene.apache.org/java/docs/index.html" target="_blank" rel="noopener">pages dedicated to the Java version of Lucene</a> which are much more consistent.  </p>
+<h4 id="Lucene-Net-Architecture"><a href="#Lucene-Net-Architecture" class="headerlink" title="Lucene.Net Architecture"></a>Lucene.Net Architecture</h4> <center><img src="http://farm3.static.flickr.com/2412/2316420682_b2fe668382_o.jpg" alt="Lucene.Net Architecture"></center> 
+
+<p>The lower layer is the data access layer (Storage). Then, the upper layer is about accessing the index files (data access). This layer is used by the indexing system and the searching system. On top of those we find a layer for searching and a search request parser layer used by the searching part of Lucene.Net. Identically we found a parser layer and a document layer used for the indexation part of Lucene.Net. </p>
+<p>To get more information about Lucene I recommend reading the presentation on <a href="http://lucene.apache.org/java/docs/features.html" target="_blank" rel="noopener">Lucene website</a>.  </p>
+<p>Now that we got a better view on what is Lucene.Net about we will see in the next part how we will use it to index the properties of our business entities.  </p>
+<p><em>This post is cross-posted on <a href="http://blog.innoveo.com/archive.aspx/2008/3/7/indexing-and-searching-business-entities-using-lucene-net-framework-part-2" target="_blank" rel="noopener">innoveo blog</a> **and in French on my .NET community portal </em><a href="http://www.techheadbrothers.com/Articles.aspx/indexer-rechercher-entites-metier-aide-framework-lucene-net" target="_blank" rel="noopener"><em>Tech Head Brothers</em></a><em>.</em></p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET-2-0/">ASP.NET 2.0</a> <a class="tag tag--primary tag--small t-link" href="/tags/Architecture/">Architecture</a> <a class="tag tag--primary tag--small t-link" href="/tags/C/">C#</a> <a class="tag tag--primary tag--small t-link" href="/tags/Generics/">Generics</a> <a class="tag tag--primary tag--small t-link" href="/tags/Interoperability/">Interoperability</a> <a class="tag tag--primary tag--small t-link" href="/tags/Reflection/">Reflection</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tools/">Tools</a> <a class="tag tag--primary tag--small t-link" href="/tags/innoveo-solutions/">innoveo solutions</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-3/" data-tooltip="Indexing and searching business entities using Lucene.Net Framework, part 3" aria-label="PREVIOUS: Indexing and searching business entities using Lucene.Net Framework, part 3">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2008/03/06/Just-downloadinginstalling-Silverlight-20-Beta-1/" data-tooltip="Just downloading/installing Silverlight 2.0 Beta 1" aria-label="NEXT: Just downloading/installing Silverlight 2.0 Beta 1">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-2/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-2/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-2/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-3/" data-tooltip="Indexing and searching business entities using Lucene.Net Framework, part 3" aria-label="PREVIOUS: Indexing and searching business entities using Lucene.Net Framework, part 3">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2008/03/06/Just-downloadinginstalling-Silverlight-20-Beta-1/" data-tooltip="Just downloading/installing Silverlight 2.0 Beta 1" aria-label="NEXT: Just downloading/installing Silverlight 2.0 Beta 1">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-2/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-2/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-2/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-2/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-2/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-2/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-2/';
+                 
+                    this.page.identifier = '20080307061632';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

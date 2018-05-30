@@ -1,0 +1,584 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Using TeamCity integrated dotCover coverage files with NDepend - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"\nFor a long time I wanted to integrated NDepend on our build server so that this week I invested some time here and there to achieve that goal. I did that already a long time ago, I even wrote the documentation which you can read on NDepend website.\nThis time I wanted to go one step further. \nWe use a first build which is building each feature branch we are developing. One of the responsibility of that build is to run unit tests, integrations tests, specifications and gather code coverage. To achieve that we are using the TeamCity integrated dotCover in each build steps running our different tests. This is collecting artifacts which aren’t directly shown on the Artifacts tab:\n\nClicking show reveal the file we are interested about, dotCover.snapshot:\n\nSomething to note is that to be able to use code coverage NDepend needs the pdb files, this is why we have another artifact named PDBs.zip. And finally the third is our software with the exe and dlls.\nNow that we have a build which generate the coverage file which we want to pass to NDepend, let’s create another TeamCity build which will define Snapshot Dependency and Artifact Dependency to the previous build:\n\nWe are extracting the exe to a NDepend folder and all dlls out of the archive Libs folder to the same NDepend folder.We do the same for the pdb files so that NDepend can use the code coverage data.Finally we extract the dotCover.snapshot to a dotCover folder.\nThen the issue we had was that the dotCover.snapshot file is not of the format that NDepend is expecting.\nSo as a first build step of our NDepend build we need to convert dotCover.snapshot file, this is done using a Command Line build step and dotCover integrated in TeamCity, using the report command and the ReportType equal to NDependXML:\n\nSo after that build first step we have a new converted file; dotCoverNDepend.xml which can be consumed by NDepend.\nThen in the second build step we are using dotCoverNDepend.xml with the new NDepend 5.1 CoverageFiles command parameter:\n\nHere is the full command\n\nC:\\NDepend\\NDepend.Console.exe “%teamcity.build.checkoutDir%\\skyeEditor.ndproj” /CoverageFiles “%teamcity.build.checkoutDir%\\dotCover\\dotCoverNDepend.xml” /InDirs “%teamcity.build.checkoutDir%\\NDepend” “C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319” “C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\WPF” /OutDir “C:\\NDependOutput”\n\nThis will create the NDepend report which we will archive as an artifact, on the General Settings of the build\n\nThen you will need to define that you want to see the NDepend report as a TeamCity Report Tab, which you define by navigating to Administration &gt; Report Tabs, clicking Create new report tab and specifying\n\nFinally you will have the following NDepend report with code coverage shown for your builds\n\nOne last thing I struggled about is that the NDepend builds were not started, because I thought it was enough to configure the Dependencies, but you need to define also a Build Trigger with Trigger on changes in snapshot dependencies ticked:\n\nThanks to Yegor for the discussion which greatly helped as always! And also to Ruslan which also helped through the post on the jetbrains forum. And finally thanks to Patrick who introduced really fast the /CoverageFiles in NDepend, so do not hesitate to give feedback using the new NDepend user voice.\n","dateCreated":"2013-11-29T18:55:49+01:00","dateModified":"2013-11-29T22:21:02+01:00","datePublished":"2013-11-29T18:55:49+01:00","description":"\nFor a long time I wanted to integrated NDepend on our build server so that this week I invested some time here and there to achieve that goal. I did that already a long time ago, I even wrote the documentation which you can read on NDepend website.","headline":"Using TeamCity integrated dotCover coverage files with NDepend","image":["https://farm3.staticflickr.com/2869/11098125944_08a562bd51_q.jpg","https://farm3.staticflickr.com/2869/11098125944_ed0e781a91_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2013/11/29/Using-TeamCity-integrated-dotCover-coverage-files-with-NDepend/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2013/11/29/Using-TeamCity-integrated-dotCover-coverage-files-with-NDepend/","keywords":"Team City, NDepend, dotCover","thumbnailUrl":"https://farm3.staticflickr.com/2869/11098125944_08a562bd51_q.jpg"}</script>
+    <meta name="description" content="For a long time I wanted to integrated NDepend on our build server so that this week I invested some time here and there to achieve that goal. I did that already a long time ago, I even wrote the doc">
+<meta name="keywords" content="Team City,NDepend,dotCover">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Using TeamCity integrated dotCover coverage files with NDepend">
+<meta property="og:url" content="https://laurentkempe.com/2013/11/29/Using-TeamCity-integrated-dotCover-coverage-files-with-NDepend/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="For a long time I wanted to integrated NDepend on our build server so that this week I invested some time here and there to achieve that goal. I did that already a long time ago, I even wrote the doc">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://farm3.staticflickr.com/2836/11114221833_738e29571e_o.png">
+<meta property="og:image" content="http://farm3.staticflickr.com/2833/11114229113_b46ec7804e_o.png">
+<meta property="og:image" content="http://farm8.staticflickr.com/7363/11114582156_0605499626_o.png">
+<meta property="og:image" content="http://farm4.staticflickr.com/3679/11115318034_55d5175a9a_o.png">
+<meta property="og:image" content="http://farm8.staticflickr.com/7364/11115499383_e14d7b48f7_o.png">
+<meta property="og:image" content="http://farm6.staticflickr.com/5491/11115423854_92c437b8d4_o.png">
+<meta property="og:image" content="http://farm6.staticflickr.com/5533/11115432286_aa8423bdc1_o.png">
+<meta property="og:image" content="http://farm3.staticflickr.com/2849/11115450035_9bf0cefdcb_o.png">
+<meta property="og:image" content="http://farm6.staticflickr.com/5493/11115554176_63214bac84_o.png">
+<meta property="og:updated_time" content="2013-11-29T21:21:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Using TeamCity integrated dotCover coverage files with NDepend">
+<meta name="twitter:description" content="For a long time I wanted to integrated NDepend on our build server so that this week I invested some time here and there to achieve that goal. I did that already a long time ago, I even wrote the doc">
+<meta name="twitter:image" content="http://farm3.staticflickr.com/2836/11114221833_738e29571e_o.png">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+        <meta property="og:image" content="https://farm3.staticflickr.com/2869/11098125944_08a562bd51_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://farm3.staticflickr.com/2869/11098125944_08a562bd51_q.jpg" />
+    
+    
+        <meta property="og:image" content="https://farm3.staticflickr.com/2869/11098125944_ed0e781a91_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://farm3.staticflickr.com/2869/11098125944_ed0e781a91_h.jpg" />
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial"
+             style="background-image:url('https://farm3.staticflickr.com/2869/11098125944_ed0e781a91_h.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Using TeamCity integrated dotCover coverage files with NDepend
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2013-11-29T18:55:49+01:00">
+	
+		    Nov 29, 2013
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Byron Bay, Australia</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <!-- [![Byron Bay 2013-08-26 038_DxO](http://farm3.staticflickr.com/2869/11098125944_08a562bd51_m.jpg)](http://www.flickr.com/photos/laurentkempe/11098125944/ "Byron Bay 2013-08-26 038_DxO by Laurent Kempé, on Flickr")-->
+<p>For a long time I wanted to integrated <a href="http://www.ndepend.com" target="_blank" rel="noopener">NDepend</a> on our build server so that this week I invested some time here and there to achieve that goal. I did that already a long time ago, I even wrote the documentation which you can read on <a href="http://www.ndepend.com/Doc_CI_TeamCity.aspx" target="_blank" rel="noopener">NDepend website</a>.<br><a id="more"></a></p>
+<p>This time I wanted to go one step further. </p>
+<p>We use a first build which is building each feature branch we are developing. One of the responsibility of that build is to run unit tests, integrations tests, specifications and gather code coverage. To achieve that we are using the <a href="http://confluence.jetbrains.com/display/TCD8/JetBrains+dotCover" target="_blank" rel="noopener">TeamCity integrated dotCover</a> in each build steps running our different tests. This is collecting artifacts which aren’t directly shown on the Artifacts tab:</p>
+<p><img src="http://farm3.staticflickr.com/2836/11114221833_738e29571e_o.png" alt=""></p>
+<p>Clicking show reveal the file we are interested about, dotCover.snapshot:</p>
+<p><img src="http://farm3.staticflickr.com/2833/11114229113_b46ec7804e_o.png" alt=""></p>
+<p>Something to note is that to be able to use code coverage NDepend needs the pdb files, this is why we have another artifact named PDBs.zip. And finally the third is our software with the exe and dlls.</p>
+<p>Now that we have a build which generate the coverage file which we want to pass to NDepend, let’s create another TeamCity build which will define Snapshot Dependency and Artifact Dependency to the previous build:</p>
+<p><img src="http://farm8.staticflickr.com/7363/11114582156_0605499626_o.png" alt=""></p>
+<p>We are extracting the exe to a NDepend folder and all dlls out of the archive Libs folder to the same NDepend folder.<br>We do the same for the pdb files so that NDepend can use the code coverage data.<br>Finally we extract the dotCover.snapshot to a dotCover folder.</p>
+<p>Then the issue we had was that the dotCover.snapshot file is not of the format that NDepend is expecting.</p>
+<p>So as a first build step of our NDepend build we need to convert dotCover.snapshot file, this is done using a Command Line build step and dotCover integrated in TeamCity, using the <a href="http://www.jetbrains.com/dotcover/webhelp/dotCover__Console_Runner_Commands.html" target="_blank" rel="noopener">report command</a> and the ReportType equal to NDependXML:</p>
+<p><img src="http://farm4.staticflickr.com/3679/11115318034_55d5175a9a_o.png" alt=""></p>
+<p>So after that build first step we have a new converted file; dotCoverNDepend.xml which can be consumed by NDepend.</p>
+<p>Then in the second build step we are using dotCoverNDepend.xml with the new NDepend 5.1 CoverageFiles command parameter:</p>
+<p><img src="http://farm8.staticflickr.com/7364/11115499383_e14d7b48f7_o.png" alt=""></p>
+<p>Here is the full command</p>
+<blockquote>
+<p>C:\NDepend\NDepend.Console.exe “%teamcity.build.checkoutDir%\skyeEditor.ndproj” /CoverageFiles “%teamcity.build.checkoutDir%\dotCover\dotCoverNDepend.xml” /InDirs “%teamcity.build.checkoutDir%\NDepend” “C:\Windows\Microsoft.NET\Framework\v4.0.30319” “C:\Windows\Microsoft.NET\Framework\v4.0.30319\WPF” /OutDir “C:\NDependOutput”</p>
+</blockquote>
+<p>This will create the NDepend report which we will archive as an artifact, on the General Settings of the build</p>
+<p><img src="http://farm6.staticflickr.com/5491/11115423854_92c437b8d4_o.png" alt=""></p>
+<p>Then you will need to define that you want to see the NDepend report as a TeamCity Report Tab, which you define by navigating to Administration &gt; Report Tabs, clicking Create new report tab and specifying</p>
+<p><img src="http://farm6.staticflickr.com/5533/11115432286_aa8423bdc1_o.png" alt=""></p>
+<p>Finally you will have the following NDepend report with code coverage shown for your builds</p>
+<p><img src="http://farm3.staticflickr.com/2849/11115450035_9bf0cefdcb_o.png" alt=""></p>
+<p>One last thing I struggled about is that the NDepend builds were not started, because I thought it was enough to configure the Dependencies, but you need to define also a Build Trigger with Trigger on changes in snapshot dependencies ticked:</p>
+<p><img src="http://farm6.staticflickr.com/5493/11115554176_63214bac84_o.png" alt=""></p>
+<p>Thanks to <strong>Yegor </strong>for the discussion which greatly helped as always! And also to <strong>Ruslan</strong> which also helped through <a href="http://devnet.jetbrains.com/message/5504378#5504378" target="_blank" rel="noopener">the post on the jetbrains forum</a>. And finally thanks to <a href="http://codebetter.com/patricksmacchia/" target="_blank" rel="noopener"><strong>Patrick</strong></a> who introduced really fast the <a href="http://ndepend.uservoice.com/forums/226344-ndepend-user-voice/suggestions/4897199-add-a-command-line-argument-to-depend-console-exe-" target="_blank" rel="noopener">/CoverageFiles in NDepend</a>, so do not hesitate to give feedback using the new <a href="http://ndepend.uservoice.com/forums/226344-ndepend-user-voice" target="_blank" rel="noopener">NDepend user voice</a>.</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/NDepend/">NDepend</a> <a class="tag tag--primary tag--small t-link" href="/tags/Team-City/">Team City</a> <a class="tag tag--primary tag--small t-link" href="/tags/dotCover/">dotCover</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/08/29/Git-Diff-Margin-v20-released/" data-tooltip="Git Diff Margin v2.0 released" aria-label="PREVIOUS: Git Diff Margin v2.0 released">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2013/10/17/Optimizing-release-build-process-using-JetBrains-TeamCity-and-Atlassian-Stash/" data-tooltip="Optimizing release build process using JetBrains TeamCity and Atlassian Stash" aria-label="NEXT: Optimizing release build process using JetBrains TeamCity and Atlassian Stash">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2013/11/29/Using-TeamCity-integrated-dotCover-coverage-files-with-NDepend/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2013/11/29/Using-TeamCity-integrated-dotCover-coverage-files-with-NDepend/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2013/11/29/Using-TeamCity-integrated-dotCover-coverage-files-with-NDepend/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/08/29/Git-Diff-Margin-v20-released/" data-tooltip="Git Diff Margin v2.0 released" aria-label="PREVIOUS: Git Diff Margin v2.0 released">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2013/10/17/Optimizing-release-build-process-using-JetBrains-TeamCity-and-Atlassian-Stash/" data-tooltip="Optimizing release build process using JetBrains TeamCity and Atlassian Stash" aria-label="NEXT: Optimizing release build process using JetBrains TeamCity and Atlassian Stash">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2013/11/29/Using-TeamCity-integrated-dotCover-coverage-files-with-NDepend/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2013/11/29/Using-TeamCity-integrated-dotCover-coverage-files-with-NDepend/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2013/11/29/Using-TeamCity-integrated-dotCover-coverage-files-with-NDepend/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2013/11/29/Using-TeamCity-integrated-dotCover-coverage-files-with-NDepend/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2013/11/29/Using-TeamCity-integrated-dotCover-coverage-files-with-NDepend/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2013/11/29/Using-TeamCity-integrated-dotCover-coverage-files-with-NDepend/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2013/11/29/Using-TeamCity-integrated-dotCover-coverage-files-with-NDepend/';
+                 
+                    this.page.identifier = '20131129065549';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

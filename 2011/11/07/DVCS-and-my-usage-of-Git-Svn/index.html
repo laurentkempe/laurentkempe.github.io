@@ -1,0 +1,565 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>DVCS and my usage of Git Svn - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"Sometime ago I moved “away” from subversion has my Version Control System (VCS) because I felt not free of my way of working with it. I found a great was to improve my work experience by using Git Svn in front of our central Subversion repository.\nI started my experimentation with Mercurial and Hg Svn because I was already using Mercurial for my personal projects. I hit some much the wall with Hg Svn that I decided quite quickly to go and try Git Svn. I had no experience with Git at that time and I had the feeling that it was more complex to handle than Mercurial (which I still think).\nSo currently I use Git Svn to work on one of our product at Innoveo Solutions. I also made a presentation to the team during our techno pizza lunch about DVCS, Git, Git Flow and Git Svn.\nAnd here is the list of what I personally gained as a developer:\n\n2 steps commit       \n\nStage/commit, Push    \n\n\nLocal history / branching       \n\nNo connection to central repository needed to branch/to look at history    \n\n\nExperiment / Refactoring / Spikes       \n\nCommit changes on one path, if wrong rollback    \n\n\nSmarter Merging       \n\nGit’s focus on content rather file location \nBetter at resolving merge conflicts for you (e.g. renames) \nBranching/Merging is daily workflow not anymore an ‘exceptional case’    \n\n\nStash changes \nRebase / Rewriting history       \n\nUntil push you can use interactive rebase      \n\n\n\nDue to my 4h daily commute (more than 2h in the train), I very much appreciate the offline capabilities of DVCS. It lets me branch, watch the history without having a connection to the central repository. So that a really convenience thing in my day to day job.\nBut what I even prefer is working in local branches for experiment, refactoring. With that capability I am able again to commit small steps of code change. I particularly appreciate the possibility to experiment some refactoring and to rollback wrong changes when I feel that I went the wrong way with the change. In the past this was not possible and often you would not commit to SVN because that code would be shared with the others or t would break the build. Ok, I know I could do that with Svn working in a feature branch, but we all know the pain it is with the merging back, especially when you refactor and rename files. During refactoring it is important to be able to save/commit small chunk of code change and even more important is to be able to rollback those changes. So in that case DVCS is a perfect match to that problem.\nWhat I currently don’t like in my current way of working with Git in front of Svn is that I have local branches which I don’t sync back to the central server. I don’t like it because if I have an issue with my local machine then those changes might be lost. I will investigate in the coming weeks about possible solutions even if the best one would be a migration of the central repository to Git. But his is another story because it means a wider change in the team.\n","dateCreated":"2011-11-07T23:14:00+01:00","dateModified":"2011-11-12T22:44:36+01:00","datePublished":"2011-11-07T23:14:00+01:00","description":"Sometime ago I moved “away” from subversion has my Version Control System (VCS) because I felt not free of my way of working with it. I found a great was to improve my work experience by using Git Svn in front of our central Subversion repository.\nI started my experimentation with Mercurial and Hg Svn because I was already using Mercurial for my personal projects. I hit some much the wall with Hg Svn that I decided quite quickly to go and try Git Svn. I had no experience with Git at that time and I had the feeling that it was more complex to handle than Mercurial (which I still think).","headline":"DVCS and my usage of Git Svn","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2011/11/07/DVCS-and-my-usage-of-Git-Svn/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2011/11/07/DVCS-and-my-usage-of-Git-Svn/","keywords":"Git, DVCS"}</script>
+    <meta name="description" content="Sometime ago I moved “away” from subversion has my Version Control System (VCS) because I felt not free of my way of working with it. I found a great was to improve my work experience by using Git Svn">
+<meta name="keywords" content="Git,DVCS">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="DVCS and my usage of Git Svn">
+<meta property="og:url" content="https://laurentkempe.com/2011/11/07/DVCS-and-my-usage-of-Git-Svn/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="Sometime ago I moved “away” from subversion has my Version Control System (VCS) because I felt not free of my way of working with it. I found a great was to improve my work experience by using Git Svn">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2011-11-12T21:44:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DVCS and my usage of Git Svn">
+<meta name="twitter:description" content="Sometime ago I moved “away” from subversion has my Version Control System (VCS) because I felt not free of my way of working with it. I found a great was to improve my work experience by using Git Svn">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            DVCS and my usage of Git Svn
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2011-11-07T23:14:00+01:00">
+	
+		    Nov 07, 2011
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>Sometime ago I moved “away” from subversion has my Version Control System (VCS) because I felt not free of my way of working with it. I found a great was to improve my work experience by using Git Svn in front of our central Subversion repository.</p>
+<p>I started my experimentation with Mercurial and Hg Svn because I was already using Mercurial for my personal projects. I hit some much the wall with Hg Svn that I decided quite quickly to go and try Git Svn. I had no experience with Git at that time and I had the feeling that it was more complex to handle than Mercurial (which I still think).<br><a id="more"></a></p>
+<p>So currently I use Git Svn to work on one of our product at <a href="http://www.innoveo.com/" target="_blank" rel="noopener">Innoveo Solutions</a>. I also made a presentation to the team during our techno pizza lunch about DVCS, Git, Git Flow and Git Svn.</p>
+<p>And here is the list of what I personally gained as a developer:</p>
+<ol>
+<li><p><strong>2 steps commit</strong>       </p>
+<ol>
+<li>Stage/commit, Push    </li>
+</ol>
+</li>
+<li><p><strong>Local history / branching </strong>      </p>
+<ol>
+<li>No connection to central repository needed to branch/to look at history    </li>
+</ol>
+</li>
+<li><p><strong>Experiment / Refactoring / Spikes </strong>      </p>
+<ol>
+<li>Commit changes on one path, if wrong rollback    </li>
+</ol>
+</li>
+<li><p><strong>Smarter Merging </strong>      </p>
+<ol>
+<li>Git’s focus on content rather file location </li>
+<li>Better at resolving merge conflicts for you (e.g. renames) </li>
+<li>Branching/Merging is daily workflow not anymore an ‘exceptional case’    </li>
+</ol>
+</li>
+<li><strong>Stash changes </strong></li>
+<li><p><strong>Rebase / Rewriting history </strong>      </p>
+<ol>
+<li>Until push you can use interactive rebase      </li>
+</ol>
+</li>
+</ol>
+<p>Due to my 4h daily commute (more than 2h in the train), I very much appreciate the offline capabilities of DVCS. It lets me branch, watch the history without having a connection to the central repository. So that a really convenience thing in my day to day job.</p>
+<p>But what I even prefer is working in local branches for experiment, refactoring. With that capability I am able again to commit small steps of code change. I particularly appreciate the possibility to experiment some refactoring and to rollback wrong changes when I feel that I went the wrong way with the change. In the past this was not possible and often you would not commit to SVN because that code would be shared with the others or t would break the build. Ok, I know I could do that with Svn working in a feature branch, but we all know the pain it is with the merging back, especially when you refactor and rename files. During refactoring it is important to be able to save/commit small chunk of code change and even more important is to be able to rollback those changes. So in that case DVCS is a perfect match to that problem.</p>
+<p>What I currently don’t like in my current way of working with Git in front of Svn is that I have local branches which I don’t sync back to the central server. I don’t like it because if I have an issue with my local machine then those changes might be lost. I will investigate in the coming weeks about possible solutions even if the best one would be a migration of the central repository to Git. But his is another story because it means a wider change in the team.</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/DVCS/">DVCS</a> <a class="tag tag--primary tag--small t-link" href="/tags/Git/">Git</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2011/11/12/Fixing-ReSharper-inspection-Results-used-from-XAML/" data-tooltip="Fixing ReSharper inspection Results used from XAML" aria-label="PREVIOUS: Fixing ReSharper inspection Results used from XAML">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2011/11/06/Unlock-your-Windows-Phone-7-with-ChevronWP7-Labs/" data-tooltip="Unlock your Windows Phone 7 with ChevronWP7 Labs" aria-label="NEXT: Unlock your Windows Phone 7 with ChevronWP7 Labs">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2011/11/07/DVCS-and-my-usage-of-Git-Svn/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2011/11/07/DVCS-and-my-usage-of-Git-Svn/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2011/11/07/DVCS-and-my-usage-of-Git-Svn/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2011/11/12/Fixing-ReSharper-inspection-Results-used-from-XAML/" data-tooltip="Fixing ReSharper inspection Results used from XAML" aria-label="PREVIOUS: Fixing ReSharper inspection Results used from XAML">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2011/11/06/Unlock-your-Windows-Phone-7-with-ChevronWP7-Labs/" data-tooltip="Unlock your Windows Phone 7 with ChevronWP7 Labs" aria-label="NEXT: Unlock your Windows Phone 7 with ChevronWP7 Labs">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2011/11/07/DVCS-and-my-usage-of-Git-Svn/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2011/11/07/DVCS-and-my-usage-of-Git-Svn/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2011/11/07/DVCS-and-my-usage-of-Git-Svn/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2011/11/07/DVCS-and-my-usage-of-Git-Svn/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2011/11/07/DVCS-and-my-usage-of-Git-Svn/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2011/11/07/DVCS-and-my-usage-of-Git-Svn/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2011/11/07/DVCS-and-my-usage-of-Git-Svn/';
+                 
+                    this.page.identifier = '20111107111400';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

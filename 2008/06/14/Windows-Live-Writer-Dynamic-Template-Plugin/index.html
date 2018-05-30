@@ -1,0 +1,542 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Windows Live Writer Dynamic Template Plugin - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"digg_url = “http://weblogs.asp.net/lkempe/archive/2008/06/13/windows-live-writer-dynamic-template-plugin.aspx&quot;;digg_title = “Windows Live Writer Dynamic Template Plugin”;digg_bgcolor = “#FFFFFF”;digg_skin = “normal”;digg_url = undefined;digg_title = undefined;digg_bgcolor = undefined;digg_skin = undefined;\n\nToday working on the development of a website I had the following user story to develop “As an author I want to be able to add a lightbox/darkbox around my content in Live Writer”.\nFirst of all I updated my version of Windows Live Writer to the latest CTP version. You can download it from here: Technical Preview: Now Available for Download! Nice work Joe, it is quite stable and look really nice.\nThen I needed to address this user story. To do so I thought to develop my own Live Writer plugin but with some research led me to a FANTASTIC plugin called “Dynamic Template Plugin for Windows Live Writer” and by whom, you guessed, Joe. Great work!\nWith this plugin I was able to implement in a very user friendly way, the needed insertion of my light and dark boxes. No an author is two click away from having it boxes on the website. Nice, really nice.\nBut wait this plugin can do much more than templating!\nCheck all videos available! Watch Example 1, Watch Example 2, Watch Example 3, Watch Example 4, Watch Example 5.\nHere is the result. On the left, what you see in live writer, on the right what you see on the website.\n  \nI love Live Writer! When the pages editing will evolve it will be the must for CMS.\n","dateCreated":"2008-06-14T01:10:32+02:00","dateModified":"2008-06-14T01:10:32+02:00","datePublished":"2008-06-14T01:10:32+02:00","description":"digg_url = “http://weblogs.asp.net/lkempe/archive/2008/06/13/windows-live-writer-dynamic-template-plugin.aspx&quot;;digg_title = “Windows Live Writer Dynamic Template Plugin”;digg_bgcolor = “#FFFFFF”;digg_skin = “normal”;digg_url = undefined;digg_title = undefined;digg_bgcolor = undefined;digg_skin = undefined;\n\nToday working on the development of a website I had the following user story to develop “As an author I want to be able to add a lightbox/darkbox around my content in Live Writer”.","headline":"Windows Live Writer Dynamic Template Plugin","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/06/14/Windows-Live-Writer-Dynamic-Template-Plugin/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2008/06/14/Windows-Live-Writer-Dynamic-Template-Plugin/","keywords":"innoveo solutions, Windows Live Writer"}</script>
+    <meta name="description" content="digg_url = “http://weblogs.asp.net/lkempe/archive/2008/06/13/windows-live-writer-dynamic-template-plugin.aspx&amp;quot;;digg_title = “Windows Live Writer Dynamic Template Plugin”;digg_bgcolor = “#FFFFFF”;">
+<meta name="keywords" content="innoveo solutions,Windows Live Writer">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Windows Live Writer Dynamic Template Plugin">
+<meta property="og:url" content="https://laurentkempe.com/2008/06/14/Windows-Live-Writer-Dynamic-Template-Plugin/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="digg_url = “http://weblogs.asp.net/lkempe/archive/2008/06/13/windows-live-writer-dynamic-template-plugin.aspx&amp;quot;;digg_title = “Windows Live Writer Dynamic Template Plugin”;digg_bgcolor = “#FFFFFF”;">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://farm4.static.flickr.com/3028/2575883688_d3bc3dd2de_o.png">
+<meta property="og:image" content="http://farm4.static.flickr.com/3061/2575055209_e140ae3407_o.png">
+<meta property="og:updated_time" content="2008-06-13T23:10:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Windows Live Writer Dynamic Template Plugin">
+<meta name="twitter:description" content="digg_url = “http://weblogs.asp.net/lkempe/archive/2008/06/13/windows-live-writer-dynamic-template-plugin.aspx&amp;quot;;digg_title = “Windows Live Writer Dynamic Template Plugin”;digg_bgcolor = “#FFFFFF”;">
+<meta name="twitter:image" content="http://farm4.static.flickr.com/3028/2575883688_d3bc3dd2de_o.png">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Windows Live Writer Dynamic Template Plugin
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2008-06-14T01:10:32+02:00">
+	
+		    Jun 14, 2008
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <div class="wlWriterHeaderFooter" style="float:right; margin:0px; padding:0px 0px 4px 8px;"><script type="text/javascript">digg_url = “<a href="http://weblogs.asp.net/lkempe/archive/2008/06/13/windows-live-writer-dynamic-template-plugin.aspx&quot;;digg_title">http://weblogs.asp.net/lkempe/archive/2008/06/13/windows-live-writer-dynamic-template-plugin.aspx&quot;;digg_title</a> = “Windows Live Writer Dynamic Template Plugin”;digg_bgcolor = “#FFFFFF”;digg_skin = “normal”;</script><script src="http://digg.com/tools/diggthis.js" type="text/javascript"></script><script type="text/javascript">digg_url = undefined;digg_title = undefined;digg_bgcolor = undefined;digg_skin = undefined;</script></div>
+
+<p>Today working on the development of a website I had the following user story to develop “As an author I want to be able to add a lightbox/darkbox around my content in <a href="http://windowslivewriter.spaces.live.com/" target="_blank" rel="noopener">Live Writer</a>”.<br><a id="more"></a></p>
+<p>First of all I updated my version of Windows Live Writer to the latest CTP version. You can download it from here: <a href="http://windowslivewriter.spaces.live.com/blog/cns!D85741BB5E0BE8AA!1508.entry" target="_blank" rel="noopener">Technical Preview: Now Available for Download</a>! Nice work <a href="http://jcheng.wordpress.com/2008/06/03/new-writer-plugins-for-tech-preview/" target="_blank" rel="noopener">Joe</a>, it is quite stable and look really nice.</p>
+<p>Then I needed to address this user story. To do so I thought to develop my own Live Writer plugin but with some research led me to a <strong>FANTASTIC</strong> plugin called “<a href="http://www.joecheng.com/code/DynamicTemplate/" target="_blank" rel="noopener">Dynamic Template Plugin for Windows Live Writer</a>” and by whom, you guessed, <a href="http://www.joecheng.com/" target="_blank" rel="noopener">Joe</a>. Great work!</p>
+<p>With this plugin I was able to implement in a very user friendly way, the needed insertion of my light and dark boxes. No an author is two click away from having it boxes on the website. Nice, really nice.</p>
+<p>But wait this plugin can do much more than templating!</p>
+<p>Check all videos available! <a href="http://www.joecheng.com/screencasts/level1.swf" target="_blank" rel="noopener">Watch Example 1</a>, <a href="http://www.joecheng.com/screencasts/level2.swf" target="_blank" rel="noopener">Watch Example 2</a>, <a href="http://www.joecheng.com/screencasts/level3.swf" target="_blank" rel="noopener">Watch Example 3</a>, <a href="http://www.joecheng.com/screencasts/level3a.swf" target="_blank" rel="noopener">Watch Example 4</a>, <a href="http://www.joecheng.com/screencasts/level4a.swf" target="_blank" rel="noopener">Watch Example 5</a>.</p>
+<p>Here is the result. On the left, what you see in live writer, on the right what you see on the website.</p>
+<p><img src="http://farm4.static.flickr.com/3028/2575883688_d3bc3dd2de_o.png" alt=""> <img src="http://farm4.static.flickr.com/3061/2575055209_e140ae3407_o.png" alt=""> </p>
+<p>I love Live Writer! When the pages editing will evolve it will be the must for CMS.</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/Windows-Live-Writer/">Windows Live Writer</a> <a class="tag tag--primary tag--small t-link" href="/tags/innoveo-solutions/">innoveo solutions</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2008/06/14/Silverlight-2-Beta-2-Unable-to-start-debugging!/" data-tooltip="Silverlight 2 Beta 2 - Unable to start debugging!" aria-label="PREVIOUS: Silverlight 2 Beta 2 - Unable to start debugging!">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2008/06/13/ReSharper-40-with-C-30-support-JetBrains-releases-the-ultimate-Visual-Studio-plugin/" data-tooltip="ReSharper 4.0 with C# 3.0 support, JetBrains releases the ultimate Visual Studio plugin" aria-label="NEXT: ReSharper 4.0 with C# 3.0 support, JetBrains releases the ultimate Visual Studio plugin">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2008/06/14/Windows-Live-Writer-Dynamic-Template-Plugin/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2008/06/14/Windows-Live-Writer-Dynamic-Template-Plugin/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2008/06/14/Windows-Live-Writer-Dynamic-Template-Plugin/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2008/06/14/Silverlight-2-Beta-2-Unable-to-start-debugging!/" data-tooltip="Silverlight 2 Beta 2 - Unable to start debugging!" aria-label="PREVIOUS: Silverlight 2 Beta 2 - Unable to start debugging!">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2008/06/13/ReSharper-40-with-C-30-support-JetBrains-releases-the-ultimate-Visual-Studio-plugin/" data-tooltip="ReSharper 4.0 with C# 3.0 support, JetBrains releases the ultimate Visual Studio plugin" aria-label="NEXT: ReSharper 4.0 with C# 3.0 support, JetBrains releases the ultimate Visual Studio plugin">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2008/06/14/Windows-Live-Writer-Dynamic-Template-Plugin/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2008/06/14/Windows-Live-Writer-Dynamic-Template-Plugin/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2008/06/14/Windows-Live-Writer-Dynamic-Template-Plugin/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2008/06/14/Windows-Live-Writer-Dynamic-Template-Plugin/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2008/06/14/Windows-Live-Writer-Dynamic-Template-Plugin/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2008/06/14/Windows-Live-Writer-Dynamic-Template-Plugin/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2008/06/14/Windows-Live-Writer-Dynamic-Template-Plugin/';
+                 
+                    this.page.identifier = '20080614011032';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

@@ -1,0 +1,572 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Git Diff Margin, display Git Diff on the margin of the current file in Visual Studio 2012 - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"\nI am happy to announce that I finally released today my first Visual Studio 2012 extension called Git Diff Margin.\nGit Diff Margin\nA Visual Studio 2012 extension to display Git Diff on the margin of the current file.\n\nQuickly view all current file changes on the left margin: blue rectangle for modification, green rectangle for new lines and grey triangle for deletion \nNavigate to previous/next change on the file \nUndo the change \nShow the diff in external tool \nCopy the old code into the clipboard \nCopy a part of the old code by selecting it in the popup \nDefine the colors of the Addition, Modification and Deletion diff margin through Visual Studio Fonts and Colors options \nSupport Visual Studio 2012 Dark, Light and Blue Theme \nSupport the zoom \nPerfect companion of Visual Studio Tools for Git   \n\nInstallationGrab it from inside of Visual Studio’s Extension Manager, or via the Extension Gallery link\nScreenshots\n\n\nVideo\n\nGet the codehttps://github.com/laurentkempe/GitDiffMargin\nCredits Thanks to Sam Harwell @sharwell for all the improvements!    \n","dateCreated":"2013-05-04T18:13:49+02:00","dateModified":"2013-05-09T04:50:28+02:00","datePublished":"2013-05-04T18:13:49+02:00","description":"\nI am happy to announce that I finally released today my first Visual Studio 2012 extension called Git Diff Margin.\nGit Diff Margin","headline":"Git Diff Margin, display Git Diff on the margin of the current file in Visual Studio 2012","image":["https://farm9.staticflickr.com/8094/8567352477_59d7bc06c0_q.jpg","https://farm9.staticflickr.com/8094/8567352477_a01373fbfc_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2013/05/04/Git-Diff-Margin-display-Git-Diff-on-the-margin-of-the-current-file/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2013/05/04/Git-Diff-Margin-display-Git-Diff-on-the-margin-of-the-current-file/","keywords":"Git, Visual Studio, Tools","thumbnailUrl":"https://farm9.staticflickr.com/8094/8567352477_59d7bc06c0_q.jpg"}</script>
+    <meta name="description" content="I am happy to announce that I finally released today my first Visual Studio 2012 extension called Git Diff Margin. Git Diff Margin">
+<meta name="keywords" content="Git,Visual Studio,Tools">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Git Diff Margin, display Git Diff on the margin of the current file in Visual Studio 2012">
+<meta property="og:url" content="https://laurentkempe.com/2013/05/04/Git-Diff-Margin-display-Git-Diff-on-the-margin-of-the-current-file/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="I am happy to announce that I finally released today my first Visual Studio 2012 extension called Git Diff Margin. Git Diff Margin">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://farm9.staticflickr.com/8329/8116895025_ec9519b5bb_o.png">
+<meta property="og:image" content="http://farm9.staticflickr.com/8370/8457441367_dc23f4a51c_o.png">
+<meta property="og:image" content="http://farm9.staticflickr.com/8385/8457451383_068e258b94_o.png">
+<meta property="og:updated_time" content="2013-05-09T02:50:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Git Diff Margin, display Git Diff on the margin of the current file in Visual Studio 2012">
+<meta name="twitter:description" content="I am happy to announce that I finally released today my first Visual Studio 2012 extension called Git Diff Margin. Git Diff Margin">
+<meta name="twitter:image" content="http://farm9.staticflickr.com/8329/8116895025_ec9519b5bb_o.png">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+        <meta property="og:image" content="https://farm9.staticflickr.com/8094/8567352477_59d7bc06c0_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://farm9.staticflickr.com/8094/8567352477_59d7bc06c0_q.jpg" />
+    
+    
+        <meta property="og:image" content="https://farm9.staticflickr.com/8094/8567352477_a01373fbfc_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://farm9.staticflickr.com/8094/8567352477_a01373fbfc_h.jpg" />
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial"
+             style="background-image:url('https://farm9.staticflickr.com/8094/8567352477_a01373fbfc_h.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Git Diff Margin, display Git Diff on the margin of the current file in Visual Studio 2012
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2013-05-04T18:13:49+02:00">
+	
+		    May 04, 2013
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Anse Cafard, Martinique</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <!-- [![Levé du jour](http://farm9.staticflickr.com/8094/8567352477_59d7bc06c0_m.jpg)](http://www.flickr.com/photos/laurentkempe/8567352477/ "Levé du jour by Laurent Kempé, on Flickr") -->
+<p>I am happy to announce that I finally released today my first Visual Studio 2012 extension called <strong>Git Diff Margin</strong>.</p>
+<h2 id="Git-Diff-Margin"><a href="#Git-Diff-Margin" class="headerlink" title="Git Diff Margin"></a>Git Diff Margin</h2><a id="more"></a>
+<p>A Visual Studio 2012 extension to display Git Diff on the margin of the current file.</p>
+<ul>
+<li>Quickly view all current file changes on the left margin: blue rectangle for modification, green rectangle for new lines and grey triangle for deletion </li>
+<li>Navigate to previous/next change on the file </li>
+<li>Undo the change </li>
+<li>Show the diff in external tool </li>
+<li>Copy the old code into the clipboard </li>
+<li>Copy a part of the old code by selecting it in the popup </li>
+<li>Define the colors of the Addition, Modification and Deletion diff margin through Visual Studio Fonts and Colors options </li>
+<li>Support Visual Studio 2012 Dark, Light and Blue Theme </li>
+<li>Support the zoom </li>
+<li>Perfect companion of Visual Studio Tools for Git   </li>
+</ul>
+<h2 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h2><p>Grab it from inside of Visual Studio’s Extension Manager, or via the <a href="http://visualstudiogallery.msdn.microsoft.com/cf49cf30-2ca6-4ea0-b7cc-6a8e0dadc1a8" target="_blank" rel="noopener">Extension Gallery link</a></p>
+<h2 id="Screenshots"><a href="#Screenshots" class="headerlink" title="Screenshots"></a>Screenshots</h2><p><img src="http://farm9.staticflickr.com/8329/8116895025_ec9519b5bb_o.png" alt=""></p>
+<p><img src="http://farm9.staticflickr.com/8370/8457441367_dc23f4a51c_o.png" alt=""></p>
+<p><img src="http://farm9.staticflickr.com/8385/8457451383_068e258b94_o.png" alt=""></p>
+<h2 id="Video"><a href="#Video" class="headerlink" title="Video"></a>Video</h2><object type="application/x-shockwave-flash" width="400" height="276" data="http://www.flickr.com/apps/video/stewart.swf?v=109786" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"><br><br><embed type="application/x-shockwave-flash" src="http://www.flickr.com/apps/video/stewart.swf?v=109786" bgcolor="#000000" allowfullscreen="true" flashvars="intl_lang=en-us&photo_secret=bd669ee9fc&photo_id=8116990137" height="276" width="400"></object>
+
+<h2 id="Get-the-code"><a href="#Get-the-code" class="headerlink" title="Get the code"></a>Get the code</h2><p><a href="https://github.com/laurentkempe/GitDiffMargin" target="_blank" rel="noopener">https://github.com/laurentkempe/GitDiffMargin</a></p>
+<h2 id="Credits"><a href="#Credits" class="headerlink" title="Credits"></a>Credits</h2><p> Thanks to <a href="https://github.com/sharwell" target="_blank" rel="noopener">Sam Harwell @sharwell</a> for all the improvements!    </p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/Git/">Git</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tools/">Tools</a> <a class="tag tag--primary tag--small t-link" href="/tags/Visual-Studio/">Visual Studio</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2013/05/28/Git-and-GitHub-Training/" data-tooltip="Git and GitHub Training" aria-label="PREVIOUS: Git and GitHub Training">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2012/12/07/Optimization-using-JetBrains-dotTrace/" data-tooltip="Optimizing Skye Editor using JetBrains dotTrace" aria-label="NEXT: Optimizing Skye Editor using JetBrains dotTrace">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2013/05/04/Git-Diff-Margin-display-Git-Diff-on-the-margin-of-the-current-file/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2013/05/04/Git-Diff-Margin-display-Git-Diff-on-the-margin-of-the-current-file/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2013/05/04/Git-Diff-Margin-display-Git-Diff-on-the-margin-of-the-current-file/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2013/05/28/Git-and-GitHub-Training/" data-tooltip="Git and GitHub Training" aria-label="PREVIOUS: Git and GitHub Training">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2012/12/07/Optimization-using-JetBrains-dotTrace/" data-tooltip="Optimizing Skye Editor using JetBrains dotTrace" aria-label="NEXT: Optimizing Skye Editor using JetBrains dotTrace">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2013/05/04/Git-Diff-Margin-display-Git-Diff-on-the-margin-of-the-current-file/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2013/05/04/Git-Diff-Margin-display-Git-Diff-on-the-margin-of-the-current-file/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2013/05/04/Git-Diff-Margin-display-Git-Diff-on-the-margin-of-the-current-file/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2013/05/04/Git-Diff-Margin-display-Git-Diff-on-the-margin-of-the-current-file/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2013/05/04/Git-Diff-Margin-display-Git-Diff-on-the-margin-of-the-current-file/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2013/05/04/Git-Diff-Margin-display-Git-Diff-on-the-margin-of-the-current-file/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2013/05/04/Git-Diff-Margin-display-Git-Diff-on-the-margin-of-the-current-file/';
+                 
+                    this.page.identifier = '20130504061349';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

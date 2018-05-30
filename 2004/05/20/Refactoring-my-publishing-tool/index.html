@@ -1,0 +1,550 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Refactoring my publishing tool - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"I started some time ago to work on a new release of the tool I developed to publish content on my web site Tech Head Brothers. This new release will add the possibility for the author to directly post there article to the website.This solution is using:\n\nWord 2003 with it XML features\nXML Schema for the definition of the content\nXSLT for the presentation. Transformation to HTML, PDF using nFOP (FOP is not working properly at the moment), and soon WordML.\nMicrosoft Visual Studio Tools for the Microsoft Office System\nWeb Services Enhancements (WSE), Dime\nSharpZipLib\n\nThe authors write there articles using Word 2003 and can visualize on there computer there article the way it will be displayed on Tech Head Brothers. Then when they are ready, they save the Word document and are asked if they want to publish it. The software then parse the XML published by Word 2003 and replace the references to source code files by the real source code with colorization. It also replaces references to images with a new XML tag representing the image. Then it zip everything; the article as a XML file, the images, if there is a zip with source code… And finally using WSE and DIME attachment the article is posted. The website gets the DIME attachment, unpack the zip, save the files on the server, and add an entry to the database. That’s it.\nI have done all the refactoring by hand. And that’s such a pain. I am now used to do that with Whidbey and it refactoring tools. So I have a bit searched on the internet some tools that will match my need concerning refactoring and I could find some:\n\n.NET Refactoring\nC# Refactory\nReSharper\nNETRefactor 2.0\n\nI tried several of those in the past but now I really want to use one, but it is impossible cause I get an error message when I add an addin to Visual Studio .NET 2003, for exemple yith .NET Reflector 4:\n\nAny one as an idea?\n","dateCreated":"2004-05-20T22:49:00+02:00","dateModified":"2004-05-20T22:49:00+02:00","datePublished":"2004-05-20T22:49:00+02:00","description":"I started some time ago to work on a new release of the tool I developed to publish content on my web site Tech Head Brothers. This new release will add the possibility for the author to directly post there article to the website.This solution is using:\n\nWord 2003 with it XML features","headline":"Refactoring my publishing tool","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2004/05/20/Refactoring-my-publishing-tool/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2004/05/20/Refactoring-my-publishing-tool/","keywords":".NET Development"}</script>
+    <meta name="description" content="I started some time ago to work on a new release of the tool I developed to publish content on my web site Tech Head Brothers. This new release will add the possibility for the author to directly post">
+<meta name="keywords" content=".NET Development">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Refactoring my publishing tool">
+<meta property="og:url" content="https://laurentkempe.com/2004/05/20/Refactoring-my-publishing-tool/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="I started some time ago to work on a new release of the tool I developed to publish content on my web site Tech Head Brothers. This new release will add the possibility for the author to directly post">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://perso.wanadoo.fr/laurent.kempe/images/vserror.png">
+<meta property="og:updated_time" content="2004-05-20T20:49:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Refactoring my publishing tool">
+<meta name="twitter:description" content="I started some time ago to work on a new release of the tool I developed to publish content on my web site Tech Head Brothers. This new release will add the possibility for the author to directly post">
+<meta name="twitter:image" content="http://perso.wanadoo.fr/laurent.kempe/images/vserror.png">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Refactoring my publishing tool
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2004-05-20T22:49:00+02:00">
+	
+		    May 20, 2004
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>I started some time ago to work on a new release of the tool I developed to publish content on my web site <a href="http://www.techheadbrothers.com" title="Tech Head Brothers" target="_blank" rel="noopener">Tech Head Brothers</a>. This new release will add the possibility for the author to directly post there article to the website.<br>This solution is using:</p>
+<ul>
+<li><a href="http://msdn.microsoft.com/office/understanding/word/" target="_blank" rel="noopener">Word 2003</a> with it XML features<a id="more"></a></li>
+<li>XML Schema for the definition of the content</li>
+<li>XSLT for the presentation. Transformation to HTML, PDF using nFOP (FOP is not working properly at the moment), and soon WordML.</li>
+<li><a href="http://msdn.microsoft.com/vstudio/office/default.aspx" target="_blank" rel="noopener">Microsoft Visual Studio Tools for the Microsoft Office System</a></li>
+<li><a href="http://msdn.microsoft.com/webservices/building/wse/default.aspx" target="_blank" rel="noopener">Web Services Enhancements (WSE)</a>, Dime</li>
+<li><a href="http://www.icsharpcode.net/OpenSource/SharpZipLib/Default.aspx" target="_blank" rel="noopener">SharpZipLib</a></li>
+</ul>
+<p>The authors write there articles using Word 2003 and can visualize on there computer there article the way it will be displayed on <a href="http://www.techheadbrothers.com" title="Tech Head Brothers" target="_blank" rel="noopener">Tech Head Brothers</a>. Then when they are ready, they save the Word document and are asked if they want to publish it. The software then parse the XML published by Word 2003 and replace the references to source code files by the real source code with colorization. It also replaces references to images with a new XML tag representing the image. Then it zip everything; the article as a XML file, the images, if there is a zip with source code… And finally using WSE and DIME attachment the article is posted. The website gets the DIME attachment, unpack the zip, save the files on the server, and add an entry to the database. That’s it.</p>
+<p>I have done all the refactoring by hand. And that’s such a pain. I am now used to do that with Whidbey and it refactoring tools. So I have a bit searched on the internet some tools that will match my need concerning refactoring and I could find some:</p>
+<ul>
+<li><a href="http://dotnetrefactoring.com/" target="_blank" rel="noopener">.NET Refactoring</a></li>
+<li><a href="http://www.xtreme-simplicity.net/" target="_blank" rel="noopener">C# Refactory</a></li>
+<li><a href="http://www.jetbrains.com/resharper/index.html" target="_blank" rel="noopener">ReSharper</a></li>
+<li><a href="http://www.knowdotnet.com/articles/netrefactorproducthome.html" target="_blank" rel="noopener">NETRefactor 2.0</a></li>
+</ul>
+<p>I tried several of those in the past but now I really want to use one, but it is impossible cause I get an error message when I add an addin to Visual Studio .NET 2003, for exemple yith <a href="http://www.aisto.com/roeder/DotNet/" target="_blank" rel="noopener">.NET Reflector 4</a>:</p>
+<p><img src="http://perso.wanadoo.fr/laurent.kempe/images/vserror.png" alt=""></p>
+<p>Any one as an idea?</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/NET-Development/">.NET Development</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2004/05/22/Sauce-Reader-141-The-ultimate-blog-reader-and-writer/" data-tooltip="Sauce Reader 1.4.1 - The ultimate blog reader and writer" aria-label="PREVIOUS: Sauce Reader 1.4.1 - The ultimate blog reader and writer">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2004/05/14/And-the-story-continue-This-time-with-a-good-end/" data-tooltip="And the story continue... This time with a good end" aria-label="NEXT: And the story continue... This time with a good end">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2004/05/20/Refactoring-my-publishing-tool/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2004/05/20/Refactoring-my-publishing-tool/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2004/05/20/Refactoring-my-publishing-tool/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2004/05/22/Sauce-Reader-141-The-ultimate-blog-reader-and-writer/" data-tooltip="Sauce Reader 1.4.1 - The ultimate blog reader and writer" aria-label="PREVIOUS: Sauce Reader 1.4.1 - The ultimate blog reader and writer">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2004/05/14/And-the-story-continue-This-time-with-a-good-end/" data-tooltip="And the story continue... This time with a good end" aria-label="NEXT: And the story continue... This time with a good end">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2004/05/20/Refactoring-my-publishing-tool/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2004/05/20/Refactoring-my-publishing-tool/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2004/05/20/Refactoring-my-publishing-tool/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2004/05/20/Refactoring-my-publishing-tool/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2004/05/20/Refactoring-my-publishing-tool/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2004/05/20/Refactoring-my-publishing-tool/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2004/05/20/Refactoring-my-publishing-tool/';
+                 
+                    this.page.identifier = '20040520104900';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

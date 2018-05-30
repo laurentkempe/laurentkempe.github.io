@@ -1,0 +1,612 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Writing a first Node.js application on Windows - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"   \nI started some weeks ago to play with Github Hubot and hosted one version on Heroku to start learning about all those new technologies.\nThe next step was to go a bit onto Node.js and write a first small application.\nFirst you need to download Node.js and install it on your machine. I downloaded the Windows version 0.6.14.\nWhen Node.js is installed on your machine you should find it on the folder C:\\Program Files (x86)\\nodejs for 64 bits machines and on C:\\Program Files\\nodejs for the 32 bits.\nThen start a PowerShell window and type “node -v” you should see v0.6.14.\nNow start you preferred text editor and create a new file server.js and copy paste the code from the home page of Node.js\n\nvar http = require(‘http’);http.createServer(function (req, res) {  res.writeHead(200, {‘Content-Type’: ‘text/plain’});  res.end(‘Hello World\\n’);}).listen(1337, ‘127.0.0.1’);console.log(‘Server running at http://127.0.0.1:1337/&#39;);\n\n\n\n\n\n\n\n\n\n\n\n\n.csharpcode, .csharpcode pre\n{\n    font-size: small;\n    color: black;\n    font-family: consolas, \"Courier New\", courier, monospace;\n    background-color: #ffffff;\n    /*white-space: pre;*/\n}\n.csharpcode pre { margin: 0em; }\n.csharpcode .rem { color: #008000; }\n.csharpcode .kwrd { color: #0000ff; }\n.csharpcode .str { color: #006080; }\n.csharpcode .op { color: #0000c0; }\n.csharpcode .preproc { color: #cc6633; }\n.csharpcode .asp { background-color: #ffff00; }\n.csharpcode .html { color: #800000; }\n.csharpcode .attr { color: #ff0000; }\n.csharpcode .alt \n{\n    background-color: #f4f4f4;\n    width: 100%;\n    margin: 0em;\n}\n.csharpcode .lnum { color: #606060; }\n\n\n\nGo back to your PowerShell window and type “node server.js” which should display “Server running at http://127.0.0.1:1337/”\nNow run your preferred browser and enter the url http://127.0.0.1:1337/\n\nI went a little further following the Node Beginner site and created a first module. \nTo do so I used JetBrains WebStorm 3 which you can easily configure to run and debug your Node.js application.\nYou need to configure it this way\n \nThen you can add a Run/Debug configuration for Node.Js\n \nFinally you can run your Node.js application in Debug mode \n \nand for sure hit the breakpoints and watch the values of your variables\n \nWhich will help during my learning of this new technology!\n","dateCreated":"2012-03-25T03:25:39+02:00","dateModified":"2012-03-25T03:53:32+02:00","datePublished":"2012-03-25T03:25:39+02:00","description":"   \nI started some weeks ago to play with Github Hubot and hosted one version on Heroku to start learning about all those new technologies.","headline":"Writing a first Node.js application on Windows","image":["https://farm8.staticflickr.com/7184/6972712717_29c1c987ab_q.jpg","https://farm8.staticflickr.com/7184/6972712717_3065764dc8_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2012/03/25/Writing-a-first-Nodejs-application-on-Windows/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2012/03/25/Writing-a-first-Nodejs-application-on-Windows/","keywords":"nodejs","thumbnailUrl":"https://farm8.staticflickr.com/7184/6972712717_29c1c987ab_q.jpg"}</script>
+    <meta name="description" content="I started some weeks ago to play with Github Hubot and hosted one version on Heroku to start learning about all those new technologies.">
+<meta name="keywords" content="nodejs">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Writing a first Node.js application on Windows">
+<meta property="og:url" content="https://laurentkempe.com/2012/03/25/Writing-a-first-Nodejs-application-on-Windows/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="I started some weeks ago to play with Github Hubot and hosted one version on Heroku to start learning about all those new technologies.">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://farm8.staticflickr.com/7055/7011307473_308a566b37_o.png">
+<meta property="og:image" content="http://farm8.staticflickr.com/7253/6865213052_0a80e9a449_o.png">
+<meta property="og:image" content="http://farm8.staticflickr.com/7188/7011334891_f505c3d868_o.png">
+<meta property="og:image" content="http://farm8.staticflickr.com/7226/7011339387_5c4e5b1472_o.png">
+<meta property="og:image" content="http://farm8.staticflickr.com/7072/6865235082_e952e089c2_o.png">
+<meta property="og:updated_time" content="2012-03-25T01:53:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Writing a first Node.js application on Windows">
+<meta name="twitter:description" content="I started some weeks ago to play with Github Hubot and hosted one version on Heroku to start learning about all those new technologies.">
+<meta name="twitter:image" content="http://farm8.staticflickr.com/7055/7011307473_308a566b37_o.png">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+        <meta property="og:image" content="https://farm8.staticflickr.com/7184/6972712717_29c1c987ab_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://farm8.staticflickr.com/7184/6972712717_29c1c987ab_q.jpg" />
+    
+    
+        <meta property="og:image" content="https://farm8.staticflickr.com/7184/6972712717_3065764dc8_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://farm8.staticflickr.com/7184/6972712717_3065764dc8_h.jpg" />
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial"
+             style="background-image:url('https://farm8.staticflickr.com/7184/6972712717_3065764dc8_h.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Writing a first Node.js application on Windows
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2012-03-25T03:25:39+02:00">
+	
+		    Mar 25, 2012
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Grande Anse, Le Diamant, Martinique</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <!-- [![Plage de la Grande Anse du Diamant](http://farm8.staticflickr.com/7184/6972712717_29c1c987ab_m.jpg)](http://www.flickr.com/photos/laurentkempe/6972712717/ "Plage de la Grande Anse du Diamant by Laurent Kempé, on Flickr") -->   
+<p>I started some weeks ago to play with <a href="http://www.laurentkempe.com/post/Starting-TeamCity-builds-from-HipChat-using-Github-Hubot.aspx" target="_blank" rel="noopener">Github Hubot</a> and hosted one version on <a href="http://www.heroku.com/" target="_blank" rel="noopener">Heroku</a> to start learning about all those new technologies.<br><a id="more"></a></p>
+<p>The next step was to go a bit onto <a href="http://nodejs.org/" target="_blank" rel="noopener">Node.js</a> and write a first small application.</p>
+<p>First you need to <a href="http://nodejs.org/#download" target="_blank" rel="noopener">download Node.js</a> and install it on your machine. I downloaded the Windows version 0.6.14.</p>
+<p>When Node.js is installed on your machine you should find it on the folder <em>C:\Program Files (x86)\nodejs</em> for 64 bits machines and on <em>C:\Program Files\nodejs</em> for the 32 bits.</p>
+<p>Then start a PowerShell window and type “node -v” you should see v0.6.14.</p>
+<p>Now start you preferred text editor and create a new file server.js and copy paste the code from the home page of Node.js</p>
+<blockquote>
+<p><span class="kwrd">var</span> http = require(<span class="str">‘http’</span>);<br>http.createServer(<span class="kwrd">function</span> (req, res) {<br>  res.writeHead(200, {<span class="str">‘Content-Type’</span>: <span class="str">‘text/plain’</span>});<br>  res.end(<span class="str">‘Hello World\n’</span>);<br>}).listen(1337, <span class="str">‘127.0.0.1’</span>);<br>console.log(<span class="str">‘Server running at <a href="http://127.0.0.1:1337/&#39;" target="_blank" rel="noopener">http://127.0.0.1:1337/&#39;</a></span>);</p>
+</blockquote>
+<style type="text/css">
+
+
+
+
+
+
+
+
+
+
+.csharpcode, .csharpcode pre
+{
+    font-size: small;
+    color: black;
+    font-family: consolas, "Courier New", courier, monospace;
+    background-color: #ffffff;
+    /*white-space: pre;*/
+}
+.csharpcode pre { margin: 0em; }
+.csharpcode .rem { color: #008000; }
+.csharpcode .kwrd { color: #0000ff; }
+.csharpcode .str { color: #006080; }
+.csharpcode .op { color: #0000c0; }
+.csharpcode .preproc { color: #cc6633; }
+.csharpcode .asp { background-color: #ffff00; }
+.csharpcode .html { color: #800000; }
+.csharpcode .attr { color: #ff0000; }
+.csharpcode .alt 
+{
+    background-color: #f4f4f4;
+    width: 100%;
+    margin: 0em;
+}
+.csharpcode .lnum { color: #606060; }</style>
+
+
+
+<p>Go back to your PowerShell window and type “node server.js” which should display “Server running at <a href="http://127.0.0.1:1337/" target="_blank" rel="noopener">http://127.0.0.1:1337/</a>”</p>
+<p>Now run your preferred browser and enter the url <a href="http://127.0.0.1:1337/" target="_blank" rel="noopener">http://127.0.0.1:1337/</a></p>
+<p><a href="http://www.flickr.com/photos/laurentkempe/7011307473/" title="nodejs by Laurent Kempé, on Flickr" target="_blank" rel="noopener"><img src="http://farm8.staticflickr.com/7055/7011307473_308a566b37_o.png" alt="nodejs"></a></p>
+<p>I went a little further following the <a href="http://www.nodebeginner.org/" target="_blank" rel="noopener">Node Beginner</a> site and created a first module. </p>
+<p>To do so I used <a href="http://www.jetbrains.com/webstorm/" target="_blank" rel="noopener">JetBrains WebStorm 3</a> which you can easily configure to run and debug your Node.js application.</p>
+<p>You need to configure it this way</p>
+<p><a href="http://www.flickr.com/photos/laurentkempe/6865213052/" title="nodejs2 by Laurent Kempé, on Flickr" target="_blank" rel="noopener"><img src="http://farm8.staticflickr.com/7253/6865213052_0a80e9a449_o.png" alt="nodejs2"></a> </p>
+<p>Then you can add a Run/Debug configuration for Node.Js</p>
+<p><a href="http://www.flickr.com/photos/laurentkempe/7011334891/" title="nodejs3 by Laurent Kempé, on Flickr" target="_blank" rel="noopener"><img src="http://farm8.staticflickr.com/7188/7011334891_f505c3d868_o.png" alt="nodejs3"></a> </p>
+<p>Finally you can run your Node.js application in Debug mode </p>
+<p><a href="http://www.flickr.com/photos/laurentkempe/7011339387/" title="nodejs4 by Laurent Kempé, on Flickr" target="_blank" rel="noopener"><img src="http://farm8.staticflickr.com/7226/7011339387_5c4e5b1472_o.png" alt="nodejs4"></a> </p>
+<p>and for sure hit the breakpoints and watch the values of your variables</p>
+<p><a href="http://www.flickr.com/photos/laurentkempe/6865235082/" title="nodejs5 by Laurent Kempé, on Flickr" target="_blank" rel="noopener"><img src="http://farm8.staticflickr.com/7072/6865235082_e952e089c2_o.png" alt="nodejs5"></a> </p>
+<p>Which will help during my learning of this new technology!</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/nodejs/">nodejs</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2012/04/13/Sending-your-Git-branch-changes-as-an-email-attachment/" data-tooltip="Sending your Git branch changes as an email attachment" aria-label="PREVIOUS: Sending your Git branch changes as an email attachment">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2012/03/22/Installation-of-the-Ergotron-WorkFit-D/" data-tooltip="Installation and first experience with the Ergotron WorkFit-D" aria-label="NEXT: Installation and first experience with the Ergotron WorkFit-D">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2012/03/25/Writing-a-first-Nodejs-application-on-Windows/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2012/03/25/Writing-a-first-Nodejs-application-on-Windows/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2012/03/25/Writing-a-first-Nodejs-application-on-Windows/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2012/04/13/Sending-your-Git-branch-changes-as-an-email-attachment/" data-tooltip="Sending your Git branch changes as an email attachment" aria-label="PREVIOUS: Sending your Git branch changes as an email attachment">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2012/03/22/Installation-of-the-Ergotron-WorkFit-D/" data-tooltip="Installation and first experience with the Ergotron WorkFit-D" aria-label="NEXT: Installation and first experience with the Ergotron WorkFit-D">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2012/03/25/Writing-a-first-Nodejs-application-on-Windows/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2012/03/25/Writing-a-first-Nodejs-application-on-Windows/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2012/03/25/Writing-a-first-Nodejs-application-on-Windows/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2012/03/25/Writing-a-first-Nodejs-application-on-Windows/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2012/03/25/Writing-a-first-Nodejs-application-on-Windows/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2012/03/25/Writing-a-first-Nodejs-application-on-Windows/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2012/03/25/Writing-a-first-Nodejs-application-on-Windows/';
+                 
+                    this.page.identifier = '20120325022539';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

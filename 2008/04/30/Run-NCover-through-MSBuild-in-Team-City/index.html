@@ -1,0 +1,551 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Run NCover through MSBuild in Team City - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"After one comment of Chris Walquist on one of my last post about Team City integration of NCover here is the way I run NCover through MSBuild in Team City.\nFirst I need to import the Task of NCover.\n&lt;ProjectToolsVersion=”3.5“DefaultTargets=”Build“xmlns=”http://schemas.microsoft.com/developer/msbuild/2003“&gt;  &lt;UsingTask TaskName=”NCoverExplorer.MSBuildTasks.NCover“AssemblyFile=”$(NCoverPath)\\Build Task Plugins\\NCoverExplorer.MSBuildTasks.dll“ /&gt;  &lt;UsingTask TaskName=”NCoverExplorer.MSBuildTasks.NCoverExplorer“AssemblyFile=”$(NCoverPath)\\Build Task Plugins\\NCoverExplorer.MSBuildTasks.dll“ /&gt;\nThen I define some properties:\n        $(MSBuildProjectDirectory)....    $(MSBuildProjectDirectory)....\\Tests    C:\\Program Files\\NCover    C:\\Program Files\\NUnit 2.4.6\\bin    TechHeadBrothers.Portal.DataAccess.Tests.dll TechHeadBrothers.Portal.DataAccess.dll    ....\\Tests\\Output\\Coverage.xml    Assembly=*.Tests    TechHeadBrothers.Portal.DataAccess;TechHeadBrothers.Portal.Domain;\nThen I have two targets:\n  &lt;Target Name=”FullCoverage“&gt;    &lt;Message Text=”#——— Executing NCover ———#“ /&gt;    &lt;NCover ToolPath=”$(NCoverPath)“            CommandLineExe=”$(NUnitPath)\\nunit-console.exe“            CommandLineArgs=”$(TestDll)“            WorkingDirectory=”$(TestsFolder)\\Output\\bin\\Debug“            ProjectName=”$(ProjectName)“            CoverageFile=”$(CoverageFile)“            FileExclusionPatterns=”$(CoverageExclusions)“            LogFile=”Coverage.log“            AssemblyList=”$(CoverageAssemblies)“ /&gt;        &lt;NCoverExplorer ToolPath=”$(NCoverPath)“                    ProjectName=”$(ProjectName)“                    OutputDir=”$(TestsFolder)\\Output“                    CoverageFiles=”$(CoverageFile)“                    SatisfactoryCoverage=”80“                    ReportType=”ModuleClassSummary“                    HtmlReportName=”CoverageSummary.html“ /&gt;        &lt;NCoverExplorer ToolPath=”$(NCoverPath)“                    ProjectName=”$(ProjectName)“                    OutputDir=”$(TestsFolder)\\Output\\Coverage“                    CoverageFiles=”$(CoverageFile)“                    SatisfactoryCoverage=”80“                    ReportType=”FullCoverageReport“                    HtmlReportName=”Coverage.html“ /&gt;  \nAnd finally in the target AfterBuild (more on that in this post) I call target SummaryCoverage or FullCoverage according to the configuration:\n  &lt;Target Name=”AfterBuild“&gt;    &lt;CallTarget Condition=” ‘$(Configuration)’ == ‘Staging’ “ Targets=”SummaryCoverage“ ContinueOnError=”false“ /&gt;    &lt;CallTarget Condition=” ‘$(Configuration)’ == ‘Nightly’ “ Targets=”FullCoverage“ ContinueOnError=”false“ /&gt;\nThat’s it!\nThen Chris asked the following:\n\n1) How did you get your “tests” tab to show up as well?  Did you have to run the tests with NUnitLauncher, and then run again for coverage?  I read that NUnitLauncher can’t be used to profile, since it kicks off a separate process.\n2) How did you get the “classes”, “header”, “index”, etc. files?  I just get the summary.html.  I see options for this in ncover.console.exe but not in the  target.\n3) Did you use wildcard expressions to pass a list of test assemblies to NCover?  If so, would like to see how you did that, too.\n\n1) I get the test tab configuring Team City to run my unit tests. That has nothing to do with NCover. And yes doing it so seems to run two time all unit tests. Here is a screen shot of my team city runner configuration:\n \n2) Read this post “Using NDepend in Team City build management tool“ that talks about for NDepend but shows configuration for NCover too.\n3) The answer is on top of this post!\nHope it helps!\n","dateCreated":"2008-04-30T05:05:10+02:00","dateModified":"2010-05-07T07:45:42+02:00","datePublished":"2008-04-30T05:05:10+02:00","description":"After one comment of Chris Walquist on one of my last post about Team City integration of NCover here is the way I run NCover through MSBuild in Team City.\nFirst I need to import the Task of NCover.","headline":"Run NCover through MSBuild in Team City","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/04/30/Run-NCover-through-MSBuild-in-Team-City/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2008/04/30/Run-NCover-through-MSBuild-in-Team-City/","keywords":"Tech Head Brothers, continuous integration, Team City"}</script>
+    <meta name="description" content="After one comment of Chris Walquist on one of my last post about Team City integration of NCover here is the way I run NCover through MSBuild in Team City. First I need to import the Task of NCover.">
+<meta name="keywords" content="Tech Head Brothers,continuous integration,Team City">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Run NCover through MSBuild in Team City">
+<meta property="og:url" content="https://laurentkempe.com/2008/04/30/Run-NCover-through-MSBuild-in-Team-City/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="After one comment of Chris Walquist on one of my last post about Team City integration of NCover here is the way I run NCover through MSBuild in Team City. First I need to import the Task of NCover.">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://farm4.static.flickr.com/3083/2452076205_63938cdba0_o.jpg">
+<meta property="og:updated_time" content="2010-05-07T05:45:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Run NCover through MSBuild in Team City">
+<meta name="twitter:description" content="After one comment of Chris Walquist on one of my last post about Team City integration of NCover here is the way I run NCover through MSBuild in Team City. First I need to import the Task of NCover.">
+<meta name="twitter:image" content="http://farm4.static.flickr.com/3083/2452076205_63938cdba0_o.jpg">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Run NCover through MSBuild in Team City
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2008-04-30T05:05:10+02:00">
+	
+		    Apr 30, 2008
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>After one comment of Chris Walquist on one of <a href="http://weblogs.asp.net/lkempe/archive/2008/03/30/integration-of-ncover-into-team-city-for-tech-head-brothers.aspx" target="_blank" rel="noopener">my last post about Team City integration of NCover</a> here is the way I run NCover through MSBuild in Team City.</p>
+<p>First I need to import the Task of NCover.<br><a id="more"></a></p>
+<p><span style="background: black; color: white">&lt;Project</span><span style="background: black; color: #ff8000">ToolsVersion</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">3.5</span><span style="background: black; color: white">“</span><span style="background: black; color: #ff8000">DefaultTargets</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">Build</span><span style="background: black; color: white">“</span><span style="background: black; color: #ff8000">xmlns</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime"><a href="http://schemas.microsoft.com/developer/msbuild/2003" target="_blank" rel="noopener">http://schemas.microsoft.com/developer/msbuild/2003</a></span><span style="background: black; color: white">“&gt;<br>  &lt;UsingTask </span><span style="background: black; color: #ff8000">TaskName</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">NCoverExplorer.MSBuildTasks.NCover</span><span style="background: black; color: white">“</span><span style="background: black; color: #ff8000">AssemblyFile</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">$(NCoverPath)\Build Task Plugins\NCoverExplorer.MSBuildTasks.dll</span><span style="background: black; color: white">“ /&gt;<br>  &lt;UsingTask </span><span style="background: black; color: #ff8000">TaskName</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">NCoverExplorer.MSBuildTasks.NCoverExplorer</span><span style="background: black; color: white">“</span><span style="background: black; color: #ff8000">AssemblyFile</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">$(NCoverPath)\Build Task Plugins\NCoverExplorer.MSBuildTasks.dll</span><span style="background: black; color: white">“ /&gt;<br></span></p>
+<p>Then I define some properties:</p>
+<p><span style="background: black; color: white">    <!-- </span><span style="background: black; color: green">NCover </span><span style="background: black; color: white">--><br>    <solutionfolder>$(MSBuildProjectDirectory)....</solutionfolder><br>    <testsfolder>$(MSBuildProjectDirectory)....\Tests</testsfolder><br>    <ncoverpath>C:\Program Files\NCover</ncoverpath><br>    <nunitpath>C:\Program Files\NUnit 2.4.6\bin</nunitpath><br>    <testdll>TechHeadBrothers.Portal.DataAccess.Tests.dll TechHeadBrothers.Portal.DataAccess.dll</testdll><br>    <coveragefile>....\Tests\Output\Coverage.xml</coveragefile><br>    <coverageexclusions>Assembly=*.Tests</coverageexclusions><br>    <coverageassemblies>TechHeadBrothers.Portal.DataAccess;TechHeadBrothers.Portal.Domain;</coverageassemblies><br></span></p>
+<p>Then I have two targets:</p>
+<p><span style="background: black; color: white">  &lt;Target </span><span style="background: black; color: #ff8000">Name</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">FullCoverage</span><span style="background: black; color: white">“&gt;<br>    &lt;Message </span><span style="background: black; color: #ff8000">Text</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">#——— Executing NCover ———#</span><span style="background: black; color: white">“ /&gt;<br>    &lt;NCover </span><span style="background: black; color: #ff8000">ToolPath</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">$(NCoverPath)</span><span style="background: black; color: white">“<br>            </span><span style="background: black; color: #ff8000">CommandLineExe</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">$(NUnitPath)\nunit-console.exe</span><span style="background: black; color: white">“<br>            </span><span style="background: black; color: #ff8000">CommandLineArgs</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">$(TestDll)</span><span style="background: black; color: white">“<br>            </span><span style="background: black; color: #ff8000">WorkingDirectory</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">$(TestsFolder)\Output\bin\Debug</span><span style="background: black; color: white">“<br>            </span><span style="background: black; color: #ff8000">ProjectName</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">$(ProjectName)</span><span style="background: black; color: white">“<br>            </span><span style="background: black; color: #ff8000">CoverageFile</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">$(CoverageFile)</span><span style="background: black; color: white">“<br>            </span><span style="background: black; color: #ff8000">FileExclusionPatterns</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">$(CoverageExclusions)</span><span style="background: black; color: white">“<br>            </span><span style="background: black; color: #ff8000">LogFile</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">Coverage.log</span><span style="background: black; color: white">“<br>            </span><span style="background: black; color: #ff8000">AssemblyList</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">$(CoverageAssemblies)</span><span style="background: black; color: white">“ /&gt;<br>    <!-- </span><span style="background: black; color: green">Summary Page </span><span style="background: black; color: white">--><br>    &lt;NCoverExplorer </span><span style="background: black; color: #ff8000">ToolPath</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">$(NCoverPath)</span><span style="background: black; color: white">“<br>                    </span><span style="background: black; color: #ff8000">ProjectName</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">$(ProjectName)</span><span style="background: black; color: white">“<br>                    </span><span style="background: black; color: #ff8000">OutputDir</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">$(TestsFolder)\Output</span><span style="background: black; color: white">“<br>                    </span><span style="background: black; color: #ff8000">CoverageFiles</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">$(CoverageFile)</span><span style="background: black; color: white">“<br>                    </span><span style="background: black; color: #ff8000">SatisfactoryCoverage</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">80</span><span style="background: black; color: white">“<br>                    </span><span style="background: black; color: #ff8000">ReportType</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">ModuleClassSummary</span><span style="background: black; color: white">“<br>                    </span><span style="background: black; color: #ff8000">HtmlReportName</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">CoverageSummary.html</span><span style="background: black; color: white">“ /&gt;<br>    <!-- </span><span style="background: black; color: green">Full HTML Report </span><span style="background: black; color: white">--><br>    &lt;NCoverExplorer </span><span style="background: black; color: #ff8000">ToolPath</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">$(NCoverPath)</span><span style="background: black; color: white">“<br>                    </span><span style="background: black; color: #ff8000">ProjectName</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">$(ProjectName)</span><span style="background: black; color: white">“<br>                    </span><span style="background: black; color: #ff8000">OutputDir</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">$(TestsFolder)\Output\Coverage</span><span style="background: black; color: white">“<br>                    </span><span style="background: black; color: #ff8000">CoverageFiles</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">$(CoverageFile)</span><span style="background: black; color: white">“<br>                    </span><span style="background: black; color: #ff8000">SatisfactoryCoverage</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">80</span><span style="background: black; color: white">“<br>                    </span><span style="background: black; color: #ff8000">ReportType</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">FullCoverageReport</span><span style="background: black; color: white">“<br>                    </span><span style="background: black; color: #ff8000">HtmlReportName</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">Coverage.html</span><span style="background: black; color: white">“ /&gt;<br>  <br></span></p>
+<p>And finally in the target AfterBuild (<a href="http://weblogs.asp.net/lkempe/archive/2008/04/25/using-ndepend-in-team-city-build-management-tool.aspx" target="_blank" rel="noopener">more on that in this post</a>) I call target SummaryCoverage or FullCoverage according to the configuration:</p>
+<p><span style="background: black; color: white">  &lt;Target </span><span style="background: black; color: #ff8000">Name</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">AfterBuild</span><span style="background: black; color: white">“&gt;<br>    &lt;CallTarget </span><span style="background: black; color: #ff8000">Condition</span><span style="background: black; color: white">=” </span><span style="background: black; color: lime">‘$(Configuration)’ == ‘Staging’ </span><span style="background: black; color: white">“ </span><span style="background: black; color: #ff8000">Targets</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">SummaryCoverage</span><span style="background: black; color: white">“ </span><span style="background: black; color: #ff8000">ContinueOnError</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">false</span><span style="background: black; color: white">“ /&gt;<br>    &lt;CallTarget </span><span style="background: black; color: #ff8000">Condition</span><span style="background: black; color: white">=” </span><span style="background: black; color: lime">‘$(Configuration)’ == ‘Nightly’ </span><span style="background: black; color: white">“ </span><span style="background: black; color: #ff8000">Targets</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">FullCoverage</span><span style="background: black; color: white">“ </span><span style="background: black; color: #ff8000">ContinueOnError</span><span style="background: black; color: white">=”</span><span style="background: black; color: lime">false</span><span style="background: black; color: white">“ /&gt;<br></span></p>
+<p>That’s it!</p>
+<p>Then Chris asked the following:</p>
+<blockquote>
+<p>1) How did you get your “tests” tab to show up as well?  Did you have to run the tests with NUnitLauncher, and then run again for coverage?  I read that NUnitLauncher can’t be used to profile, since it kicks off a separate process.</p>
+<p>2) How did you get the “classes”, “header”, “index”, etc. files?  I just get the summary.html.  I see options for this in ncover.console.exe but not in the <ncoverexplorer> target.</ncoverexplorer></p>
+<p>3) Did you use wildcard expressions to pass a list of test assemblies to NCover?  If so, would like to see how you did that, too.</p>
+</blockquote>
+<p>1) I get the test tab configuring Team City to run my unit tests. That has nothing to do with NCover. And yes doing it so seems to run two time all unit tests. Here is a screen shot of my team city runner configuration:</p>
+<p><img src="http://farm4.static.flickr.com/3083/2452076205_63938cdba0_o.jpg" alt=""> </p>
+<p>2) Read this post “<a href="http://weblogs.asp.net/lkempe/archive/2008/04/25/using-ndepend-in-team-city-build-management-tool.aspx" target="_blank" rel="noopener">Using NDepend in Team City build management tool</a>“ that talks about for <a href="http://www.ndepend.com/" target="_blank" rel="noopener">NDepend</a> but shows configuration for <a href="http://www.ncover.com/" target="_blank" rel="noopener">NCover</a> too.</p>
+<p>3) The answer is on top of this post!</p>
+<p>Hope it helps!</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/Team-City/">Team City</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tech-Head-Brothers/">Tech Head Brothers</a> <a class="tag tag--primary tag--small t-link" href="/tags/continuous-integration/">continuous integration</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2008/05/16/Bringing-Linq-to-Euss-ORM/" data-tooltip="Bringing Linq to Euss ORM" aria-label="PREVIOUS: Bringing Linq to Euss ORM">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2008/04/25/Using-NDepend-in-Team-City-build-management-tool/" data-tooltip="Using NDepend in Team City build management tool" aria-label="NEXT: Using NDepend in Team City build management tool">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2008/04/30/Run-NCover-through-MSBuild-in-Team-City/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2008/04/30/Run-NCover-through-MSBuild-in-Team-City/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2008/04/30/Run-NCover-through-MSBuild-in-Team-City/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2008/05/16/Bringing-Linq-to-Euss-ORM/" data-tooltip="Bringing Linq to Euss ORM" aria-label="PREVIOUS: Bringing Linq to Euss ORM">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2008/04/25/Using-NDepend-in-Team-City-build-management-tool/" data-tooltip="Using NDepend in Team City build management tool" aria-label="NEXT: Using NDepend in Team City build management tool">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2008/04/30/Run-NCover-through-MSBuild-in-Team-City/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2008/04/30/Run-NCover-through-MSBuild-in-Team-City/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2008/04/30/Run-NCover-through-MSBuild-in-Team-City/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2008/04/30/Run-NCover-through-MSBuild-in-Team-City/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2008/04/30/Run-NCover-through-MSBuild-in-Team-City/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2008/04/30/Run-NCover-through-MSBuild-in-Team-City/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2008/04/30/Run-NCover-through-MSBuild-in-Team-City/';
+                 
+                    this.page.identifier = '20080430050510';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

@@ -1,0 +1,558 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Login control in an ASP.NET AJAX toolkit PopupControlExtender with a close button - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"I remember when I tried to implement a Login control in a ModalPopup with one of the early release of what was called at that time Atlas and is now called ASP.NET AJAX. I had lots of difficulties and now it works like a charm.\nThis time I would like to have a Login control in an ASP.NET AJAX PopupControlExtender from the ASP.NET AJAX Control Toolkit.\n&lt;?xml:namespace prefix=”asp”?&gt;&lt;asp:panel id=”loginPanel” style=”display: none” runat=”server”&gt;&lt;asp:login id=”LoginCtrl” runat=”server” cssselectorclass=”THBLogin” failuretext=”Identifiant incorrect ! Essayez à nouveau…” loginbuttontext=”S’identifier” passwordlabeltext=”Mot de Passe” passwordrequirederrormessage=”Le mot de passe est requis.” remembermetext=”Se souvenir de moi la prochaine fois.” titletext=”S’identifier” usernamelabeltext=”Email” usernamerequirederrormessage=”L’email est requis.” createusertext=”S’enregistrer” createuserurl=”/Register.aspx” passwordrecoverytext=”Mot de passe oublié ?” passwordrecoveryurl=”/PasswordRecovery.aspx”&gt;&lt;/asp:login&gt;&lt;/asp:panel&gt;&lt;?xml:namespace prefix=”ajaxToolkit”?&gt;&lt;ajaxtoolkit:popupcontrolextender id=”PopEx” runat=”server” targetcontrolid=”loginHyperLink” popupcontrolid=”loginPanel” position=”Left”&gt;&lt;/ajaxtoolkit:popupcontrolextender&gt;The implementation is really straight, a panel with a asp:Login in it:\n&lt;asp:Panel ID=”loginPanel” runat=”server” Style=”display: none”&gt;    &lt;asp:Login ID=”LoginCtrl” runat=”server”        CssSelectorClass=”THBLogin”        FailureText=”Identifiant incorrect ! Essayez ? nouveau…”        LoginButtonText=”S’identifier” \n&lt;span style=&quot;color: rgb(255,0,0)&quot;&gt;PasswordLabelText&lt;/span&gt;&lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;=&quot;Mot de Passe&quot;&lt;/span&gt; \n&lt;span style=&quot;color: rgb(255,0,0)&quot;&gt;PasswordRequiredErrorMessage&lt;/span&gt;&lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;=&quot;Le mot de passe est requis.&quot;\n        RememberMeText=”Se souvenir de moi la prochaine fois.”        TitleText=”S’identifier”        UserNameLabelText=”Email”        UserNameRequiredErrorMessage=”L’email est requis.”        CreateUserText=”S’enregistrer”        CreateUserUrl=”/Register.aspx”        PasswordRecoveryText=”Mot de passe oubli? ?”        PasswordRecoveryUrl=”/PasswordRecovery.aspx” /&gt;&lt;/asp:Panel&gt;\nThen you had the PopupControlExtender:\n&lt;ajaxToolkit:PopupControlExtender ID=”PopEx” runat=”server”    TargetControlID=”loginHyperLink”    PopupControlID=”loginPanel”    Position=”Left” /&gt;\nI also need a target control that will initiate the Popup display:\n&lt;asp:HyperLink ID=”loginHyperLink” runat=”server”&gt;S’identifier&lt;/asp:HyperLink&gt;\nTill now nothing really special.\nThen I wanted to add a close button to this Popup, so I a added a div closeLoginPanel with an embedded link:\n&lt;asp:Panel ID=”loginPanel” runat=”server” Style=”display: none”&gt;    &lt;div class=”closeLoginPanel”&gt;        &lt;a title=”Fermer”&gt;X&lt;/a&gt;    &lt;/div&gt;    &lt;asp:Login ID=”LoginCtrl” runat=”server”\nThis is not enough because I need to have the close action started when a user click on the link (X). I first looked at the javascript of the PopupControlExtender and saw that it handles the onclik of the body element so I added \n&lt;a onclick=”document.body.click(); return false;” title=”Fermer”&gt;X&lt;/a&gt;\nThis was working fine on Internet Explorer 7 but was raising an error on FireFox 2. Looking in more detail in the javascript I finally changed my code to:\n&lt;a onclick=”AjaxControlToolkit.PopupControlBehavior.__VisiblePopup.hidePopup(); return false;” title=”Fermer”&gt;X&lt;/a&gt;\nThis is working on both Internet Explorer and FireFox 2.\nHere is the css I used:\n.closeLoginPanel{    font-family: Verdana, Helvetica, Arial, sans-serif;    line-height: 17px;    font-size: 11px;    font-weight: bold;  \n&lt;span style=&quot;color: rgb(255,0,0)&quot;&gt;position&lt;/span&gt;: &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;absolute&lt;/span&gt;;  \n&lt;span style=&quot;color: rgb(255,0,0)&quot;&gt;top&lt;/span&gt;:&lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;8px&lt;/span&gt;;  \n&lt;span style=&quot;color: rgb(255,0,0)&quot;&gt;right&lt;/span&gt;: &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;10px&lt;/span&gt;;  \n}  \n.closeLoginPanel a{    background-color: #6699CC;    cursor: pointer;    color: #FFFFFF;    text-align: center;    text-decoration: none;    padding: 5px;}\nHere is the result:\n\n","dateCreated":"2007-01-28T08:27:58+01:00","dateModified":"2010-05-07T07:51:53+02:00","datePublished":"2007-01-28T08:27:58+01:00","description":"I remember when I tried to implement a Login control in a ModalPopup with one of the early release of what was called at that time Atlas and is now called ASP.NET AJAX. I had lots of difficulties and now it works like a charm.\nThis time I would like to have a Login control in an ASP.NET AJAX PopupControlExtender from the ASP.NET AJAX Control Toolkit.","headline":"Login control in an ASP.NET AJAX toolkit PopupControlExtender with a close button","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/01/28/Login-control-in-an-ASPNET-AJAX-toolkit-PopupControlExtender-with-a-close-button/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2007/01/28/Login-control-in-an-ASPNET-AJAX-toolkit-PopupControlExtender-with-a-close-button/","keywords":"Tech Head Brothers, ASP.NET, ASP.NET AJAX"}</script>
+    <meta name="description" content="I remember when I tried to implement a Login control in a ModalPopup with one of the early release of what was called at that time Atlas and is now called ASP.NET AJAX. I had lots of difficulties and">
+<meta name="keywords" content="Tech Head Brothers,ASP.NET,ASP.NET AJAX">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Login control in an ASP.NET AJAX toolkit PopupControlExtender with a close button">
+<meta property="og:url" content="https://laurentkempe.com/2007/01/28/Login-control-in-an-ASPNET-AJAX-toolkit-PopupControlExtender-with-a-close-button/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="I remember when I tried to implement a Login control in a ModalPopup with one of the early release of what was called at that time Atlas and is now called ASP.NET AJAX. I had lots of difficulties and">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://www.techheadbrothers.com/images/blog/ajax_login_popup.gif">
+<meta property="og:updated_time" content="2010-05-07T05:51:53.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Login control in an ASP.NET AJAX toolkit PopupControlExtender with a close button">
+<meta name="twitter:description" content="I remember when I tried to implement a Login control in a ModalPopup with one of the early release of what was called at that time Atlas and is now called ASP.NET AJAX. I had lots of difficulties and">
+<meta name="twitter:image" content="http://www.techheadbrothers.com/images/blog/ajax_login_popup.gif">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Login control in an ASP.NET AJAX toolkit PopupControlExtender with a close button
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2007-01-28T08:27:58+01:00">
+	
+		    Jan 28, 2007
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>I remember when I tried to <a href="http://weblogs.asp.net/lkempe/archive/2006/06/12/Trip-in-the-Atlas---Part-2.aspx" target="_blank" rel="noopener">implement a Login control in a ModalPopup</a> with one of the early release of what was called at that time Atlas and is now called ASP.NET AJAX. I had lots of difficulties and now it works like a charm.</p>
+<p>This time I would like to have a Login control in an ASP.NET AJAX <a href="http://ajax.asp.net/ajaxtoolkit/PopupControl/PopupControl.aspx" target="_blank" rel="noopener">PopupControlExtender</a> from the <a href="http://ajax.asp.net/ajaxtoolkit" target="_blank" rel="noopener">ASP.NET AJAX Control Toolkit</a>.<br><a id="more"></a></p>
+<p>&lt;?xml:namespace prefix=”asp”?&gt;&lt;asp:panel id=”loginPanel” style=”display: none” runat=”server”&gt;&lt;asp:login id=”LoginCtrl” runat=”server” cssselectorclass=”THBLogin” failuretext=”Identifiant incorrect ! Essayez à nouveau…” loginbuttontext=”S’identifier” passwordlabeltext=”Mot de Passe” passwordrequirederrormessage=”Le mot de passe est requis.” remembermetext=”Se souvenir de moi la prochaine fois.” titletext=”S’identifier” usernamelabeltext=”Email” usernamerequirederrormessage=”L’email est requis.” createusertext=”S’enregistrer” createuserurl=”/Register.aspx” passwordrecoverytext=”Mot de passe oublié ?” passwordrecoveryurl=”/PasswordRecovery.aspx”&gt;&lt;/asp:login&gt;&lt;/asp:panel&gt;&lt;?xml:namespace prefix=”ajaxToolkit”?&gt;&lt;ajaxtoolkit:popupcontrolextender id=”PopEx” runat=”server” targetcontrolid=”loginHyperLink” popupcontrolid=”loginPanel” position=”Left”&gt;&lt;/ajaxtoolkit:popupcontrolextender&gt;The implementation is really straight, a panel with a asp:Login in it:</p>
+<p><span style="color: rgb(0,0,255)">&lt;</span><span style="color: rgb(163,21,21)">asp</span><span style="color: rgb(0,0,255)">:</span><span style="color: rgb(163,21,21)">Panel</span> <span style="color: rgb(255,0,0)">ID</span><span style="color: rgb(0,0,255)">=”loginPanel”</span> <span style="color: rgb(255,0,0)">runat</span><span style="color: rgb(0,0,255)">=”server”</span> <span style="color: rgb(255,0,0)">Style</span><span style="color: rgb(0,0,255)">=”display: none”&gt;<br></span>    <span style="color: rgb(0,0,255)">&lt;</span><span style="color: rgb(163,21,21)">asp</span><span style="color: rgb(0,0,255)">:</span><span style="color: rgb(163,21,21)">Login</span> <span style="color: rgb(255,0,0)">ID</span><span style="color: rgb(0,0,255)">=”LoginCtrl”</span> <span style="color: rgb(255,0,0)">runat</span><span style="color: rgb(0,0,255)">=”server”</span><br>        <span style="color: rgb(255,0,0)">CssSelectorClass</span><span style="color: rgb(0,0,255)">=”THBLogin”<br></span>        <span style="color: rgb(255,0,0)">FailureText</span><span style="color: rgb(0,0,255)">=”Identifiant incorrect ! Essayez ? nouveau…”<br></span>        <span style="color: rgb(255,0,0)">LoginButtonText</span><span style="color: rgb(0,0,255)">=”S’identifier”</span> </p>
+<pre><code>&lt;span style=&quot;color: rgb(255,0,0)&quot;&gt;PasswordLabelText&lt;/span&gt;&lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;=&quot;Mot de Passe&quot;&lt;/span&gt; 
+&lt;span style=&quot;color: rgb(255,0,0)&quot;&gt;PasswordRequiredErrorMessage&lt;/span&gt;&lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;=&quot;Le mot de passe est requis.&quot;
+</code></pre><p>        <span style="color: rgb(255,0,0)">RememberMeText</span><span style="color: rgb(0,0,255)">=”Se souvenir de moi la prochaine fois.”</span><br>        <span style="color: rgb(255,0,0)">TitleText</span><span style="color: rgb(0,0,255)">=”S’identifier”<br></span>        <span style="color: rgb(255,0,0)">UserNameLabelText</span><span style="color: rgb(0,0,255)">=”Email”</span><br>        <span style="color: rgb(255,0,0)">UserNameRequiredErrorMessage</span><span style="color: rgb(0,0,255)">=”L’email est requis.”</span><br>        <span style="color: rgb(255,0,0)">CreateUserText</span><span style="color: rgb(0,0,255)">=”S’enregistrer”</span><br>        <span style="color: rgb(255,0,0)">CreateUserUrl</span><span style="color: rgb(0,0,255)">=”/Register.aspx”</span><br>        <span style="color: rgb(255,0,0)">PasswordRecoveryText</span><span style="color: rgb(0,0,255)">=”Mot de passe oubli? ?”</span><br>        <span style="color: rgb(255,0,0)">PasswordRecoveryUrl</span><span style="color: rgb(0,0,255)">=”/PasswordRecovery.aspx”</span> <span style="color: rgb(0,0,255)">/&gt;<br>&lt;/</span><span style="color: rgb(163,21,21)">asp</span><span style="color: rgb(0,0,255)">:</span><span style="color: rgb(163,21,21)">Panel</span><span style="color: rgb(0,0,255)">&gt;</span></p>
+<p>Then you had the PopupControlExtender:</p>
+<p><span style="color: rgb(0,0,255)">&lt;</span><span style="color: rgb(163,21,21)">ajaxToolkit</span><span style="color: rgb(0,0,255)">:</span><span style="color: rgb(163,21,21)">PopupControlExtender</span> <span style="color: rgb(255,0,0)">ID</span><span style="color: rgb(0,0,255)">=”PopEx”</span> <span style="color: rgb(255,0,0)">runat</span><span style="color: rgb(0,0,255)">=”server”<br></span>    <span style="color: rgb(255,0,0)">TargetControlID</span><span style="color: rgb(0,0,255)">=”loginHyperLink”<br></span>    <span style="color: rgb(255,0,0)">PopupControlID</span><span style="color: rgb(0,0,255)">=”loginPanel”</span><br>    <span style="color: rgb(255,0,0)">Position</span><span style="color: rgb(0,0,255)">=”Left”</span> <span style="color: rgb(0,0,255)">/&gt;</span><br><a href="http://11011.net/software/vspaste" target="_blank" rel="noopener"></a></p>
+<p>I also need a target control that will initiate the Popup display:</p>
+<p><span style="color: rgb(0,0,255)">&lt;</span><span style="color: rgb(163,21,21)">asp</span><span style="color: rgb(0,0,255)">:</span><span style="color: rgb(163,21,21)">HyperLink</span> <span style="color: rgb(255,0,0)">ID</span><span style="color: rgb(0,0,255)">=”loginHyperLink”</span> <span style="color: rgb(255,0,0)">runat</span><span style="color: rgb(0,0,255)">=”server”&gt;</span>S’identifier<span style="color: rgb(0,0,255)">&lt;/</span><span style="color: rgb(163,21,21)">asp</span><span style="color: rgb(0,0,255)">:</span><span style="color: rgb(163,21,21)">HyperLink</span><span style="color: rgb(0,0,255)">&gt;</span></p>
+<p>Till now nothing really special.</p>
+<p>Then I wanted to add a close button to this Popup, so I a added a div closeLoginPanel with an embedded link:</p>
+<p><span style="color: rgb(0,0,255)">&lt;</span><span style="color: rgb(163,21,21)">asp</span><span style="color: rgb(0,0,255)">:</span><span style="color: rgb(163,21,21)">Panel</span> <span style="color: rgb(255,0,0)">ID</span><span style="color: rgb(0,0,255)">=”loginPanel”</span> <span style="color: rgb(255,0,0)">runat</span><span style="color: rgb(0,0,255)">=”server”</span> <span style="color: rgb(255,0,0)">Style</span><span style="color: rgb(0,0,255)">=”display: none”&gt;<br></span>    <span style="color: rgb(0,0,255)">&lt;</span><span style="color: rgb(163,21,21)">div</span> <span style="color: rgb(255,0,0)">class</span><span style="color: rgb(0,0,255)">=”closeLoginPanel”&gt;<br></span>        <span style="color: rgb(0,0,255)">&lt;</span><span style="color: rgb(163,21,21)">a</span> <span style="color: rgb(255,0,0)">title</span><span style="color: rgb(0,0,255)">=”Fermer”&gt;</span>X<span style="color: rgb(0,0,255)">&lt;/</span><span style="color: rgb(163,21,21)">a</span><span style="color: rgb(0,0,255)">&gt;<br></span>    <span style="color: rgb(0,0,255)">&lt;/</span><span style="color: rgb(163,21,21)">div</span><span style="color: rgb(0,0,255)">&gt;<br></span>    <span style="color: rgb(0,0,255)">&lt;</span><span style="color: rgb(163,21,21)">asp</span><span style="color: rgb(0,0,255)">:</span><span style="color: rgb(163,21,21)">Login</span> <span style="color: rgb(255,0,0)">ID</span><span style="color: rgb(0,0,255)">=”LoginCtrl”</span> <span style="color: rgb(255,0,0)">runat</span><span style="color: rgb(0,0,255)">=”server”</span><br><a href="http://11011.net/software/vspaste" target="_blank" rel="noopener"></a></p>
+<p>This is not enough because I need to have the close action started when a user click on the link (X). I first looked at the javascript of the PopupControlExtender and saw that it handles the onclik of the body element so I added </p>
+<p><span style="color: rgb(0,0,255)">&lt;</span><span style="color: rgb(163,21,21)">a</span> <span style="color: rgb(255,0,0)">onclick</span><span style="color: rgb(0,0,255)">=”document.body.click(); return false;”</span> <span style="color: rgb(255,0,0)">title</span><span style="color: rgb(0,0,255)">=”Fermer”&gt;</span>X<span style="color: rgb(0,0,255)">&lt;/</span><span style="color: rgb(163,21,21)">a</span><span style="color: rgb(0,0,255)">&gt;</span><br><a href="http://11011.net/software/vspaste" target="_blank" rel="noopener"></a></p>
+<p>This was working fine on Internet Explorer 7 but was raising an error on FireFox 2. Looking in more detail in the javascript I finally changed my code to:</p>
+<p><span style="color: rgb(0,0,255)">&lt;</span><span style="color: rgb(163,21,21)">a</span> <span style="color: rgb(255,0,0)">onclick</span><span style="color: rgb(0,0,255)">=”AjaxControlToolkit.PopupControlBehavior.__VisiblePopup.hidePopup(); return false;”</span> <span style="color: rgb(255,0,0)">title</span><span style="color: rgb(0,0,255)">=”Fermer”&gt;</span>X<span style="color: rgb(0,0,255)">&lt;/</span><span style="color: rgb(163,21,21)">a</span><span style="color: rgb(0,0,255)">&gt;</span><br><a href="http://11011.net/software/vspaste" target="_blank" rel="noopener"></a></p>
+<p>This is working on both Internet Explorer and FireFox 2.</p>
+<p>Here is the css I used:</p>
+<p><span style="color: rgb(163,21,21)">.closeLoginPanel<br></span>{<br>    <span style="color: rgb(255,0,0)">font-family</span>: <span style="color: rgb(0,0,255)">Verdana,</span> <span style="color: rgb(0,0,255)">Helvetica,</span> <span style="color: rgb(0,0,255)">Arial,</span> <span style="color: rgb(0,0,255)">sans-serif</span>;<br>    <span style="color: rgb(255,0,0)">line-height</span>: <span style="color: rgb(0,0,255)">17px</span>;<br>    <span style="color: rgb(255,0,0)">font-size</span>: <span style="color: rgb(0,0,255)">11px</span>;<br>    <span style="color: rgb(255,0,0)">font-weight</span>: <span style="color: rgb(0,0,255)">bold</span>;  </p>
+<pre><code>&lt;span style=&quot;color: rgb(255,0,0)&quot;&gt;position&lt;/span&gt;: &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;absolute&lt;/span&gt;;  
+&lt;span style=&quot;color: rgb(255,0,0)&quot;&gt;top&lt;/span&gt;:&lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;8px&lt;/span&gt;;  
+&lt;span style=&quot;color: rgb(255,0,0)&quot;&gt;right&lt;/span&gt;: &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;10px&lt;/span&gt;;  
+</code></pre><p>}  </p>
+<p><span style="color: rgb(163,21,21)">.closeLoginPanel</span> <span style="color: rgb(163,21,21)">a<br></span>{<br>    <span style="color: rgb(255,0,0)">background-color</span>: <span style="color: rgb(0,0,255)">#6699CC</span>;<br>    <span style="color: rgb(255,0,0)">cursor</span>: <span style="color: rgb(0,0,255)">pointer</span>;<br>    <span style="color: rgb(255,0,0)">color</span>: <span style="color: rgb(0,0,255)">#FFFFFF</span>;<br>    <span style="color: rgb(255,0,0)">text-align</span>: <span style="color: rgb(0,0,255)">center</span>;<br>    <span style="color: rgb(255,0,0)">text-decoration</span>: <span style="color: rgb(0,0,255)">none</span>;<br>    <span style="color: rgb(255,0,0)">padding</span>: <span style="color: rgb(0,0,255)">5px</span>;<br>}<br><a href="http://11011.net/software/vspaste" target="_blank" rel="noopener"></a></p>
+<p>Here is the result:</p>
+<p><img src="http://www.techheadbrothers.com/images/blog/ajax_login_popup.gif" alt=""></p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET/">ASP.NET</a> <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET-AJAX/">ASP.NET AJAX</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tech-Head-Brothers/">Tech Head Brothers</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2007/03/27/ASPNET-AJAX-and-ASPNET-Validators/" data-tooltip="ASP.NET AJAX and ASP.NET Validators" aria-label="PREVIOUS: ASP.NET AJAX and ASP.NET Validators">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2007/01/24/ASPNET-AJAX-1-Released-and-already-deployed-on-Tech-Head-Brothers/" data-tooltip="ASP.NET AJAX 1 Released and already deployed on Tech Head Brothers" aria-label="NEXT: ASP.NET AJAX 1 Released and already deployed on Tech Head Brothers">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2007/01/28/Login-control-in-an-ASPNET-AJAX-toolkit-PopupControlExtender-with-a-close-button/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2007/01/28/Login-control-in-an-ASPNET-AJAX-toolkit-PopupControlExtender-with-a-close-button/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2007/01/28/Login-control-in-an-ASPNET-AJAX-toolkit-PopupControlExtender-with-a-close-button/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2007/03/27/ASPNET-AJAX-and-ASPNET-Validators/" data-tooltip="ASP.NET AJAX and ASP.NET Validators" aria-label="PREVIOUS: ASP.NET AJAX and ASP.NET Validators">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2007/01/24/ASPNET-AJAX-1-Released-and-already-deployed-on-Tech-Head-Brothers/" data-tooltip="ASP.NET AJAX 1 Released and already deployed on Tech Head Brothers" aria-label="NEXT: ASP.NET AJAX 1 Released and already deployed on Tech Head Brothers">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2007/01/28/Login-control-in-an-ASPNET-AJAX-toolkit-PopupControlExtender-with-a-close-button/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2007/01/28/Login-control-in-an-ASPNET-AJAX-toolkit-PopupControlExtender-with-a-close-button/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2007/01/28/Login-control-in-an-ASPNET-AJAX-toolkit-PopupControlExtender-with-a-close-button/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2007/01/28/Login-control-in-an-ASPNET-AJAX-toolkit-PopupControlExtender-with-a-close-button/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2007/01/28/Login-control-in-an-ASPNET-AJAX-toolkit-PopupControlExtender-with-a-close-button/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2007/01/28/Login-control-in-an-ASPNET-AJAX-toolkit-PopupControlExtender-with-a-close-button/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2007/01/28/Login-control-in-an-ASPNET-AJAX-toolkit-PopupControlExtender-with-a-close-button/';
+                 
+                    this.page.identifier = '20070128082758';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

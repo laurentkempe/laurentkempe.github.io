@@ -1,0 +1,560 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Refactoring the set of Predicate with an Interpreter - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"This evening I continued my journey with the C# Generics.I refactored what I described in my post “DataAccessLayer.FindAll(PublishedBy(Author))“ to be able to use the DesignPattern Interpreter.\nThe result in the ASPX code behind file is the following:\n  1 AndSpec spec = new AndSpec(  2                         new AndSpec(  3                             new PublishedSpec(),  4                             new BeforeDateSpec(DateTime.Parse(“01/01/2005”))  5                         ),  6                         new OrSpec(  7                             new AuthorSpec(“Mathieu Kempé”),  8                             new AuthorSpec(“Laurent Kempé”)  9                         ) 10                     ); 11 12 DataAccessor articles = new DataAccessor(“GetArticles”); 13 GridView3.DataSource = articles.FindAll(Matching(spec)); 14 GridView3.DataBind();\nWith the unique Matching Predicate, replacing all the other Predicate:\n  1 protected Predicate Matching(Spec spec)  2 {  3     return delegate(Article a)  4     {  5         return spec.isSatisfiedBy(a);  6     };  7 }\nTo achieve this I first added two more properties to my Entity, Article. Idid not added new constructors because those two properties are notmandatory:\n  1 private DateTime datePublished;  2  3 public DateTime DatePublished  4 {  5     get { return datePublished; }  6     set { datePublished = value; }  7 }  8  9 private DateTime dateModified; 10 11 public DateTime DateModified 12 { 13     get { return dateModified; } 14     set { dateModified = value; } 15 }\nThen I modified my Data Access Layer to have it a bit more generic, starting with the interface :\n  1 interface IDataAccess  2 {  3     List GetAll();  4  5     List FindAll(Predicate match);  6 }  7 \nI removed the method “T Get(Guid uuid)” and “T Get(string uuid)” because that can be easily expressed with a Predicate.\nI made a Generic implementation of my Data Access through a DataAccessor class:\n  1 namespace TechHeadBrothers.Portal.DAL  2 {  3     public class DataAccessor : IDataAccess where T : new()  4     {  5         List list = null;  6  7         public DataAccessor(string sp)  8         {  9             readFromDatabase(sp); 10         } 11 12         #region Protected Methods 13 14         protected void readFromDatabase(string sp) 15         { 16             // Create Instance of Connection and Command Object 17             SqlConnection myConnection = 18                 new SqlConnection(ConfigurationManager.ConnectionStrings[“TechHeadBrothers”].ConnectionString); 19 20             SqlDataAdapter myCommand = new SqlDataAdapter(sp, myConnection); 21 22             // Mark the Command as a SPROC 23             myCommand.SelectCommand.CommandType = CommandType.StoredProcedure; 24 25             // Create and Fill the DataSet 26             DataSet ds = new DataSet(); 27             myCommand.Fill(ds); 28 29             myConnection.Close(); 30 31             this.list = DataAdapterFactory.createAdapter().Adapt(ds.Tables[0]); 32         } 33 34         #endregion 35 36         #region IDataAccess Members 37 38         public List GetAll() 39         { 40             return list; 41         } 42 43         public List FindAll(Predicate match) 44         { 45             return list.FindAll(match); 46         } 47 48         #endregion 49     } 50 }\n \nI had to implement an Adapter to convert the data from the Database representation to the Entity :\n \n  1 abstract class DataAdapter  2 {  3     public List Adapt(DataTable table)  4     {  5         List list = new List(table.Rows.Count);  6  7         foreach (DataRow row in table.Rows)  8         {  9             list.Add(this.Adapt(row)); 10         } 11 12         return list; 13     } 14 15     public abstract T Adapt(DataRow row); 16 }\n \nAnd a Factory :\n \n  1 class DataAdapterFactory  2 {  3     public static DataAdapter createAdapter() where T : new()  4     {  5         string name = new T().GetType().Name.ToLower();  6  7         if ( name == “article”)  8             return new ArticleAdapter() as DataAdapter;  9         else if ( name == “author”) 10             return new AuthorAdapter() as DataAdapter; 11 12         return null; 13     } 14 }\n \nHere is the concrete implementation for the Article Entity Adapter:\n \n  1 class ArticleAdapter : DataAdapter  2 {  3     public override Article Adapt(DataRow row)  4     {  5         Article article = new Article((string)row[“Title”],  6                                       (string)row[“Description”],  7                                       (string)row[“Author”],  8                                         (bool)row[“isPublished”],  9                                         (Guid)row[“uuid”]); 10 11         if (row[“DatePublished”] != DBNull.Value) 12         { 13             article.DatePublished = (DateTime)row[“DatePublished”]; 14         } 15 16         if (row[“DateModified”] != DBNull.Value) 17         { 18             article.DateModified = (DateTime)row[“DateModified”]; 19         } 20 21         return article; 22     } 23 }\n \nI made also a Business Layer generic class, but has it is just for the moment a wrapper around the DataAccessor, I will not show it.\n \nAnd finally the Interpreter Design Pattern:\n \n  1 public abstract class Spec  2 {  3     public abstract bool isSatisfiedBy(Article article);  4 }\nWith the different concrete Specifications:\n  1 public class PublishedSpec : Spec  2 {  3     public PublishedSpec()  4     {  5     }  6  7     public override bool isSatisfiedBy(Article article)  8     {  9          return (article.isPublished == true); 10     } 11 } 12 13 public class BeforeDateSpec : Spec 14 { 15     private DateTime date; 16 17     public DateTime Date 18     { 19         get { return date; } 20         set { date = value; } 21     } 22 23     public BeforeDateSpec(DateTime date) 24     { 25         this.Date = date; 26     } 27 28     public override bool isSatisfiedBy(Article article) 29     { 30         return (article.DatePublished &lt; this.Date); 31     } 32 } 33 34 public class AuthorSpec : Spec 35 { 36     private string author; 37 38     public string Author 39     { 40       get { return author;} 41       set { author = value; } 42     } 43 44     public AuthorSpec (string author) 45     { 46         this.Author = author; 47     } 48 49     public override bool isSatisfiedBy(Article article) 50     { 51          return (article.Author == this.Author); 52     } 53 } 54 55 public class NotSpec : Spec 56 { 57     private Spec specToNegate; 58 59     public NotSpec(Spec specToNegate) 60     { 61         this.specToNegate = specToNegate; 62     } 63 64     public override bool isSatisfiedBy(Article article) 65     { 66         return !specToNegate.isSatisfiedBy(article); 67     } 68 } 69 70 public class AndSpec : Spec 71 { 72     private Spec augend; 73     public Spec Augend 74     { 75       get { return augend;} 76     } 77 78     private Spec addend; 79     public Spec Addend 80     { 81       get { return addend;} 82     } 83 84     public AndSpec (Spec augend, Spec addend) 85     { 86         this.augend = augend; 87         this.addend = addend; 88     } 89 90     public override bool  isSatisfiedBy(Article article) 91     { 92          return Augend.isSatisfiedBy(article) &amp;&amp; Addend.isSatisfiedBy(article); 93     } 94 } 95 96 public class OrSpec : Spec 97 { 98     private Spec augend; 99     public Spec Augend100     {101         get { return augend; }102     }103104     private Spec addend;105     public Spec Addend106     {107         get { return addend; }108     }109110     public OrSpec(Spec augend, Spec addend)111     {112         this.augend = augend;113         this.addend = addend;114     }115116     public override bool isSatisfiedBy(Article article)117     {118         return Augend.isSatisfiedBy(article) || Addend.isSatisfiedBy(article);119     }120 }\n","dateCreated":"2005-03-12T09:09:00+01:00","dateModified":"2005-03-12T09:09:00+01:00","datePublished":"2005-03-12T09:09:00+01:00","description":"This evening I continued my journey with the C# Generics.I refactored what I described in my post “DataAccessLayer.FindAll(PublishedBy(Author))“ to be able to use the DesignPattern Interpreter.","headline":"Refactoring the set of Predicate with an Interpreter","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2005/03/12/Refactoring-the-set-of-Predicate-with-an-Interpreter/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2005/03/12/Refactoring-the-set-of-Predicate-with-an-Interpreter/","keywords":"Tech Head Brothers, ASP.NET 2.0, Whidbey, .NET Framework 2.0"}</script>
+    <meta name="description" content="This evening I continued my journey with the C# Generics.I refactored what I described in my post “DataAccessLayer.FindAll(PublishedBy(Author))“ to be able to use the DesignPattern Interpreter.">
+<meta name="keywords" content="Tech Head Brothers,ASP.NET 2.0,Whidbey,.NET Framework 2.0">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Refactoring the set of Predicate with an Interpreter">
+<meta property="og:url" content="https://laurentkempe.com/2005/03/12/Refactoring-the-set-of-Predicate-with-an-Interpreter/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="This evening I continued my journey with the C# Generics.I refactored what I described in my post “DataAccessLayer.FindAll(PublishedBy(Author))“ to be able to use the DesignPattern Interpreter.">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2005-03-12T08:09:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Refactoring the set of Predicate with an Interpreter">
+<meta name="twitter:description" content="This evening I continued my journey with the C# Generics.I refactored what I described in my post “DataAccessLayer.FindAll(PublishedBy(Author))“ to be able to use the DesignPattern Interpreter.">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Refactoring the set of Predicate with an Interpreter
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2005-03-12T09:09:00+01:00">
+	
+		    Mar 12, 2005
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>This evening I continued my journey with the <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnvs05/html/csharp_generics.asp" target="_blank" rel="noopener">C# Generics</a>.<br>I refactored what I described in my post “<a href="http://weblogs.asp.net/lkempe/archive/2005/03/09/391247.aspx" target="_blank" rel="noopener">DataAccessLayer.FindAll(PublishedBy(Author))</a><br>“ to be able to use the <a href="http://www.dofactory.com/Patterns/PatternInterpreter.aspx" target="_blank" rel="noopener">Design<br>Pattern Interpreter</a>.<br><a id="more"></a></p>
+<p>The result in the ASPX code behind file is the following:</p>
+<p><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  1</span> AndSpec spec = <font color="blue">new</font> AndSpec(<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  2</span>                         <font color="blue">new</font> AndSpec(<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  3</span>                             <font color="blue">new</font> PublishedSpec(),<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  4</span>                             <font color="blue">new</font> BeforeDateSpec(DateTime.Parse(<font color="maroon">“01/01/2005”</font>))<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  5</span>                         ),<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  6</span>                         <font color="blue">new</font> OrSpec(<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  7</span>                             <font color="blue">new</font> AuthorSpec(<font color="maroon">“Mathieu Kempé”</font>),<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  8</span>                             <font color="blue">new</font> AuthorSpec(<font color="maroon">“Laurent Kempé”</font>)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  9</span>                         )<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 10</span>                     );<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 11</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 12</span> DataAccessor<article> articles = <font color="blue">new</font> DataAccessor<article>(<font color="maroon">“GetArticles”</font>);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 13</span> GridView3.DataSource = articles.FindAll(Matching(spec));<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 14</span> GridView3.DataBind();</article></article></p>
+<p>With the unique Matching Predicate, replacing all the other Predicate:</p>
+<p><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  1</span> <font color="blue">protected</font> Predicate<article> Matching(Spec spec)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  2</span> {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  3</span>     <font color="blue">return</font> <font color="blue">delegate</font>(Article a)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  4</span>     {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  5</span>         <font color="blue">return</font> spec.isSatisfiedBy(a);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  6</span>     };<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  7</span> }</article></p>
+<p>To achieve this I first added two more properties to my Entity, Article. I<br>did not added new constructors because those two properties are not<br>mandatory:</p>
+<p><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  1</span> <font color="blue">private</font> DateTime datePublished;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  2</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  3</span> <font color="blue">public</font> DateTime DatePublished<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  4</span> {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  5</span>     <font color="blue">get</font> { <font color="blue">return</font> datePublished; }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  6</span>     <font color="blue">set</font> { datePublished = value; }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  7</span> }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  8</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  9</span> <font color="blue">private</font> DateTime dateModified;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 10</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 11</span> <font color="blue">public</font> DateTime DateModified<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 12</span> {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 13</span>     <font color="blue">get</font> { <font color="blue">return</font> dateModified; }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 14</span>     <font color="blue">set</font> { dateModified = value; }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 15</span> }</p>
+<p>Then I modified my Data Access Layer to have it a bit more generic, starting with the interface :</p>
+<p><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  1</span> <font color="blue">interface</font> IDataAccess<t><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  2</span> {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  3</span>     List<t> GetAll();<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  4</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  5</span>     List<t> FindAll(Predicate<t> match);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  6</span> }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  7</span> </t></t></t></t></p>
+<p>I removed the method “T Get(Guid uuid)” and “T Get(string uuid)” because that can be easily expressed with a Predicate.</p>
+<p>I made a Generic implementation of my Data Access through a DataAccessor class:</p>
+<p><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  1</span> <font color="blue">namespace</font> TechHeadBrothers.Portal.DAL<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  2</span> {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  3</span>     <font color="blue">public</font> <font color="blue">class</font> DataAccessor<t> : IDataAccess<t> where T : <font color="blue">new</font>()<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  4</span>     {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  5</span>         List<t> list = <font color="blue">null</font>;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  6</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  7</span>         <font color="blue">public</font> DataAccessor(<font color="blue">string</font> sp)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  8</span>         {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  9</span>             readFromDatabase(sp);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 10</span>         }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 11</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 12</span>         <font color="blue">#region</font> Protected Methods<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 13</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 14</span>         <font color="blue">protected</font> <font color="blue">void</font> readFromDatabase(<font color="blue">string</font> sp)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 15</span>         {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 16</span>             <font color="green">// Create Instance of Connection and Command Object<br></font><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 17</span>             SqlConnection myConnection =<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 18</span>                 <font color="blue">new</font> SqlConnection(ConfigurationManager.ConnectionStrings[<font color="maroon">“TechHeadBrothers”</font>].ConnectionString);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 19</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 20</span>             SqlDataAdapter myCommand = <font color="blue">new</font> SqlDataAdapter(sp, myConnection);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 21</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 22</span>             <font color="green">// Mark the Command as a SPROC<br></font><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 23</span>             myCommand.SelectCommand.CommandType = CommandType.StoredProcedure;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 24</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 25</span>             <font color="green">// Create and Fill the DataSet<br></font><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 26</span>             DataSet ds = <font color="blue">new</font> DataSet();<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 27</span>             myCommand.Fill(ds);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 28</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 29</span>             myConnection.Close();<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 30</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 31</span>             <font color="blue">this</font>.list = DataAdapterFactory.createAdapter<t>().Adapt(ds.Tables[<font color="maroon">0</font>]);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 32</span>         }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 33</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 34</span>         <font color="blue">#endregion</font><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 35</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 36</span>         <font color="blue">#region</font> IDataAccess<t> Members<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 37</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 38</span>         <font color="blue">public</font> List<t> GetAll()<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 39</span>         {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 40</span>             <font color="blue">return</font> list;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 41</span>         }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 42</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 43</span>         <font color="blue">public</font> List<t> FindAll(Predicate<t> match)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 44</span>         {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 45</span>             <font color="blue">return</font> list.FindAll(match);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 46</span>         }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 47</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 48</span>         <font color="blue">#endregion</font><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 49</span>     }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 50</span> }<br></t></t></t></t></t></t></t></t></p>
+<p> </p>
+<p>I had to implement an Adapter to convert the data from the Database representation to the Entity :</p>
+<p> </p>
+<p><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  1</span> <font color="blue">abstract</font> <font color="blue">class</font> DataAdapter<t><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  2</span> {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  3</span>     <font color="blue">public</font> List<t> Adapt(DataTable table)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  4</span>     {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  5</span>         List<t> list = <font color="blue">new</font> List<t>(table.Rows.Count);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  6</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  7</span>         <font color="blue">foreach</font> (DataRow row <font color="blue">in</font> table.Rows)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  8</span>         {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  9</span>             list.Add(<font color="blue">this</font>.Adapt(row));<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 10</span>         }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 11</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 12</span>         <font color="blue">return</font> list;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 13</span>     }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 14</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 15</span>     <font color="blue">public</font> <font color="blue">abstract</font> T Adapt(DataRow row);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 16</span> }</t></t></t></t></p>
+<p> </p>
+<p>And a Factory :</p>
+<p> </p>
+<p><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  1</span> <font color="blue">class</font> DataAdapterFactory<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  2</span> {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  3</span>     <font color="blue">public</font> <font color="blue">static</font> DataAdapter<t> createAdapter<t>() where T : <font color="blue">new</font>()<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  4</span>     {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  5</span>         <font color="blue">string</font> name = <font color="blue">new</font> T().GetType().Name.ToLower();<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  6</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  7</span>         <font color="blue">if</font> ( name == <font color="maroon">“article”</font>)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  8</span>             <font color="blue">return</font> <font color="blue">new</font> ArticleAdapter() <font color="blue">as</font> DataAdapter<t>;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  9</span>         <font color="blue">else</font> <font color="blue">if</font> ( name == <font color="maroon">“author”</font>)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 10</span>             <font color="blue">return</font> <font color="blue">new</font> AuthorAdapter() <font color="blue">as</font> DataAdapter<t>;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 11</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 12</span>         <font color="blue">return</font> <font color="blue">null</font>;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 13</span>     }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 14</span> }</t></t></t></t></p>
+<p> </p>
+<p>Here is the concrete implementation for the Article Entity Adapter:</p>
+<p> </p>
+<p><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  1</span> <font color="blue">class</font> ArticleAdapter : DataAdapter<article><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  2</span> {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  3</span>     <font color="blue">public</font> <font color="blue">override</font> Article Adapt(DataRow row)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  4</span>     {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  5</span>         Article article = <font color="blue">new</font> Article((<font color="blue">string</font>)row[<font color="maroon">“Title”</font>],<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  6</span>                                       (<font color="blue">string</font>)row[<font color="maroon">“Description”</font>],<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  7</span>                                       (<font color="blue">string</font>)row[<font color="maroon">“Author”</font>],<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  8</span>                                         (<font color="blue">bool</font>)row[<font color="maroon">“isPublished”</font>],<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  9</span>                                         (Guid)row[<font color="maroon">“uuid”</font>]);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 10</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 11</span>         <font color="blue">if</font> (row[<font color="maroon">“DatePublished”</font>] != DBNull.Value)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 12</span>         {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 13</span>             article.DatePublished = (DateTime)row[<font color="maroon">“DatePublished”</font>];<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 14</span>         }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 15</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 16</span>         <font color="blue">if</font> (row[<font color="maroon">“DateModified”</font>] != DBNull.Value)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 17</span>         {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 18</span>             article.DateModified = (DateTime)row[<font color="maroon">“DateModified”</font>];<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 19</span>         }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 20</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 21</span>         <font color="blue">return</font> article;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 22</span>     }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 23</span> }</article></p>
+<p> </p>
+<p>I made also a Business Layer generic class, but has it is just for the moment a wrapper around the DataAccessor, I will not show it.</p>
+<p> </p>
+<p>And finally the <a href="http://www.dofactory.com/Patterns/PatternInterpreter.aspx" target="_blank" rel="noopener">Interpreter Design Pattern</a>:</p>
+<p> </p>
+<p><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  1</span> <font color="blue">public</font> <font color="blue">abstract</font> <font color="blue">class</font> Spec<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  2</span> {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  3</span>     <font color="blue">public</font> <font color="blue">abstract</font> <font color="blue">bool</font> isSatisfiedBy(Article article);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  4</span> }</p>
+<p>With the different concrete Specifications:</p>
+<p><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  1</span> <font color="blue">public</font> <font color="blue">class</font> PublishedSpec : Spec<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  2</span> {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  3</span>     <font color="blue">public</font> PublishedSpec()<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  4</span>     {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  5</span>     }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  6</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  7</span>     <font color="blue">public</font> <font color="blue">override</font> <font color="blue">bool</font> isSatisfiedBy(Article article)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  8</span>     {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  9</span>          <font color="blue">return</font> (article.isPublished == <font color="maroon">true</font>);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 10</span>     }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 11</span> }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 12</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 13</span> <font color="blue">public</font> <font color="blue">class</font> BeforeDateSpec : Spec<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 14</span> {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 15</span>     <font color="blue">private</font> DateTime date;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 16</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 17</span>     <font color="blue">public</font> DateTime Date<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 18</span>     {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 19</span>         <font color="blue">get</font> { <font color="blue">return</font> date; }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 20</span>         <font color="blue">set</font> { date = value; }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 21</span>     }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 22</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 23</span>     <font color="blue">public</font> BeforeDateSpec(DateTime date)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 24</span>     {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 25</span>         <font color="blue">this</font>.Date = date;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 26</span>     }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 27</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 28</span>     <font color="blue">public</font> <font color="blue">override</font> <font color="blue">bool</font> isSatisfiedBy(Article article)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 29</span>     {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 30</span>         <font color="blue">return</font> (article.DatePublished &lt; <font color="blue">this</font>.Date);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 31</span>     }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 32</span> }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 33</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 34</span> <font color="blue">public</font> <font color="blue">class</font> AuthorSpec : Spec<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 35</span> {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 36</span>     <font color="blue">private</font> <font color="blue">string</font> author;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 37</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 38</span>     <font color="blue">public</font> <font color="blue">string</font> Author<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 39</span>     {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 40</span>       <font color="blue">get</font> { <font color="blue">return</font> author;}<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 41</span>       <font color="blue">set</font> { author = value; }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 42</span>     }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 43</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 44</span>     <font color="blue">public</font> AuthorSpec (<font color="blue">string</font> author)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 45</span>     {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 46</span>         <font color="blue">this</font>.Author = author;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 47</span>     }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 48</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 49</span>     <font color="blue">public</font> <font color="blue">override</font> <font color="blue">bool</font> isSatisfiedBy(Article article)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 50</span>     {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 51</span>          <font color="blue">return</font> (article.Author == <font color="blue">this</font>.Author);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 52</span>     }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 53</span> }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 54</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 55</span> <font color="blue">public</font> <font color="blue">class</font> NotSpec : Spec<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 56</span> {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 57</span>     <font color="blue">private</font> Spec specToNegate;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 58</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 59</span>     <font color="blue">public</font> NotSpec(Spec specToNegate)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 60</span>     {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 61</span>         <font color="blue">this</font>.specToNegate = specToNegate;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 62</span>     }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 63</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 64</span>     <font color="blue">public</font> <font color="blue">override</font> <font color="blue">bool</font> isSatisfiedBy(Article article)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 65</span>     {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 66</span>         <font color="blue">return</font> !specToNegate.isSatisfiedBy(article);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 67</span>     }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 68</span> }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 69</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 70</span> <font color="blue">public</font> <font color="blue">class</font> AndSpec : Spec<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 71</span> {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 72</span>     <font color="blue">private</font> Spec augend;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 73</span>     <font color="blue">public</font> Spec Augend<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 74</span>     {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 75</span>       <font color="blue">get</font> { <font color="blue">return</font> augend;}<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 76</span>     }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 77</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 78</span>     <font color="blue">private</font> Spec addend;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 79</span>     <font color="blue">public</font> Spec Addend<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 80</span>     {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 81</span>       <font color="blue">get</font> { <font color="blue">return</font> addend;}<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 82</span>     }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 83</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 84</span>     <font color="blue">public</font> AndSpec (Spec augend, Spec addend)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 85</span>     {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 86</span>         <font color="blue">this</font>.augend = augend;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 87</span>         <font color="blue">this</font>.addend = addend;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 88</span>     }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 89</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 90</span>     <font color="blue">public</font> <font color="blue">override</font> <font color="blue">bool</font>  isSatisfiedBy(Article article)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 91</span>     {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 92</span>          <font color="blue">return</font> Augend.isSatisfiedBy(article) &amp;&amp; Addend.isSatisfiedBy(article);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 93</span>     }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 94</span> }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 95</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 96</span> <font color="blue">public</font> <font color="blue">class</font> OrSpec : Spec<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 97</span> {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 98</span>     <font color="blue">private</font> Spec augend;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 99</span>     <font color="blue">public</font> Spec Augend<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">100</span>     {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">101</span>         <font color="blue">get</font> { <font color="blue">return</font> augend; }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">102</span>     }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">103</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">104</span>     <font color="blue">private</font> Spec addend;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">105</span>     <font color="blue">public</font> Spec Addend<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">106</span>     {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">107</span>         <font color="blue">get</font> { <font color="blue">return</font> addend; }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">108</span>     }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">109</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">110</span>     <font color="blue">public</font> OrSpec(Spec augend, Spec addend)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">111</span>     {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">112</span>         <font color="blue">this</font>.augend = augend;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">113</span>         <font color="blue">this</font>.addend = addend;<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">114</span>     }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">115</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">116</span>     <font color="blue">public</font> <font color="blue">override</font> <font color="blue">bool</font> isSatisfiedBy(Article article)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">117</span>     {<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">118</span>         <font color="blue">return</font> Augend.isSatisfiedBy(article) || Addend.isSatisfiedBy(article);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">119</span>     }<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">120</span> }</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/NET-Framework-2-0/">.NET Framework 2.0</a> <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET-2-0/">ASP.NET 2.0</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tech-Head-Brothers/">Tech Head Brothers</a> <a class="tag tag--primary tag--small t-link" href="/tags/Whidbey/">Whidbey</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2005/03/16/Introducing-Custom-Entity-Classes/" data-tooltip="Introducing Custom Entity Classes" aria-label="PREVIOUS: Introducing Custom Entity Classes">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2005/03/11/Microsoft-to-aquire-Groove-Network-Groovy-Baby/" data-tooltip="Microsoft to aquire Groove Network - Groovy Baby" aria-label="NEXT: Microsoft to aquire Groove Network - Groovy Baby">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2005/03/12/Refactoring-the-set-of-Predicate-with-an-Interpreter/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2005/03/12/Refactoring-the-set-of-Predicate-with-an-Interpreter/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2005/03/12/Refactoring-the-set-of-Predicate-with-an-Interpreter/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2005/03/16/Introducing-Custom-Entity-Classes/" data-tooltip="Introducing Custom Entity Classes" aria-label="PREVIOUS: Introducing Custom Entity Classes">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2005/03/11/Microsoft-to-aquire-Groove-Network-Groovy-Baby/" data-tooltip="Microsoft to aquire Groove Network - Groovy Baby" aria-label="NEXT: Microsoft to aquire Groove Network - Groovy Baby">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2005/03/12/Refactoring-the-set-of-Predicate-with-an-Interpreter/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2005/03/12/Refactoring-the-set-of-Predicate-with-an-Interpreter/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2005/03/12/Refactoring-the-set-of-Predicate-with-an-Interpreter/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2005/03/12/Refactoring-the-set-of-Predicate-with-an-Interpreter/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2005/03/12/Refactoring-the-set-of-Predicate-with-an-Interpreter/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2005/03/12/Refactoring-the-set-of-Predicate-with-an-Interpreter/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2005/03/12/Refactoring-the-set-of-Predicate-with-an-Interpreter/';
+                 
+                    this.page.identifier = '20050312090900';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

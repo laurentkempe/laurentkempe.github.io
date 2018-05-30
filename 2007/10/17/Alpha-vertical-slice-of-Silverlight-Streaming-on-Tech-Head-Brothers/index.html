@@ -1,0 +1,561 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Alpha vertical slice of Silverlight Streaming on Tech Head Brothers - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"Tonight I reached a new milestone on my current development for my portal Tech Head Brothers.\nYou might know, or guessed, from one of my last post; “Tech Head Brothers Silverlight Streaming framework“ that I am working on adding Silverlight Streaming to Tech Head Brothers. I first released a little framework to ease the development against the REST API of Silverlight Streaming. Now I went further on with a first vertical slice of the whole solution.\nThe solution is composed of four parts:\n\na client application to post the video\na service to receive the posted video\nan admin web application to publish the video\na web interface to display the video \n\nAfter quite some discussions with Mathieu about the best posting user experience for the different authors we finally decided that using Live Writer was the best solution! And now that I have the first vertical slice I am really happy about the choice we made, because it makes the solution easy for the authors but also for us implementing the solution.\nThe client application customize Live Writer with a SmartContentSource plugin letting the author upload it’s video to Silverlight Streaming but also posting all information to Tech Head Brothers as a blog post.\nThe cool point here is that during the development of innoveo solutions website; my new company, I wrote a generic blog engine that basically let you define a blog just by adding an httphandler and implementing a Converter class:\nDefinition of a new blog, that will be used in the httpHandlers part of the web.config\n&lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;class&lt;/span&gt; &lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;VideoBlog&lt;/span&gt; : &lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;GenericBlog&lt;/span&gt;&lt;&lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;Video&lt;/span&gt;&gt;\n{\n    &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;public&lt;/span&gt; VideoBlog() : &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;base&lt;/span&gt;(&lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;VideoBlogAssembler&lt;/span&gt;())\n    {\n    }\n}\n\nDefinition of the converter class, converting an business entity to/from a Post\n&lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;class&lt;/span&gt; &lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;VideoBlogAssembler&lt;/span&gt; : &lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;IBlogAssembler&lt;/span&gt;&lt;&lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;Video&lt;/span&gt;&gt;\n{\n\n&lt;span style=&quot;color: rgb(128,128,128)&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: rgb(0,128,0)&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: rgb(128,128,128)&quot;&gt;&lt;summary&gt;\n        /// Converts the specified video.        ///         /// The video.        ///         public Post Convert(Video video)        {            Post post = new Post();\npost.dateCreated = video.PublishDate;\npost.description = video.Description;\n\n…\nThe admin part was quick to develop just extending the page I already had for articles publication.\nAnd finally Mathieu did a great job on the XAML Silverlight Player and all the javascript part that I juste needed to integrate.\nSo now you know it, yeah we are adding Video to Tech Head Brothers and I hope really soon.\n","dateCreated":"2007-10-17T04:42:26+02:00","dateModified":"2007-10-17T04:42:26+02:00","datePublished":"2007-10-17T04:42:26+02:00","description":"Tonight I reached a new milestone on my current development for my portal Tech Head Brothers.\nYou might know, or guessed, from one of my last post; “Tech Head Brothers Silverlight Streaming framework“ that I am working on adding Silverlight Streaming to Tech Head Brothers. I first released a little framework to ease the development against the REST API of Silverlight Streaming. Now I went further on with a first vertical slice of the whole solution.","headline":"Alpha vertical slice of Silverlight Streaming on Tech Head Brothers","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/10/17/Alpha-vertical-slice-of-Silverlight-Streaming-on-Tech-Head-Brothers/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2007/10/17/Alpha-vertical-slice-of-Silverlight-Streaming-on-Tech-Head-Brothers/","keywords":"Tech Head Brothers, Silverlight, Silverlight Streaming"}</script>
+    <meta name="description" content="Tonight I reached a new milestone on my current development for my portal Tech Head Brothers. You might know, or guessed, from one of my last post; “Tech Head Brothers Silverlight Streaming framework“">
+<meta name="keywords" content="Tech Head Brothers,Silverlight,Silverlight Streaming">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Alpha vertical slice of Silverlight Streaming on Tech Head Brothers">
+<meta property="og:url" content="https://laurentkempe.com/2007/10/17/Alpha-vertical-slice-of-Silverlight-Streaming-on-Tech-Head-Brothers/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="Tonight I reached a new milestone on my current development for my portal Tech Head Brothers. You might know, or guessed, from one of my last post; “Tech Head Brothers Silverlight Streaming framework“">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2007-10-17T02:42:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Alpha vertical slice of Silverlight Streaming on Tech Head Brothers">
+<meta name="twitter:description" content="Tonight I reached a new milestone on my current development for my portal Tech Head Brothers. You might know, or guessed, from one of my last post; “Tech Head Brothers Silverlight Streaming framework“">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Alpha vertical slice of Silverlight Streaming on Tech Head Brothers
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2007-10-17T04:42:26+02:00">
+	
+		    Oct 17, 2007
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>Tonight I reached a new milestone on my current development for my portal Tech Head Brothers.</p>
+<p>You might know, or guessed, from one of my last post; “<a href="http://weblogs.asp.net/lkempe/archive/2007/10/11/tech-head-brothers-silverlight-streaming-framework.aspx" target="_blank" rel="noopener">Tech Head Brothers Silverlight Streaming framework</a>“ that I am working on adding <a href="http://silverlight.live.com/" target="_blank" rel="noopener">Silverlight Streaming</a> to Tech Head Brothers. I first <a href="http://www.codeplex.com/THBSLSFramework" target="_blank" rel="noopener">released a little framework</a> to ease the development against the REST API of <a href="http://silverlight.live.com/" target="_blank" rel="noopener">Silverlight Streaming</a>. Now I went further on with a first vertical slice of the whole solution.<br><a id="more"></a></p>
+<p>The solution is composed of four parts:</p>
+<ol>
+<li>a client application to post the video</li>
+<li>a service to receive the posted video</li>
+<li>an admin web application to publish the video</li>
+<li>a web interface to display the video </li>
+</ol>
+<p>After quite some discussions with <a href="http://www.techheadbrothers.com/Auteurs.aspx/mathieu-kempe" target="_blank" rel="noopener">Mathieu</a> about the best posting user experience for the different authors we finally decided that using <a href="http://get.live.com/betas/writer_betas" target="_blank" rel="noopener">Live Writer</a> was the best solution! And now that I have the first vertical slice I am really happy about the choice we made, because it makes the solution easy for the authors but also for us implementing the solution.</p>
+<p>The client application customize Live Writer with a <a href="http://msdn2.microsoft.com/en-us/library/aa738935.aspx" target="_blank" rel="noopener">SmartContentSource</a> plugin letting the author upload it’s video to <a href="http://silverlight.live.com/" target="_blank" rel="noopener">Silverlight Streaming</a> but also posting all information to Tech Head Brothers as a blog post.</p>
+<p>The cool point here is that during the development of <a href="http://www.innoveo.com/" target="_blank" rel="noopener">innoveo solutions</a> website; my new company, I wrote a generic blog engine that basically let you define a blog just by adding an httphandler and implementing a Converter class:</p>
+<p><em>Definition of a new blog, that will be used in the httpHandlers part of the web.config</em></p>
+<pre><code>&lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;class&lt;/span&gt; &lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;VideoBlog&lt;/span&gt; : &lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;GenericBlog&lt;/span&gt;&lt;&lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;Video&lt;/span&gt;&gt;
+{
+    &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;public&lt;/span&gt; VideoBlog() : &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;base&lt;/span&gt;(&lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;VideoBlogAssembler&lt;/span&gt;())
+    {
+    }
+}
+</code></pre><p><a href="http://11011.net/software/vspaste" target="_blank" rel="noopener"></a></p>
+<p><em>Definition of the converter class, converting an business entity to/from a Post</em></p>
+<pre><code>&lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;class&lt;/span&gt; &lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;VideoBlogAssembler&lt;/span&gt; : &lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;IBlogAssembler&lt;/span&gt;&lt;&lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;Video&lt;/span&gt;&gt;
+{
+</code></pre><p><a href="http://11011.net/software/vspaste" target="_blank" rel="noopener"></a></p>
+<pre><code>&lt;span style=&quot;color: rgb(128,128,128)&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: rgb(0,128,0)&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: rgb(128,128,128)&quot;&gt;&lt;summary&gt;
+</code></pre><p>        <span style="color: rgb(128,128,128)">///</span><span style="color: rgb(0,128,0)"> Converts the specified video.<br></span>        <span style="color: rgb(128,128,128)">///</span><span style="color: rgb(0,128,0)"> </span><span style="color: rgb(128,128,128)"><br></span>        <span style="color: rgb(128,128,128)">///</span><span style="color: rgb(0,128,0)"> </span><span style="color: rgb(128,128,128)"><param name="video"></span><span style="color: rgb(0,128,0)">The video.</span><span style="color: rgb(128,128,128)"><br></span>        <span style="color: rgb(128,128,128)">///</span><span style="color: rgb(0,128,0)"> </span><span style="color: rgb(128,128,128)"><returns></returns><br></span>        <span style="color: rgb(0,0,255)">public</span> <span style="color: rgb(43,145,175)">Post</span> Convert(<span style="color: rgb(43,145,175)">Video</span> video)<br>        {<br>            <span style="color: rgb(43,145,175)">Post</span> post = <span style="color: rgb(0,0,255)">new</span> <span style="color: rgb(43,145,175)">Post</span>();</p>
+<pre><code>post.dateCreated = video.PublishDate;
+post.description = video.Description;
+</code></pre><p><a href="http://11011.net/software/vspaste" target="_blank" rel="noopener"></a></p>
+<p>…</p>
+<p>The admin part was quick to develop just extending the page I already had for articles publication.</p>
+<p>And finally <a href="http://www.techheadbrothers.com/Auteurs.aspx/mathieu-kempe" target="_blank" rel="noopener">Mathieu</a> did a great job on the XAML Silverlight Player and all the javascript part that I juste needed to integrate.</p>
+<p>So now you know it, yeah we are adding Video to Tech Head Brothers and I hope really soon.</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/Silverlight/">Silverlight</a> <a class="tag tag--primary tag--small t-link" href="/tags/Silverlight-Streaming/">Silverlight Streaming</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tech-Head-Brothers/">Tech Head Brothers</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2007/10/17/Coding-Horror-Remember-This-Stuff-Is-Supposed-To-Be-Fun/" data-tooltip="Coding Horror: Remember, This Stuff Is Supposed To Be Fun" aria-label="PREVIOUS: Coding Horror: Remember, This Stuff Is Supposed To Be Fun">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2007/10/13/Up-to-date-with-Silverlight-Streaming/" data-tooltip="Up to date with Silverlight Streaming" aria-label="NEXT: Up to date with Silverlight Streaming">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2007/10/17/Alpha-vertical-slice-of-Silverlight-Streaming-on-Tech-Head-Brothers/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2007/10/17/Alpha-vertical-slice-of-Silverlight-Streaming-on-Tech-Head-Brothers/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2007/10/17/Alpha-vertical-slice-of-Silverlight-Streaming-on-Tech-Head-Brothers/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2007/10/17/Coding-Horror-Remember-This-Stuff-Is-Supposed-To-Be-Fun/" data-tooltip="Coding Horror: Remember, This Stuff Is Supposed To Be Fun" aria-label="PREVIOUS: Coding Horror: Remember, This Stuff Is Supposed To Be Fun">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2007/10/13/Up-to-date-with-Silverlight-Streaming/" data-tooltip="Up to date with Silverlight Streaming" aria-label="NEXT: Up to date with Silverlight Streaming">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2007/10/17/Alpha-vertical-slice-of-Silverlight-Streaming-on-Tech-Head-Brothers/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2007/10/17/Alpha-vertical-slice-of-Silverlight-Streaming-on-Tech-Head-Brothers/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2007/10/17/Alpha-vertical-slice-of-Silverlight-Streaming-on-Tech-Head-Brothers/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2007/10/17/Alpha-vertical-slice-of-Silverlight-Streaming-on-Tech-Head-Brothers/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2007/10/17/Alpha-vertical-slice-of-Silverlight-Streaming-on-Tech-Head-Brothers/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2007/10/17/Alpha-vertical-slice-of-Silverlight-Streaming-on-Tech-Head-Brothers/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2007/10/17/Alpha-vertical-slice-of-Silverlight-Streaming-on-Tech-Head-Brothers/';
+                 
+                    this.page.identifier = '20071017044226';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

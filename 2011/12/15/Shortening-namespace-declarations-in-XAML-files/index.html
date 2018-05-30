@@ -1,0 +1,634 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Shortening namespace declarations in XAML files - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"\nThis afternoon I was working on Innoveo Skye Editor which is a WPF application written in C#. \nThe application is using Telerik RadControls for WPF.\nI was facing the issue of having more and more namespace declarations like the following for RadInput and Rad:\n\n.csharpcode, .csharpcode pre\n{\n    font-size: small;\n    color: black;\n    font-family: consolas, \"Courier New\", courier, monospace;\n    background-color: #ffffff;\n    /*white-space: pre;*/\n}\n.csharpcode pre { margin: 0em; }\n.csharpcode .rem { color: #008000; }\n.csharpcode .kwrd { color: #0000ff; }\n.csharpcode .str { color: #006080; }\n.csharpcode .op { color: #0000c0; }\n.csharpcode .preproc { color: #cc6633; }\n.csharpcode .asp { background-color: #ffff00; }\n.csharpcode .html { color: #800000; }\n.csharpcode .attr { color: #ff0000; }\n.csharpcode .alt \n{\n    background-color: #f4f4f4;\n    width: 100%;\n    margin: 0em;\n}\n.csharpcode .lnum { color: #606060; }\n.code { font-size: 12px; color: #000; font-family: Consolas, \"Courier New\", Courier, Monospace; background-color: #F1F1F1; line-height: normal; }\n.code p        { padding: 5px; }\n.code .rem    { color: #008000; }\n.code .kwrd    { color: #0000ff; }\n.code .str    { color: #006080; }\n.code .op    { color: #0000c0; }\n.code .preproc { color: #0000ff; }\n.code .asp    { background-color: #ffff00; }\n.code .html { color: #800000; }\n.code .attr { color: #ff0000; }\n.code .alt    { background-color: #f4f4f4; }\n.code .lnum    { color: #606060; }\n\n\n&lt;Window x:Class=\"skyeEditor.View.Dialogs.ProductSettingsDialog\"\n        xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"\n        xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"\n        xmlns:RadInput=\"clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input\"\n        xmlns:Rad=\"clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls\"\n\n\nSearching for a solution I thought of ASP.NET in which you can declare in the web.config things like that:\n\n&lt;pages pageBaseType=”System.Web.Mvc.WebViewPage”&gt;  &lt;namespaces&gt;    &lt;add namespace=”MyNamespace” /&gt;\n\nMy goal was to have one namespace declaration for example telerik and be able to use it in all my XAML files without having to declare too much. \nSo I started an online discussion with Laurent Bugnion who has always shown me the good direction, which in this case is the \n\nXmlnsDefinitionAttribute Class\nFollowed by an article from Sandino Di Mattia about “A Guide to Cleaner XAML with Custom Namespaces and Prefixes (WPF/Silverlight)”.\nUsing the idea I was able to add the following to the AssemblyInfo.cs of my own project:\n[assembly: XmlnsDefinition(\"telerik\",\n                           \"Telerik.Windows.Controls\",\n                           AssemblyName = \"Telerik.Windows.Controls\")]\n\n[assembly: XmlnsDefinition(\"telerik\",\n                           \"Telerik.Windows.Controls\",\n                           AssemblyName = \"Telerik.Windows.Controls.Input\")]\n\n[assembly: XmlnsDefinition(\"telerik\",\n                           \"Telerik.Windows.Controls\",\n                           AssemblyName = \"Telerik.Windows.Controls.Navigation\")]\n\n[assembly: XmlnsDefinition(\"telerik\",\n                           \"Telerik.Windows.Controls\",\n                           AssemblyName = \"Telerik.Windows.Controls.RibbonView\")]\n\nAnd then my XAML file declaration looks like that:\n&lt;Window x:Class=\"skyeEditor.View.Dialogs.ProductSettingsDialog\"\n        xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"\n        xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"\n        xmlns:telerik=\"http://schemas.telerik.com/2008/xaml/presentation\"\n\n\nAnd I can use everywhere for all Telerik RadControls for WPF with the prefix telerik \n&lt;telerik:RadComboBox ItemsSource=\"{Binding ProductNodeLabels}\"\n                        SelectedItem=\"{Binding SelectedProductNodeLabel}\"\n                        Margin=\"0,0,0,5\" /&gt;\n\n\nA little step but a nice improvement!\n","dateCreated":"2011-12-15T02:49:43+01:00","dateModified":"2011-12-15T07:30:59+01:00","datePublished":"2011-12-15T02:49:43+01:00","description":"\nThis afternoon I was working on Innoveo Skye Editor which is a WPF application written in C#. \nThe application is using Telerik RadControls for WPF.","headline":"Shortening namespace declarations in XAML files","image":["https://farm6.staticflickr.com/5190/5563773074_38938ee129_q.jpg","https://farm6.staticflickr.com/5190/5563773074_38938ee129_b.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2011/12/15/Shortening-namespace-declarations-in-XAML-files/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2011/12/15/Shortening-namespace-declarations-in-XAML-files/","keywords":"Silverlight, WPF","thumbnailUrl":"https://farm6.staticflickr.com/5190/5563773074_38938ee129_q.jpg"}</script>
+    <meta name="description" content="This afternoon I was working on Innoveo Skye Editor which is a WPF application written in C#.  The application is using Telerik RadControls for WPF.">
+<meta name="keywords" content="Silverlight,WPF">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Shortening namespace declarations in XAML files">
+<meta property="og:url" content="https://laurentkempe.com/2011/12/15/Shortening-namespace-declarations-in-XAML-files/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="This afternoon I was working on Innoveo Skye Editor which is a WPF application written in C#.  The application is using Telerik RadControls for WPF.">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2011-12-15T06:30:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Shortening namespace declarations in XAML files">
+<meta name="twitter:description" content="This afternoon I was working on Innoveo Skye Editor which is a WPF application written in C#.  The application is using Telerik RadControls for WPF.">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+        <meta property="og:image" content="https://farm6.staticflickr.com/5190/5563773074_38938ee129_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://farm6.staticflickr.com/5190/5563773074_38938ee129_q.jpg" />
+    
+    
+        <meta property="og:image" content="https://farm6.staticflickr.com/5190/5563773074_38938ee129_b.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://farm6.staticflickr.com/5190/5563773074_38938ee129_b.jpg" />
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial"
+             style="background-image:url('https://farm6.staticflickr.com/5190/5563773074_38938ee129_b.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Shortening namespace declarations in XAML files
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2011-12-15T02:49:43+01:00">
+	
+		    Dec 15, 2011
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Vue sur la tête de la femme couchée de la terrasse de la villa cannelle, Le Diamant, Martinique</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <!--[![Vue sur la tête de la femme couchée de la terrasse de la villa cannelle](http://farm6.staticflickr.com/5190/5563773074_38938ee129_m.jpg)](http://www.flickr.com/photos/laurentkempe/5563773074/ "Vue sur la tête de la femme couchée de la terrasse de la villa cannelle by Laurent Kempé, on Flickr")-->
+<p>This afternoon I was working on <a href="http://www.innoveo.com/" target="_blank" rel="noopener">Innoveo</a> <a href="http://www.innoveo.com/SoftwareSolution.aspx" target="_blank" rel="noopener">Skye Editor</a> which is a WPF application written in C#. </p>
+<p>The application is using <a href="http://www.telerik.com/products/wpf.aspx" target="_blank" rel="noopener">Telerik RadControls for WPF</a>.<br><a id="more"></a></p>
+<p>I was facing the issue of having more and more namespace declarations like the following for <strong>RadInput</strong> and <strong>Rad</strong>:</p>
+<style type="text/css">
+.csharpcode, .csharpcode pre
+{
+    font-size: small;
+    color: black;
+    font-family: consolas, "Courier New", courier, monospace;
+    background-color: #ffffff;
+    /*white-space: pre;*/
+}
+.csharpcode pre { margin: 0em; }
+.csharpcode .rem { color: #008000; }
+.csharpcode .kwrd { color: #0000ff; }
+.csharpcode .str { color: #006080; }
+.csharpcode .op { color: #0000c0; }
+.csharpcode .preproc { color: #cc6633; }
+.csharpcode .asp { background-color: #ffff00; }
+.csharpcode .html { color: #800000; }
+.csharpcode .attr { color: #ff0000; }
+.csharpcode .alt 
+{
+    background-color: #f4f4f4;
+    width: 100%;
+    margin: 0em;
+}
+.csharpcode .lnum { color: #606060; }
+.code { font-size: 12px; color: #000; font-family: Consolas, "Courier New", Courier, Monospace; background-color: #F1F1F1; line-height: normal; }
+.code p        { padding: 5px; }
+.code .rem    { color: #008000; }
+.code .kwrd    { color: #0000ff; }
+.code .str    { color: #006080; }
+.code .op    { color: #0000c0; }
+.code .preproc { color: #0000ff; }
+.code .asp    { background-color: #ffff00; }
+.code .html { color: #800000; }
+.code .attr { color: #ff0000; }
+.code .alt    { background-color: #f4f4f4; }
+.code .lnum    { color: #606060; }
+</style>
+
+<pre class="code"><span style="color: blue">&lt;</span><span style="color: #a31515">Window </span><span style="color: red">x</span><span style="color: blue">:</span><span style="color: red">Class</span><span style="color: blue">="skyeEditor.View.Dialogs.ProductSettingsDialog"
+        </span><span style="color: red">xmlns</span><span style="color: blue">="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        </span><span style="color: red">xmlns</span><span style="color: blue">:</span><span style="color: red">x</span><span style="color: blue">="http://schemas.microsoft.com/winfx/2006/xaml"
+        </span><span style="color: red">xmlns</span><span style="color: blue">:</span><span style="color: red">RadInput</span><span style="color: blue">="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input"
+        </span><span style="color: red">xmlns</span><span style="color: blue">:</span><span style="color: red">Rad</span><span style="color: blue">="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls"
+</span></pre>
+
+<p>Searching for a solution I thought of ASP.NET in which you can declare in the web.config things like that:</p>
+<blockquote>
+<p>&lt;pages pageBaseType=”System.Web.Mvc.WebViewPage”&gt;<br>  &lt;namespaces&gt;<br>    &lt;add namespace=”MyNamespace” /&gt;</p>
+</blockquote>
+<p>My goal was to have one namespace declaration for example <strong>telerik</strong> and be able to use it in all my XAML files without having to declare too much. </p>
+<p>So I started an online discussion with <a href="http://www.galasoft.ch/intro_en.html" target="_blank" rel="noopener">Laurent Bugnion</a> who has always shown me the good direction, which in this case is the </p>
+<blockquote>
+<h3 id="XmlnsDefinitionAttribute-Class"><a href="#XmlnsDefinitionAttribute-Class" class="headerlink" title="XmlnsDefinitionAttribute Class"></a><a href="http://msdn.microsoft.com/en-us/library/system.windows.markup.xmlnsdefinitionattribute.aspx" target="_blank" rel="noopener">XmlnsDefinitionAttribute</a> Class</h3></blockquote>
+<p>Followed by an article from <a href="http://blog.sandrinodimattia.net/" target="_blank" rel="noopener">Sandino Di Mattia</a> about “<a href="http://www.codeproject.com/KB/silverlight/xaml_custom_namespaces.aspx?adcid=2499&amp;azid=85&amp;PageFlow=FixedWidth" target="_blank" rel="noopener">A Guide to Cleaner XAML with Custom Namespaces and Prefixes (WPF/Silverlight)</a>”.</p>
+<p>Using the idea I was able to add the following to the <strong>AssemblyInfo.cs</strong> of my own project:</p>
+<pre class="code">[<span style="color: blue">assembly</span>: <span style="color: #2b91af">XmlnsDefinition</span>(<span style="color: #a31515">"telerik"</span>,
+                           <span style="color: #a31515">"Telerik.Windows.Controls"</span>,
+                           AssemblyName = <span style="color: #a31515">"Telerik.Windows.Controls"</span>)]
+
+[<span style="color: blue">assembly</span>: <span style="color: #2b91af">XmlnsDefinition</span>(<span style="color: #a31515">"telerik"</span>,
+                           <span style="color: #a31515">"Telerik.Windows.Controls"</span>,
+                           AssemblyName = <span style="color: #a31515">"Telerik.Windows.Controls.Input"</span>)]
+
+[<span style="color: blue">assembly</span>: <span style="color: #2b91af">XmlnsDefinition</span>(<span style="color: #a31515">"telerik"</span>,
+                           <span style="color: #a31515">"Telerik.Windows.Controls"</span>,
+                           AssemblyName = <span style="color: #a31515">"Telerik.Windows.Controls.Navigation"</span>)]
+
+[<span style="color: blue">assembly</span>: <span style="color: #2b91af">XmlnsDefinition</span>(<span style="color: #a31515">"telerik"</span>,
+                           <span style="color: #a31515">"Telerik.Windows.Controls"</span>,
+                           AssemblyName = <span style="color: #a31515">"Telerik.Windows.Controls.RibbonView"</span>)]</pre>
+
+<p>And then my XAML file declaration looks like that:</p>
+<pre class="code"><span style="color: blue">&lt;</span><span style="color: #a31515">Window </span><span style="color: red">x</span><span style="color: blue">:</span><span style="color: red">Class</span><span style="color: blue">="skyeEditor.View.Dialogs.ProductSettingsDialog"
+        </span><span style="color: red">xmlns</span><span style="color: blue">="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        </span><span style="color: red">xmlns</span><span style="color: blue">:</span><span style="color: red">x</span><span style="color: blue">="http://schemas.microsoft.com/winfx/2006/xaml"
+        </span><span style="color: red">xmlns</span><span style="color: blue">:</span><span style="color: red">telerik</span><span style="color: blue">="http://schemas.telerik.com/2008/xaml/presentation"
+</span></pre>
+
+<p>And I can use everywhere for all Telerik RadControls for WPF with the prefix <strong>telerik</strong> </p>
+<pre class="code"><span style="color: blue">&lt;</span><span style="color: #a31515">telerik</span><span style="color: blue">:</span><span style="color: #a31515">RadComboBox </span><span style="color: red">ItemsSource</span><span style="color: blue">="{</span><span style="color: #a31515">Binding </span><span style="color: red">ProductNodeLabels</span><span style="color: blue">}"
+                        </span><span style="color: red">SelectedItem</span><span style="color: blue">="{</span><span style="color: #a31515">Binding </span><span style="color: red">SelectedProductNodeLabel</span><span style="color: blue">}"
+                        </span><span style="color: red">Margin</span><span style="color: blue">="0,0,0,5" /&gt;
+</span></pre>
+
+<p>A little step but a nice improvement!</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/Silverlight/">Silverlight</a> <a class="tag tag--primary tag--small t-link" href="/tags/WPF/">WPF</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2012/01/05/Extending-existing-NET-API-to-support-asynchronous-operations/" data-tooltip="Extending existing .NET API to support asynchronous operations" aria-label="PREVIOUS: Extending existing .NET API to support asynchronous operations">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2011/12/07/LeWeb11/" data-tooltip="LeWeb’11" aria-label="NEXT: LeWeb’11">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2011/12/15/Shortening-namespace-declarations-in-XAML-files/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2011/12/15/Shortening-namespace-declarations-in-XAML-files/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2011/12/15/Shortening-namespace-declarations-in-XAML-files/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2012/01/05/Extending-existing-NET-API-to-support-asynchronous-operations/" data-tooltip="Extending existing .NET API to support asynchronous operations" aria-label="PREVIOUS: Extending existing .NET API to support asynchronous operations">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2011/12/07/LeWeb11/" data-tooltip="LeWeb’11" aria-label="NEXT: LeWeb’11">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2011/12/15/Shortening-namespace-declarations-in-XAML-files/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2011/12/15/Shortening-namespace-declarations-in-XAML-files/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2011/12/15/Shortening-namespace-declarations-in-XAML-files/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2011/12/15/Shortening-namespace-declarations-in-XAML-files/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2011/12/15/Shortening-namespace-declarations-in-XAML-files/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2011/12/15/Shortening-namespace-declarations-in-XAML-files/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2011/12/15/Shortening-namespace-declarations-in-XAML-files/';
+                 
+                    this.page.identifier = '20111215024943';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

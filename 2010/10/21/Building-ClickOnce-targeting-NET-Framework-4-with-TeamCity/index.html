@@ -1,0 +1,578 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Building ClickOnce targeting .NET Framework 4 with TeamCity - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"I already talked about this topic in a previous post, Building ClickOnce with TeamCity, which was about .NET framework 3.5. This time I will talk about .NET framework 4.\nAs always when you change from one .NET framework version to another, there are some more things to install on our build server than just the .NET Framework.\nSo this time I had to copy from my local machine (in fact it was Robert doing it, Thanks Robert) the folder\n\nC:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.0A\n\nTo the build server folder\n\nC:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\n\nTake care of the “x86”, due to my 64bits Windows 7 which is removed on the server because it is a 32bits Windows 2003 R2.\nAfter that I created all the registry keys needed\n\nWindows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SDKs\\Windows\\v7.0A]“InstallationFolder”=”C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\““ProductVersion”=”7.0.30319”“ProductName”=”Microsoft Windows SDK for Visual Studio 2010”\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SDKs\\Windows\\v7.0A\\WinSDK-NetFx35Tools]“ProductVersion”=”7.0.30319”“ComponentName”=”Windows SDK .NET Framework 3.5 Multi-targeting Utilities”“InstallationFolder”=”C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\Bin\\“\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SDKs\\Windows\\v7.0A\\WinSDK-NetFx35Tools-x64]“ProductVersion”=”7.0.30319”“ComponentName”=”Windows SDK .NET Framework 3.5 Multi-targeting Utilities (x64)”“InstallationFolder”=”C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\Bin\\x64\\“\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SDKs\\Windows\\v7.0A\\WinSDK-NetFx35Tools-x86]“ProductVersion”=”7.0.30319”“ComponentName”=”Windows SDK .NET Framework 3.5 Multi-targeting Utilities”“InstallationFolder”=”C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\Bin\\“\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SDKs\\Windows\\v7.0A\\WinSDK-NetFx40Tools]“ProductVersion”=”7.0.30319”“ComponentName”=”Windows SDK Tools for .NET Framework 4.0”“InstallationFolder”=”C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\Bin\\NETFX 4.0 Tools\\“\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SDKs\\Windows\\v7.0A\\WinSDK-NetFx40Tools-x64]“ProductVersion”=”7.0.30319”“ComponentName”=”Windows SDK Tools for .NET Framework 4.0 (x64)”“InstallationFolder”=”C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\Bin\\NETFX 4.0 Tools\\x64\\“\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SDKs\\Windows\\v7.0A\\WinSDK-NetFx40Tools-x86]“ProductVersion”=”7.0.30319”“ComponentName”=”Windows SDK Tools for .NET Framework 4.0”“InstallationFolder”=”C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\Bin\\NETFX 4.0 Tools\\“\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SDKs\\Windows\\v7.0A\\WinSDK-SDKTools]“InstallationFolder”=”C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\Bin\\““ProductVersion”=”7.0.30319”“ComponentName”=”Windows Common Utilities”\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SDKs\\Windows\\v7.0A\\WinSDK-Win32Tools]“InstallationFolder”=”C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\Bin\\““ProductVersion”=”7.0.30319”“ComponentName”=”Windows Utilities for Win32 Development”\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SDKs\\Windows\\v7.0A\\WinSDK-WindowsHeadersLibs]“InstallationFolder”=”C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\““ProductVersion”=”7.0.30319”“ComponentName”=”Windows Headers and Libraries”\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SDKs\\Windows\\v7.0A\\WinSDK-WinSDKIntellisenseRefAssys]“InstallationFolder”=”C:\\Program Files\\Reference Assemblies\\““ProductVersion”=”7.0.30319”“ComponentName”=”Windows Intellisense and Reference Assemblies”\n\nYou can copy this in a .reg file and apply it directly\nFinally I also created the following keys, which you also might copy in a .reg file\n\nWindows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\GenericBootstrapper]\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\GenericBootstrapper\\4.0]“Path”=”C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\Bootstrapper\\“\n\nAnd here is the result\n\n","dateCreated":"2010-10-21T05:54:59+02:00","dateModified":"2010-10-21T05:56:12+02:00","datePublished":"2010-10-21T05:54:59+02:00","description":"I already talked about this topic in a previous post, Building ClickOnce with TeamCity, which was about .NET framework 3.5. This time I will talk about .NET framework 4.\nAs always when you change from one .NET framework version to another, there are some more things to install on our build server than just the .NET Framework.","headline":"Building ClickOnce targeting .NET Framework 4 with TeamCity","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/10/21/Building-ClickOnce-targeting-NET-Framework-4-with-TeamCity/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2010/10/21/Building-ClickOnce-targeting-NET-Framework-4-with-TeamCity/","keywords":"Team City, ClickOnce"}</script>
+    <meta name="description" content="I already talked about this topic in a previous post, Building ClickOnce with TeamCity, which was about .NET framework 3.5. This time I will talk about .NET framework 4. As always when you change from">
+<meta name="keywords" content="Team City,ClickOnce">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Building ClickOnce targeting .NET Framework 4 with TeamCity">
+<meta property="og:url" content="https://laurentkempe.com/2010/10/21/Building-ClickOnce-targeting-NET-Framework-4-with-TeamCity/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="I already talked about this topic in a previous post, Building ClickOnce with TeamCity, which was about .NET framework 3.5. This time I will talk about .NET framework 4. As always when you change from">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://farm2.static.flickr.com/1320/5100316380_6e7c15ae6f_o.png">
+<meta property="og:updated_time" content="2010-10-21T03:56:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Building ClickOnce targeting .NET Framework 4 with TeamCity">
+<meta name="twitter:description" content="I already talked about this topic in a previous post, Building ClickOnce with TeamCity, which was about .NET framework 3.5. This time I will talk about .NET framework 4. As always when you change from">
+<meta name="twitter:image" content="http://farm2.static.flickr.com/1320/5100316380_6e7c15ae6f_o.png">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Building ClickOnce targeting .NET Framework 4 with TeamCity
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2010-10-21T05:54:59+02:00">
+	
+		    Oct 21, 2010
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>I already talked about this topic in a previous post, <a href="http://www.laurentkempe.com/post/Building-ClickOnce-with-TeamCity.aspx" target="_blank" rel="noopener">Building ClickOnce with TeamCity</a>, which was about .NET framework 3.5. This time I will talk about .NET framework 4.</p>
+<p>As always when you change from one .NET framework version to another, there are some more things to install on our build server than just the .NET Framework.<br><a id="more"></a></p>
+<p>So this time I had to copy from my local machine (in fact it was Robert doing it, Thanks Robert) the folder</p>
+<blockquote>
+<p>C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A</p>
+</blockquote>
+<p>To the build server folder</p>
+<blockquote>
+<p>C:\Program Files\Microsoft SDKs\Windows\v7.0A</p>
+</blockquote>
+<p>Take care of the “x86”, due to my 64bits Windows 7 which is removed on the server because it is a 32bits Windows 2003 R2.</p>
+<p>After that I created all the registry keys needed</p>
+<blockquote>
+<font size="1">Windows Registry Editor Version 5.00</font>
+
+<font size="1">[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0A]<br>“InstallationFolder”=”C:\Program Files\Microsoft SDKs\Windows\v7.0A\“<br>“ProductVersion”=”7.0.30319”<br>“ProductName”=”Microsoft Windows SDK for Visual Studio 2010”</font>
+
+<font size="1">[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0A\WinSDK-NetFx35Tools]<br>“ProductVersion”=”7.0.30319”<br>“ComponentName”=”Windows SDK .NET Framework 3.5 Multi-targeting Utilities”<br>“InstallationFolder”=”C:\Program Files\Microsoft SDKs\Windows\v7.0A\Bin\“</font>
+
+<font size="1">[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0A\WinSDK-NetFx35Tools-x64]<br>“ProductVersion”=”7.0.30319”<br>“ComponentName”=”Windows SDK .NET Framework 3.5 Multi-targeting Utilities (x64)”<br>“InstallationFolder”=”C:\Program Files\Microsoft SDKs\Windows\v7.0A\Bin\x64\“</font>
+
+<font size="1">[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0A\WinSDK-NetFx35Tools-x86]<br>“ProductVersion”=”7.0.30319”<br>“ComponentName”=”Windows SDK .NET Framework 3.5 Multi-targeting Utilities”<br>“InstallationFolder”=”C:\Program Files\Microsoft SDKs\Windows\v7.0A\Bin\“</font>
+
+<font size="1">[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0A\WinSDK-NetFx40Tools]<br>“ProductVersion”=”7.0.30319”<br>“ComponentName”=”Windows SDK Tools for .NET Framework 4.0”<br>“InstallationFolder”=”C:\Program Files\Microsoft SDKs\Windows\v7.0A\Bin\NETFX 4.0 Tools\“</font>
+
+<font size="1">[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0A\WinSDK-NetFx40Tools-x64]<br>“ProductVersion”=”7.0.30319”<br>“ComponentName”=”Windows SDK Tools for .NET Framework 4.0 (x64)”<br>“InstallationFolder”=”C:\Program Files\Microsoft SDKs\Windows\v7.0A\Bin\NETFX 4.0 Tools\x64\“</font>
+
+<font size="1">[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0A\WinSDK-NetFx40Tools-x86]<br>“ProductVersion”=”7.0.30319”<br>“ComponentName”=”Windows SDK Tools for .NET Framework 4.0”<br>“InstallationFolder”=”C:\Program Files\Microsoft SDKs\Windows\v7.0A\Bin\NETFX 4.0 Tools\“</font>
+
+<font size="1">[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0A\WinSDK-SDKTools]<br>“InstallationFolder”=”C:\Program Files\Microsoft SDKs\Windows\v7.0A\Bin\“<br>“ProductVersion”=”7.0.30319”<br>“ComponentName”=”Windows Common Utilities”</font>
+
+<font size="1">[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0A\WinSDK-Win32Tools]<br>“InstallationFolder”=”C:\Program Files\Microsoft SDKs\Windows\v7.0A\Bin\“<br>“ProductVersion”=”7.0.30319”<br>“ComponentName”=”Windows Utilities for Win32 Development”</font>
+
+<font size="1">[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0A\WinSDK-WindowsHeadersLibs]<br>“InstallationFolder”=”C:\Program Files\Microsoft SDKs\Windows\v7.0A\“<br>“ProductVersion”=”7.0.30319”<br>“ComponentName”=”Windows Headers and Libraries”</font>
+
+<font size="1">[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0A\WinSDK-WinSDKIntellisenseRefAssys]<br>“InstallationFolder”=”C:\Program Files\Reference Assemblies\“<br>“ProductVersion”=”7.0.30319”<br>“ComponentName”=”Windows Intellisense and Reference Assemblies”</font>
+</blockquote>
+<p>You can copy this in a .reg file and apply it directly</p>
+<p>Finally I also created the following keys, which you also might copy in a .reg file</p>
+<blockquote>
+<font size="1">Windows Registry Editor Version 5.00</font>
+
+<font size="1">[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\GenericBootstrapper]</font>
+
+<font size="1">[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\GenericBootstrapper\4.0]<br>“Path”=”C:\Program Files\Microsoft SDKs\Windows\v7.0A\Bootstrapper\“</font>
+</blockquote>
+<p>And here is the result</p>
+<p><img src="http://farm2.static.flickr.com/1320/5100316380_6e7c15ae6f_o.png" alt=""></p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/ClickOnce/">ClickOnce</a> <a class="tag tag--primary tag--small t-link" href="/tags/Team-City/">Team City</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2010/10/21/Jobping-open-source-projects-updated/" data-tooltip="Jobping open source projects updated" aria-label="PREVIOUS: Jobping open source projects updated">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2010/10/05/Playing-with-jQuery-Templates-API-and-Flickr/" data-tooltip="Playing with jQuery Templates API and Flickr" aria-label="NEXT: Playing with jQuery Templates API and Flickr">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2010/10/21/Building-ClickOnce-targeting-NET-Framework-4-with-TeamCity/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2010/10/21/Building-ClickOnce-targeting-NET-Framework-4-with-TeamCity/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2010/10/21/Building-ClickOnce-targeting-NET-Framework-4-with-TeamCity/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2010/10/21/Jobping-open-source-projects-updated/" data-tooltip="Jobping open source projects updated" aria-label="PREVIOUS: Jobping open source projects updated">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2010/10/05/Playing-with-jQuery-Templates-API-and-Flickr/" data-tooltip="Playing with jQuery Templates API and Flickr" aria-label="NEXT: Playing with jQuery Templates API and Flickr">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2010/10/21/Building-ClickOnce-targeting-NET-Framework-4-with-TeamCity/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2010/10/21/Building-ClickOnce-targeting-NET-Framework-4-with-TeamCity/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2010/10/21/Building-ClickOnce-targeting-NET-Framework-4-with-TeamCity/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2010/10/21/Building-ClickOnce-targeting-NET-Framework-4-with-TeamCity/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2010/10/21/Building-ClickOnce-targeting-NET-Framework-4-with-TeamCity/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2010/10/21/Building-ClickOnce-targeting-NET-Framework-4-with-TeamCity/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2010/10/21/Building-ClickOnce-targeting-NET-Framework-4-with-TeamCity/';
+                 
+                    this.page.identifier = '20101021055459';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

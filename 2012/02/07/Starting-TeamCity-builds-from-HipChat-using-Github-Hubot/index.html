@@ -1,0 +1,562 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Starting TeamCity builds from HipChat using Github Hubot - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"   \nAfter writing about “Running your TeamCity builds from PowerShell for any Git branch” I’d like to talk about another integration which is using Github Hubot so that the build could be started directly form a chat room.\nSo using the same idea, which is to extend our development environment, we implemented a way to start TeamCity builds directly from our HipChat room. You could do the same from Campfire for sure. \nThe main idea of this is to have our daily tools right at our disposal where we spend a good part of our days, chat rooms.\nFirst we had to install Github Hubot and we have chosen to use Heroku which offer free hosting for one of their web dyno. They even offer what they call Hubot Factory which is a way to allow people to easily and quickly deploy new instances of Hubot to Heroku. In fact we went with a manual installation described on this page “Hubot for HipChat on Heroku”. \nThe idea is still the same we need to run TeamCity builds by “Accessing the Server by HTTP”.\nThis time we want to have Hubot calling the TeamCity server so we need to add a new CoffeeScript to the scripts of Hubot which will launch the HTTP request needed.\nOur script is heavily inspired from the TeamCity.coffee script, and here is a first version:\nTeamCity.coffeeTeamCity.coffee12345678910111213141516171819202122# Starts a build on TeamCity.## You need to set the following variables:# HUBOT_TEAMCITY_USERNAME = &lt;user name=\"\"&gt;# HUBOT_TEAMCITY_PASSWORD = # HUBOT_TEAMCITY_HOSTNAME = &lt;host port=\"\" :=\"\"&gt;## start build buildId -- Starts TeamCiyt build using buildIdmodule.exports = (robot) -&gt;  robot.respond /start build (.*)/i, (msg) -&gt;    username = process.env.HUBOT_TEAMCITY_USERNAME    password = process.env.HUBOT_TEAMCITY_PASSWORD    hostname = process.env.HUBOT_TEAMCITY_HOSTNAME    buildName = msg.match[1]    msg.http(\"http://#&#123;hostname&#125;/httpAuth/action.html?add2Queue=#&#123;buildName&#125;\")      .headers(Authorization: \"Basic #&#123;new Buffer(\"#&#123;username&#125;:#&#123;password&#125;\").toString(\"base64\")&#125;\",               Accept: \"application/json\")      .get() (err, res, body) -&gt;        if err          msg.send \"Team city says: #&#123;err&#125;\"          return&lt;/host&gt;&lt;/user&gt;\nBy the way I started to learn CoffeeScript so this is more hacking then something really productive.\nAnd here is the result in our HipChat room asking hubot to start a build with the command:\n\nhubot start build bt21\n\n\nI will talk in another post about the last part which shows the status of the build in the chat room.\n","dateCreated":"2012-02-07T17:10:52+01:00","dateModified":"2012-02-08T05:44:04+01:00","datePublished":"2012-02-07T17:10:52+01:00","description":"   \nAfter writing about “Running your TeamCity builds from PowerShell for any Git branch” I’d like to talk about another integration which is using Github Hubot so that the build could be started directly form a chat room.","headline":"Starting TeamCity builds from HipChat using Github Hubot","image":["https://farm6.staticflickr.com/5184/5561154518_845f00ec72_q.jpg","https://farm6.staticflickr.com/5184/5561154518_845f00ec72_b.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2012/02/07/Starting-TeamCity-builds-from-HipChat-using-Github-Hubot/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2012/02/07/Starting-TeamCity-builds-from-HipChat-using-Github-Hubot/","keywords":"Git, Agile, Productivity, Team City","thumbnailUrl":"https://farm6.staticflickr.com/5184/5561154518_845f00ec72_q.jpg"}</script>
+    <meta name="description" content="After writing about “Running your TeamCity builds from PowerShell for any Git branch” I’d like to talk about another integration which is using Github Hubot so that the build could be started dire">
+<meta name="keywords" content="Git,Agile,Productivity,Team City">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Starting TeamCity builds from HipChat using Github Hubot">
+<meta property="og:url" content="https://laurentkempe.com/2012/02/07/Starting-TeamCity-builds-from-HipChat-using-Github-Hubot/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="After writing about “Running your TeamCity builds from PowerShell for any Git branch” I’d like to talk about another integration which is using Github Hubot so that the build could be started dire">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://farm8.staticflickr.com/7024/6834441105_d42fa87111_o.jpg">
+<meta property="og:updated_time" content="2012-02-08T04:44:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Starting TeamCity builds from HipChat using Github Hubot">
+<meta name="twitter:description" content="After writing about “Running your TeamCity builds from PowerShell for any Git branch” I’d like to talk about another integration which is using Github Hubot so that the build could be started dire">
+<meta name="twitter:image" content="http://farm8.staticflickr.com/7024/6834441105_d42fa87111_o.jpg">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+        <meta property="og:image" content="https://farm6.staticflickr.com/5184/5561154518_845f00ec72_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://farm6.staticflickr.com/5184/5561154518_845f00ec72_q.jpg" />
+    
+    
+        <meta property="og:image" content="https://farm6.staticflickr.com/5184/5561154518_845f00ec72_b.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://farm6.staticflickr.com/5184/5561154518_845f00ec72_b.jpg" />
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial"
+             style="background-image:url('https://farm6.staticflickr.com/5184/5561154518_845f00ec72_b.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Starting TeamCity builds from HipChat using Github Hubot
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2012-02-07T17:10:52+01:00">
+	
+		    Feb 07, 2012
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">La table du diable depuis la Savane des Pétrifications, Martinique</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <!-- [![La table du diable depuis la Savane des Pétrifications](http://farm6.staticflickr.com/5184/5561154518_845f00ec72_m.jpg)](http://www.flickr.com/photos/laurentkempe/5561154518/ "La table du diable depuis la Savane des Pétrifications by Laurent Kempé, on Flickr") -->   
+<p>After writing about “<a href="http://www.laurentkempe.com/post/Running-your-TeamCity-builds-from-a-command-line.aspx" target="_blank" rel="noopener">Running your TeamCity builds from PowerShell for any Git branch</a>” I’d like to talk about another integration which is using <a href="http://hubot.github.com/" target="_blank" rel="noopener">Github Hubot</a> so that the build could be started directly form a chat room.<br><a id="more"></a></p>
+<p>So using the same idea, which is to extend our development environment, we implemented a way to start TeamCity builds directly from our <a href="https://www.hipchat.com/" target="_blank" rel="noopener">HipChat</a> room. You could do the same from <a href="http://campfirenow.com/" target="_blank" rel="noopener">Campfire</a> for sure. </p>
+<p>The main idea of this is to have our daily tools right at our disposal where we spend a good part of our days, chat rooms.</p>
+<p>First we had to install <a href="http://hubot.github.com/" target="_blank" rel="noopener">Github Hubot</a> and we have chosen to use <a href="http://www.heroku.com/" target="_blank" rel="noopener">Heroku</a> which offer free hosting <a href="http://www.heroku.com/pricing#1-0" target="_blank" rel="noopener">for one of their web dyno</a>. They even offer what they call <a href="https://hubot-factory.herokuapp.com/about" target="_blank" rel="noopener">Hubot Factory</a> which is a way to allow people to easily and quickly deploy new instances of Hubot to Heroku. In fact we went with a manual installation described on this page “<a href="https://github.com/hipchat/hubot-hipchat#readme" target="_blank" rel="noopener">Hubot for HipChat on Heroku</a>”. </p>
+<p>The idea is still the same we need to run TeamCity builds by “<a href="http://confluence.jetbrains.net/display/TCD6/Accessing+Server+by+HTTP" target="_blank" rel="noopener">Accessing the Server by HTTP</a>”.</p>
+<p>This time we want to have Hubot calling the TeamCity server so we need to add a new CoffeeScript to the scripts of Hubot which will launch the HTTP request needed.</p>
+<p>Our script is heavily inspired from the TeamCity.coffee script, and here is a first version:</p>
+<figure class="highlight coffeescript"><figcaption><span>TeamCity.coffee</span><a href="http://underscorejs.org/#compact" target="_blank" rel="noopener">TeamCity.coffee</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Starts a build on TeamCity.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># You need to set the following variables:</span></span><br><span class="line"><span class="comment"># HUBOT_TEAMCITY_USERNAME = &lt;user name=""&gt;</span></span><br><span class="line"><span class="comment"># HUBOT_TEAMCITY_PASSWORD = </span></span><br><span class="line"><span class="comment"># HUBOT_TEAMCITY_HOSTNAME = &lt;host port="" :=""&gt;</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># start build buildId -- Starts TeamCiyt build using buildId</span></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="params">(robot)</span> -&gt;</span></span><br><span class="line">  robot.respond <span class="regexp">/start build (.*)/i</span>, <span class="function"><span class="params">(msg)</span> -&gt;</span></span><br><span class="line">    username = process.env.HUBOT_TEAMCITY_USERNAME</span><br><span class="line">    password = process.env.HUBOT_TEAMCITY_PASSWORD</span><br><span class="line">    hostname = process.env.HUBOT_TEAMCITY_HOSTNAME</span><br><span class="line">    buildName = msg.match[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">    msg.http(<span class="string">"http://<span class="subst">#&#123;hostname&#125;</span>/httpAuth/action.html?add2Queue=<span class="subst">#&#123;buildName&#125;</span>"</span>)</span><br><span class="line">      .headers(Authorization: <span class="string">"Basic <span class="subst">#&#123;<span class="keyword">new</span> Buffer(<span class="string">"<span class="subst">#&#123;username&#125;</span>:<span class="subst">#&#123;password&#125;</span>"</span>).toString(<span class="string">"base64"</span>)&#125;</span>"</span>,</span><br><span class="line">               Accept: <span class="string">"application/json"</span>)</span><br><span class="line">      .get() (err, res, body) -&gt;</span><br><span class="line">        <span class="keyword">if</span> err</span><br><span class="line">          msg.send <span class="string">"Team city says: <span class="subst">#&#123;err&#125;</span>"</span></span><br><span class="line">          <span class="keyword">return</span>&lt;/host&gt;&lt;/user&gt;</span><br></pre></td></tr></table></figure>
+<p>By the way I started to learn CoffeeScript so this is more hacking then something really productive.</p>
+<p>And here is the result in our HipChat room asking hubot to start a build with the command:</p>
+<blockquote>
+<p>hubot start build bt21</p>
+</blockquote>
+<p><a href="http://www.flickr.com/photos/laurentkempe/6834441105/" title="TeamCity, GitHub Hubot and HipChat by Laurent Kempé, on Flickr" target="_blank" rel="noopener"><img src="http://farm8.staticflickr.com/7024/6834441105_d42fa87111_o.jpg" alt="TeamCity, GitHub Hubot and HipChat"></a></p>
+<p>I will talk in another post about the last part which shows the status of the build in the chat room.</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/Agile/">Agile</a> <a class="tag tag--primary tag--small t-link" href="/tags/Git/">Git</a> <a class="tag tag--primary tag--small t-link" href="/tags/Productivity/">Productivity</a> <a class="tag tag--primary tag--small t-link" href="/tags/Team-City/">Team City</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2012/03/22/Installation-of-the-Ergotron-WorkFit-D/" data-tooltip="Installation and first experience with the Ergotron WorkFit-D" aria-label="PREVIOUS: Installation and first experience with the Ergotron WorkFit-D">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2012/02/07/Running-your-TeamCity-builds-from-a-command-line/" data-tooltip="Running your TeamCity builds from PowerShell for any Git branch" aria-label="NEXT: Running your TeamCity builds from PowerShell for any Git branch">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2012/02/07/Starting-TeamCity-builds-from-HipChat-using-Github-Hubot/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2012/02/07/Starting-TeamCity-builds-from-HipChat-using-Github-Hubot/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2012/02/07/Starting-TeamCity-builds-from-HipChat-using-Github-Hubot/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2012/03/22/Installation-of-the-Ergotron-WorkFit-D/" data-tooltip="Installation and first experience with the Ergotron WorkFit-D" aria-label="PREVIOUS: Installation and first experience with the Ergotron WorkFit-D">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2012/02/07/Running-your-TeamCity-builds-from-a-command-line/" data-tooltip="Running your TeamCity builds from PowerShell for any Git branch" aria-label="NEXT: Running your TeamCity builds from PowerShell for any Git branch">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2012/02/07/Starting-TeamCity-builds-from-HipChat-using-Github-Hubot/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2012/02/07/Starting-TeamCity-builds-from-HipChat-using-Github-Hubot/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2012/02/07/Starting-TeamCity-builds-from-HipChat-using-Github-Hubot/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2012/02/07/Starting-TeamCity-builds-from-HipChat-using-Github-Hubot/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2012/02/07/Starting-TeamCity-builds-from-HipChat-using-Github-Hubot/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2012/02/07/Starting-TeamCity-builds-from-HipChat-using-Github-Hubot/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2012/02/07/Starting-TeamCity-builds-from-HipChat-using-Github-Hubot/';
+                 
+                    this.page.identifier = '20120207051052';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

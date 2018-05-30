@@ -1,0 +1,566 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>TeamCity 5.0 Released! - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"JetBrains just published TeamCity 5.\n\nThe wait is over, ladies and gentlemen! The release build is baked, tested, and put on the shelf. Tastes good, so go and grab it now!\nLet us write down a short summary of what was accomplished since the TeamCity 4.5 release.\nFirst of all, here’s the list of most noteworthy features:\n\nSupport for Amazon EC2: Take advantage of cloud computing with TeamCity by putting build agents on Amazon EC2 cloud with on-demand image starting and on-idle stopping.\nIssue tracker integration with JetBrains YouTrack, JIRA and Bugzilla - out of the box, plus an API for the integration plugins for other systems.\nMaven support improvements, including simplified build configuration creation from POM file, and build triggering on Maven artifacts change.\nBuild configuration templates for eliminating redundancy in build configurations settings.\nProject archiving for putting no-longer-active projects out of sight.\nCommand line tool for running Personal builds on server without IDE integration.\nBackup &amp; Restore were added to simplify TeamCity maintenance. Also, migration tool was re-implemented.\n\nOther improvements:\n\nNow you can view the status of a change across all build configurations on a single page.\nFailure responsibility feature has been advanced to cover not only builds, but also individual test failures.\nVarious actions performed by TeamCity users are now stored in the Audit log, which can be browsed from the web UI.\nCode coverage analysis has been significantly improved for both Java (based on IntelliJ IDEA coverage engine) and .NET (support for NCover and PartCover).\nAnd many more\n\nNew and improved integrations:\n\nGit &amp; Mercurial support are now bundled with TeamCity.\nRemote Run now works for Git from IntelliJ IDEA &amp; Eclipse.\nNew support for Cucumber, Shoulda, Test-Spec in Rake runner.\nTeamCity IntelliJ IDEA plugin now works with IntelliJ IDEA Community Edition and RubyMine 2.0.\n\nOf course, this is not an exhaustive list, so check What’s New to get a full overview of new features and improvements.\nAs always, TeamCity 5.0 Professional is available for FREE for all small- and middle-sized development teams and can be downloaded at http://www.jetbrains.com/teamcity/download.\nTeamCity 5.0 Enterprise is available for a 60-day free trial download at http://www.jetbrains.com/teamcity/download.\nNew customers can purchase TeamCity 5.0 online at http://www.jetbrains.com/teamcity/buy/.\nExisting customers can upgrade to version 5.0 after purchasing a 1-year subscription for software updates at http://www.jetbrains.com/teamcity/buy/.\nTeamCity licenses bought after October 1, 2009, receive a 1-year subscription for software updates for free, and therefore will work fine with TeamCity version 5.0. If you have such licenses, you will soon receive an e-mail with the new keys and certificates.\nBuild safe!\nThe JetBrains TeamCity Team\n\n","dateCreated":"2009-12-04T06:03:37+01:00","dateModified":"2009-12-04T06:03:37+01:00","datePublished":"2009-12-04T06:03:37+01:00","description":"JetBrains just published TeamCity 5.\n\nThe wait is over, ladies and gentlemen! The release build is baked, tested, and put on the shelf. Tastes good, so go and grab it now!","headline":"TeamCity 5.0 Released!","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2009/12/04/TeamCity-50-Released!/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2009/12/04/TeamCity-50-Released!/","keywords":"Team City"}</script>
+    <meta name="description" content="JetBrains just published TeamCity 5.  The wait is over, ladies and gentlemen! The release build is baked, tested, and put on the shelf. Tastes good, so go and grab it now!">
+<meta name="keywords" content="Team City">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="TeamCity 5.0 Released!">
+<meta property="og:url" content="https://laurentkempe.com/2009/12/04/TeamCity-50-Released!/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="JetBrains just published TeamCity 5.  The wait is over, ladies and gentlemen! The release build is baked, tested, and put on the shelf. Tastes good, so go and grab it now!">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2009-12-04T05:03:37.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TeamCity 5.0 Released!">
+<meta name="twitter:description" content="JetBrains just published TeamCity 5.  The wait is over, ladies and gentlemen! The release build is baked, tested, and put on the shelf. Tastes good, so go and grab it now!">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            TeamCity 5.0 Released!
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2009-12-04T06:03:37+01:00">
+	
+		    Dec 04, 2009
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>JetBrains just published <a href="http://www.jetbrains.com/teamcity/index.html" target="_blank" rel="noopener">TeamCity</a> 5.</p>
+<blockquote>
+<p>The wait is over, ladies and gentlemen! The release build is baked, tested, and put on the shelf. Tastes good, so go and <a href="http://www.jetbrains.com/teamcity/download/index.html" target="_blank" rel="noopener">grab it now</a>!<br><a id="more"></a></p>
+<p>Let us write down a short summary of what was accomplished since the TeamCity 4.5 release.</p>
+<p>First of all, here’s the list of most noteworthy features:</p>
+<ul>
+<li><strong>Support for Amazon EC2</strong>: Take advantage of cloud computing with TeamCity by putting build agents on Amazon EC2 cloud with on-demand image starting and on-idle stopping.</li>
+<li><strong>Issue tracker integration with JetBrains YouTrack, JIRA and Bugzilla</strong> - out of the box, plus an API for the integration plugins for other systems.</li>
+<li><strong>Maven support improvements</strong>, including simplified build configuration creation from POM file, and build triggering on Maven artifacts change.</li>
+<li><strong>Build configuration templates</strong> for eliminating redundancy in build configurations settings.</li>
+<li><strong>Project archiving</strong> for putting no-longer-active projects out of sight.</li>
+<li><strong>Command line tool for running Personal builds</strong> on server without IDE integration.</li>
+<li><strong>Backup &amp; Restore</strong> were added to simplify TeamCity maintenance. Also, migration tool was re-implemented.</li>
+</ul>
+<p>Other improvements:</p>
+<ul>
+<li>Now you can <strong>view the status of a change</strong> across all build configurations on a single page.</li>
+<li><strong>Failure responsibility</strong> feature has been advanced to cover not only builds, but also individual test failures.</li>
+<li>Various actions performed by TeamCity users are now stored in the <strong>Audit log</strong>, which can be browsed from the web UI.</li>
+<li><strong>Code coverage</strong> analysis has been significantly improved for both Java (based on IntelliJ IDEA coverage engine) and .NET (support for NCover and PartCover).</li>
+<li>And many more</li>
+</ul>
+<p>New and improved integrations:</p>
+<ul>
+<li>Git &amp; Mercurial support are now bundled with TeamCity.</li>
+<li>Remote Run now works for Git from IntelliJ IDEA &amp; Eclipse.</li>
+<li>New support for Cucumber, Shoulda, Test-Spec in Rake runner.</li>
+<li>TeamCity IntelliJ IDEA plugin now works with IntelliJ IDEA Community Edition and RubyMine 2.0.</li>
+</ul>
+<p>Of course, this is not an exhaustive list, so check <a href="http://www.jetbrains.net/confluence/display/TCD5/What%27s+New+in+TeamCity+5.0" target="_blank" rel="noopener">What’s New</a> to get a full overview of new features and improvements.</p>
+<p>As always, <strong>TeamCity 5.0 Professional</strong> is available for <strong>FREE</strong> for all small- and middle-sized development teams and can be downloaded at <a href="http://www.jetbrains.com/teamcity/download/?utm_source=pr&amp;utm_medium=press-release&amp;utm_campaign=teamcity50" target="_blank" rel="noopener">http://www.jetbrains.com/teamcity/download</a>.</p>
+<p><strong>TeamCity 5.0 Enterprise</strong> is available for a <strong>60-day free trial</strong> download at <a href="http://www.jetbrains.com/teamcity/download/?utm_source=pr&amp;utm_medium=press-release&amp;utm_campaign=teamcity50" target="_blank" rel="noopener">http://www.jetbrains.com/teamcity/download</a>.</p>
+<p>New customers can purchase TeamCity 5.0 online at <a href="http://www.jetbrains.com/teamcity/buy/?utm_source=pr&amp;utm_medium=press-release&amp;utm_campaign=teamcity50" target="_blank" rel="noopener">http://www.jetbrains.com/teamcity/buy/</a>.</p>
+<p>Existing customers can upgrade to version 5.0 after purchasing a 1-year subscription for software updates at <a href="http://www.jetbrains.com/teamcity/buy/?utm_source=pr&amp;utm_medium=press-release&amp;utm_campaign=teamcity50" target="_blank" rel="noopener">http://www.jetbrains.com/teamcity/buy/</a>.</p>
+<p>TeamCity licenses bought after October 1, 2009, receive a 1-year subscription for software updates for free, and therefore will work fine with TeamCity version 5.0. If you have such licenses, you will soon receive an e-mail with the new keys and certificates.</p>
+<p><em>Build safe!</em></p>
+<p>The JetBrains TeamCity Team</p>
+</blockquote>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/Team-City/">Team City</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2009/12/11/TeamCity-50-e2808bFailed-to-collect-changes-error-issue/" data-tooltip="TeamCity 5.0 &#39;​Failed to collect changes error&#39; issue" aria-label="PREVIOUS: TeamCity 5.0 &#39;​Failed to collect changes error&#39; issue">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2009/12/03/ProjectReference-with-Condition-in-your-MSBuild-project-files/" data-tooltip="ProjectReference with Condition in your MSBuild project files" aria-label="NEXT: ProjectReference with Condition in your MSBuild project files">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2009/12/04/TeamCity-50-Released!/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2009/12/04/TeamCity-50-Released!/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2009/12/04/TeamCity-50-Released!/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2009/12/11/TeamCity-50-e2808bFailed-to-collect-changes-error-issue/" data-tooltip="TeamCity 5.0 &#39;​Failed to collect changes error&#39; issue" aria-label="PREVIOUS: TeamCity 5.0 &#39;​Failed to collect changes error&#39; issue">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2009/12/03/ProjectReference-with-Condition-in-your-MSBuild-project-files/" data-tooltip="ProjectReference with Condition in your MSBuild project files" aria-label="NEXT: ProjectReference with Condition in your MSBuild project files">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2009/12/04/TeamCity-50-Released!/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2009/12/04/TeamCity-50-Released!/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2009/12/04/TeamCity-50-Released!/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2009/12/04/TeamCity-50-Released!/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2009/12/04/TeamCity-50-Released!/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2009/12/04/TeamCity-50-Released!/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2009/12/04/TeamCity-50-Released!/';
+                 
+                    this.page.identifier = '20091204060337';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

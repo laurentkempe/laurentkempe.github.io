@@ -1,0 +1,588 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Functional Programming Principles in Scala using JetBrains IntelliJ IDEA - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"\nThis week I started the Coursera course Functional Programming Principles in Scala with Martin Odersky as instructor.\nOne of my first step was to have JetBrains IntelliJ IDEA working with the Scala programming language so that I can work on the course assignments using my preferred IDE.\nI have seen that The Guardian published a blog post Functional Programming Principles in Scala: Setting up IntelliJ but it focus on the Unix-like operating systems (OSX and Linux). As I work on Windows I for sure installed it on my machine running Windows 8.1! I also use a different set of tools so here is the way I did it!\nFirst of all I am assuming that you have JetBrains IntelliJ IDEA 12 and JDK installed.\nFrom IntelliJ you need to install the Scala plugin so go to File / Settings then on the dialog search for plugins, click on Browse Repositories button and search for Scala then select Scala v.0.19.299 from JetBrains\n\nThen you also need to install the SBT plugin also from JetBrains which is still in development and get nightly builds.\nAdd the following URL to the list of custom plugin repositories in Settings / Plugins / Browse Repositories / Manage Repositories:\n\nhttp://download.jetbrains.com/scala/sbt-nightly-leda.xml\n\nAfter that, you may install the plugin via Settings | Plugins | Browse Repositories. IDEA will check for the latest plugin builds automatically.\n\nNow extract the assignment zip that the coursera course is providing; e.g. for the example assignment, unpack the example.zip to a folder then in IntelliJ use File / Import Project. IntelliJ already recognize the folder as project:\n\n\nClick Next\n\nTick Use auto-import and click Finish. IntelliJ will then import your project:\n\nNow you need to edit your project structure using File / Project Structure and choose Modules, then progfun-example\n\nYou will see on the dialog for the Source and Test Source Folders some folder in red, just click on the X to delete all the one in red to get to the following state, then finally click OK\n\nNow navigate to the test file ListsSuite and press ALT – SHIFT – F10 to start the tests\n\nAnd if you implemented the assignment you should see this results:\n\nThere is still two tests to fix in the first assignment, this is why there are red!\nBut as you can see now you have a full Scala development environment based on the great JetBrains IntelliJ IDEA IDE! Now you can code with pleasure!\nI really enjoy the first week assignments and implemented the first two as coding Kata! And I even involved France-Anne for the second one; first time that she is coding something  . Very nice!\n","dateCreated":"2013-09-20T20:43:00+02:00","dateModified":"2013-10-04T04:53:57+02:00","datePublished":"2013-09-20T20:43:00+02:00","description":"\nThis week I started the Coursera course Functional Programming Principles in Scala with Martin Odersky as instructor.\nOne of my first step was to have JetBrains IntelliJ IDEA working with the Scala programming language so that I can work on the course assignments using my preferred IDE.","headline":"Functional Programming Principles in Scala using JetBrains IntelliJ IDEA","image":["https://farm4.staticflickr.com/3798/9553182109_bcac5e189d_q.jpg","https://farm4.staticflickr.com/3798/9553182109_8db2fd62d4_o.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2013/09/20/Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2013/09/20/Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA/","keywords":"Coursera, IntelliJ, Jetbrains, Scala","thumbnailUrl":"https://farm4.staticflickr.com/3798/9553182109_bcac5e189d_q.jpg"}</script>
+    <meta name="description" content="This week I started the Coursera course Functional Programming Principles in Scala with Martin Odersky as instructor. One of my first step was to have JetBrains IntelliJ IDEA working with the Scala p">
+<meta name="keywords" content="Coursera,IntelliJ,Jetbrains,Scala">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Functional Programming Principles in Scala using JetBrains IntelliJ IDEA">
+<meta property="og:url" content="https://laurentkempe.com/2013/09/20/Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="This week I started the Coursera course Functional Programming Principles in Scala with Martin Odersky as instructor. One of my first step was to have JetBrains IntelliJ IDEA working with the Scala p">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://farm8.staticflickr.com/7341/9834166825_2867bcc1ba_o.png">
+<meta property="og:image" content="http://farm8.staticflickr.com/7363/9834729745_f23a4eed10_o.png">
+<meta property="og:image" content="http://farm3.staticflickr.com/2818/9834957283_3cff547c6e_o.png">
+<meta property="og:image" content="http://farm3.staticflickr.com/2893/9835093913_02feeb2bce_o.png">
+<meta property="og:image" content="http://farm8.staticflickr.com/7366/9835020965_200917fb2a_o.png">
+<meta property="og:image" content="http://farm4.staticflickr.com/3818/9835074955_5eca26b99e_o.png">
+<meta property="og:image" content="http://farm6.staticflickr.com/5450/9835157816_aa231ca57e_o.png">
+<meta property="og:image" content="http://farm3.staticflickr.com/2832/9835244223_2f54a33cd8_o.png">
+<meta property="og:image" content="http://farm8.staticflickr.com/7419/9835291836_9c3aba2a3f_o.png">
+<meta property="og:image" content="http://farm8.staticflickr.com/7409/9835313066_82e5e31067_o.png">
+<meta property="og:image" content="https://laurentkempe.com/images/wlEmoticon-smile.png">
+<meta property="og:updated_time" content="2013-10-04T02:53:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Functional Programming Principles in Scala using JetBrains IntelliJ IDEA">
+<meta name="twitter:description" content="This week I started the Coursera course Functional Programming Principles in Scala with Martin Odersky as instructor. One of my first step was to have JetBrains IntelliJ IDEA working with the Scala p">
+<meta name="twitter:image" content="http://farm8.staticflickr.com/7341/9834166825_2867bcc1ba_o.png">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+        <meta property="og:image" content="https://farm4.staticflickr.com/3798/9553182109_bcac5e189d_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://farm4.staticflickr.com/3798/9553182109_bcac5e189d_q.jpg" />
+    
+    
+        <meta property="og:image" content="https://farm4.staticflickr.com/3798/9553182109_8db2fd62d4_o.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://farm4.staticflickr.com/3798/9553182109_8db2fd62d4_o.jpg" />
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial"
+             style="background-image:url('https://farm4.staticflickr.com/3798/9553182109_8db2fd62d4_o.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Functional Programming Principles in Scala using JetBrains IntelliJ IDEA
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2013-09-20T20:43:00+02:00">
+	
+		    Sep 20, 2013
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Whale in Cape Bridgewater, Australia</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <!-- [![Another great shot of our friend the Whale of last week in Cape Bridgewater](http://farm4.staticflickr.com/3798/9553182109_bcac5e189d_m.jpg)](http://www.flickr.com/photos/laurentkempe/9553182109/ "Another great shot of our friend the Whale of last week in Cape Bridgewater by Laurent Kempé, on Flickr") -->
+<p>This week I started the <a href="https://www.coursera.org/" target="_blank" rel="noopener">Coursera</a> course <a href="https://www.coursera.org/course/progfun" target="_blank" rel="noopener">Functional Programming Principles in Scala</a> with Martin Odersky as instructor.</p>
+<p>One of my first step was to have <a href="http://www.jetbrains.com/idea/" target="_blank" rel="noopener">JetBrains IntelliJ IDEA</a> working with the <a href="http://www.scala-lang.org/" target="_blank" rel="noopener">Scala programming language</a> so that I can work on the course assignments using my preferred IDE.<br><a id="more"></a></p>
+<p>I have seen that The Guardian published a blog post <a href="http://www.theguardian.com/info/developer-blog/2012/sep/21/funtional-programming-principles-scala-setting-up-intellij" target="_blank" rel="noopener">Functional Programming Principles in Scala: Setting up IntelliJ</a> but it focus on the Unix-like operating systems (OSX and Linux). As I work on Windows I for sure installed it on my machine running Windows 8.1! I also use a different set of tools so here is the way I did it!</p>
+<p>First of all I am assuming that you have <a href="http://www.jetbrains.com/idea/" target="_blank" rel="noopener">JetBrains IntelliJ IDEA 12</a> and JDK installed.</p>
+<p>From IntelliJ you need to install the Scala plugin so go to File / Settings then on the dialog search for plugins, click on Browse Repositories button and search for Scala then select Scala v.0.19.299 from JetBrains</p>
+<p><img src="http://farm8.staticflickr.com/7341/9834166825_2867bcc1ba_o.png" alt=""></p>
+<p>Then you also need to install the <a href="http://blog.jetbrains.com/scala/2013/07/17/sbt-plugin-nightly-builds/" target="_blank" rel="noopener">SBT plugin also from JetBrains</a> which is still in development and get nightly builds.</p>
+<p>Add the following URL to the list of custom plugin repositories in Settings / Plugins / Browse Repositories / Manage Repositories:</p>
+<blockquote>
+<p><a href="http://download.jetbrains.com/scala/sbt-nightly-leda.xml" target="_blank" rel="noopener">http://download.jetbrains.com/scala/sbt-nightly-leda.xml</a></p>
+</blockquote>
+<p>After that, you may install the plugin via Settings | Plugins | Browse Repositories. IDEA will check for the latest plugin builds automatically.</p>
+<p><img src="http://farm8.staticflickr.com/7363/9834729745_f23a4eed10_o.png" alt=""></p>
+<p>Now extract the assignment zip that the coursera course is providing; e.g. for the example assignment, unpack the example.zip to a folder then in IntelliJ use File / Import Project. IntelliJ already recognize the folder as project:</p>
+<p><img src="http://farm3.staticflickr.com/2818/9834957283_3cff547c6e_o.png" alt=""></p>
+<p><img src="http://farm3.staticflickr.com/2893/9835093913_02feeb2bce_o.png" alt=""></p>
+<p>Click Next</p>
+<p><img src="http://farm8.staticflickr.com/7366/9835020965_200917fb2a_o.png" alt=""></p>
+<p>Tick Use auto-import and click Finish. IntelliJ will then import your project:</p>
+<p><img src="http://farm4.staticflickr.com/3818/9835074955_5eca26b99e_o.png" alt=""></p>
+<p>Now you need to edit your project structure using File / Project Structure and choose Modules, then progfun-example</p>
+<p><img src="http://farm6.staticflickr.com/5450/9835157816_aa231ca57e_o.png" alt=""></p>
+<p>You will see on the dialog for the Source and Test Source Folders some folder in red, just click on the X to delete all the one in red to get to the following state, then finally click OK</p>
+<p><img src="http://farm3.staticflickr.com/2832/9835244223_2f54a33cd8_o.png" alt=""></p>
+<p>Now navigate to the test file ListsSuite and press ALT – SHIFT – F10 to start the tests</p>
+<p><img src="http://farm8.staticflickr.com/7419/9835291836_9c3aba2a3f_o.png" alt=""></p>
+<p>And if you implemented the assignment you should see this results:</p>
+<p><img src="http://farm8.staticflickr.com/7409/9835313066_82e5e31067_o.png" alt=""></p>
+<p>There is still two tests to fix in the first assignment, this is why there are red!</p>
+<p>But as you can see now you have a full Scala development environment based on the great JetBrains IntelliJ IDEA IDE! Now you can code with pleasure!</p>
+<p>I really enjoy the first week assignments and implemented the first two as <a href="http://www.laurentkempe.com/post/Test-Driven-Development-Kata-String-Calculator.aspx" target="_blank" rel="noopener">coding Kata</a>! And I even involved France-Anne for the second one; first time that she is coding something <img src="/images/wlEmoticon-smile.png" alt="Smile"> . Very nice!</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/Coursera/">Coursera</a> <a class="tag tag--primary tag--small t-link" href="/tags/IntelliJ/">IntelliJ</a> <a class="tag tag--primary tag--small t-link" href="/tags/Jetbrains/">Jetbrains</a> <a class="tag tag--primary tag--small t-link" href="/tags/Scala/">Scala</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2013/10/17/Optimizing-release-build-process-using-JetBrains-TeamCity-and-Atlassian-Stash/" data-tooltip="Optimizing release build process using JetBrains TeamCity and Atlassian Stash" aria-label="PREVIOUS: Optimizing release build process using JetBrains TeamCity and Atlassian Stash">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2013/09/19/Uninstalling-a-program-which-doesnt-want-to-on-Windows-81/" data-tooltip="Uninstalling a program which doesn&#39;t want to on Windows 8.1" aria-label="NEXT: Uninstalling a program which doesn&#39;t want to on Windows 8.1">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2013/09/20/Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2013/09/20/Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2013/09/20/Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2013/10/17/Optimizing-release-build-process-using-JetBrains-TeamCity-and-Atlassian-Stash/" data-tooltip="Optimizing release build process using JetBrains TeamCity and Atlassian Stash" aria-label="PREVIOUS: Optimizing release build process using JetBrains TeamCity and Atlassian Stash">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2013/09/19/Uninstalling-a-program-which-doesnt-want-to-on-Windows-81/" data-tooltip="Uninstalling a program which doesn&#39;t want to on Windows 8.1" aria-label="NEXT: Uninstalling a program which doesn&#39;t want to on Windows 8.1">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2013/09/20/Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2013/09/20/Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2013/09/20/Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2013/09/20/Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2013/09/20/Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2013/09/20/Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2013/09/20/Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA/';
+                 
+                    this.page.identifier = '20130920084300';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

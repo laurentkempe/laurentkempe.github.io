@@ -1,0 +1,570 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Running Github Hubot on a Windows machine - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"\nI finally managed to get Github Hubot running on my Windows 7 64 bits machine. Thanks to  Sean Copenhaver &amp; Thomas Kahlow which pointed me to the correct direction on the ‘Run hubot on windows’ discussion.\nSo here is how I did it.\nFirst of all download and install nodejs 0.6.15. This will also install npm 1.1.16 which is the node package manager.\nThen start Powershell and create a new folder e.g. HubotWorking\n\nmkdir HubotWorking\ncd .\\HubotWorking\nnpm install hubot\n\nYou should see the following output\n\nGo on with the following\n\ncd .\\node_modules\\hubot\nnode .\\node_modules\\coffee-script\\bin\\coffee .\\bin\\hubot\n\nAnd the magic!\n\nYou might want also to run it through JetBrains WebStorm 4.0, so here is the configuration you will need    \nAnd here is the result in the WebStorm nodejs runner \n","dateCreated":"2012-04-28T09:15:24+02:00","dateModified":"2012-09-26T14:48:36+02:00","datePublished":"2012-04-28T09:15:24+02:00","description":"\nI finally managed to get Github Hubot running on my Windows 7 64 bits machine. Thanks to  Sean Copenhaver &amp; Thomas Kahlow which pointed me to the correct direction on the ‘Run hubot on windows’ discussion.\nSo here is how I did it.","headline":"Running Github Hubot on a Windows machine","image":["https://farm8.staticflickr.com/7053/6975717721_11b528a835_q.jpg","https://farm8.staticflickr.com/7053/6975717721_1eaca89dcc_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2012/04/28/Running-Github-Hubot-on-a-Windows-machine/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2012/04/28/Running-Github-Hubot-on-a-Windows-machine/","keywords":"GitHub, hubot, Windows 7","thumbnailUrl":"https://farm8.staticflickr.com/7053/6975717721_11b528a835_q.jpg"}</script>
+    <meta name="description" content="I finally managed to get Github Hubot running on my Windows 7 64 bits machine. Thanks to  Sean Copenhaver &amp;amp; Thomas Kahlow which pointed me to the correct direction on the ‘Run hubot on windows’ d">
+<meta name="keywords" content="GitHub,hubot,Windows 7">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Running Github Hubot on a Windows machine">
+<meta property="og:url" content="https://laurentkempe.com/2012/04/28/Running-Github-Hubot-on-a-Windows-machine/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="I finally managed to get Github Hubot running on my Windows 7 64 bits machine. Thanks to  Sean Copenhaver &amp;amp; Thomas Kahlow which pointed me to the correct direction on the ‘Run hubot on windows’ d">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://farm8.staticflickr.com/7179/7119734567_1d28afba2b_o.jpg">
+<meta property="og:image" content="http://farm8.staticflickr.com/7206/6973680654_0cb983b26a_o.jpg">
+<meta property="og:image" content="http://farm8.staticflickr.com/7199/7119772727_438c6cd97b_o.jpg">
+<meta property="og:image" content="http://farm8.staticflickr.com/7203/7119778369_40d9f0a11a_o.jpg">
+<meta property="og:updated_time" content="2012-09-26T12:48:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Running Github Hubot on a Windows machine">
+<meta name="twitter:description" content="I finally managed to get Github Hubot running on my Windows 7 64 bits machine. Thanks to  Sean Copenhaver &amp;amp; Thomas Kahlow which pointed me to the correct direction on the ‘Run hubot on windows’ d">
+<meta name="twitter:image" content="http://farm8.staticflickr.com/7179/7119734567_1d28afba2b_o.jpg">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+        <meta property="og:image" content="https://farm8.staticflickr.com/7053/6975717721_11b528a835_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://farm8.staticflickr.com/7053/6975717721_11b528a835_q.jpg" />
+    
+    
+        <meta property="og:image" content="https://farm8.staticflickr.com/7053/6975717721_1eaca89dcc_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://farm8.staticflickr.com/7053/6975717721_1eaca89dcc_h.jpg" />
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial"
+             style="background-image:url('https://farm8.staticflickr.com/7053/6975717721_1eaca89dcc_h.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Running Github Hubot on a Windows machine
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2012-04-28T09:15:24+02:00">
+	
+		    Apr 28, 2012
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Anse Cafard, Martinique</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <!-- [![IMG_0063](http://farm8.staticflickr.com/7053/6975717721_11b528a835_m.jpg)](http://www.flickr.com/photos/laurentkempe/6975717721/ "IMG_0063 by Laurent Kempé, on Flickr") -->
+<p>I finally managed to get <a href="http://hubot.github.com/" target="_blank" rel="noopener">Github Hubot</a> running on my Windows 7 64 bits machine. Thanks to  <a href="https://github.com/copenhas" target="_blank" rel="noopener">Sean Copenhaver</a> &amp; <a href="https://github.com/kahlow" target="_blank" rel="noopener">Thomas Kahlow</a> which pointed me to the correct direction on the ‘<a href="https://github.com/github/hubot/issues/166#issuecomment-5391161" target="_blank" rel="noopener">Run hubot on windows</a>’ discussion.</p>
+<p>So here is how I did it.<br><a id="more"></a></p>
+<p>First of all download and install <a href="http://nodejs.org/" target="_blank" rel="noopener">nodejs 0.6.15</a>. This will also install <a href="http://npmjs.org/" target="_blank" rel="noopener">npm 1.1.16</a> which is the node package manager.</p>
+<p>Then start Powershell and create a new folder e.g. HubotWorking</p>
+<blockquote>
+<p>mkdir HubotWorking</p>
+<p>cd .\HubotWorking</p>
+<p>npm install hubot</p>
+</blockquote>
+<p>You should see the following output</p>
+<p><img src="http://farm8.staticflickr.com/7179/7119734567_1d28afba2b_o.jpg" alt="npminstallhubot"></p>
+<p>Go on with the following</p>
+<blockquote>
+<p>cd .\node_modules\hubot</p>
+<p>node .\node_modules\coffee-script\bin\coffee .\bin\hubot</p>
+</blockquote>
+<p>And the magic!</p>
+<p><a href="http://www.flickr.com/photos/laurentkempe/6973680654/" title="hubotonwindows by Laurent Kempé, on Flickr" target="_blank" rel="noopener"><img src="http://farm8.staticflickr.com/7206/6973680654_0cb983b26a_o.jpg" alt="hubotonwindows"></a></p>
+<p>You might want also to run it through <a href="http://www.jetbrains.com/webstorm/" target="_blank" rel="noopener">JetBrains WebStorm 4.0</a>, so here is the configuration you will need<br> <a href="http://www.flickr.com/photos/laurentkempe/7119772727/" title="webstorm hubot by Laurent Kempé, on Flickr" target="_blank" rel="noopener"><img src="http://farm8.staticflickr.com/7199/7119772727_438c6cd97b_o.jpg" alt="webstorm hubot"></a>   </p>
+<p>And here is the result in the WebStorm nodejs runner<br> <a href="http://www.flickr.com/photos/laurentkempe/7119778369/" title="runhubotfromwebstorm by Laurent Kempé, on Flickr" target="_blank" rel="noopener"><img src="http://farm8.staticflickr.com/7203/7119778369_40d9f0a11a_o.jpg" alt="runhubotfromwebstorm"></a></p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/GitHub/">GitHub</a> <a class="tag tag--primary tag--small t-link" href="/tags/Windows-7/">Windows 7</a> <a class="tag tag--primary tag--small t-link" href="/tags/hubot/">hubot</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2012/04/30/Using-Appharbor-service-hook-to-get-build-status-in-HipChat-rooms/" data-tooltip="Using Github hubot and Appharbor service hook to get deployment status in Campfire/HipChat rooms" aria-label="PREVIOUS: Using Github hubot and Appharbor service hook to get deployment status in Campfire/HipChat rooms">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2012/04/13/Sending-your-Git-branch-changes-as-an-email-attachment/" data-tooltip="Sending your Git branch changes as an email attachment" aria-label="NEXT: Sending your Git branch changes as an email attachment">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2012/04/28/Running-Github-Hubot-on-a-Windows-machine/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2012/04/28/Running-Github-Hubot-on-a-Windows-machine/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2012/04/28/Running-Github-Hubot-on-a-Windows-machine/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2012/04/30/Using-Appharbor-service-hook-to-get-build-status-in-HipChat-rooms/" data-tooltip="Using Github hubot and Appharbor service hook to get deployment status in Campfire/HipChat rooms" aria-label="PREVIOUS: Using Github hubot and Appharbor service hook to get deployment status in Campfire/HipChat rooms">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2012/04/13/Sending-your-Git-branch-changes-as-an-email-attachment/" data-tooltip="Sending your Git branch changes as an email attachment" aria-label="NEXT: Sending your Git branch changes as an email attachment">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2012/04/28/Running-Github-Hubot-on-a-Windows-machine/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2012/04/28/Running-Github-Hubot-on-a-Windows-machine/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2012/04/28/Running-Github-Hubot-on-a-Windows-machine/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2012/04/28/Running-Github-Hubot-on-a-Windows-machine/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2012/04/28/Running-Github-Hubot-on-a-Windows-machine/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2012/04/28/Running-Github-Hubot-on-a-Windows-machine/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2012/04/28/Running-Github-Hubot-on-a-Windows-machine/';
+                 
+                    this.page.identifier = '20120428091524';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

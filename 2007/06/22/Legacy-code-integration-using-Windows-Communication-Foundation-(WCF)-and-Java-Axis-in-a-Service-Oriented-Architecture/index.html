@@ -1,0 +1,557 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Legacy code integration using Windows Communication Foundation (WCF) and Java Axis in a Service Oriented Architecture - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"What are the options when you need to integrate Windows legacy code in a heterogeneous Service Oriented Architecture (SOA)?  \nThe proposed problem was to expose a set of Windows C++ DLLs to a global SOA platform written in Java. Those DLLs would be then exposed as backend computation services.\nOne of the options used in some past projects was to use the Microsoft SOAP Toolkit. But your C++ DLLs needs to be COM Objects for that. I experienced it and still have production code running with it. It works quite well even with surprising complex data structures. But as today it is definitely not the way to go.  \nThe service oriented world has evolved rapidly over the last years and using such an old deprecated technology (Microsoft SOAP Toolkit) is not really efficient for a project. \nSo at last it was time to check .NET in this entire Java world ;-)  \nThe general idea was to define a layered solution. From bottom up I first defined an interoperability layer using .NET Interop.aspx) to be able to call the C++ DLLs from .NET. Then on top of this first layer I added another layer exposing the whole as a web service.  \n  \nNow that I had the backend web service working I had to call it from Java. So are all those promises of web service interoperability just working out of the box?  \nYes and No. You need to first have a real look at the different frameworks stack you want to use. For example, when you are working with Java Axis you are tied to SOAP 1.1, so you have to take care that the other side can understand this version of the SOAP standard.  \nSo what do I have? First I have a client that must be written in Java using Axis 1.2-1.4 using SOAP 1.1, then a C++ Windows DLL backend that must be exposed in an interoperable way. By luck I was free to choose the technology used on that backend. Both ASP.NET web services (ASMX) and WCF can interoperate with the SOAP 1.1 standard, so I decided to go on with C# and WCF.  \nThe way I approached the problem was to go on iteratively, making a first proof of concept to integrate the C++ layer with the .NET layer, then to integrate this upper layer with WCF and a .NET client to finally finish with a Java client.  \nDue to the ease of the interface exposed by the web service I didn’t wrote it using data contract design first. In more complex scenarios I would definitely go on with it because it leads to better success with interoperability.  \nSo I finally adopted the following final solution.  \nAdopted solutionOn the backend a Windows Communication Foundation web service written in C# using the .NET Framework 3.0. The web service layer uses .NET interop to make a call to the legacy C++ Dlls.  \nOn the client side; a Java 1.5 proxy/stub class generated using WSDL2Java out of the WSDL exposed by the service.  \nHostingThe last question concerning the web service was to define the way I wanted to host it?  \nTwo possibilities in my case: Windows Service and Internet Information Services (IIS).  \nAfter making some load test on the web service I realized that it was leaking memory so I finally went to the IIS solution because it provides you all the services for recycling a buggy process. It was also easier because some part of the deployment process for web services hosted in IIS were already implemented and tested.  \nFaced problemsThe first minor thing I went through was to check which versions of WCF and Axis are compatible. \nThen the C++ interop was the main work because it is not such an easy task to marshal between the different worlds in a correct way. \nAnd finally the last one was that the legacy C++ Dlls where using ifstream to load configuration ini files, without a possibility to specify the full path of those files. As the web application was running in the Application Pool process (w3wp.exe), loading the ini file was using the base path of w3wp.exe; C:\\WINDWS\\System32\\inetsrv. That would force me to deploy the ini files in that folder. What an ugly solution. Adding the bin folder of the application to the PATH was not making the trick too. And as we couldn’t change the C++ Dlls I had to find something else. \nThe solution I came to, thanks to David Wang (yes you also Richard ;-), was to use this little method before calling into the legacy Dlls, changing the current directory:\n&lt;span style=&quot;color: rgb(128,128,128)&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: rgb(0,128,0)&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: rgb(128,128,128)&quot;&gt;&lt;summary&gt;\n        /// Sets the current directory.        ///         private static void SetCurrentDirectory()        {            string binpath = Path.Combine(HostingEnvironment.ApplicationPhysicalPath, “bin”);            Directory.SetCurrentDirectory(binpath);        }\nConclusionI really like the way WCF is handling the separation between the service description, the implementation and the configuration that will define how you expose the service to the world. \nThe other thing I still enjoy to see is complex systems using so different technologies talking to each other. Here we had a caller written in Java running on a Linux server calling a web service written in C# calling multiple C++ Dlls running on a Windows server.\nI am still amazed about those little things!!!\n","dateCreated":"2007-06-22T04:17:11+02:00","dateModified":"2007-06-22T04:17:11+02:00","datePublished":"2007-06-22T04:17:11+02:00","description":"What are the options when you need to integrate Windows legacy code in a heterogeneous Service Oriented Architecture (SOA)?  \nThe proposed problem was to expose a set of Windows C++ DLLs to a global SOA platform written in Java. Those DLLs would be then exposed as backend computation services.","headline":"Legacy code integration using Windows Communication Foundation (WCF) and Java Axis in a Service Oriented Architecture","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/06/22/Legacy-code-integration-using-Windows-Communication-Foundation-(WCF)-and-Java-Axis-in-a-Service-Oriented-Architecture/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2007/06/22/Legacy-code-integration-using-Windows-Communication-Foundation-(WCF)-and-Java-Axis-in-a-Service-Oriented-Architecture/","keywords":"Web Services, Java, Interoperability, WCF, Axis, .NET Framework 3.0, SOA, SOAP"}</script>
+    <meta name="description" content="What are the options when you need to integrate Windows legacy code in a heterogeneous Service Oriented Architecture (SOA)?   The proposed problem was to expose a set of Windows C++ DLLs to a global S">
+<meta name="keywords" content="Web Services,Java,Interoperability,WCF,Axis,.NET Framework 3.0,SOA,SOAP">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Legacy code integration using Windows Communication Foundation (WCF) and Java Axis in a Service Oriented Architecture">
+<meta property="og:url" content="https://laurentkempe.com/2007/06/22/Legacy-code-integration-using-Windows-Communication-Foundation-(WCF)-and-Java-Axis-in-a-Service-Oriented-Architecture/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="What are the options when you need to integrate Windows legacy code in a heterogeneous Service Oriented Architecture (SOA)?   The proposed problem was to expose a set of Windows C++ DLLs to a global S">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://www.techheadbrothers.com/images/blog/legacylayer.jpg">
+<meta property="og:updated_time" content="2007-06-22T02:17:11.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Legacy code integration using Windows Communication Foundation (WCF) and Java Axis in a Service Oriented Architecture">
+<meta name="twitter:description" content="What are the options when you need to integrate Windows legacy code in a heterogeneous Service Oriented Architecture (SOA)?   The proposed problem was to expose a set of Windows C++ DLLs to a global S">
+<meta name="twitter:image" content="http://www.techheadbrothers.com/images/blog/legacylayer.jpg">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Legacy code integration using Windows Communication Foundation (WCF) and Java Axis in a Service Oriented Architecture
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2007-06-22T04:17:11+02:00">
+	
+		    Jun 22, 2007
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>What are the options when you need to integrate Windows legacy code in a heterogeneous <a href="http://en.wikipedia.org/wiki/Service-oriented_architecture" target="_blank" rel="noopener">Service Oriented Architecture</a> (SOA)?  </p>
+<p>The proposed problem was to expose a set of Windows C++ DLLs to a global SOA platform written in Java. Those DLLs would be then exposed as backend computation services.<br><a id="more"></a></p>
+<p>One of the options used in some past projects was to use the <a href="http://msdn2.microsoft.com/en-us/webservices/aa740662.aspx" target="_blank" rel="noopener">Microsoft SOAP Toolkit</a>. But your C++ DLLs needs to be COM Objects for that. I experienced it and still have production code running with it. It works quite well even with surprising complex data structures. But as today it is definitely not the way to go.  </p>
+<p>The service oriented world has evolved rapidly over the last years and using such an old deprecated technology (<a href="http://msdn2.microsoft.com/en-us/webservices/aa740662.aspx" target="_blank" rel="noopener">Microsoft SOAP Toolkit</a>) is not really efficient for a project. </p>
+<p>So at last it was time to check <a href="http://msdn2.microsoft.com/en-us/netframework/default.aspx" target="_blank" rel="noopener">.NET</a> in this entire <a href="http://java.sun.com/" target="_blank" rel="noopener">Java</a> world ;-)  </p>
+<p>The general idea was to define a layered solution. From bottom up I first defined an interoperability layer using <a href="http://msdn2.microsoft.com/en-us/library/sd10k43k(VS.80" target="_blank" rel="noopener">.NET Interop</a>.aspx) to be able to call the C++ DLLs from .NET. Then on top of this first layer I added another layer exposing the whole as a web service.  </p>
+<p><img src="http://www.techheadbrothers.com/images/blog/legacylayer.jpg" alt="">  </p>
+<p>Now that I had the backend web service working I had to call it from Java. So are all those promises of web service interoperability just working out of the box?  </p>
+<p>Yes and No. You need to first have a real look at the different frameworks stack you want to use. For example, when you are working with Java Axis you are tied to <a href="http://www.w3.org/TR/2000/NOTE-SOAP-20000508/" target="_blank" rel="noopener">SOAP 1.1</a>, so you have to take care that the other side can understand this version of the <a href="http://www.w3.org/TR/soap/" target="_blank" rel="noopener">SOAP standard</a>.  </p>
+<p>So what do I have? First I have a client that must be written in Java using <a href="http://ws.apache.org/axis/java/index.html" target="_blank" rel="noopener">Axis</a> 1.2-1.4 using SOAP 1.1, then a C++ Windows DLL backend that must be exposed in an interoperable way. By luck I was free to choose the technology used on that backend. Both <a href="http://msdn2.microsoft.com/en-us/asp.net/default.aspx" target="_blank" rel="noopener">ASP.NET</a> web services (ASMX) and <a href="http://msdn2.microsoft.com/en-us/library/ms735119.aspx" target="_blank" rel="noopener">WCF</a> can interoperate with the SOAP 1.1 standard, so I decided to go on with <a href="http://msdn2.microsoft.com/en-us/vcsharp/aa336809.aspx" target="_blank" rel="noopener">C#</a> and <a href="http://msdn2.microsoft.com/en-us/library/ms735119.aspx" target="_blank" rel="noopener">WCF</a>.  </p>
+<p>The way I approached the problem was to go on iteratively, making a first proof of concept to integrate the C++ layer with the .NET layer, then to integrate this upper layer with WCF and a .NET client to finally finish with a Java client.  </p>
+<p>Due to the ease of the interface exposed by the web service I didn’t wrote it using data contract design first. In more complex scenarios I would definitely go on with it because it leads to better success with interoperability.  </p>
+<p>So I finally adopted the following final solution.  </p>
+<h3 id="Adopted-solution"><a href="#Adopted-solution" class="headerlink" title="Adopted solution"></a>Adopted solution</h3><p>On the backend a <a href="http://msdn2.microsoft.com/en-us/library/ms735119.aspx" target="_blank" rel="noopener">Windows Communication Foundation</a> web service written in C# using the <a href="http://www.netfx3.com/" target="_blank" rel="noopener">.NET Framework 3.0</a>. The web service layer uses .NET interop to make a call to the legacy C++ Dlls.  </p>
+<p>On the client side; a Java 1.5 proxy/stub class generated using <a href="http://ws.apache.org/axis/java/user-guide.html#WSDL2JavaBuildingStubsSkeletonsAndDataTypesFromWSDL" target="_blank" rel="noopener">WSDL2Java</a> out of the <a href="http://www.w3.org/TR/wsdl" target="_blank" rel="noopener">WSDL</a> exposed by the service.  </p>
+<h3 id="Hosting"><a href="#Hosting" class="headerlink" title="Hosting"></a>Hosting</h3><p>The last question concerning the web service was to define the way I wanted to host it?  </p>
+<p>Two possibilities in my case: <a href="http://en.wikipedia.org/wiki/Windows_service" target="_blank" rel="noopener">Windows Service</a> and <a href="http://www.microsoft.com/windowsserver2003/iis/default.mspx" target="_blank" rel="noopener">Internet Information Services</a> (IIS).  </p>
+<p>After making some <a href="http://en.wikipedia.org/wiki/Load_testing" target="_blank" rel="noopener">load test</a> on the web service I realized that it was <a href="http://en.wikipedia.org/wiki/Memory_leak" target="_blank" rel="noopener">leaking memory</a> so I finally went to the IIS solution because it provides you all the services for <a href="http://www.microsoft.com/technet/prodtechnol/windowsserver2003/library/iis/0e570911-b88e-46be-96eb-a82f737dde5a.mspx" target="_blank" rel="noopener">recycling</a> a buggy process. It was also easier because some part of the deployment process for web services hosted in IIS were already implemented and tested.  </p>
+<h3 id="Faced-problems"><a href="#Faced-problems" class="headerlink" title="Faced problems"></a>Faced problems</h3><p>The first minor thing I went through was to check which versions of WCF and Axis are compatible. </p>
+<p>Then the C++ interop was the main work because it is not such an easy task to marshal between the different worlds in a correct way. </p>
+<p>And finally the last one was that the legacy C++ Dlls where using <a href="http://www.cplusplus.com/reference/iostream/ifstream/" target="_blank" rel="noopener">ifstream</a> to load configuration <a href="http://en.wikipedia.org/wiki/INI_file" target="_blank" rel="noopener">ini files</a>, without a possibility to specify the full path of those files. As the web application was running in the <a href="http://www.microsoft.com/technet/technetmag/issues/2006/01/ServingTheWeb/" target="_blank" rel="noopener">Application Pool process (w3wp.exe)</a>, loading the ini file was using the base path of w3wp.exe; C:\WINDWS\System32\inetsrv. That would force me to deploy the ini files in that folder. What an ugly solution. Adding the bin folder of the application to the PATH was not making the trick too. And as we couldn’t change the C++ Dlls I had to find something else. </p>
+<p>The solution I came to, thanks to <a href="http://blogs.msdn.com/david.wang/" target="_blank" rel="noopener">David Wang</a> (yes you also <a href="http://blogs.codes-sources.com/richardc/default.aspx" target="_blank" rel="noopener">Richard</a> ;-), was to use this little method before calling into the legacy Dlls, changing the current directory:</p>
+<pre><code>&lt;span style=&quot;color: rgb(128,128,128)&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: rgb(0,128,0)&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: rgb(128,128,128)&quot;&gt;&lt;summary&gt;
+</code></pre><p>        <span style="color: rgb(128,128,128)">///</span><span style="color: rgb(0,128,0)"> Sets the current directory.<br></span>        <span style="color: rgb(128,128,128)">///</span><span style="color: rgb(0,128,0)"> </span><span style="color: rgb(128,128,128)"><br></span>        <span style="color: rgb(0,0,255)">private</span> <span style="color: rgb(0,0,255)">static</span> <span style="color: rgb(0,0,255)">void</span> SetCurrentDirectory()<br>        {<br>            <span style="color: rgb(0,0,255)">string</span> binpath = <span style="color: rgb(43,145,175)">Path</span>.Combine(<span style="color: rgb(43,145,175)">HostingEnvironment</span>.ApplicationPhysicalPath, <span style="color: rgb(163,21,21)">“bin”</span>);<br>            <span style="color: rgb(43,145,175)">Directory</span>.SetCurrentDirectory(binpath);<br>        }<br><a href="http://11011.net/software/vspaste" target="_blank" rel="noopener"></a></p>
+<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><p>I really like the way WCF is handling the separation between the service description, the implementation and the configuration that will define how you expose the service to the world. </p>
+<p>The other thing I still enjoy to see is complex systems using so different technologies talking to each other. Here we had a caller written in Java running on a Linux server calling a web service written in C# calling multiple C++ Dlls running on a Windows server.</p>
+<p>I am still amazed about those little things!!!</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/NET-Framework-3-0/">.NET Framework 3.0</a> <a class="tag tag--primary tag--small t-link" href="/tags/Axis/">Axis</a> <a class="tag tag--primary tag--small t-link" href="/tags/Interoperability/">Interoperability</a> <a class="tag tag--primary tag--small t-link" href="/tags/Java/">Java</a> <a class="tag tag--primary tag--small t-link" href="/tags/SOA/">SOA</a> <a class="tag tag--primary tag--small t-link" href="/tags/SOAP/">SOAP</a> <a class="tag tag--primary tag--small t-link" href="/tags/WCF/">WCF</a> <a class="tag tag--primary tag--small t-link" href="/tags/Web-Services/">Web Services</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2007/06/22/I-am-a-VIB-Very-Important-Blogger/" data-tooltip="I am a VIB - Very Important Blogger" aria-label="PREVIOUS: I am a VIB - Very Important Blogger">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2007/06/22/JetBrains-Releases-ReSharper-30/" data-tooltip="JetBrains Releases ReSharper 3.0" aria-label="NEXT: JetBrains Releases ReSharper 3.0">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2007/06/22/Legacy-code-integration-using-Windows-Communication-Foundation-(WCF)-and-Java-Axis-in-a-Service-Oriented-Architecture/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2007/06/22/Legacy-code-integration-using-Windows-Communication-Foundation-(WCF)-and-Java-Axis-in-a-Service-Oriented-Architecture/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2007/06/22/Legacy-code-integration-using-Windows-Communication-Foundation-(WCF)-and-Java-Axis-in-a-Service-Oriented-Architecture/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2007/06/22/I-am-a-VIB-Very-Important-Blogger/" data-tooltip="I am a VIB - Very Important Blogger" aria-label="PREVIOUS: I am a VIB - Very Important Blogger">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2007/06/22/JetBrains-Releases-ReSharper-30/" data-tooltip="JetBrains Releases ReSharper 3.0" aria-label="NEXT: JetBrains Releases ReSharper 3.0">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2007/06/22/Legacy-code-integration-using-Windows-Communication-Foundation-(WCF)-and-Java-Axis-in-a-Service-Oriented-Architecture/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2007/06/22/Legacy-code-integration-using-Windows-Communication-Foundation-(WCF)-and-Java-Axis-in-a-Service-Oriented-Architecture/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2007/06/22/Legacy-code-integration-using-Windows-Communication-Foundation-(WCF)-and-Java-Axis-in-a-Service-Oriented-Architecture/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2007/06/22/Legacy-code-integration-using-Windows-Communication-Foundation-(WCF)-and-Java-Axis-in-a-Service-Oriented-Architecture/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2007/06/22/Legacy-code-integration-using-Windows-Communication-Foundation-(WCF)-and-Java-Axis-in-a-Service-Oriented-Architecture/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2007/06/22/Legacy-code-integration-using-Windows-Communication-Foundation-(WCF)-and-Java-Axis-in-a-Service-Oriented-Architecture/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2007/06/22/Legacy-code-integration-using-Windows-Communication-Foundation-(WCF)-and-Java-Axis-in-a-Service-Oriented-Architecture/';
+                 
+                    this.page.identifier = '20070622041711';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

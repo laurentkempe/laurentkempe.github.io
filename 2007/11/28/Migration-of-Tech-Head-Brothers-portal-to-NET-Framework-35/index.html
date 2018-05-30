@@ -1,0 +1,550 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Migration of Tech Head Brothers portal to .NET Framework 3.5 - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"I started yesterday the migration of Tech Head Brothers portal to .NET Framework 3.5 and Visual Studio 2008.\nThe automatic migration of the solution went straight without any error. During the process I was asked if I want to now target .NET Framework 3.5, replying yes seems not to have changed all things needed, for example in the solution properties I had to do the change manually, but it seems that the web.config was updated correctly.\nBeing ready to see the application running I started a compilation and got my first issue, and finally the only one.\nIt seems that the compiler is making more check than the older one. \nOn my data access layer I use Euss, “an extensible programming model and runtime components for building data aware solutions on the .Net platform” . So I rely on that framework on my data access layer and for sure I reference it.\nCompiling the business layer I got the following compilation error:\n \nHow can it be:\n\nIt compiles on Visual Studio 2005 without any error  The business layer doesn’t have a reference to Euss for sure, it is one of the goal of my DAL to encapsulate it \n\nThe link to the error didn’t really helped because the code was absolutely correct!\nAfter some research I found the issue in the data access layer, in which I have a generic Repository class for all CRUD operations that I parameterize with a business entity of my domain. The code look like this: \nnamespace TechHeadBrothers.Portal.DAL{    public class Repository        where T : class    {  \n&lt;span style=&quot;color: rgb(128,128,128)&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: rgb(0,128,0)&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: rgb(128,128,128)&quot;&gt;&lt;summary&gt;\n        /// Reads from the specified query.        ///         /// The query.        ///         protected static IList Read(Query query)        {            return PersistenceFactory.Context.Load(query);        }\nThe issue is that in one method, one of the Read operation, I use the Query class. This class is coming from Euss framework. As Query is a parameter of a method in a public class and this method is marked as protected, it might be inherited in another layer and override. Then the issue is that Query parameter in this other layer is not known because we want to have the Euss framework encapsulated on the data access layer. So we got the error.\nUpdate: The fix is as following:\n&lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;internal&lt;/span&gt; &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;static&lt;/span&gt; &lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;IList&lt;/span&gt;&lt;T&gt; Read(&lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;Query&lt;/span&gt; query)\n{\n    &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;return&lt;/span&gt; &lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;PersistenceFactory&lt;/span&gt;.Context.Load&lt;T&gt;(query);\n}\nWeird thing is that the same thing works without any issue on Visual Studio 2005.\nSo now I can’t wait to test some ideas, like “Business entity and C# extension methods“.\nI am still currently missing VS Web Deployment Add-In, but it was announced by Scott Guthrie on his blog :\n\nSilverlight Tools and VS Web Deployment Project Add-InsTwo popular add-ins to Visual Studio are not yet available to download for the final VS 2008 release.  These are the Silverlight 1.1 Tools Alpha for Visual Studio and the Web Deployment Project add-in for Visual Studio.  Our hope is to post updates to both of them to work with the final VS 2008 release in the next two weeks.  If you are doing Silverlight 1.1 development using VS 2008 Beta2 you’ll want to stick with with VS 2008 Beta2 until this updated Silverlight Tools Add-In is available. \n\n","dateCreated":"2007-11-28T21:01:39+01:00","dateModified":"2007-11-28T21:01:39+01:00","datePublished":"2007-11-28T21:01:39+01:00","description":"I started yesterday the migration of Tech Head Brothers portal to .NET Framework 3.5 and Visual Studio 2008.\nThe automatic migration of the solution went straight without any error. During the process I was asked if I want to now target .NET Framework 3.5, replying yes seems not to have changed all things needed, for example in the solution properties I had to do the change manually, but it seems that the web.config was updated correctly.","headline":"Migration of Tech Head Brothers portal to .NET Framework 3.5","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/11/28/Migration-of-Tech-Head-Brothers-portal-to-NET-Framework-35/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2007/11/28/Migration-of-Tech-Head-Brothers-portal-to-NET-Framework-35/"}</script>
+    <meta name="description" content="I started yesterday the migration of Tech Head Brothers portal to .NET Framework 3.5 and Visual Studio 2008. The automatic migration of the solution went straight without any error. During the process">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Migration of Tech Head Brothers portal to .NET Framework 3.5">
+<meta property="og:url" content="https://laurentkempe.com/2007/11/28/Migration-of-Tech-Head-Brothers-portal-to-NET-Framework-35/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="I started yesterday the migration of Tech Head Brothers portal to .NET Framework 3.5 and Visual Studio 2008. The automatic migration of the solution went straight without any error. During the process">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://farm3.static.flickr.com/2162/2070512203_85b8bbec0d_o.jpg">
+<meta property="og:updated_time" content="2007-11-28T20:01:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Migration of Tech Head Brothers portal to .NET Framework 3.5">
+<meta name="twitter:description" content="I started yesterday the migration of Tech Head Brothers portal to .NET Framework 3.5 and Visual Studio 2008. The automatic migration of the solution went straight without any error. During the process">
+<meta name="twitter:image" content="http://farm3.static.flickr.com/2162/2070512203_85b8bbec0d_o.jpg">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Migration of Tech Head Brothers portal to .NET Framework 3.5
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2007-11-28T21:01:39+01:00">
+	
+		    Nov 28, 2007
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>I started yesterday the migration of <a href="http://www.techheadbrothers.com/" target="_blank" rel="noopener">Tech Head Brothers</a> portal to .NET Framework 3.5 and Visual Studio 2008.</p>
+<p>The automatic migration of the solution went straight without any error. During the process I was asked if I want to now target .NET Framework 3.5, replying yes seems not to have changed all things needed, for example in the solution properties I had to do the change manually, but it seems that the web.config was updated correctly.<br><a id="more"></a></p>
+<p>Being ready to see the application running I started a compilation and got my first issue, and finally the only one.</p>
+<p>It seems that the compiler is making more check than the older one. </p>
+<p>On my data access layer I use <a href="http://euss.evaluant.com/" target="_blank" rel="noopener">Euss</a>, “an extensible programming model and runtime components for building data aware solutions on the .Net platform” . So I rely on that framework on my data access layer and for sure I reference it.</p>
+<p>Compiling the business layer I got the following compilation error:</p>
+<p><img src="http://farm3.static.flickr.com/2162/2070512203_85b8bbec0d_o.jpg" alt=""> </p>
+<p>How can it be:</p>
+<ol>
+<li>It compiles on Visual Studio 2005 without any error  The business layer doesn’t have a reference to Euss for sure, it is one of the goal of my DAL to encapsulate it </li>
+</ol>
+<p>The link to the error didn’t really helped because the code was absolutely correct!</p>
+<p>After some research I found the issue in the data access layer, in which I have a generic Repository class for all CRUD operations that I parameterize with a business entity of my domain. The code look like this: </p>
+<p><span style="color: rgb(0,0,255)">namespace</span> TechHeadBrothers.Portal.DAL<br>{<br>    <span style="color: rgb(0,0,255)">public</span> <span style="color: rgb(0,0,255)">class</span> <span style="color: rgb(43,145,175)">Repository</span><t><br>        <span style="color: rgb(0,0,255)">where</span> T : <span style="color: rgb(0,0,255)">class<br></span>    {  </t></p>
+<pre><code>&lt;span style=&quot;color: rgb(128,128,128)&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: rgb(0,128,0)&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: rgb(128,128,128)&quot;&gt;&lt;summary&gt;
+</code></pre><p>        <span style="color: rgb(128,128,128)">///</span><span style="color: rgb(0,128,0)"> Reads from the specified query.<br></span>        <span style="color: rgb(128,128,128)">///</span><span style="color: rgb(0,128,0)"> </span><span style="color: rgb(128,128,128)"><br></span>        <span style="color: rgb(128,128,128)">///</span><span style="color: rgb(0,128,0)"> </span><span style="color: rgb(128,128,128)"><param name="query"></span><span style="color: rgb(0,128,0)">The query.</span><span style="color: rgb(128,128,128)"><br></span>        <span style="color: rgb(128,128,128)">///</span><span style="color: rgb(0,128,0)"> </span><span style="color: rgb(128,128,128)"><returns></returns><br></span>        <span style="color: rgb(0,0,255)">protected</span> <span style="color: rgb(0,0,255)">static</span> <span style="color: rgb(43,145,175)">IList</span><t> Read(<span style="color: rgb(43,145,175)">Query</span> query)<br>        {<br>            <span style="color: rgb(0,0,255)">return</span> <span style="color: rgb(43,145,175)">PersistenceFactory</span>.Context.Load<t>(query);<br>        }<br><a href="http://11011.net/software/vspaste" target="_blank" rel="noopener"></a></t></t></p>
+<p>The issue is that in one method, one of the Read operation, I use the Query class. This class is coming from Euss framework. As Query is a parameter of a method in a public class and this method is marked as protected, it might be inherited in another layer and override. Then the issue is that Query parameter in this other layer is not known because we want to have the Euss framework encapsulated on the data access layer. So we got the error.</p>
+<p><u>Update</u>: The fix is as following:</p>
+<pre><code>&lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;internal&lt;/span&gt; &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;static&lt;/span&gt; &lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;IList&lt;/span&gt;&lt;T&gt; Read(&lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;Query&lt;/span&gt; query)
+{
+    &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;return&lt;/span&gt; &lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;PersistenceFactory&lt;/span&gt;.Context.Load&lt;T&gt;(query);
+}
+</code></pre><p>Weird thing is that the same thing works without any issue on Visual Studio 2005.</p>
+<p>So now I can’t wait to test some ideas, like “<a href="http://weblogs.asp.net/lkempe/archive/2007/10/31/business-entity-and-c-extension-methods.aspx" target="_blank" rel="noopener">Business entity and C# extension methods</a>“.</p>
+<p>I am still currently missing VS Web Deployment Add-In, but it was announced by <a href="http://weblogs.asp.net/scottgu/default.aspx" target="_blank" rel="noopener">Scott Guthrie</a> on his blog :</p>
+<blockquote>
+<h5 id="Silverlight-Tools-and-VS-Web-Deployment-Project-Add-Ins"><a href="#Silverlight-Tools-and-VS-Web-Deployment-Project-Add-Ins" class="headerlink" title="Silverlight Tools and VS Web Deployment Project Add-Ins"></a><u>Silverlight Tools and VS Web Deployment Project Add-Ins</u></h5><p>Two popular add-ins to Visual Studio are not yet available to download for the final VS 2008 release.  These are the Silverlight 1.1 Tools Alpha for Visual Studio and the Web Deployment Project add-in for Visual Studio.  Our hope is to post updates to both of them to work with the final VS 2008 release in the next two weeks.  If you are doing Silverlight 1.1 development using VS 2008 Beta2 you’ll want to stick with with VS 2008 Beta2 until this updated Silverlight Tools Add-In is available. </p>
+</blockquote>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2007/11/30/New-web-application-deployment-framework-for-IIS-7/" data-tooltip="New web application deployment framework for IIS 7" aria-label="PREVIOUS: New web application deployment framework for IIS 7">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2007/11/24/ReSharper-and-Visual-Studio-2008/" data-tooltip="ReSharper and Visual Studio 2008" aria-label="NEXT: ReSharper and Visual Studio 2008">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2007/11/28/Migration-of-Tech-Head-Brothers-portal-to-NET-Framework-35/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2007/11/28/Migration-of-Tech-Head-Brothers-portal-to-NET-Framework-35/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2007/11/28/Migration-of-Tech-Head-Brothers-portal-to-NET-Framework-35/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2007/11/30/New-web-application-deployment-framework-for-IIS-7/" data-tooltip="New web application deployment framework for IIS 7" aria-label="PREVIOUS: New web application deployment framework for IIS 7">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2007/11/24/ReSharper-and-Visual-Studio-2008/" data-tooltip="ReSharper and Visual Studio 2008" aria-label="NEXT: ReSharper and Visual Studio 2008">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2007/11/28/Migration-of-Tech-Head-Brothers-portal-to-NET-Framework-35/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2007/11/28/Migration-of-Tech-Head-Brothers-portal-to-NET-Framework-35/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2007/11/28/Migration-of-Tech-Head-Brothers-portal-to-NET-Framework-35/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2007/11/28/Migration-of-Tech-Head-Brothers-portal-to-NET-Framework-35/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2007/11/28/Migration-of-Tech-Head-Brothers-portal-to-NET-Framework-35/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2007/11/28/Migration-of-Tech-Head-Brothers-portal-to-NET-Framework-35/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2007/11/28/Migration-of-Tech-Head-Brothers-portal-to-NET-Framework-35/';
+                 
+                    this.page.identifier = '20071128090139';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

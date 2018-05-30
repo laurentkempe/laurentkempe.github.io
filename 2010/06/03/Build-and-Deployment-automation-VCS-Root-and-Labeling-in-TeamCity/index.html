@@ -1,0 +1,562 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Build and Deployment automation, VCS Root and Labeling in TeamCity - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"As you might now from reading my blog I tend to automate as much as I can. \nWhy? Because I hate to do repetitive tasks. First because it is boring, at least for me, and as a developer we have more interesting things to do. Second because executing repetitive tasks tend to be error prone.\nSo last week I decided that it was enough for me to have to create manually a subversion tag for Jobping web site then also took the time to do the same for my portal Tech Head Brothers.\nAt Jobping we are using TeamCity and Subversion. We use it as our Continuous Integration system but also to deploy to production server in one click. Something I promised to talk later on in more details.\nSo it was relatively easy to configure TeamCity so that after build/deployment process it tags our subversion.\nFirst of all, I realized only the other day the way TeamCity works with VCS root \n\nA VCS Root is a set of settings that defines how TeamCity communicates with a version control (SCM) system to monitor for changes and to get sources for a build.\n\nWe are using the convention of trunk, branches, tags in our Subversion server (which is the great Visual SVN Server). In the past I always set the TeamCity VCS Root to our myproject/trunk url, and I have seen lots of people doing so on different websites/blogs…\nAt this point I realized that I missed a point with TeamCity VCS Root is that it contains Root in it’s name. So I might be using myproject/ in place of myproject/trunk as the VCS Root. But wait, if I do that TeamCity agent will make a checkout of my whole Subversion repository! \nAnd here comes the VCS Checkout rules, which you can configure on every project which is using the VCS Root\n\nSo in my case it looks like that\n\nWhich specify that for that particular build I want to checkout from my VCS Root extended with trunk to the build folder /. So with that I restrict the checkout to the trunk. Good\nNow back to my first topic, which was to automate the subversion tag creation when our build is successful which is done using TeamCity VCS Labeling.\nHere is how we set it up for our staging build\n\nFor sure we have another one for our production build.\nAnd here is the result in Subversion\n\nAnother thing that I will not forget as it is automated\nOne last issue that I had which you see only if you register to get info about failed build in TeamCity is the following\n\n[TeamCity, LABELING FAILED] Staging - CI Trunk, Unit Tests, Deploy #1072Jetbrains.buildServer.vcs.VcsException:\nLabeling the path ‘trunk’ to ‘tags/staging-1072’ has failed with the error: svn: MKACTIVITY of ‘/svn/!svn/act/7caf50f8-2801-0010-9e80-1fedd46c5a33’: 403 Forbidden \n\nWith this error message it was then easy to figure it out. I just had to modify the access right of the build user to have read/write access right and not only read.\n","dateCreated":"2010-06-03T03:11:49+02:00","dateModified":"2010-06-03T03:11:49+02:00","datePublished":"2010-06-03T03:11:49+02:00","description":"As you might now from reading my blog I tend to automate as much as I can. \nWhy? Because I hate to do repetitive tasks. First because it is boring, at least for me, and as a developer we have more interesting things to do. Second because executing repetitive tasks tend to be error prone.","headline":"Build and Deployment automation, VCS Root and Labeling in TeamCity","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/","keywords":"Tech Head Brothers, Jobping, Team City"}</script>
+    <meta name="description" content="As you might now from reading my blog I tend to automate as much as I can.  Why? Because I hate to do repetitive tasks. First because it is boring, at least for me, and as a developer we have more int">
+<meta name="keywords" content="Tech Head Brothers,Jobping,Team City">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Build and Deployment automation, VCS Root and Labeling in TeamCity">
+<meta property="og:url" content="https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="As you might now from reading my blog I tend to automate as much as I can.  Why? Because I hate to do repetitive tasks. First because it is boring, at least for me, and as a developer we have more int">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://farm2.staticflickr.com/1462/24579562215_0c560155da_o.png">
+<meta property="og:image" content="https://farm2.staticflickr.com/1513/24497267931_83cf76a446_o.png">
+<meta property="og:image" content="https://farm2.staticflickr.com/1636/24471243112_136c3c3d4e_o.png">
+<meta property="og:image" content="https://farm2.staticflickr.com/1527/24579562315_bb8aa7385e_o.png">
+<meta property="og:updated_time" content="2010-06-03T01:11:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Build and Deployment automation, VCS Root and Labeling in TeamCity">
+<meta name="twitter:description" content="As you might now from reading my blog I tend to automate as much as I can.  Why? Because I hate to do repetitive tasks. First because it is boring, at least for me, and as a developer we have more int">
+<meta name="twitter:image" content="https://farm2.staticflickr.com/1462/24579562215_0c560155da_o.png">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Build and Deployment automation, VCS Root and Labeling in TeamCity
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2010-06-03T03:11:49+02:00">
+	
+		    Jun 03, 2010
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>As you might now from reading my blog I tend to automate as much as I can. </p>
+<p>Why? Because I hate to do repetitive tasks. First because it is boring, at least for me, and as a developer we have more interesting things to do. Second because executing repetitive tasks tend to be error prone.<br><a id="more"></a></p>
+<p>So last week I decided that it was enough for me to have to create manually a subversion tag for <a href="http://www.jobping.com" title="Job posting web site aimed specifically at job seekers and employers who work with Microsoft technologies" target="_blank" rel="noopener">Jobping</a> web site then also took the time to do the same for my portal <a href="http://www.techheadbrothers.com/" target="_blank" rel="noopener">Tech Head Brothers</a>.</p>
+<p>At <a href="http://www.jobping.com/" title="Job posting web site aimed specifically at job seekers and employers who work with Microsoft technologies" target="_blank" rel="noopener">Jobping</a> we are using <a href="http://www.jetbrains.com/teamcity/index.html" target="_blank" rel="noopener">TeamCity</a> and Subversion. We use it as our Continuous Integration system but also to deploy to production server in one click. Something I promised to talk later on in more details.</p>
+<p>So it was relatively easy to configure TeamCity so that after build/deployment process it tags our subversion.</p>
+<p>First of all, I realized only the other day the way TeamCity works with <a href="http://confluence.jetbrains.net/display/TCD5/Configuring+VCS+Roots" target="_blank" rel="noopener">VCS root</a> </p>
+<blockquote>
+<p>A VCS Root is a set of settings that defines how TeamCity communicates with a version control (SCM) system to monitor for changes and to get sources for a build.</p>
+</blockquote>
+<p>We are using the convention of trunk, branches, tags in our Subversion server (which is the great <a href="http://www.visualsvn.com/server/" target="_blank" rel="noopener">Visual SVN Server</a>). In the past I always set the TeamCity VCS Root to our myproject/trunk url, and I have seen lots of people doing so on different websites/blogs…</p>
+<p>At this point I realized that I missed a point with TeamCity VCS Root is that it contains Root in it’s name. So I might be using myproject/ in place of myproject/trunk as the VCS Root. But wait, if I do that TeamCity agent will make a checkout of my whole Subversion repository! </p>
+<p>And here comes the <a href="http://confluence.jetbrains.net/display/TCD5/VCS+Checkout+Rules" target="_blank" rel="noopener">VCS Checkout rules</a>, which you can configure on every project which is using the VCS Root</p>
+<p><img src="https://farm2.staticflickr.com/1462/24579562215_0c560155da_o.png" alt="Build and Deployment automation, VCS Root and Labeling in TeamCity 1"></p>
+<p>So in my case it looks like that</p>
+<p><img src="https://farm2.staticflickr.com/1513/24497267931_83cf76a446_o.png" alt="Build and Deployment automation, VCS Root and Labeling in TeamCity 2"></p>
+<p>Which specify that for that particular build I want to checkout from my VCS Root extended with trunk to the build folder /. So with that I restrict the checkout to the trunk. Good</p>
+<p>Now back to my first topic, which was to automate the subversion tag creation when our build is successful which is done using TeamCity <a href="http://confluence.jetbrains.net/display/TCD5/VCS+Labeling" target="_blank" rel="noopener">VCS Labeling</a>.</p>
+<p>Here is how we set it up for our staging build</p>
+<p><img src="https://farm2.staticflickr.com/1636/24471243112_136c3c3d4e_o.png" alt="Build and Deployment automation, VCS Root and Labeling in TeamCity 3"></p>
+<p>For sure we have another one for our production build.</p>
+<p>And here is the result in Subversion</p>
+<p><img src="https://farm2.staticflickr.com/1527/24579562315_bb8aa7385e_o.png" alt="Build and Deployment automation, VCS Root and Labeling in TeamCity 4"></p>
+<p>Another thing that I will not forget as it is automated</p>
+<p>One last issue that I had which you see only if you register to get info about failed build in TeamCity is the following</p>
+<blockquote>
+<h3 id="TeamCity-LABELING-FAILED-Staging-CI-Trunk-Unit-Tests-Deploy-1072"><a href="#TeamCity-LABELING-FAILED-Staging-CI-Trunk-Unit-Tests-Deploy-1072" class="headerlink" title="[TeamCity, LABELING FAILED] Staging - CI Trunk, Unit Tests, Deploy #1072"></a>[TeamCity, LABELING FAILED] Staging - CI Trunk, Unit Tests, Deploy #1072</h3><p>Jetbrains.buildServer.vcs.VcsException:</p>
+<p><strong>Labeling the path ‘trunk’ to ‘tags/staging-1072’ has failed with the error</strong>: svn: MKACTIVITY of ‘/svn/!svn/act/7caf50f8-2801-0010-9e80-1fedd46c5a33’: <strong>403 Forbidden </strong></p>
+</blockquote>
+<p>With this error message it was then easy to figure it out. I just had to modify the access right of the build user to have read/write access right and not only read.</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/Jobping/">Jobping</a> <a class="tag tag--primary tag--small t-link" href="/tags/Team-City/">Team City</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tech-Head-Brothers/">Tech Head Brothers</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2010/06/04/Build-NET-projects-from-Windows-Explorer-using-MSBuild-Launch-Pad-(mPad)/" data-tooltip="Build .NET projects from Windows Explorer using MSBuild Launch Pad (mPad)" aria-label="PREVIOUS: Build .NET projects from Windows Explorer using MSBuild Launch Pad (mPad)">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2010/06/01/Using-Gmail-as-TeamCity-smtp-server/" data-tooltip="Using Gmail as TeamCity smtp server" aria-label="NEXT: Using Gmail as TeamCity smtp server">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2010/06/04/Build-NET-projects-from-Windows-Explorer-using-MSBuild-Launch-Pad-(mPad)/" data-tooltip="Build .NET projects from Windows Explorer using MSBuild Launch Pad (mPad)" aria-label="PREVIOUS: Build .NET projects from Windows Explorer using MSBuild Launch Pad (mPad)">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2010/06/01/Using-Gmail-as-TeamCity-smtp-server/" data-tooltip="Using Gmail as TeamCity smtp server" aria-label="NEXT: Using Gmail as TeamCity smtp server">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/';
+                 
+                    this.page.identifier = '20100603031149';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

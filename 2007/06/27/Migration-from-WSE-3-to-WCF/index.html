@@ -1,0 +1,549 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Migration from WSE 3 to WCF - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"I started to migrate the Tech Head Brothers authoring tool and portal from Web Service Enhancement 3 (WSE 3) to Windows Communication Foundation (WCF). This is a next step in the integration of .NET Framework 3 in Tech Head Brothers portal.\nTill today I was using WSE 3 from the Word VSTO solution to securely publish content to the portal directly out of Word 2003/2007.\nThe migration went straight due to my initial implementation that was already using interfaces and implementation classes. So basically I had to :\n\nRemove the reference to WSE 3 and add one to System.ServiceModel\nChange the attributes on the interface to ServiceContract and OperationContract\nUpdate the web.config to parameterize the new WCF endpoint, binding…\nRegenerate the client proxy and update a bit the client code \n\nThis first step took me around 1h30 and was working very good but was still missing all the security of the old version.\nThen to implement the security part of the web services:\n\nI created a new certificate\nRemoved the Policy using the self developed aspnetUsernameTokenSecurity that is not needed anymore\nConfigured the web.config with a new wcf service behavior using userNameAuthentication and serviceAuthorization linked to ASP.NET providers\nReplaced code checking the role of the user calling the service with an attribute PrincipalPermission\nRegenerated the client proxy and reconfigured it \n\nSo now I have security at the level of the message that is encrypted using the certificate and at the web service with role access check.\nCurrently the solution uses attributes to check the role of the user that access the web service. I don’t find the solution flexible enough and the next step will be to have the configuration in a configuration file, that would let me change access rights without changing any line of code.\nAs always when this will work I will publish the source code of the VSTO client authoring tool (Tech Head Brothers Authoring) on the codeplex project: THBAuthoring.\n","dateCreated":"2007-06-27T16:28:25+02:00","dateModified":"2007-06-27T16:28:25+02:00","datePublished":"2007-06-27T16:28:25+02:00","description":"I started to migrate the Tech Head Brothers authoring tool and portal from Web Service Enhancement 3 (WSE 3) to Windows Communication Foundation (WCF). This is a next step in the integration of .NET Framework 3 in Tech Head Brothers portal.\nTill today I was using WSE 3 from the Word VSTO solution to securely publish content to the portal directly out of Word 2003/2007.","headline":"Migration from WSE 3 to WCF","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/","keywords":"ASP.NET 2.0, Web Services, WCF, SOAP, VSTO"}</script>
+    <meta name="description" content="I started to migrate the Tech Head Brothers authoring tool and portal from Web Service Enhancement 3 (WSE 3) to Windows Communication Foundation (WCF). This is a next step in the integration of .NET F">
+<meta name="keywords" content="ASP.NET 2.0,Web Services,WCF,SOAP,VSTO">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Migration from WSE 3 to WCF">
+<meta property="og:url" content="https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="I started to migrate the Tech Head Brothers authoring tool and portal from Web Service Enhancement 3 (WSE 3) to Windows Communication Foundation (WCF). This is a next step in the integration of .NET F">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2007-06-27T14:28:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Migration from WSE 3 to WCF">
+<meta name="twitter:description" content="I started to migrate the Tech Head Brothers authoring tool and portal from Web Service Enhancement 3 (WSE 3) to Windows Communication Foundation (WCF). This is a next step in the integration of .NET F">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Migration from WSE 3 to WCF
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2007-06-27T16:28:25+02:00">
+	
+		    Jun 27, 2007
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>I started to migrate the <a href="http://www.techheadbrothers.com/" target="_blank" rel="noopener">Tech Head Brothers</a> authoring tool and portal from Web Service Enhancement 3 (WSE 3) to Windows Communication Foundation (WCF). This is a next step in the integration of .NET Framework 3 in Tech Head Brothers portal.</p>
+<p>Till today I was using WSE 3 from the Word VSTO solution to securely publish content to the portal directly out of Word 2003/2007.<br><a id="more"></a></p>
+<p>The migration went straight due to my initial implementation that was already using interfaces and implementation classes. So basically I had to :</p>
+<ul>
+<li>Remove the reference to WSE 3 and add one to System.ServiceModel</li>
+<li>Change the attributes on the interface to ServiceContract and OperationContract</li>
+<li>Update the web.config to parameterize the new WCF endpoint, binding…</li>
+<li>Regenerate the client proxy and update a bit the client code </li>
+</ul>
+<p>This first step took me around 1h30 and was working very good but was still missing all the security of the old version.</p>
+<p>Then to implement the security part of the web services:</p>
+<ul>
+<li>I created a new certificate</li>
+<li>Removed the Policy using the self developed aspnetUsernameTokenSecurity that is not needed anymore</li>
+<li>Configured the web.config with a new wcf service behavior using userNameAuthentication and serviceAuthorization linked to ASP.NET providers</li>
+<li>Replaced code checking the role of the user calling the service with an attribute PrincipalPermission</li>
+<li>Regenerated the client proxy and reconfigured it </li>
+</ul>
+<p>So now I have security at the level of the message that is encrypted using the certificate and at the web service with role access check.</p>
+<p>Currently the solution uses attributes to check the role of the user that access the web service. I don’t find the solution flexible enough and the next step will be to have the configuration in a configuration file, that would let me change access rights without changing any line of code.</p>
+<p>As always when this will work I will publish the source code of the VSTO client authoring tool (Tech Head Brothers Authoring) on the codeplex project: <a href="http://www.codeplex.com/THBAuthoring" target="_blank" rel="noopener">THBAuthoring</a>.</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET-2-0/">ASP.NET 2.0</a> <a class="tag tag--primary tag--small t-link" href="/tags/SOAP/">SOAP</a> <a class="tag tag--primary tag--small t-link" href="/tags/VSTO/">VSTO</a> <a class="tag tag--primary tag--small t-link" href="/tags/WCF/">WCF</a> <a class="tag tag--primary tag--small t-link" href="/tags/Web-Services/">Web Services</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2007/06/28/Discovery-Channel-switches-to-Silverlight-in-a-flash-News-Software-ZDNet-Australia/" data-tooltip="Discovery Channel switches to Silverlight in a flash: News - Software - ZDNet Australia" aria-label="PREVIOUS: Discovery Channel switches to Silverlight in a flash: News - Software - ZDNet Australia">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2007/06/23/My-brother-Mathieu-developed-one-of-the-first-commercial-applications-in-Australia-using-Silverlight/" data-tooltip="My brother Mathieu developed one of the first commercial applications in Australia using Silverlight" aria-label="NEXT: My brother Mathieu developed one of the first commercial applications in Australia using Silverlight">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2007/06/28/Discovery-Channel-switches-to-Silverlight-in-a-flash-News-Software-ZDNet-Australia/" data-tooltip="Discovery Channel switches to Silverlight in a flash: News - Software - ZDNet Australia" aria-label="PREVIOUS: Discovery Channel switches to Silverlight in a flash: News - Software - ZDNet Australia">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2007/06/23/My-brother-Mathieu-developed-one-of-the-first-commercial-applications-in-Australia-using-Silverlight/" data-tooltip="My brother Mathieu developed one of the first commercial applications in Australia using Silverlight" aria-label="NEXT: My brother Mathieu developed one of the first commercial applications in Australia using Silverlight">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/';
+                 
+                    this.page.identifier = '20070627042825';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

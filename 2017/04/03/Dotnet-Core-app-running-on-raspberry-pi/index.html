@@ -1,0 +1,579 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>.NET Core console app running on Raspberry Pi - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"Now that there is a distribution of .NET Core on a Linux distro running on my Raspberry Pi 3, I had to try it.\nIn this post, I will explain all the steps I had to execute to be able to run my first Hello World application.First, you will need to install on your Pi the Ubuntu MATE distribution. Currently, the RASPBIAN distribution, which is the mostly used, is not supported but it seems that it will be soon the case according to this Github issue on dotnet / core.\nDownload Ubuntu MATE 16.04.2 LTS for Raspberry Pi, then extract the image out of the archive.\nTo install it on your microSDHC, the best is to use Win32 Disk Imager which you can install using Chocolatey with the command ‘choco install win32diskimager‘.\nThen just write the image you extracted on your microSDHC using Win32 Disk Imager, like this:\n\nWait a couple of minutes then plug the microSDHC in your Pi and boot it, then follow the installation instruction and create your user.\nCurrently, there is no .NET Core SDK running on ARM processor, the CPU architecture of the Pi. So you will have to write and compile your program from another machine, in my case I run on Windows.\nNow to simplify all the operations I installed a SSH server on the Pi to make it easy to access it remotely and copy files from my Surface.\nTo install the SSH server, run a shell, and run the following commands\n\nThen we will need to install some .NET Core native prerequisites for Ubuntu as explained on the Github dotnet / core documentation.\n\nYou will need the IP of your Pi, so use the command ‘ifconfig‘ which will output something like that\n\nThen back to your PC, install Putty using ‘choco install putty‘ and WinSCP using ‘choco install winscp‘.\nConfigure both Putty and WinSCP to connect to your Pi using the IP address you’ve got from the ifconfig command\nNow that we have the Pi running the right Linux distribution on it and we can connect to it easily from our computer, it is time to create a first .NET Core project. For sure, we will start with the famous Hello World.\nInstall .NET Core 2.0 SDK, I used the Windows x64 version 2.0.0-preview1-005685 which I downloaded as a zip. Unpack it on your hard drive in a folder named dotnet, then create another folder at the same level called hello and create a new console application:\n\nEdit the file hello.csproj created in the folder. I use Visual Studio Code for that, which again can be installed using Chocolatey ‘choco install visualstudiocode‘. You will need to update the RuntimeFrameworkVersion with the version that you can find on the page .NET Core Runtime &amp; Host Setup Repo / Daily Builds then find Ubuntu 16.04 (arm32) and get the version, in my case 2.0.0-preview1-005685.\n\nThen run, and publish\n\nFinally, you will get the publish results in the folder .\\hello\\bin\\Debug\\netcoreapp2.0\\ubuntu.16.04-arm which you can easily upload to your Pi using WinSCP previously installed.\nYou need then to set the hello executable to have the execution rights on the Pi, which you can also do easily from WinSCP\n\nThe final step is to run you hello executable on the Pi, which you can do using Putty over SSH then, or by having your Pi connected to a monitor, mouse, and keyboard!\nHere is the result\n\n","dateCreated":"2017-04-03T21:40:07+02:00","dateModified":"2018-05-29T17:42:44+02:00","datePublished":"2017-04-03T21:40:07+02:00","description":"Now that there is a distribution of .NET Core on a Linux distro running on my Raspberry Pi 3, I had to try it.\nIn this post, I will explain all the steps I had to execute to be able to run my first Hello World application.","headline":".NET Core console app running on Raspberry Pi","image":["https://c1.staticflickr.com/4/3808/33008049230_89efeeb73d_q.jpg","https://c1.staticflickr.com/4/3808/33008049230_fcb508209e_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/","keywords":".NET Core, Raspberry Pi, Linux","thumbnailUrl":"https://c1.staticflickr.com/4/3808/33008049230_89efeeb73d_q.jpg"}</script>
+    <meta name="description" content="Now that there is a distribution of .NET Core on a Linux distro running on my Raspberry Pi 3, I had to try it. In this post, I will explain all the steps I had to execute to be able to run my first He">
+<meta name="keywords" content=".NET Core,Raspberry Pi,Linux">
+<meta property="og:type" content="blog">
+<meta property="og:title" content=".NET Core console app running on Raspberry Pi">
+<meta property="og:url" content="https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="Now that there is a distribution of .NET Core on a Linux distro running on my Raspberry Pi 3, I had to try it. In this post, I will explain all the steps I had to execute to be able to run my first He">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://c1.staticflickr.com/3/2822/32957708953_4ff95b973b_o.png">
+<meta property="og:image" content="https://c2.staticflickr.com/4/3816/32957721773_5f33093414_o.png">
+<meta property="og:image" content="https://c1.staticflickr.com/3/2806/33821762845_f3033ff9db_o.png">
+<meta property="og:image" content="https://c2.staticflickr.com/4/3856/32957716323_e196bc13f0_o.png">
+<meta property="og:updated_time" content="2018-05-29T15:42:44.719Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content=".NET Core console app running on Raspberry Pi">
+<meta name="twitter:description" content="Now that there is a distribution of .NET Core on a Linux distro running on my Raspberry Pi 3, I had to try it. In this post, I will explain all the steps I had to execute to be able to run my first He">
+<meta name="twitter:image" content="https://c1.staticflickr.com/3/2822/32957708953_4ff95b973b_o.png">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/4/3808/33008049230_89efeeb73d_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://c1.staticflickr.com/4/3808/33008049230_89efeeb73d_q.jpg" />
+    
+    
+        <meta property="og:image" content="https://c1.staticflickr.com/4/3808/33008049230_fcb508209e_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://c1.staticflickr.com/4/3808/33008049230_fcb508209e_h.jpg" />
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial"
+             style="background-image:url('https://c1.staticflickr.com/4/3808/33008049230_fcb508209e_h.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            .NET Core console app running on Raspberry Pi
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-04-03T21:40:07+02:00">
+	
+		    Apr 03, 2017
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Promenade Grand Anse Le diamant</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>Now that there is a distribution of .NET Core on a Linux distro running on my <a href="https://www.raspberrypi.org/products/raspberry-pi-3-model-b/" target="_blank" rel="noopener">Raspberry Pi 3</a>, I had to try it.</p>
+<p>In this post, I will explain all the steps I had to execute to be able to run my first Hello World application.<br><a id="more"></a><br>First, you will need to install on your Pi the <a href="https://ubuntu-mate.org/raspberry-pi/" target="_blank" rel="noopener">Ubuntu MATE distribution</a>. Currently, the RASPBIAN distribution, which is the mostly used, is not supported but it seems that it will be soon the case according to this <a href="https://github.com/dotnet/core/issues/447" target="_blank" rel="noopener">Github issue on dotnet / core</a>.</p>
+<p>Download <a href="https://ubuntu-mate.org/download/" target="_blank" rel="noopener">Ubuntu MATE 16.04.2 LTS for Raspberry Pi</a>, then extract the image out of the archive.</p>
+<p>To install it on your microSDHC, the best is to use <a href="https://chocolatey.org/packages/win32diskimager" target="_blank" rel="noopener">Win32 Disk Imager</a> which you can install using Chocolatey with the command ‘<em>choco install win32diskimager</em>‘.</p>
+<p>Then just write the image you extracted on your microSDHC using Win32 Disk Imager, like this:</p>
+<p><img src="https://c1.staticflickr.com/3/2822/32957708953_4ff95b973b_o.png" alt=""></p>
+<p>Wait a couple of minutes then plug the microSDHC in your Pi and boot it, then follow the installation instruction and create your user.</p>
+<p>Currently, there is no .NET Core SDK running on ARM processor, the CPU architecture of the Pi. So you will have to write and compile your program from another machine, in my case I run on Windows.</p>
+<p>Now to simplify all the operations I installed a SSH server on the Pi to make it easy to access it remotely and copy files from my Surface.</p>
+<p>To install the SSH server, run a shell, and run the following commands</p>
+<p><div style="clear:both;"></div><script src="//gist.github.com/75b6b70d1bcdc3b4caa030160dbcb018.js?file=installSSSHServer"></script></p>
+<p>Then we will need to install some .NET Core native prerequisites for Ubuntu as explained on the <a href="https://github.com/dotnet/core/blob/master/Documentation/prereqs.md" target="_blank" rel="noopener">Github dotnet / core documentation</a>.</p>
+<p><div style="clear:both;"></div><script src="//gist.github.com/cf534c59a094654491e28b0d1701738a.js?file=prerequisites"></script></p>
+<p>You will need the IP of your Pi, so use the command ‘<em>ifconfig</em>‘ which will output something like that</p>
+<p><img src="https://c2.staticflickr.com/4/3816/32957721773_5f33093414_o.png" alt=""></p>
+<p>Then back to your PC, install <a href="https://chocolatey.org/packages/putty" target="_blank" rel="noopener">Putty</a> using ‘<em>choco install putty</em>‘ and <a href="https://chocolatey.org/packages/winscp" target="_blank" rel="noopener">WinSCP</a> using ‘<em>choco install winscp</em>‘.</p>
+<p>Configure both Putty and WinSCP to connect to your Pi using the IP address you’ve got from the ifconfig command</p>
+<p>Now that we have the Pi running the right Linux distribution on it and we can connect to it easily from our computer, it is time to create a first .NET Core project. For sure, we will start with the famous Hello World.</p>
+<p><a href="https://github.com/dotnet/cli/tree/master" target="_blank" rel="noopener">Install .NET Core 2.0 SDK</a>, I used the Windows x64 version 2.0.0-preview1-005685 which I downloaded as a zip. Unpack it on your hard drive in a folder named dotnet, then create another folder at the same level called hello and create a new console application:</p>
+<p><div style="clear:both;"></div><script src="//gist.github.com/0b60cae1c6c10ccab6ed3f167e766cb5.js?file=create_project"></script></p>
+<p>Edit the file hello.csproj created in the folder. I use <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">Visual Studio Code</a> for that, which again can be installed using <a href="https://chocolatey.org/packages/VisualStudioCode" target="_blank" rel="noopener">Chocolatey</a> ‘<em>choco install visualstudiocode</em>‘. You will need to update the RuntimeFrameworkVersion with the version that you can find on the page .NET Core Runtime &amp; Host Setup Repo / <a href="https://github.com/dotnet/core-setup#daily-builds" target="_blank" rel="noopener">Daily Builds</a> then <strong>find Ubuntu 16.04 (arm32)</strong> and get the version, in my <strong>case 2.0.0-preview1-005685</strong>.</p>
+<p><div style="clear:both;"></div><script src="//gist.github.com/809deab02a08a52ee17f3cb03a7b39c1.js?file=hello.csproj"></script></p>
+<p>Then run, and publish</p>
+<p><div style="clear:both;"></div><script src="//gist.github.com/98813ec107d827fd3ef3cb6178d36caf.js?file=run_publish"></script></p>
+<p>Finally, you will get the publish results in the folder <strong>.\hello\bin\Debug\netcoreapp2.0\ubuntu.16.04-arm</strong> which you can easily upload to your Pi using WinSCP previously installed.</p>
+<p>You need then to set the hello executable to have the execution rights on the Pi, which you can also do easily from WinSCP</p>
+<p><img src="https://c1.staticflickr.com/3/2806/33821762845_f3033ff9db_o.png" alt=""></p>
+<p>The final step is to run you hello executable on the Pi, which you can do using Putty over SSH then, or by having your Pi connected to a monitor, mouse, and keyboard!</p>
+<p>Here is the result</p>
+<p><img src="https://c2.staticflickr.com/4/3856/32957716323_e196bc13f0_o.png" alt="Result"></p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/NET-Core/">.NET Core</a> <a class="tag tag--primary tag--small t-link" href="/tags/Linux/">Linux</a> <a class="tag tag--primary tag--small t-link" href="/tags/Raspberry-Pi/">Raspberry Pi</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/04/14/ASPNET-Core-MVC-app-running-on-raspberry-pi/" data-tooltip="ASP.NET Core MVC app running on Raspberry Pi" aria-label="PREVIOUS: ASP.NET Core MVC app running on Raspberry Pi">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2016/07/18/Build-ship-and-run-ASP-NET-Core-on-Microsoft-Azure-using-Docker-Cloud/" data-tooltip="Build, ship and run ASP.NET Core on Microsoft Azure using Docker Cloud" aria-label="NEXT: Build, ship and run ASP.NET Core on Microsoft Azure using Docker Cloud">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/04/14/ASPNET-Core-MVC-app-running-on-raspberry-pi/" data-tooltip="ASP.NET Core MVC app running on Raspberry Pi" aria-label="PREVIOUS: ASP.NET Core MVC app running on Raspberry Pi">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2016/07/18/Build-ship-and-run-ASP-NET-Core-on-Microsoft-Azure-using-Docker-Cloud/" data-tooltip="Build, ship and run ASP.NET Core on Microsoft Azure using Docker Cloud" aria-label="NEXT: Build, ship and run ASP.NET Core on Microsoft Azure using Docker Cloud">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/" title="Share on Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/" title="Share on Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/" title="Share on Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/';
+                 
+                    this.page.identifier = '20170403214007';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>
