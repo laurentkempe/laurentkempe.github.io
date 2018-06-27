@@ -6,26 +6,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Laurent Kempé">
-    <title>Something cool is coming next on Tech Head Brothers!!! - Laurent Kempé</title>
+    <title>.NET Core Community online Hackathon - Laurent Kempé</title>
     <meta name="author" content="Laurent Kempé">
     
     
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"Stay tuned… :-)\n","dateCreated":"2007-05-12T18:33:11+02:00","dateModified":"2007-05-12T18:33:11+02:00","datePublished":"2007-05-12T18:33:11+02:00","description":"","headline":"Something cool is coming next on Tech Head Brothers!!!","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/05/12/Something-cool-is-coming-next-on-Tech-Head-Brothers!!!/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2007/05/12/Something-cool-is-coming-next-on-Tech-Head-Brothers!!!/","keywords":"ASP.NET AJAX, ASP.NET"}</script>
-    <meta name="description" content="Stay tuned… :-)">
-<meta name="keywords" content="ASP.NET AJAX,ASP.NET">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"On Saturday, June 2, 2018, I had the chance to participate in the .NET Core Community online Hackathon.\nAs I got up really early this Saturday morning, I took the opportunity to participate. My goal was to see something new and learn a bit about how .NET Core is built and gain some new experience.\nI heard about the online Hackathon on a tweet of Karel Zikmund \nThen reading about it on the Github page linked to the tweet I decided to participate.\nI wanted to start with a really small thing because I wasn’t sure about the time I had, and I wanted to be sure to finish it!\nI decided to go with CoreFX because it seemed easier than CoreCLR. I also had a look to CoreFxLab. And I might implement something there later as there is some migration to Benchmark.DotNet which I would also like to learn a bit about.\nI joined the gitter chat which proved to be really helpful.\nThen I picked the issue #19624, Remove conditional compilation in System.Diagnostics.Tracing from CoreFX.\nI went and started to read contribution guide and started by installing the tooling, making a fork and clone of the CoreFX repo! All went quite well, even if the documentation could be improved in some places.\nI tried to have the tests running inside Visual Studio, but after some pains and no success with ReSharper and Visual Studio, I asked some help on the gitter which Viktor Hofer provided kindly. You need to use the command \nRunning tests from MSBuild1msbuild /t:RebuildAndTest\nBy running the tests I found an issue with one tests and quickly guessed that it was because my Windows 10 Pro installation is in en-US and I set my first day of the week to Monday! So I reported the issue on Github. The issue went through a discussion in the team and was finally fixed after being first rejected. I have to say that I agree that when someone clones a repository and run the tests, then everything should be working even in a weird setting like mine.\nBack to my pull request, Remove FEATURE_ETLEVENTS conditional compilation which was super easy, nothing really hard when you just need to remove conditional compilation. I just had to disable some Visual Studio plugin which format the code, especially removing extra spaces at the end of lines, which I was surprised to see on some files.\nFinally after reviews and final approval from Stephen Toub the pull request was merged and will be part of .NET Core 3.0!\n\nSo in the end, I was able to fix one issue due for the hackathon, created one issue which was fixed by the team and had some fun and some learning participating in this online Hackathon!\nThanks for organizing it and thanks to the people from the team which was present and helped us!\n","dateCreated":"2018-06-27T14:08:22+02:00","dateModified":"2018-06-27T14:12:34+02:00","datePublished":"2018-06-27T14:08:22+02:00","description":"On Saturday, June 2, 2018, I had the chance to participate in the .NET Core Community online Hackathon.\nAs I got up really early this Saturday morning, I took the opportunity to participate. My goal was to see something new and learn a bit about how .NET Core is built and gain some new experience.","headline":".NET Core Community online Hackathon","image":["https://farm5.staticflickr.com/4396/36453581072_a92ff68f56_q.jpg","https://farm5.staticflickr.com/4396/36453581072_9c7848b74c_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2018/06/27/dotnet-core-community-online-hackathon/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2018/06/27/dotnet-core-community-online-hackathon/","keywords":".NET Core","thumbnailUrl":"https://farm5.staticflickr.com/4396/36453581072_a92ff68f56_q.jpg"}</script>
+    <meta name="description" content="On Saturday, June 2, 2018, I had the chance to participate in the .NET Core Community online Hackathon. As I got up really early this Saturday morning, I took the opportunity to participate. My goal w">
+<meta name="keywords" content=".NET Core">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="Something cool is coming next on Tech Head Brothers!!!">
-<meta property="og:url" content="https://laurentkempe.com/2007/05/12/Something-cool-is-coming-next-on-Tech-Head-Brothers!!!/index.html">
+<meta property="og:title" content=".NET Core Community online Hackathon">
+<meta property="og:url" content="https://laurentkempe.com/2018/06/27/dotnet-core-community-online-hackathon/index.html">
 <meta property="og:site_name" content="Laurent Kempé">
-<meta property="og:description" content="Stay tuned… :-)">
+<meta property="og:description" content="On Saturday, June 2, 2018, I had the chance to participate in the .NET Core Community online Hackathon. As I got up really early this Saturday morning, I took the opportunity to participate. My goal w">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2007-05-12T16:33:11.000Z">
+<meta property="og:image" content="https://farm2.staticflickr.com/1839/29090676488_e79f80d854_o.png">
+<meta property="og:updated_time" content="2018-06-27T12:12:34.692Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Something cool is coming next on Tech Head Brothers!!!">
-<meta name="twitter:description" content="Stay tuned… :-)">
+<meta name="twitter:title" content=".NET Core Community online Hackathon">
+<meta name="twitter:description" content="On Saturday, June 2, 2018, I had the chance to participate in the .NET Core Community online Hackathon. As I got up really early this Saturday morning, I took the opportunity to participate. My goal w">
+<meta name="twitter:image" content="https://farm2.staticflickr.com/1839/29090676488_e79f80d854_o.png">
 <meta name="twitter:creator" content="@laurentkempe">
     
     
@@ -35,6 +37,12 @@
         <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
     
     
+        <meta property="og:image" content="https://farm5.staticflickr.com/4396/36453581072_a92ff68f56_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://farm5.staticflickr.com/4396/36453581072_a92ff68f56_q.jpg" />
+    
+    
+        <meta property="og:image" content="https://farm5.staticflickr.com/4396/36453581072_9c7848b74c_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://farm5.staticflickr.com/4396/36453581072_9c7848b74c_h.jpg" />
     
     
     <!--STYLES-->
@@ -209,25 +217,23 @@
 </nav>
 
             
-            <div id="main" data-behavior="5"
-                 class="
-                        hasCoverMetaIn
-                        ">
-                
-<article class="post">
-    
-    
-        <div class="post-header main-content-wrap text-left">
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial"
+             style="background-image:url('https://farm5.staticflickr.com/4396/36453581072_9c7848b74c_h.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            Something cool is coming next on Tech Head Brothers!!!
+            .NET Core Community online Hackathon
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2007-05-12T18:33:11+02:00">
+    <time datetime="2018-06-27T14:08:22+02:00">
 	
-		    May 12, 2007
+		    Jun 27, 2018
     	
     </time>
     
@@ -236,10 +242,38 @@
     
 </div>
 
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Tahiti, France</span>
+    
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>Stay tuned… :-)</p>
+            <p>On Saturday, June 2, 2018, I had the chance to participate in the .NET Core Community online Hackathon.</p>
+<p>As I got up really early this Saturday morning, I took the opportunity to participate. My goal was to see something new and learn a bit about how .NET Core is built and gain some new experience.<br><a id="more"></a></p>
+<p>I heard about the online Hackathon on a tweet of Karel Zikmund <div class="twitter-wrapper"><blockquote class="twitter-tweet"><a href="https://twitter.com/ziki_cz/status/999804438104625153" target="_blank" rel="noopener"></a></blockquote></div><script async defer src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+<p>Then reading about it on the <a href="https://github.com/dotnet/corefx/wiki/Hackathon" target="_blank" rel="noopener">Github page</a> linked to the tweet I decided to participate.</p>
+<p>I wanted to start with a really small thing because I wasn’t sure about the time I had, and I wanted to be sure to finish it!</p>
+<p>I decided to go with <a href="https://github.com/dotnet/corefx/blob/master/README.md" target="_blank" rel="noopener">CoreFX</a> because it seemed easier than <a href="https://github.com/dotnet/coreclr/blob/master/README.md" target="_blank" rel="noopener">CoreCLR</a>. I also had a look to <a href="https://github.com/dotnet/corefxlab/blob/master/README.md" target="_blank" rel="noopener">CoreFxLab</a>. And I might implement something there later as there is some migration to <a href="https://benchmarkdotnet.org/" target="_blank" rel="noopener">Benchmark.DotNet</a> which I would also like to learn a bit about.</p>
+<p>I joined the <a href="https://gitter.im/dotnet/corefx-hackathon?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge" target="_blank" rel="noopener">gitter chat</a> which proved to be really helpful.</p>
+<p>Then I picked the <a href="https://github.com/dotnet/corefx/issues/19624" target="_blank" rel="noopener">issue #19624, Remove conditional compilation in System.Diagnostics.Tracing</a> from CoreFX.</p>
+<p>I went and started to read <a href="https://github.com/dotnet/corefx/wiki/New-contributor-Docs#contributing-guide" target="_blank" rel="noopener">contribution guide</a> and started by installing the tooling, making a fork and clone of the CoreFX repo! All went quite well, even if the documentation could be improved in some places.</p>
+<p>I tried to have the tests running inside Visual Studio, but after some pains and no success with <a href="https://www.jetbrains.com/resharper/?fromMenu" target="_blank" rel="noopener">ReSharper</a> and <a href="(https://visualstudio.microsoft.com/">Visual Studio</a>, I asked some help on the gitter which <a href="https://github.com/ViktorHofer" target="_blank" rel="noopener">Viktor Hofer</a> <a href="https://gitter.im/dotnet/corefx-hackathon?at=5b1259f5f9f2e56cf234c485" target="_blank" rel="noopener">provided kindly</a>. You need to use the command </p>
+<figure class="highlight plain"><figcaption><span>Running tests from MSBuild</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msbuild /t:RebuildAndTest</span><br></pre></td></tr></table></figure>
+<p>By running the tests I found an issue with one tests and quickly guessed that it was because my Windows 10 Pro installation is in en-US and I set my first day of the week to Monday! So I reported the <a href="https://github.com/dotnet/corefx/issues/30074" target="_blank" rel="noopener">issue on Github</a>. The issue went through a discussion in the team and was finally fixed after being first rejected. I have to say that I agree that when someone clones a repository and run the tests, then everything should be working even in a weird setting like mine.</p>
+<p>Back to my pull request, <a href="https://github.com/dotnet/corefx/pull/30071" target="_blank" rel="noopener">Remove FEATURE_ETLEVENTS conditional compilation</a> which was super easy, nothing really hard when you just need to remove conditional compilation. I just had to disable some Visual Studio plugin which format the code, especially removing extra spaces at the end of lines, which I was surprised to see on some files.</p>
+<p>Finally after reviews and final approval from <a href="https://github.com/stephentoub" target="_blank" rel="noopener">Stephen Toub</a> the pull request was merged and will be part of .NET Core 3.0!</p>
+<p><img src="https://farm2.staticflickr.com/1839/29090676488_e79f80d854_o.png" alt="Pull Request merged"></p>
+<p>So in the end, I was able to fix one issue due for the hackathon, created one issue which was fixed by the team and had some fun and some learning participating in this online Hackathon!</p>
+<p>Thanks for organizing it and thanks to the people from the team which was present and helped us!</p>
 
             
 
@@ -250,7 +284,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET/">ASP.NET</a> <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET-AJAX/">ASP.NET AJAX</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/NET-Core/">.NET Core</a>
 
             </div>
         
@@ -260,8 +294,7 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2007/05/23/Start2b2b-05-and-06-released/" data-tooltip="Start++ 0.5 and 0.6 released" aria-label="PREVIOUS: Start++ 0.5 and 0.6 released">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
@@ -270,7 +303,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2007/05/05/CSS-Adapters-issues-with-Login-controls/" data-tooltip="CSS Adapters issues with Login controls" aria-label="NEXT: CSS Adapters issues with Login controls">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/06/01/Automating-development-machine-installation/" data-tooltip="Automating my development machine installation" aria-label="NEXT: Automating my development machine installation">
                 
                     <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -288,7 +321,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2007/05/12/Something-cool-is-coming-next-on-Tech-Head-Brothers!!!/" title="Share on Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2018/06/27/dotnet-core-community-online-hackathon/" title="Share on Facebook">
                     <i class="fa fa-facebook-official" aria-hidden="true"></i>
                 </a>
             </li>
@@ -296,7 +329,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2007/05/12/Something-cool-is-coming-next-on-Tech-Head-Brothers!!!/" title="Share on Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2018/06/27/dotnet-core-community-online-hackathon/" title="Share on Twitter">
                     <i class="fa fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -304,7 +337,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2007/05/12/Something-cool-is-coming-next-on-Tech-Head-Brothers!!!/" title="Share on Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2018/06/27/dotnet-core-community-online-hackathon/" title="Share on Google+">
                     <i class="fa fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -356,8 +389,7 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2007/05/23/Start2b2b-05-and-06-released/" data-tooltip="Start++ 0.5 and 0.6 released" aria-label="PREVIOUS: Start++ 0.5 and 0.6 released">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
@@ -366,7 +398,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2007/05/05/CSS-Adapters-issues-with-Login-controls/" data-tooltip="CSS Adapters issues with Login controls" aria-label="NEXT: CSS Adapters issues with Login controls">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/06/01/Automating-development-machine-installation/" data-tooltip="Automating my development machine installation" aria-label="NEXT: Automating my development machine installation">
                 
                     <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -384,7 +416,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2007/05/12/Something-cool-is-coming-next-on-Tech-Head-Brothers!!!/" title="Share on Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2018/06/27/dotnet-core-community-online-hackathon/" title="Share on Facebook">
                     <i class="fa fa-facebook-official" aria-hidden="true"></i>
                 </a>
             </li>
@@ -392,7 +424,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2007/05/12/Something-cool-is-coming-next-on-Tech-Head-Brothers!!!/" title="Share on Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2018/06/27/dotnet-core-community-online-hackathon/" title="Share on Twitter">
                     <i class="fa fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -400,7 +432,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2007/05/12/Something-cool-is-coming-next-on-Tech-Head-Brothers!!!/" title="Share on Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2018/06/27/dotnet-core-community-online-hackathon/" title="Share on Google+">
                     <i class="fa fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -433,7 +465,7 @@
             
             
             <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2007/05/12/Something-cool-is-coming-next-on-Tech-Head-Brothers!!!/">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2018/06/27/dotnet-core-community-online-hackathon/">
                     <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
                 </a>
             </li>
@@ -441,7 +473,7 @@
             
             
             <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2007/05/12/Something-cool-is-coming-next-on-Tech-Head-Brothers!!!/">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2018/06/27/dotnet-core-community-online-hackathon/">
                     <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
                 </a>
             </li>
@@ -449,7 +481,7 @@
             
             
             <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2007/05/12/Something-cool-is-coming-next-on-Tech-Head-Brothers!!!/">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2018/06/27/dotnet-core-community-online-hackathon/">
                     <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
                 </a>
             </li>
@@ -507,9 +539,9 @@
     
         <script>
              var disqus_config = function () {
-                 this.page.url = 'https://laurentkempe.com/2007/05/12/Something-cool-is-coming-next-on-Tech-Head-Brothers!!!/';
+                 this.page.url = 'https://laurentkempe.com/2018/06/27/dotnet-core-community-online-hackathon/';
                  
-                    this.page.identifier = '20070512063311';
+                    this.page.identifier = '20180627140822';
                  
              };
             (function() {

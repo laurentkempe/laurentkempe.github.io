@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://laurentkempe.com/"/>
-  <updated>2018-06-02T05:27:51.859Z</updated>
+  <updated>2018-06-27T12:12:34.692Z</updated>
   <id>https://laurentkempe.com/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>.NET Core Community online Hackathon</title>
+    <link href="https://laurentkempe.com/2018/06/27/dotnet-core-community-online-hackathon/"/>
+    <id>https://laurentkempe.com/2018/06/27/dotnet-core-community-online-hackathon/</id>
+    <published>2018-06-27T12:08:22.000Z</published>
+    <updated>2018-06-27T12:12:34.692Z</updated>
+    
+    <content type="html"><![CDATA[<p>On Saturday, June 2, 2018, I had the chance to participate in the .NET Core Community online Hackathon.</p><p>As I got up really early this Saturday morning, I took the opportunity to participate. My goal was to see something new and learn a bit about how .NET Core is built and gain some new experience.<br><a id="more"></a></p><p>I heard about the online Hackathon on a tweet of Karel Zikmund <div class="twitter-wrapper"><blockquote class="twitter-tweet"><a href="https://twitter.com/ziki_cz/status/999804438104625153" target="_blank" rel="noopener"></a></blockquote></div><script async defer src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p><p>Then reading about it on the <a href="https://github.com/dotnet/corefx/wiki/Hackathon" target="_blank" rel="noopener">Github page</a> linked to the tweet I decided to participate.</p><p>I wanted to start with a really small thing because I wasn’t sure about the time I had, and I wanted to be sure to finish it!</p><p>I decided to go with <a href="https://github.com/dotnet/corefx/blob/master/README.md" target="_blank" rel="noopener">CoreFX</a> because it seemed easier than <a href="https://github.com/dotnet/coreclr/blob/master/README.md" target="_blank" rel="noopener">CoreCLR</a>. I also had a look to <a href="https://github.com/dotnet/corefxlab/blob/master/README.md" target="_blank" rel="noopener">CoreFxLab</a>. And I might implement something there later as there is some migration to <a href="https://benchmarkdotnet.org/" target="_blank" rel="noopener">Benchmark.DotNet</a> which I would also like to learn a bit about.</p><p>I joined the <a href="https://gitter.im/dotnet/corefx-hackathon?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge" target="_blank" rel="noopener">gitter chat</a> which proved to be really helpful.</p><p>Then I picked the <a href="https://github.com/dotnet/corefx/issues/19624" target="_blank" rel="noopener">issue #19624, Remove conditional compilation in System.Diagnostics.Tracing</a> from CoreFX.</p><p>I went and started to read <a href="https://github.com/dotnet/corefx/wiki/New-contributor-Docs#contributing-guide" target="_blank" rel="noopener">contribution guide</a> and started by installing the tooling, making a fork and clone of the CoreFX repo! All went quite well, even if the documentation could be improved in some places.</p><p>I tried to have the tests running inside Visual Studio, but after some pains and no success with <a href="https://www.jetbrains.com/resharper/?fromMenu" target="_blank" rel="noopener">ReSharper</a> and <a href="(https://visualstudio.microsoft.com/">Visual Studio</a>, I asked some help on the gitter which <a href="https://github.com/ViktorHofer" target="_blank" rel="noopener">Viktor Hofer</a> <a href="https://gitter.im/dotnet/corefx-hackathon?at=5b1259f5f9f2e56cf234c485" target="_blank" rel="noopener">provided kindly</a>. You need to use the command </p><figure class="highlight plain"><figcaption><span>Running tests from MSBuild</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msbuild /t:RebuildAndTest</span><br></pre></td></tr></table></figure><p>By running the tests I found an issue with one tests and quickly guessed that it was because my Windows 10 Pro installation is in en-US and I set my first day of the week to Monday! So I reported the <a href="https://github.com/dotnet/corefx/issues/30074" target="_blank" rel="noopener">issue on Github</a>. The issue went through a discussion in the team and was finally fixed after being first rejected. I have to say that I agree that when someone clones a repository and run the tests, then everything should be working even in a weird setting like mine.</p><p>Back to my pull request, <a href="https://github.com/dotnet/corefx/pull/30071" target="_blank" rel="noopener">Remove FEATURE_ETLEVENTS conditional compilation</a> which was super easy, nothing really hard when you just need to remove conditional compilation. I just had to disable some Visual Studio plugin which format the code, especially removing extra spaces at the end of lines, which I was surprised to see on some files.</p><p>Finally after reviews and final approval from <a href="https://github.com/stephentoub" target="_blank" rel="noopener">Stephen Toub</a> the pull request was merged and will be part of .NET Core 3.0!</p><p><img src="https://farm2.staticflickr.com/1839/29090676488_e79f80d854_o.png" alt="Pull Request merged"></p><p>So in the end, I was able to fix one issue due for the hackathon, created one issue which was fixed by the team and had some fun and some learning participating in this online Hackathon!</p><p>Thanks for organizing it and thanks to the people from the team which was present and helped us!</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;On Saturday, June 2, 2018, I had the chance to participate in the .NET Core Community online Hackathon.&lt;/p&gt;
+&lt;p&gt;As I got up really early this Saturday morning, I took the opportunity to participate. My goal was to see something new and learn a bit about how .NET Core is built and gain some new experience.&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term=".NET Core" scheme="https://laurentkempe.com/tags/NET-Core/"/>
+    
+  </entry>
   
   <entry>
     <title>Automating my development machine installation</title>
@@ -457,34 +478,6 @@
       <category term="Team City" scheme="https://laurentkempe.com/tags/Team-City/"/>
     
       <category term="Stash" scheme="https://laurentkempe.com/tags/Stash/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Functional Programming Principles in Scala using JetBrains IntelliJ IDEA</title>
-    <link href="https://laurentkempe.com/2013/09/20/Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA/"/>
-    <id>https://laurentkempe.com/2013/09/20/Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA/</id>
-    <published>2013-09-20T18:43:00.000Z</published>
-    <updated>2013-10-04T02:53:57.000Z</updated>
-    
-    <content type="html"><![CDATA[<!-- [![Another great shot of our friend the Whale of last week in Cape Bridgewater](http://farm4.staticflickr.com/3798/9553182109_bcac5e189d_m.jpg)](http://www.flickr.com/photos/laurentkempe/9553182109/ "Another great shot of our friend the Whale of last week in Cape Bridgewater by Laurent Kempé, on Flickr") --><p>This week I started the <a href="https://www.coursera.org/" target="_blank" rel="noopener">Coursera</a> course <a href="https://www.coursera.org/course/progfun" target="_blank" rel="noopener">Functional Programming Principles in Scala</a> with Martin Odersky as instructor.</p><p>One of my first step was to have <a href="http://www.jetbrains.com/idea/" target="_blank" rel="noopener">JetBrains IntelliJ IDEA</a> working with the <a href="http://www.scala-lang.org/" target="_blank" rel="noopener">Scala programming language</a> so that I can work on the course assignments using my preferred IDE.<br><a id="more"></a></p><p>I have seen that The Guardian published a blog post <a href="http://www.theguardian.com/info/developer-blog/2012/sep/21/funtional-programming-principles-scala-setting-up-intellij" target="_blank" rel="noopener">Functional Programming Principles in Scala: Setting up IntelliJ</a> but it focus on the Unix-like operating systems (OSX and Linux). As I work on Windows I for sure installed it on my machine running Windows 8.1! I also use a different set of tools so here is the way I did it!</p><p>First of all I am assuming that you have <a href="http://www.jetbrains.com/idea/" target="_blank" rel="noopener">JetBrains IntelliJ IDEA 12</a> and JDK installed.</p><p>From IntelliJ you need to install the Scala plugin so go to File / Settings then on the dialog search for plugins, click on Browse Repositories button and search for Scala then select Scala v.0.19.299 from JetBrains</p><p><img src="http://farm8.staticflickr.com/7341/9834166825_2867bcc1ba_o.png" alt=""></p><p>Then you also need to install the <a href="http://blog.jetbrains.com/scala/2013/07/17/sbt-plugin-nightly-builds/" target="_blank" rel="noopener">SBT plugin also from JetBrains</a> which is still in development and get nightly builds.</p><p>Add the following URL to the list of custom plugin repositories in Settings / Plugins / Browse Repositories / Manage Repositories:</p><blockquote><p><a href="http://download.jetbrains.com/scala/sbt-nightly-leda.xml" target="_blank" rel="noopener">http://download.jetbrains.com/scala/sbt-nightly-leda.xml</a></p></blockquote><p>After that, you may install the plugin via Settings | Plugins | Browse Repositories. IDEA will check for the latest plugin builds automatically.</p><p><img src="http://farm8.staticflickr.com/7363/9834729745_f23a4eed10_o.png" alt=""></p><p>Now extract the assignment zip that the coursera course is providing; e.g. for the example assignment, unpack the example.zip to a folder then in IntelliJ use File / Import Project. IntelliJ already recognize the folder as project:</p><p><img src="http://farm3.staticflickr.com/2818/9834957283_3cff547c6e_o.png" alt=""></p><p><img src="http://farm3.staticflickr.com/2893/9835093913_02feeb2bce_o.png" alt=""></p><p>Click Next</p><p><img src="http://farm8.staticflickr.com/7366/9835020965_200917fb2a_o.png" alt=""></p><p>Tick Use auto-import and click Finish. IntelliJ will then import your project:</p><p><img src="http://farm4.staticflickr.com/3818/9835074955_5eca26b99e_o.png" alt=""></p><p>Now you need to edit your project structure using File / Project Structure and choose Modules, then progfun-example</p><p><img src="http://farm6.staticflickr.com/5450/9835157816_aa231ca57e_o.png" alt=""></p><p>You will see on the dialog for the Source and Test Source Folders some folder in red, just click on the X to delete all the one in red to get to the following state, then finally click OK</p><p><img src="http://farm3.staticflickr.com/2832/9835244223_2f54a33cd8_o.png" alt=""></p><p>Now navigate to the test file ListsSuite and press ALT – SHIFT – F10 to start the tests</p><p><img src="http://farm8.staticflickr.com/7419/9835291836_9c3aba2a3f_o.png" alt=""></p><p>And if you implemented the assignment you should see this results:</p><p><img src="http://farm8.staticflickr.com/7409/9835313066_82e5e31067_o.png" alt=""></p><p>There is still two tests to fix in the first assignment, this is why there are red!</p><p>But as you can see now you have a full Scala development environment based on the great JetBrains IntelliJ IDEA IDE! Now you can code with pleasure!</p><p>I really enjoy the first week assignments and implemented the first two as <a href="http://www.laurentkempe.com/post/Test-Driven-Development-Kata-String-Calculator.aspx" target="_blank" rel="noopener">coding Kata</a>! And I even involved France-Anne for the second one; first time that she is coding something <img src="/images/wlEmoticon-smile.png" alt="Smile"> . Very nice!</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;!-- [![Another great shot of our friend the Whale of last week in Cape Bridgewater](http://farm4.staticflickr.com/3798/9553182109_bcac5e189d_m.jpg)](http://www.flickr.com/photos/laurentkempe/9553182109/ &quot;Another great shot of our friend the Whale of last week in Cape Bridgewater by Laurent Kempé, on Flickr&quot;) --&gt;
-&lt;p&gt;This week I started the &lt;a href=&quot;https://www.coursera.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Coursera&lt;/a&gt; course &lt;a href=&quot;https://www.coursera.org/course/progfun&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Functional Programming Principles in Scala&lt;/a&gt; with Martin Odersky as instructor.&lt;/p&gt;
-&lt;p&gt;One of my first step was to have &lt;a href=&quot;http://www.jetbrains.com/idea/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;JetBrains IntelliJ IDEA&lt;/a&gt; working with the &lt;a href=&quot;http://www.scala-lang.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scala programming language&lt;/a&gt; so that I can work on the course assignments using my preferred IDE.&lt;br&gt;
-    
-    </summary>
-    
-    
-      <category term="Coursera" scheme="https://laurentkempe.com/tags/Coursera/"/>
-    
-      <category term="IntelliJ" scheme="https://laurentkempe.com/tags/IntelliJ/"/>
-    
-      <category term="Jetbrains" scheme="https://laurentkempe.com/tags/Jetbrains/"/>
-    
-      <category term="Scala" scheme="https://laurentkempe.com/tags/Scala/"/>
     
   </entry>
   
