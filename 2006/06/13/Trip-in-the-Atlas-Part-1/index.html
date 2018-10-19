@@ -13,9 +13,9 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"After a smooth integration of Atlas in the new version of Tech Head Brothers website, Idecided to go a step further with a project a bit more complex then the scenariodeveloped here.\nThe new version of the site is totally rewritten in C# and ASP.NET 2 and usesthe Webparts.\nSo the new scenario I wanted to implement was a system of connected Webparts,one showing an article, a how-to or news and the other thecomments associated with that. The connection of the webparts was done inabout 10 minutes, really cool techno.\nThen I learned that an Atlas UpdatePanel can’t be part of a Webpart becausethen you have the UpdatePanel in a Template of the WebpartZone and that doesn’twork, so you have to move the UpdatePanel to have it around the Webpartzone. AsI am working with nested Master Pages I decided to have the UpdatePanel inan asp Content control around the WebPartZone like this:\n .cf { font-family: Courier New; font-size: 10pt; color: black; background: white; } .cl { margin: 0px; } .cb1 { background: yellow; } .cb2 { color: blue; } .cb3 { color: maroon; } .cb4 { color: red; } \n\n&lt;%@ Page Language=”C#” MasterPageFile=”~/OneColumn.master” AutoEventWireup=”true”    CodeFile=”Articles.aspx.cs” Inherits=”Articles” Title=”TechHead Brothers - Articles” %&gt;&lt;%@ MasterType VirtualPath=”~/OneColumn.master” %&gt;&lt;%@ Register Assembly=”Nsquared2.Web” Namespace=”Nsquared2.Web.UI.WebControls.WebParts”    TagPrefix=”nsquared2” %&gt;&lt;asp:Content ID=”Content1” ContentPlaceHolderID=”ContentPlaceHolder” runat=”Server”&gt;    &lt;atlas:UpdatePanelID=”panelarticles” Mode=”Conditional” runat=”server”&gt;        &lt;ContentTemplate&gt;            &lt;nsquared2:TemplatedWebPartZone ID=”ContentZone” runat=”server” ChromeTemplateFile=”~/Templates/Chrome/THBOriginalTemplate.chrome”                CssClass=”webpartzone” Padding=”0”&gt;                &lt;ZoneTemplate&gt;                &lt;/ZoneTemplate&gt;            &lt;/nsquared2:TemplatedWebPartZone&gt;        &lt;/ContentTemplate&gt;    &lt;/atlas:UpdatePanel&gt;&lt;/asp:Content&gt;\n\n\nThen in my comments WebPart I implemented a button doing aresponse redirect to another page that will handle the writing of a new comment,and this in the UpdatePanel postback not the whole Page postback. To be able toaccess some information from the calling page I had added some information inthe Session on the first page that I wanted to read on the second one. Boom!!Session is empty on the second page. I then removed the UpdatePanel and sessionwas back again. hum!!! But that was not the scenario I wanted for my comments,so I added again my UpdatePanel and made several tests withtout any success. \nThen searching on the forum I found why, here : “Thespecific reason it happens is that when ScriptManager detects a Redirect duringan async postback, it clears the response, which means all cookies are lost. Oneof those cookies is the session ID cookie. This doesn’t necessarily affect allscenarios, but it does affect some.“ A bug in the CTP april of Atlas.\nThen it was clear if the Response is cleared, no chance to get mySession values.\nAs it was not critical data I decided to use QueryString to passon data and that’s for sure worked. I will revert to Session when it will befixed.\nNow I have a system with connected WebPart, one displayingcomments using Atlas UpdatePanel to reload only the comments that the suer wnatsto see. Great stuff!!\nThere is one thing I don’t liked in the WebPart connection isthat if you have a link button in your page and the OnCommand is set, then whenthe Command is called the WebParts connection is not already done so you have toremmeber parameters given to your method and reuse them in OnPreRender.\n[ Currently Playing : With My Two Hands - Ben Harper - DiamondsOn The Inside (04:35) ]\n","dateCreated":"2006-06-13T06:11:54+02:00","dateModified":"2006-06-13T06:11:54+02:00","datePublished":"2006-06-13T06:11:54+02:00","description":"After a smooth integration of Atlas in the new version of Tech Head Brothers website, Idecided to go a step further with a project a bit more complex then the scenariodeveloped here.","headline":"Trip in the Atlas - Part 1","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2006/06/13/Trip-in-the-Atlas-Part-1/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2006/06/13/Trip-in-the-Atlas-Part-1/","keywords":"Tech Head Brothers, ASP.NET AJAX, ASP.NET 2.0"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"After a smooth integration of Atlas in the new version of Tech Head Brothers website, Idecided to go a step further with a project a bit more complex then the scenariodeveloped here.\nThe new version of the site is totally rewritten in C# and ASP.NET 2 and usesthe Webparts.\nSo the new scenario I wanted to implement was a system of connected Webparts,one showing an article, a how-to or news and the other thecomments associated with that. The connection of the webparts was done inabout 10 minutes, really cool techno.\nThen I learned that an Atlas UpdatePanel can’t be part of a Webpart becausethen you have the UpdatePanel in a Template of the WebpartZone and that doesn’twork, so you have to move the UpdatePanel to have it around the Webpartzone. AsI am working with nested Master Pages I decided to have the UpdatePanel inan asp Content control around the WebPartZone like this:\n .cf { font-family: Courier New; font-size: 10pt; color: black; background: white; } .cl { margin: 0px; } .cb1 { background: yellow; } .cb2 { color: blue; } .cb3 { color: maroon; } .cb4 { color: red; } \n\n&lt;%@ Page Language=”C#” MasterPageFile=”~/OneColumn.master” AutoEventWireup=”true”    CodeFile=”Articles.aspx.cs” Inherits=”Articles” Title=”TechHead Brothers - Articles” %&gt;&lt;%@ MasterType VirtualPath=”~/OneColumn.master” %&gt;&lt;%@ Register Assembly=”Nsquared2.Web” Namespace=”Nsquared2.Web.UI.WebControls.WebParts”    TagPrefix=”nsquared2” %&gt;&lt;asp:Content ID=”Content1” ContentPlaceHolderID=”ContentPlaceHolder” runat=”Server”&gt;    &lt;atlas:UpdatePanelID=”panelarticles” Mode=”Conditional” runat=”server”&gt;        &lt;ContentTemplate&gt;            &lt;nsquared2:TemplatedWebPartZone ID=”ContentZone” runat=”server” ChromeTemplateFile=”~/Templates/Chrome/THBOriginalTemplate.chrome”                CssClass=”webpartzone” Padding=”0”&gt;                &lt;ZoneTemplate&gt;                &lt;/ZoneTemplate&gt;            &lt;/nsquared2:TemplatedWebPartZone&gt;        &lt;/ContentTemplate&gt;    &lt;/atlas:UpdatePanel&gt;&lt;/asp:Content&gt;\n\n\nThen in my comments WebPart I implemented a button doing aresponse redirect to another page that will handle the writing of a new comment,and this in the UpdatePanel postback not the whole Page postback. To be able toaccess some information from the calling page I had added some information inthe Session on the first page that I wanted to read on the second one. Boom!!Session is empty on the second page. I then removed the UpdatePanel and sessionwas back again. hum!!! But that was not the scenario I wanted for my comments,so I added again my UpdatePanel and made several tests withtout any success. \nThen searching on the forum I found why, here : “Thespecific reason it happens is that when ScriptManager detects a Redirect duringan async postback, it clears the response, which means all cookies are lost. Oneof those cookies is the session ID cookie. This doesn’t necessarily affect allscenarios, but it does affect some.“ A bug in the CTP april of Atlas.\nThen it was clear if the Response is cleared, no chance to get mySession values.\nAs it was not critical data I decided to use QueryString to passon data and that’s for sure worked. I will revert to Session when it will befixed.\nNow I have a system with connected WebPart, one displayingcomments using Atlas UpdatePanel to reload only the comments that the suer wnatsto see. Great stuff!!\nThere is one thing I don’t liked in the WebPart connection isthat if you have a link button in your page and the OnCommand is set, then whenthe Command is called the WebParts connection is not already done so you have toremmeber parameters given to your method and reuse them in OnPreRender.\n[ Currently Playing : With My Two Hands - Ben Harper - DiamondsOn The Inside (04:35) ]\n","dateCreated":"2006-06-13T06:11:54+02:00","dateModified":"2006-06-13T06:11:54+02:00","datePublished":"2006-06-13T06:11:54+02:00","description":"After a smooth integration of Atlas in the new version of Tech Head Brothers website, Idecided to go a step further with a project a bit more complex then the scenariodeveloped here.","headline":"Trip in the Atlas - Part 1","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2006/06/13/Trip-in-the-Atlas-Part-1/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2006/06/13/Trip-in-the-Atlas-Part-1/","keywords":"Tech Head Brothers, ASP.NET 2.0, ASP.NET AJAX"}</script>
     <meta name="description" content="After a smooth integration of Atlas in the new version of Tech Head Brothers website, Idecided to go a step further with a project a bit more complex then the scenariodeveloped here.">
-<meta name="keywords" content="Tech Head Brothers,ASP.NET AJAX,ASP.NET 2.0">
+<meta name="keywords" content="Tech Head Brothers,ASP.NET 2.0,ASP.NET AJAX">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Trip in the Atlas - Part 1">
 <meta property="og:url" content="https://laurentkempe.com/2006/06/13/Trip-in-the-Atlas-Part-1/index.html">
@@ -32,13 +32,13 @@
         
     
     
-        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
     
     
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
     <!--STYLES END-->
     
     <script type="text/javascript">
@@ -77,7 +77,7 @@
                 href="#about">
         
         
-            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -95,7 +95,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -115,7 +115,7 @@
                             title="Home"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
                     </a>
             </li>
@@ -128,7 +128,7 @@
                             title="Tags"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
                     </a>
             </li>
@@ -141,7 +141,7 @@
                             title="Archives"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
                     </a>
             </li>
@@ -154,7 +154,7 @@
                             title="About"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
@@ -167,7 +167,7 @@
                     
                         <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
                     </a>
             </li>
@@ -176,7 +176,7 @@
                     
                         <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
                     </a>
             </li>
@@ -185,7 +185,7 @@
                     
                         <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
                     </a>
             </li>
@@ -198,7 +198,7 @@
                     
                         <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
                     </a>
             </li>
@@ -304,7 +304,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2006/06/13/Trip-in-the-Atlas-Part-1/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -312,7 +312,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2006/06/13/Trip-in-the-Atlas-Part-1/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -320,7 +320,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2006/06/13/Trip-in-the-Atlas-Part-1/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -328,7 +328,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -400,7 +400,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2006/06/13/Trip-in-the-Atlas-Part-1/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -408,7 +408,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2006/06/13/Trip-in-the-Atlas-Part-1/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -416,7 +416,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2006/06/13/Trip-in-the-Atlas-Part-1/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -424,7 +424,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -442,14 +442,14 @@
 
                 </div>
                 <div id="share-options-bar" class="share-options-bar" data-behavior="5">
-    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
     <ul class="share-options">
         
             
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2006/06/13/Trip-in-the-Atlas-Part-1/">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
                 </a>
             </li>
         
@@ -457,7 +457,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2006/06/13/Trip-in-the-Atlas-Part-1/">
-                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
                 </a>
             </li>
         
@@ -465,7 +465,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2006/06/13/Trip-in-the-Atlas-Part-1/">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
                 </a>
             </li>
         
@@ -484,10 +484,10 @@
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
-            <i class="fa fa-remove"></i>
+            <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -504,7 +504,7 @@
         
         
             <div id="about-card-location">
-                <i class="fa fa-map-marker"></i>
+                <i class="fa fa-map-marker-alt"></i>
                 <br/>
                 Illzach, France
             </div>
@@ -516,7 +516,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
 
     

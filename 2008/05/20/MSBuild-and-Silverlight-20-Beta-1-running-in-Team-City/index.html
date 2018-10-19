@@ -13,7 +13,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"If you want to integrate Silverlight 2.0 Beta 1 in your Continuous Integration system, in my case Team City), it is better to read the readme of Silverlight 2.0 Beta 1 SDK here.\nThe important part in our case is the following one:\n\nUsing MSbuild to build a solution in a command line doesn’t copy the Silverlight project output to the linked web project\nWe don’t have complete support for command line msbuild usage to build solutions with Silverlight projects which also includes 64 bits MSBuild support.\n\nSo basically I made a copy manually from the source of the Silverlight project to the output path of my MSBuild project:     \n&lt;!--&lt;span style=&quot;color: green&quot;&gt;HACK Fix the missing copy of ClientBin &lt;/span&gt;--&gt;\n\n&lt;!--&lt;span style=&quot;color: green&quot;&gt;http://www.microsoft.com/silverlight/resources/readme.aspx?v=2.0&amp;sdk=true &lt;/span&gt;--&gt;\n\n&lt;!--&lt;span style=&quot;color: green&quot;&gt;Using MSbuild to build a solution in a command line doesn’t copy the Silverlight project output to the linked web project&lt;/span&gt;\n        We don’t have complete support for command line msbuild usage to build solutions with Silverlight projects which also includes 64 bits MSBuild support.\n    –&gt;\n&lt;Message &lt;span style=&quot;color: #ff8000&quot;&gt;Condition&lt;/span&gt;=&quot;&lt;span style=&quot;color: lime&quot;&gt; &apos;$(Configuration)|$(Platform)&apos; == &apos;Staging|AnyCPU&apos; &lt;/span&gt;&quot;  &lt;span style=&quot;color: #ff8000&quot;&gt;Text&lt;/span&gt;=&quot;&lt;span style=&quot;color: lime&quot;&gt;### HACK Silverlight MSBUILD ###&lt;/span&gt;&quot; /&gt;\n\n&lt;MakeDir &lt;span style=&quot;color: #ff8000&quot;&gt;Condition&lt;/span&gt;=&quot;&lt;span style=&quot;color: lime&quot;&gt; &apos;$(Configuration)|$(Platform)&apos; == &apos;Staging|AnyCPU&apos; &lt;/span&gt;&quot; &lt;span style=&quot;color: #ff8000&quot;&gt;Directories&lt;/span&gt;=&quot;&lt;span style=&quot;color: lime&quot;&gt;$(OutputPath)\\ClientBin&lt;/span&gt;&quot; &lt;span style=&quot;color: #ff8000&quot;&gt;ContinueOnError&lt;/span&gt;=&quot;&lt;span style=&quot;color: lime&quot;&gt;true&lt;/span&gt;&quot; /&gt;\n\n&lt;Copy &lt;span style=&quot;color: #ff8000&quot;&gt;Condition&lt;/span&gt;=&quot;&lt;span style=&quot;color: lime&quot;&gt; &apos;$(Configuration)|$(Platform)&apos; == &apos;Staging|AnyCPU&apos; &lt;/span&gt;&quot; &lt;span style=&quot;color: #ff8000&quot;&gt;SourceFiles&lt;/span&gt;=&quot;&lt;span style=&quot;color: lime&quot;&gt;$(MSBuildProjectDirectory)\\..\\..\\Sources\\VideoPlayer\\ClientBin\\VideoPlayer.xap&lt;/span&gt;&quot; &lt;span style=&quot;color: #ff8000&quot;&gt;DestinationFiles&lt;/span&gt;=&quot;&lt;span style=&quot;color: lime&quot;&gt;$(OutputPath)\\ClientBin\\VideoPlayer.xap&lt;/span&gt;&quot; /&gt;\n\n&lt;!--&lt;span style=&quot;color: green&quot;&gt;EndHACK &lt;/span&gt;--&gt;\n   \nNow my web application is compiled, deployed and works!\n","dateCreated":"2008-05-20T05:07:11+02:00","dateModified":"2008-05-20T05:07:11+02:00","datePublished":"2008-05-20T05:07:11+02:00","description":"If you want to integrate Silverlight 2.0 Beta 1 in your Continuous Integration system, in my case Team City), it is better to read the readme of Silverlight 2.0 Beta 1 SDK here.\nThe important part in our case is the following one:","headline":"MSBuild and Silverlight 2.0 Beta 1 running in Team City","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/05/20/MSBuild-and-Silverlight-20-Beta-1-running-in-Team-City/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2008/05/20/MSBuild-and-Silverlight-20-Beta-1-running-in-Team-City/","keywords":"Silverlight, continuous integration, MSBuild"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"If you want to integrate Silverlight 2.0 Beta 1 in your Continuous Integration system, in my case Team City), it is better to read the readme of Silverlight 2.0 Beta 1 SDK here.\nThe important part in our case is the following one:\n\nUsing MSbuild to build a solution in a command line doesn’t copy the Silverlight project output to the linked web project\nWe don’t have complete support for command line msbuild usage to build solutions with Silverlight projects which also includes 64 bits MSBuild support.\n\nSo basically I made a copy manually from the source of the Silverlight project to the output path of my MSBuild project:     \n&lt;!--&lt;span style=&quot;color: green&quot;&gt;HACK Fix the missing copy of ClientBin &lt;/span&gt;--&gt;\n\n&lt;!--&lt;span style=&quot;color: green&quot;&gt;http://www.microsoft.com/silverlight/resources/readme.aspx?v=2.0&amp;sdk=true &lt;/span&gt;--&gt;\n\n&lt;!--&lt;span style=&quot;color: green&quot;&gt;Using MSbuild to build a solution in a command line doesn’t copy the Silverlight project output to the linked web project&lt;/span&gt;\n        We don’t have complete support for command line msbuild usage to build solutions with Silverlight projects which also includes 64 bits MSBuild support.\n    –&gt;\n&lt;Message &lt;span style=&quot;color: #ff8000&quot;&gt;Condition&lt;/span&gt;=&quot;&lt;span style=&quot;color: lime&quot;&gt; &apos;$(Configuration)|$(Platform)&apos; == &apos;Staging|AnyCPU&apos; &lt;/span&gt;&quot;  &lt;span style=&quot;color: #ff8000&quot;&gt;Text&lt;/span&gt;=&quot;&lt;span style=&quot;color: lime&quot;&gt;### HACK Silverlight MSBUILD ###&lt;/span&gt;&quot; /&gt;\n\n&lt;MakeDir &lt;span style=&quot;color: #ff8000&quot;&gt;Condition&lt;/span&gt;=&quot;&lt;span style=&quot;color: lime&quot;&gt; &apos;$(Configuration)|$(Platform)&apos; == &apos;Staging|AnyCPU&apos; &lt;/span&gt;&quot; &lt;span style=&quot;color: #ff8000&quot;&gt;Directories&lt;/span&gt;=&quot;&lt;span style=&quot;color: lime&quot;&gt;$(OutputPath)\\ClientBin&lt;/span&gt;&quot; &lt;span style=&quot;color: #ff8000&quot;&gt;ContinueOnError&lt;/span&gt;=&quot;&lt;span style=&quot;color: lime&quot;&gt;true&lt;/span&gt;&quot; /&gt;\n\n&lt;Copy &lt;span style=&quot;color: #ff8000&quot;&gt;Condition&lt;/span&gt;=&quot;&lt;span style=&quot;color: lime&quot;&gt; &apos;$(Configuration)|$(Platform)&apos; == &apos;Staging|AnyCPU&apos; &lt;/span&gt;&quot; &lt;span style=&quot;color: #ff8000&quot;&gt;SourceFiles&lt;/span&gt;=&quot;&lt;span style=&quot;color: lime&quot;&gt;$(MSBuildProjectDirectory)\\..\\..\\Sources\\VideoPlayer\\ClientBin\\VideoPlayer.xap&lt;/span&gt;&quot; &lt;span style=&quot;color: #ff8000&quot;&gt;DestinationFiles&lt;/span&gt;=&quot;&lt;span style=&quot;color: lime&quot;&gt;$(OutputPath)\\ClientBin\\VideoPlayer.xap&lt;/span&gt;&quot; /&gt;\n\n&lt;!--&lt;span style=&quot;color: green&quot;&gt;EndHACK &lt;/span&gt;--&gt;\n   \nNow my web application is compiled, deployed and works!\n","dateCreated":"2008-05-20T05:07:11+02:00","dateModified":"2008-05-20T05:07:11+02:00","datePublished":"2008-05-20T05:07:11+02:00","description":"If you want to integrate Silverlight 2.0 Beta 1 in your Continuous Integration system, in my case Team City), it is better to read the readme of Silverlight 2.0 Beta 1 SDK here.\nThe important part in our case is the following one:","headline":"MSBuild and Silverlight 2.0 Beta 1 running in Team City","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/05/20/MSBuild-and-Silverlight-20-Beta-1-running-in-Team-City/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2008/05/20/MSBuild-and-Silverlight-20-Beta-1-running-in-Team-City/","keywords":"Silverlight, continuous integration, MSBuild"}</script>
     <meta name="description" content="If you want to integrate Silverlight 2.0 Beta 1 in your Continuous Integration system, in my case Team City), it is better to read the readme of Silverlight 2.0 Beta 1 SDK here. The important part in">
 <meta name="keywords" content="Silverlight,continuous integration,MSBuild">
 <meta property="og:type" content="blog">
@@ -32,13 +32,13 @@
         
     
     
-        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
     
     
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
     <!--STYLES END-->
     
     <script type="text/javascript">
@@ -77,7 +77,7 @@
                 href="#about">
         
         
-            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -95,7 +95,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -115,7 +115,7 @@
                             title="Home"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
                     </a>
             </li>
@@ -128,7 +128,7 @@
                             title="Tags"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
                     </a>
             </li>
@@ -141,7 +141,7 @@
                             title="Archives"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
                     </a>
             </li>
@@ -154,7 +154,7 @@
                             title="About"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
@@ -167,7 +167,7 @@
                     
                         <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
                     </a>
             </li>
@@ -176,7 +176,7 @@
                     
                         <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
                     </a>
             </li>
@@ -185,7 +185,7 @@
                     
                         <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
                     </a>
             </li>
@@ -198,7 +198,7 @@
                     
                         <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
                     </a>
             </li>
@@ -311,7 +311,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2008/05/20/MSBuild-and-Silverlight-20-Beta-1-running-in-Team-City/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -319,7 +319,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2008/05/20/MSBuild-and-Silverlight-20-Beta-1-running-in-Team-City/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -327,7 +327,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2008/05/20/MSBuild-and-Silverlight-20-Beta-1-running-in-Team-City/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -335,7 +335,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -407,7 +407,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2008/05/20/MSBuild-and-Silverlight-20-Beta-1-running-in-Team-City/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -415,7 +415,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2008/05/20/MSBuild-and-Silverlight-20-Beta-1-running-in-Team-City/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -423,7 +423,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2008/05/20/MSBuild-and-Silverlight-20-Beta-1-running-in-Team-City/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -431,7 +431,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -449,14 +449,14 @@
 
                 </div>
                 <div id="share-options-bar" class="share-options-bar" data-behavior="5">
-    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
     <ul class="share-options">
         
             
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2008/05/20/MSBuild-and-Silverlight-20-Beta-1-running-in-Team-City/">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
                 </a>
             </li>
         
@@ -464,7 +464,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2008/05/20/MSBuild-and-Silverlight-20-Beta-1-running-in-Team-City/">
-                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
                 </a>
             </li>
         
@@ -472,7 +472,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2008/05/20/MSBuild-and-Silverlight-20-Beta-1-running-in-Team-City/">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
                 </a>
             </li>
         
@@ -491,10 +491,10 @@
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
-            <i class="fa fa-remove"></i>
+            <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -511,7 +511,7 @@
         
         
             <div id="about-card-location">
-                <i class="fa fa-map-marker"></i>
+                <i class="fa fa-map-marker-alt"></i>
                 <br/>
                 Illzach, France
             </div>
@@ -523,7 +523,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
 
     

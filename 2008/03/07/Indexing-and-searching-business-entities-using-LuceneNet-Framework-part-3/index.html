@@ -13,7 +13,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":" \nConception using generics and reflection of a search engine to index and search content in your business entities without being intrusive.\nPart 1 and 2 are available following those links\n\nIndexing and searching business entities using Lucene.Net Framework, part 1  Indexing and searching business entities using Lucene.Net Framework, part 2  \n\nSolution’s architectureThe main idea is to be able to define the business entity’s properties that must be indexed when this one is saved or updated in the chosen persistence system.\nWith the goal to be the less intrusive possible in our model we come fast to the idea that we need to extend our business entities with meta-data. The issue then is that at runtime it is needed to know which meta-data needs to searched in the entity in order to be able to index the content of the decorated property. \nAs one of the goal is to have a Framework which manage the indexation and the searching of whatever business entity, we might have wrote a simple class inheriting from System.Attribute in an assembly separated from our domain. That would have the drawback of behind much intrusive in our domain. Another solution was needed.\nAs we have seen the developed Framework needs to know the meta-data, giving it the opportunity to index the content of the property at runtime. This means that at development time it is absolutely possible to generalize this information by using the generics of the .NET Framework 2. As we are talking about meta-data the only imposed thing is that our class inherits from System.Attribute.\nThe choice was made then to define a utility class in the domain assembly inheriting from System.Attribute which will serve us as a decorator of the entity’s properties needing to be indexed.\nOn the following picture you can see an example of the domain for an application to which we have added our attribute SearchableAttribute used to decorate the Post and Page classes:\n \nThe Visual Studio solution is organized as a Domain Driven Development solution:\n \nWe have so defined the new attribute SearchableAttribute in the assembly innoveo.Blog.Domain.\nHere is the description of the organization of our solution:\n\ninnoveo.Blog.DAL: Data access layer using Euss OR/M mapping tool  innoveo.Blog.Domain: Assembly containing our domain business entities  innoveo.Blog.Services: Layer exposing the different business services  innoveo.Blog.Web: Web presentation &amp; web services layer  Blog: The web application  \n\nHere it is for our solution that will use our business entities indexing Framework. Let’s have a closer look now at the Framework itself!\nIndexing FrameworkFirst here is the class diagram:\n \nThe role of each class of our Framework is as following:  \n\nEntityIndexer manage an index and index the business entities  EntitySearcher let you search business entities  EntityDocument is used by the class EntityIndexer in order to manage Lucene.Net Document  IndexPath is an utility class used to specify the location of index \n\nAs you can see on the diagram we use the .NET Frameworks 2 generics this in order to allow us to search whatever attribute decorating our business entities. But also to be able to have a Framework that is not dependant of any entities. This brings a good flexibility at the usage time as it let you index whatever property of type string of whatever business entity. All of this is without being intrusive in our model.  \nNow that we know about the architecture of our Framework it is time to look deeper in the details of the implementation.\nThis post is cross-posted on innoveo blog **and in French on my .NET community portal Tech Head Brothers.\n","dateCreated":"2008-03-07T19:59:25+01:00","dateModified":"2008-03-07T19:59:25+01:00","datePublished":"2008-03-07T19:59:25+01:00","description":" \nConception using generics and reflection of a search engine to index and search content in your business entities without being intrusive.","headline":"Indexing and searching business entities using Lucene.Net Framework, part 3","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-3/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-3/","keywords":"innoveo solutions, ASP.NET 2.0, Tools, Interoperability, C#, Architecture, Generics, Reflection"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":" \nConception using generics and reflection of a search engine to index and search content in your business entities without being intrusive.\nPart 1 and 2 are available following those links\n\nIndexing and searching business entities using Lucene.Net Framework, part 1  Indexing and searching business entities using Lucene.Net Framework, part 2  \n\nSolution’s architectureThe main idea is to be able to define the business entity’s properties that must be indexed when this one is saved or updated in the chosen persistence system.\nWith the goal to be the less intrusive possible in our model we come fast to the idea that we need to extend our business entities with meta-data. The issue then is that at runtime it is needed to know which meta-data needs to searched in the entity in order to be able to index the content of the decorated property. \nAs one of the goal is to have a Framework which manage the indexation and the searching of whatever business entity, we might have wrote a simple class inheriting from System.Attribute in an assembly separated from our domain. That would have the drawback of behind much intrusive in our domain. Another solution was needed.\nAs we have seen the developed Framework needs to know the meta-data, giving it the opportunity to index the content of the property at runtime. This means that at development time it is absolutely possible to generalize this information by using the generics of the .NET Framework 2. As we are talking about meta-data the only imposed thing is that our class inherits from System.Attribute.\nThe choice was made then to define a utility class in the domain assembly inheriting from System.Attribute which will serve us as a decorator of the entity’s properties needing to be indexed.\nOn the following picture you can see an example of the domain for an application to which we have added our attribute SearchableAttribute used to decorate the Post and Page classes:\n \nThe Visual Studio solution is organized as a Domain Driven Development solution:\n \nWe have so defined the new attribute SearchableAttribute in the assembly innoveo.Blog.Domain.\nHere is the description of the organization of our solution:\n\ninnoveo.Blog.DAL: Data access layer using Euss OR/M mapping tool  innoveo.Blog.Domain: Assembly containing our domain business entities  innoveo.Blog.Services: Layer exposing the different business services  innoveo.Blog.Web: Web presentation &amp; web services layer  Blog: The web application  \n\nHere it is for our solution that will use our business entities indexing Framework. Let’s have a closer look now at the Framework itself!\nIndexing FrameworkFirst here is the class diagram:\n \nThe role of each class of our Framework is as following:  \n\nEntityIndexer manage an index and index the business entities  EntitySearcher let you search business entities  EntityDocument is used by the class EntityIndexer in order to manage Lucene.Net Document  IndexPath is an utility class used to specify the location of index \n\nAs you can see on the diagram we use the .NET Frameworks 2 generics this in order to allow us to search whatever attribute decorating our business entities. But also to be able to have a Framework that is not dependant of any entities. This brings a good flexibility at the usage time as it let you index whatever property of type string of whatever business entity. All of this is without being intrusive in our model.  \nNow that we know about the architecture of our Framework it is time to look deeper in the details of the implementation.\nThis post is cross-posted on innoveo blog **and in French on my .NET community portal Tech Head Brothers.\n","dateCreated":"2008-03-07T19:59:25+01:00","dateModified":"2008-03-07T19:59:25+01:00","datePublished":"2008-03-07T19:59:25+01:00","description":" \nConception using generics and reflection of a search engine to index and search content in your business entities without being intrusive.","headline":"Indexing and searching business entities using Lucene.Net Framework, part 3","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-3/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-3/","keywords":"innoveo solutions, ASP.NET 2.0, Tools, Interoperability, C#, Architecture, Generics, Reflection"}</script>
     <meta name="description" content="Conception using generics and reflection of a search engine to index and search content in your business entities without being intrusive.">
 <meta name="keywords" content="innoveo solutions,ASP.NET 2.0,Tools,Interoperability,C#,Architecture,Generics,Reflection">
 <meta property="og:type" content="blog">
@@ -37,13 +37,13 @@
         
     
     
-        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
     
     
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
     <!--STYLES END-->
     
     <script type="text/javascript">
@@ -82,7 +82,7 @@
                 href="#about">
         
         
-            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -100,7 +100,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -120,7 +120,7 @@
                             title="Home"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
                     </a>
             </li>
@@ -133,7 +133,7 @@
                             title="Tags"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
                     </a>
             </li>
@@ -146,7 +146,7 @@
                             title="Archives"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
                     </a>
             </li>
@@ -159,7 +159,7 @@
                             title="About"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
@@ -172,7 +172,7 @@
                     
                         <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
                     </a>
             </li>
@@ -181,7 +181,7 @@
                     
                         <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
                     </a>
             </li>
@@ -190,7 +190,7 @@
                     
                         <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
                     </a>
             </li>
@@ -203,7 +203,7 @@
                     
                         <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
                     </a>
             </li>
@@ -323,7 +323,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-3/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -331,7 +331,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-3/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -339,7 +339,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-3/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -347,7 +347,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -419,7 +419,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-3/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -427,7 +427,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-3/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -435,7 +435,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-3/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -443,7 +443,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -461,14 +461,14 @@
 
                 </div>
                 <div id="share-options-bar" class="share-options-bar" data-behavior="5">
-    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
     <ul class="share-options">
         
             
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-3/">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
                 </a>
             </li>
         
@@ -476,7 +476,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-3/">
-                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
                 </a>
             </li>
         
@@ -484,7 +484,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-3/">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
                 </a>
             </li>
         
@@ -503,10 +503,10 @@
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
-            <i class="fa fa-remove"></i>
+            <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -523,7 +523,7 @@
         
         
             <div id="about-card-location">
-                <i class="fa fa-map-marker"></i>
+                <i class="fa fa-map-marker-alt"></i>
                 <br/>
                 Illzach, France
             </div>
@@ -535,7 +535,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
 
     

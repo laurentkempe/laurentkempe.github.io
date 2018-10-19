@@ -13,7 +13,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"This weekend ASP.NET Core RC2 was starting to show up! And it finally was released today. Get it fresh from here. We had here a long three days weekend with quite awful gray clouds and cold weather for the season, so a perfect excuse to get started!The first project I wanted to port to ASP.NET Core RC2 is something I began to work on some time ago when Atlassian HipChat announced their new Connect framework!\nI had it working with NancyFx; it is quite small and hacky at the moment, but at least an interesting little project to port on a weekend. The second part I wanted to have is to be able to make it run in a Docker container so that I will be able to deploy it on our Linux server at work.\nSo I installed the ASP.NET Core Tooling Preview for Visual Studio 2015 and created a new ASP.NET Core Web Application (.NET Core) in C#, for sure!\n\npicked up Web API\n\nFinally, I started the port which took me something like two to three hours!\nI ended up with the following code for the Program.cs file. The interesting part is the UseUrls() which I didn’t have while trying to make it run with Docker, then it wasn’t bound to the right network, and the application wasn’t accessible outside of the Docker container.\n\nThen I had some difficulties to have CORS working the way I wanted, but in fact, it ended up being an issue of returning JSON from my HipChat Connect GetGlance method. So it is quite easy to configure it in the Configure() method.\n\nNext step was to port from NancyFx module to ASP.NET Core RC2 controller, which was quite natural with the Route, HttpGet, HttpPost, FromBody and FromQuery attributes. The main point of interest is the ValidateToken() method which validates a JWT token using a SymmetricSecurityKey, and that wasn’t straight!\n\nTo be able to test the HipChat Connect add-on, I needed to be able to expose my application from my local development machine to the internet so that I can add the add-on to one HipChat room and for that I used ngrok!\nUsing the same ngrok command I used for NancyFx with ASP.NET Core RC2 gave me as a result “Http Bad Request error while calling your end point!“\n\nngrok http -bind-tls=true 8080\n\nTo be able to make it work with ASP.NET Core RC2 I had to fine tune the command so that the host header is adapted, then it worked!\n\nngrok http -bind-tls=true -host-header=”localhost:52060” 52060\n\nAnd to finish, I wanted to have the project running in a Docker container using Docker for Windows. To achieve that goal I used the following Dockerfile\n\nBuilt the Docker image with\n\ndocker build -t hipchatconnect .\n\nThen started the Docker container with\n\ndocker run -d -p 5000:5000 –name hipchatconnect hipchatconnect\n\nChecked that I could access my first ASP.NET Core RC2 project running in Docker with the following url:\n\nhttp://docker:5000/hipchat/atlassian-connect.json\n\nYou might be also interested to read the following post “Docker and .NET Core CLR Release Candidate 2” by Mano Marks.\nTo expose the container using ngrok I had to use:\n\nngrok http -bind-tls=true -host-header=”docker:5000” docker:5000\n\nAfter adding the add-on to one of our room, the final result is a HipChat Connect Glance showing the number of our TeamCity builds and their states.\n\nAs a conclusion, to that especially long post, I am so happy that I could finally play with the ASP.NET Core RC2 bits, run a little Web application on my Windows 10 machine but also in a Linux Docker container using Docker for Windows! I love those two technologies and see a bright future for both of them. I am also delighted that Microsoft made .NET Core an open source project.\n","dateCreated":"2016-05-16T20:37:03+02:00","dateModified":"2018-05-29T17:42:44+02:00","datePublished":"2016-05-16T20:37:03+02:00","description":"This weekend ASP.NET Core RC2 was starting to show up! And it finally was released today. Get it fresh from here. We had here a long three days weekend with quite awful gray clouds and cold weather for the season, so a perfect excuse to get started!","headline":"ASP.NET Core RC2, Docker and HipChat Connect add-on","image":["https://farm2.staticflickr.com/1580/25532266625_a9c8d2b5b5_q.jpg","https://farm2.staticflickr.com/1580/25532266625_c2d799e8ba_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2016/05/16/ASP-NET-Core-RC2-Docker-and-HipChat-Connect-add-on/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2016/05/16/ASP-NET-Core-RC2-Docker-and-HipChat-Connect-add-on/","keywords":"ASP.NET Core RC2, Docker, HipChat Connect","thumbnailUrl":"https://farm2.staticflickr.com/1580/25532266625_a9c8d2b5b5_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"This weekend ASP.NET Core RC2 was starting to show up! And it finally was released today. Get it fresh from here. We had here a long three days weekend with quite awful gray clouds and cold weather for the season, so a perfect excuse to get started!The first project I wanted to port to ASP.NET Core RC2 is something I began to work on some time ago when Atlassian HipChat announced their new Connect framework!\nI had it working with NancyFx; it is quite small and hacky at the moment, but at least an interesting little project to port on a weekend. The second part I wanted to have is to be able to make it run in a Docker container so that I will be able to deploy it on our Linux server at work.\nSo I installed the ASP.NET Core Tooling Preview for Visual Studio 2015 and created a new ASP.NET Core Web Application (.NET Core) in C#, for sure!\n\npicked up Web API\n\nFinally, I started the port which took me something like two to three hours!\nI ended up with the following code for the Program.cs file. The interesting part is the UseUrls() which I didn’t have while trying to make it run with Docker, then it wasn’t bound to the right network, and the application wasn’t accessible outside of the Docker container.\n\nThen I had some difficulties to have CORS working the way I wanted, but in fact, it ended up being an issue of returning JSON from my HipChat Connect GetGlance method. So it is quite easy to configure it in the Configure() method.\n\nNext step was to port from NancyFx module to ASP.NET Core RC2 controller, which was quite natural with the Route, HttpGet, HttpPost, FromBody and FromQuery attributes. The main point of interest is the ValidateToken() method which validates a JWT token using a SymmetricSecurityKey, and that wasn’t straight!\n\nTo be able to test the HipChat Connect add-on, I needed to be able to expose my application from my local development machine to the internet so that I can add the add-on to one HipChat room and for that I used ngrok!\nUsing the same ngrok command I used for NancyFx with ASP.NET Core RC2 gave me as a result “Http Bad Request error while calling your end point!“\n\nngrok http -bind-tls=true 8080\n\nTo be able to make it work with ASP.NET Core RC2 I had to fine tune the command so that the host header is adapted, then it worked!\n\nngrok http -bind-tls=true -host-header=”localhost:52060” 52060\n\nAnd to finish, I wanted to have the project running in a Docker container using Docker for Windows. To achieve that goal I used the following Dockerfile\n\nBuilt the Docker image with\n\ndocker build -t hipchatconnect .\n\nThen started the Docker container with\n\ndocker run -d -p 5000:5000 –name hipchatconnect hipchatconnect\n\nChecked that I could access my first ASP.NET Core RC2 project running in Docker with the following url:\n\nhttp://docker:5000/hipchat/atlassian-connect.json\n\nYou might be also interested to read the following post “Docker and .NET Core CLR Release Candidate 2” by Mano Marks.\nTo expose the container using ngrok I had to use:\n\nngrok http -bind-tls=true -host-header=”docker:5000” docker:5000\n\nAfter adding the add-on to one of our room, the final result is a HipChat Connect Glance showing the number of our TeamCity builds and their states.\n\nAs a conclusion, to that especially long post, I am so happy that I could finally play with the ASP.NET Core RC2 bits, run a little Web application on my Windows 10 machine but also in a Linux Docker container using Docker for Windows! I love those two technologies and see a bright future for both of them. I am also delighted that Microsoft made .NET Core an open source project.\n","dateCreated":"2016-05-16T20:37:03+02:00","dateModified":"2018-05-29T17:42:44+02:00","datePublished":"2016-05-16T20:37:03+02:00","description":"This weekend ASP.NET Core RC2 was starting to show up! And it finally was released today. Get it fresh from here. We had here a long three days weekend with quite awful gray clouds and cold weather for the season, so a perfect excuse to get started!","headline":"ASP.NET Core RC2, Docker and HipChat Connect add-on","image":["https://farm2.staticflickr.com/1580/25532266625_a9c8d2b5b5_q.jpg","https://farm2.staticflickr.com/1580/25532266625_c2d799e8ba_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2016/05/16/ASP-NET-Core-RC2-Docker-and-HipChat-Connect-add-on/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2016/05/16/ASP-NET-Core-RC2-Docker-and-HipChat-Connect-add-on/","keywords":"ASP.NET Core RC2, Docker, HipChat Connect","thumbnailUrl":"https://farm2.staticflickr.com/1580/25532266625_a9c8d2b5b5_q.jpg"}</script>
     <meta name="description" content="This weekend ASP.NET Core RC2 was starting to show up! And it finally was released today. Get it fresh from here. We had here a long three days weekend with quite awful gray clouds and cold weather fo">
 <meta name="keywords" content="ASP.NET Core RC2,Docker,HipChat Connect">
 <meta property="og:type" content="blog">
@@ -36,7 +36,7 @@
         
     
     
-        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
     
     
         <meta property="og:image" content="https://farm2.staticflickr.com/1580/25532266625_a9c8d2b5b5_q.jpg"/>
@@ -48,7 +48,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
     <!--STYLES END-->
     
     <script type="text/javascript">
@@ -87,7 +87,7 @@
                 href="#about">
         
         
-            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -105,7 +105,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -125,7 +125,7 @@
                             title="Home"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
                     </a>
             </li>
@@ -138,7 +138,7 @@
                             title="Tags"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
                     </a>
             </li>
@@ -151,7 +151,7 @@
                             title="Archives"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
                     </a>
             </li>
@@ -164,7 +164,7 @@
                             title="About"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
@@ -177,7 +177,7 @@
                     
                         <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
                     </a>
             </li>
@@ -186,7 +186,7 @@
                     
                         <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
                     </a>
             </li>
@@ -195,7 +195,7 @@
                     
                         <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
                     </a>
             </li>
@@ -208,7 +208,7 @@
                     
                         <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
                     </a>
             </li>
@@ -352,7 +352,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2016/05/16/ASP-NET-Core-RC2-Docker-and-HipChat-Connect-add-on/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -360,7 +360,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2016/05/16/ASP-NET-Core-RC2-Docker-and-HipChat-Connect-add-on/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -368,7 +368,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2016/05/16/ASP-NET-Core-RC2-Docker-and-HipChat-Connect-add-on/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -376,7 +376,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -448,7 +448,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2016/05/16/ASP-NET-Core-RC2-Docker-and-HipChat-Connect-add-on/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -456,7 +456,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2016/05/16/ASP-NET-Core-RC2-Docker-and-HipChat-Connect-add-on/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -464,7 +464,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2016/05/16/ASP-NET-Core-RC2-Docker-and-HipChat-Connect-add-on/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -472,7 +472,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -490,14 +490,14 @@
 
                 </div>
                 <div id="share-options-bar" class="share-options-bar" data-behavior="5">
-    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
     <ul class="share-options">
         
             
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2016/05/16/ASP-NET-Core-RC2-Docker-and-HipChat-Connect-add-on/">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
                 </a>
             </li>
         
@@ -505,7 +505,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2016/05/16/ASP-NET-Core-RC2-Docker-and-HipChat-Connect-add-on/">
-                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
                 </a>
             </li>
         
@@ -513,7 +513,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2016/05/16/ASP-NET-Core-RC2-Docker-and-HipChat-Connect-add-on/">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
                 </a>
             </li>
         
@@ -532,10 +532,10 @@
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
-            <i class="fa fa-remove"></i>
+            <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -552,7 +552,7 @@
         
         
             <div id="about-card-location">
-                <i class="fa fa-map-marker"></i>
+                <i class="fa fa-map-marker-alt"></i>
                 <br/>
                 Illzach, France
             </div>
@@ -564,7 +564,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
 
     

@@ -13,7 +13,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"I am working for a couple of months now with WPF and MVVM on an a business application using .NET Framework 3.5 SP1. Lately I faced a memory leak. Not the easy kind of memory leak with events handlers which keeps objects and its element tree alive, as explained here.\nNo it was something else ! I searched in our code for quite some time without finding anything.\nMy internet research brought me to a blog post from Ramon de Klein, “Memory leak with WPF resources (in rare cases)” which stated :\n\nWhen does the problem occur?The problem occurs in the following situation:\n\nA style is defined in the application’s ResourceDictionary.\nThe style uses a control template that uses media effects (i.e. DropShadowEffect).\nThe media effect should be referenced using a StaticResource.\n\n\nWe were matching the two first points and I tried the proposed fix:\n\nYou can force the effect to be frozen by specifying “PresentationOptions:Freeze=True”, but this is not common behavior.\n…\nThe workaround is simple… Just add the Freeze attribute to all the effects that you don’t plan to modify at runtime.\n\nBut that didn’t made it. \nI decided then to move the style definition from the application ResourceDictionary to the MainWindowView ResourceDictionary, which was for sure a better place for it. This to avoid the first point.\nThis worked! And we do not have this memory leak anymore. But as always when you fix one, some other popped up! But that’s another story.\nHow did I came to find the blog post from Ramon de Klein ?\nWith a perfect timing I got an offer from Red Gate to test their latest tool still in Early Access Program: ANTS Memory Profiler 5\nYou might watch a two parts video here (part1) and here (part2) and read about it here. You can even download a version from their forum, check it out.\nFirst I used ANTS Memory Profiler 5 Timeline to see that the memory wasn’t released at certain points in which it should. The red line shows the Bytes in all Heaps and should go down after each vertical line (gray, blue and red)\nSame result with Process Explorer, Memory usage going up without going down.\n \nSo we got on the screen the memory leak. Next step was to identify it.\nUsing Memory Profiler Class List, I browsed to the class that I new should be released, and proved it wasn’t: Live Instances is 3 and Instance Diff is +2. So at that time I knew that this class was maintained by something in memory.\n \nWatching the Memory Profiler Instance list, I could identity the different instances still in Memory and one wasn’t new, so a good candidate to look at:\n \nFinally switching to the Memory Profiler Object Retention Graph, I could navigate up the graph to see that DropShadowEffect was maintaining a reference:\n\nUp to my application RessourceDictionnary, as exaplained in point 1 from Ramon de Klein blog post, as you can see.\n \nAll those information gave me the opportunity to find the blog post from Ramon and led me to the solution.\nThis is the result of the fix I implemented, as you can see I have now only one Live Instance of the ProductViewModel class and an Instance Diff of –1. This shows that the object wasn’t retained in memory and cleaned correctly.\n  \nANTS Memory Profiler 5 and Ramon de Klein “Memory leak with WPF resources (in rare cases)” blog post was of great help to fix this memory leak. Thanks!\nThanks flies also to Stephen Chambers for the support with my questions on ANTS Memory Profiler 5.\nFinally I would like to warmly THANKS Laurent Bugnion for his kind chats that helped a lot, as always!\n","dateCreated":"2009-04-17T22:36:49+02:00","dateModified":"2009-04-17T22:36:49+02:00","datePublished":"2009-04-17T22:36:49+02:00","description":"I am working for a couple of months now with WPF and MVVM on an a business application using .NET Framework 3.5 SP1. Lately I faced a memory leak. Not the easy kind of memory leak with events handlers which keeps objects and its element tree alive, as explained here.\nNo it was something else ! I searched in our code for quite some time without finding anything.","headline":"Memory leak with WPF resources","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2009/04/17/Memory-leak-with-WPF-resources/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2009/04/17/Memory-leak-with-WPF-resources/","keywords":"WPF, Tools"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I am working for a couple of months now with WPF and MVVM on an a business application using .NET Framework 3.5 SP1. Lately I faced a memory leak. Not the easy kind of memory leak with events handlers which keeps objects and its element tree alive, as explained here.\nNo it was something else ! I searched in our code for quite some time without finding anything.\nMy internet research brought me to a blog post from Ramon de Klein, “Memory leak with WPF resources (in rare cases)” which stated :\n\nWhen does the problem occur?The problem occurs in the following situation:\n\nA style is defined in the application’s ResourceDictionary.\nThe style uses a control template that uses media effects (i.e. DropShadowEffect).\nThe media effect should be referenced using a StaticResource.\n\n\nWe were matching the two first points and I tried the proposed fix:\n\nYou can force the effect to be frozen by specifying “PresentationOptions:Freeze=True”, but this is not common behavior.\n…\nThe workaround is simple… Just add the Freeze attribute to all the effects that you don’t plan to modify at runtime.\n\nBut that didn’t made it. \nI decided then to move the style definition from the application ResourceDictionary to the MainWindowView ResourceDictionary, which was for sure a better place for it. This to avoid the first point.\nThis worked! And we do not have this memory leak anymore. But as always when you fix one, some other popped up! But that’s another story.\nHow did I came to find the blog post from Ramon de Klein ?\nWith a perfect timing I got an offer from Red Gate to test their latest tool still in Early Access Program: ANTS Memory Profiler 5\nYou might watch a two parts video here (part1) and here (part2) and read about it here. You can even download a version from their forum, check it out.\nFirst I used ANTS Memory Profiler 5 Timeline to see that the memory wasn’t released at certain points in which it should. The red line shows the Bytes in all Heaps and should go down after each vertical line (gray, blue and red)\nSame result with Process Explorer, Memory usage going up without going down.\n \nSo we got on the screen the memory leak. Next step was to identify it.\nUsing Memory Profiler Class List, I browsed to the class that I new should be released, and proved it wasn’t: Live Instances is 3 and Instance Diff is +2. So at that time I knew that this class was maintained by something in memory.\n \nWatching the Memory Profiler Instance list, I could identity the different instances still in Memory and one wasn’t new, so a good candidate to look at:\n \nFinally switching to the Memory Profiler Object Retention Graph, I could navigate up the graph to see that DropShadowEffect was maintaining a reference:\n\nUp to my application RessourceDictionnary, as exaplained in point 1 from Ramon de Klein blog post, as you can see.\n \nAll those information gave me the opportunity to find the blog post from Ramon and led me to the solution.\nThis is the result of the fix I implemented, as you can see I have now only one Live Instance of the ProductViewModel class and an Instance Diff of –1. This shows that the object wasn’t retained in memory and cleaned correctly.\n  \nANTS Memory Profiler 5 and Ramon de Klein “Memory leak with WPF resources (in rare cases)” blog post was of great help to fix this memory leak. Thanks!\nThanks flies also to Stephen Chambers for the support with my questions on ANTS Memory Profiler 5.\nFinally I would like to warmly THANKS Laurent Bugnion for his kind chats that helped a lot, as always!\n","dateCreated":"2009-04-17T22:36:49+02:00","dateModified":"2009-04-17T22:36:49+02:00","datePublished":"2009-04-17T22:36:49+02:00","description":"I am working for a couple of months now with WPF and MVVM on an a business application using .NET Framework 3.5 SP1. Lately I faced a memory leak. Not the easy kind of memory leak with events handlers which keeps objects and its element tree alive, as explained here.\nNo it was something else ! I searched in our code for quite some time without finding anything.","headline":"Memory leak with WPF resources","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2009/04/17/Memory-leak-with-WPF-resources/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2009/04/17/Memory-leak-with-WPF-resources/","keywords":"WPF, Tools"}</script>
     <meta name="description" content="I am working for a couple of months now with WPF and MVVM on an a business application using .NET Framework 3.5 SP1. Lately I faced a memory leak. Not the easy kind of memory leak with events handlers">
 <meta name="keywords" content="WPF,Tools">
 <meta property="og:type" content="blog">
@@ -40,13 +40,13 @@
         
     
     
-        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
     
     
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
     <!--STYLES END-->
     
     <script type="text/javascript">
@@ -85,7 +85,7 @@
                 href="#about">
         
         
-            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -103,7 +103,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -123,7 +123,7 @@
                             title="Home"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
                     </a>
             </li>
@@ -136,7 +136,7 @@
                             title="Tags"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
                     </a>
             </li>
@@ -149,7 +149,7 @@
                             title="Archives"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
                     </a>
             </li>
@@ -162,7 +162,7 @@
                             title="About"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
@@ -175,7 +175,7 @@
                     
                         <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
                     </a>
             </li>
@@ -184,7 +184,7 @@
                     
                         <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
                     </a>
             </li>
@@ -193,7 +193,7 @@
                     
                         <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
                     </a>
             </li>
@@ -206,7 +206,7 @@
                     
                         <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
                     </a>
             </li>
@@ -337,7 +337,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2009/04/17/Memory-leak-with-WPF-resources/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -345,7 +345,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2009/04/17/Memory-leak-with-WPF-resources/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -353,7 +353,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2009/04/17/Memory-leak-with-WPF-resources/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -361,7 +361,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -433,7 +433,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2009/04/17/Memory-leak-with-WPF-resources/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -441,7 +441,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2009/04/17/Memory-leak-with-WPF-resources/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -449,7 +449,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2009/04/17/Memory-leak-with-WPF-resources/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -457,7 +457,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -475,14 +475,14 @@
 
                 </div>
                 <div id="share-options-bar" class="share-options-bar" data-behavior="5">
-    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
     <ul class="share-options">
         
             
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2009/04/17/Memory-leak-with-WPF-resources/">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
                 </a>
             </li>
         
@@ -490,7 +490,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2009/04/17/Memory-leak-with-WPF-resources/">
-                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
                 </a>
             </li>
         
@@ -498,7 +498,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2009/04/17/Memory-leak-with-WPF-resources/">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
                 </a>
             </li>
         
@@ -517,10 +517,10 @@
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
-            <i class="fa fa-remove"></i>
+            <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -537,7 +537,7 @@
         
         
             <div id="about-card-location">
-                <i class="fa fa-map-marker"></i>
+                <i class="fa fa-map-marker-alt"></i>
                 <br/>
                 Illzach, France
             </div>
@@ -549,7 +549,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
 
     

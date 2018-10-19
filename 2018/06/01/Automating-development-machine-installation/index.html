@@ -13,7 +13,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"Since Microsoft went to Windows as a service, so since Windows 10, I fully re-install my development machine, a Surface Book, with each main release of Windows.\nAs I hate to lose time, I searched a way to automate it, so that it is fast, repeatable and does the work, not me.\nTL; DR; (Spoiler) Install your development environment tools with one click on a hyperlink!\nSince long, I am using Chocolatey, the package manager for Windows, to install some of my tools. I even created an installation of Git Diff Margin, my Visual Studio extension displaying live changes of the currently edited file on Visual Studio 2012+ margin and scrollbar. Note to me, update the package to the latest version of Git Diff Margin.\nThat’s already a fantastic step forward, you type one command line like this\nchoco install git -y\n\nand you get Git installed without doing anything, except typing the command! No need to search on which website you need to download the software, download it, maybe extract it to finally be able to run it and click next-next-next (eh Cédric). Just one command on the command line and you are done. Great, no?\nBut after re-installing my machine this way a first time and a second time I wanted more automation. So I decided to dig deeper in a tool I found also a long time ago but never took the time to use; Boxstarter: repeatable, reboot resilient Windows environment installations made easy using Chocolatey packages. Seems to exactly match what I wanted to achieve for the next level of automation.\nSo I searched some examples on Github and cooked my own script which I open sourced and called it Cacao. A nice name, no :D?\nCabosse de cacaoyer, Martinique\nSo now, when I have installed my Windows 10 machine from scratch I just need to install Boxstarter, download my script and launch it! A very nice step forward indeed.\nWait can’t we do better, there is still quite some things to do by hand, and you need to remember those things!What do you think of being able to click on a hyperlink, click on OK then everything would be installed for you by little pixies while you do something else? That would be just fantastic. The best is that it is possible!\nYou can see such a link on Cacao README.md file search for the text ‘Install my tools!’.\nThis link is built as following\nCacao install hyperlink123&lt;a href='http://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/laurentkempe/Cacao/master/PrepareMyCacao.ps1'&gt;  Install my tools!&lt;/a&gt;\nSo easy and so powerful. You append the hyperlink to the raw URL of your script to an URL which will install Boxstarter, and that does the trick!\nSo now we are ready to install development environment tools by one click on a hyperlink! What do you want more?\nDuring the Build2018 Microsoft got interested in that topic, which is great, and you can read about it in their blog post “Join us for a hot cup o Chocolatey!“ and on their Github repo windows-dev-box-setup-scripts.\nOne fantastic side effect is that now I can also update all my tools by running one command\nchoco upgrade all -y\n\nLike they say, there’s never been a better time to be a developer!\n","dateCreated":"2018-06-01T18:15:12+02:00","dateModified":"2018-06-02T07:27:51+02:00","datePublished":"2018-06-01T18:15:12+02:00","description":"Since Microsoft went to Windows as a service, so since Windows 10, I fully re-install my development machine, a Surface Book, with each main release of Windows.\nAs I hate to lose time, I searched a way to automate it, so that it is fast, repeatable and does the work, not me.","headline":"Automating my development machine installation","image":["https://farm2.staticflickr.com/1734/41774816134_261d684149_q.jpg","https://farm2.staticflickr.com/1734/41774816134_efbd8a4834_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2018/06/01/Automating-development-machine-installation/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2018/06/01/Automating-development-machine-installation/","keywords":"Windows, PowerShell","thumbnailUrl":"https://farm2.staticflickr.com/1734/41774816134_261d684149_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Since Microsoft went to Windows as a service, so since Windows 10, I fully re-install my development machine, a Surface Book, with each main release of Windows.\nAs I hate to lose time, I searched a way to automate it, so that it is fast, repeatable and does the work, not me.\nTL; DR; (Spoiler) Install your development environment tools with one click on a hyperlink!\nSince long, I am using Chocolatey, the package manager for Windows, to install some of my tools. I even created an installation of Git Diff Margin, my Visual Studio extension displaying live changes of the currently edited file on Visual Studio 2012+ margin and scrollbar. Note to me, update the package to the latest version of Git Diff Margin.\nThat’s already a fantastic step forward, you type one command line like this\nchoco install git -y\n\nand you get Git installed without doing anything, except typing the command! No need to search on which website you need to download the software, download it, maybe extract it to finally be able to run it and click next-next-next (eh Cédric). Just one command on the command line and you are done. Great, no?\nBut after re-installing my machine this way a first time and a second time I wanted more automation. So I decided to dig deeper in a tool I found also a long time ago but never took the time to use; Boxstarter: repeatable, reboot resilient Windows environment installations made easy using Chocolatey packages. Seems to exactly match what I wanted to achieve for the next level of automation.\nSo I searched some examples on Github and cooked my own script which I open sourced and called it Cacao. A nice name, no :D?\nCabosse de cacaoyer, Martinique\nSo now, when I have installed my Windows 10 machine from scratch I just need to install Boxstarter, download my script and launch it! A very nice step forward indeed.\nWait can’t we do better, there is still quite some things to do by hand, and you need to remember those things!What do you think of being able to click on a hyperlink, click on OK then everything would be installed for you by little pixies while you do something else? That would be just fantastic. The best is that it is possible!\nYou can see such a link on Cacao README.md file search for the text ‘Install my tools!’.\nThis link is built as following\nCacao install hyperlink123&lt;a href='http://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/laurentkempe/Cacao/master/PrepareMyCacao.ps1'&gt;  Install my tools!&lt;/a&gt;\nSo easy and so powerful. You append the hyperlink to the raw URL of your script to an URL which will install Boxstarter, and that does the trick!\nSo now we are ready to install development environment tools by one click on a hyperlink! What do you want more?\nDuring the Build2018 Microsoft got interested in that topic, which is great, and you can read about it in their blog post “Join us for a hot cup o Chocolatey!“ and on their Github repo windows-dev-box-setup-scripts.\nOne fantastic side effect is that now I can also update all my tools by running one command\nchoco upgrade all -y\n\nLike they say, there’s never been a better time to be a developer!\n","dateCreated":"2018-06-01T18:15:12+02:00","dateModified":"2018-06-02T07:27:51+02:00","datePublished":"2018-06-01T18:15:12+02:00","description":"Since Microsoft went to Windows as a service, so since Windows 10, I fully re-install my development machine, a Surface Book, with each main release of Windows.\nAs I hate to lose time, I searched a way to automate it, so that it is fast, repeatable and does the work, not me.","headline":"Automating my development machine installation","image":["https://farm2.staticflickr.com/1734/41774816134_261d684149_q.jpg","https://farm2.staticflickr.com/1734/41774816134_efbd8a4834_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2018/06/01/Automating-development-machine-installation/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2018/06/01/Automating-development-machine-installation/","keywords":"Windows, PowerShell","thumbnailUrl":"https://farm2.staticflickr.com/1734/41774816134_261d684149_q.jpg"}</script>
     <meta name="description" content="Since Microsoft went to Windows as a service, so since Windows 10, I fully re-install my development machine, a Surface Book, with each main release of Windows. As I hate to lose time, I searched a wa">
 <meta name="keywords" content="Windows,PowerShell">
 <meta property="og:type" content="blog">
@@ -34,7 +34,7 @@
         
     
     
-        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
     
     
         <meta property="og:image" content="https://farm2.staticflickr.com/1734/41774816134_261d684149_q.jpg"/>
@@ -46,7 +46,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
     <!--STYLES END-->
     
     <script type="text/javascript">
@@ -85,7 +85,7 @@
                 href="#about">
         
         
-            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -103,7 +103,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -123,7 +123,7 @@
                             title="Home"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
                     </a>
             </li>
@@ -136,7 +136,7 @@
                             title="Tags"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
                     </a>
             </li>
@@ -149,7 +149,7 @@
                             title="Archives"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
                     </a>
             </li>
@@ -162,7 +162,7 @@
                             title="About"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
@@ -175,7 +175,7 @@
                     
                         <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
                     </a>
             </li>
@@ -184,7 +184,7 @@
                     
                         <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
                     </a>
             </li>
@@ -193,7 +193,7 @@
                     
                         <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
                     </a>
             </li>
@@ -206,7 +206,7 @@
                     
                         <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
                     </a>
             </li>
@@ -301,7 +301,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/06/27/dotnet-core-community-online-hackathon/" data-tooltip=".NET Core Community online Hackathon" aria-label="PREVIOUS: .NET Core Community online Hackathon">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/09/08/WPF-with-Application-Insights/" data-tooltip="WPF with Application Insights" aria-label="PREVIOUS: WPF with Application Insights">
                 
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
@@ -329,7 +329,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2018/06/01/Automating-development-machine-installation/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -337,7 +337,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2018/06/01/Automating-development-machine-installation/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -345,7 +345,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2018/06/01/Automating-development-machine-installation/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -353,7 +353,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -397,7 +397,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/06/27/dotnet-core-community-online-hackathon/" data-tooltip=".NET Core Community online Hackathon" aria-label="PREVIOUS: .NET Core Community online Hackathon">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/09/08/WPF-with-Application-Insights/" data-tooltip="WPF with Application Insights" aria-label="PREVIOUS: WPF with Application Insights">
                 
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
@@ -425,7 +425,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2018/06/01/Automating-development-machine-installation/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -433,7 +433,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2018/06/01/Automating-development-machine-installation/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -441,7 +441,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2018/06/01/Automating-development-machine-installation/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -449,7 +449,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -467,14 +467,14 @@
 
                 </div>
                 <div id="share-options-bar" class="share-options-bar" data-behavior="5">
-    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
     <ul class="share-options">
         
             
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2018/06/01/Automating-development-machine-installation/">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
                 </a>
             </li>
         
@@ -482,7 +482,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2018/06/01/Automating-development-machine-installation/">
-                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
                 </a>
             </li>
         
@@ -490,7 +490,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2018/06/01/Automating-development-machine-installation/">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
                 </a>
             </li>
         
@@ -509,10 +509,10 @@
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
-            <i class="fa fa-remove"></i>
+            <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -529,7 +529,7 @@
         
         
             <div id="about-card-location">
-                <i class="fa fa-map-marker"></i>
+                <i class="fa fa-map-marker-alt"></i>
                 <br/>
                 Illzach, France
             </div>
@@ -541,7 +541,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
 
     

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://laurentkempe.com/"/>
-  <updated>2018-06-27T12:12:34.692Z</updated>
+  <updated>2018-09-08T06:34:53.326Z</updated>
   <id>https://laurentkempe.com/</id>
   
   <author>
@@ -17,23 +17,16 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>.NET Core Community online Hackathon</title>
-    <link href="https://laurentkempe.com/2018/06/27/dotnet-core-community-online-hackathon/"/>
-    <id>https://laurentkempe.com/2018/06/27/dotnet-core-community-online-hackathon/</id>
-    <published>2018-06-27T12:08:22.000Z</published>
-    <updated>2018-06-27T12:12:34.692Z</updated>
-    
-    <content type="html"><![CDATA[<p>On Saturday, June 2, 2018, I had the chance to participate in the .NET Core Community online Hackathon.</p><p>As I got up really early this Saturday morning, I took the opportunity to participate. My goal was to see something new and learn a bit about how .NET Core is built and gain some new experience.<br><a id="more"></a></p><p>I heard about the online Hackathon on a tweet of Karel Zikmund <div class="twitter-wrapper"><blockquote class="twitter-tweet"><a href="https://twitter.com/ziki_cz/status/999804438104625153" target="_blank" rel="noopener"></a></blockquote></div><script async defer src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p><p>Then reading about it on the <a href="https://github.com/dotnet/corefx/wiki/Hackathon" target="_blank" rel="noopener">Github page</a> linked to the tweet I decided to participate.</p><p>I wanted to start with a really small thing because I wasn’t sure about the time I had, and I wanted to be sure to finish it!</p><p>I decided to go with <a href="https://github.com/dotnet/corefx/blob/master/README.md" target="_blank" rel="noopener">CoreFX</a> because it seemed easier than <a href="https://github.com/dotnet/coreclr/blob/master/README.md" target="_blank" rel="noopener">CoreCLR</a>. I also had a look to <a href="https://github.com/dotnet/corefxlab/blob/master/README.md" target="_blank" rel="noopener">CoreFxLab</a>. And I might implement something there later as there is some migration to <a href="https://benchmarkdotnet.org/" target="_blank" rel="noopener">Benchmark.DotNet</a> which I would also like to learn a bit about.</p><p>I joined the <a href="https://gitter.im/dotnet/corefx-hackathon?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge" target="_blank" rel="noopener">gitter chat</a> which proved to be really helpful.</p><p>Then I picked the <a href="https://github.com/dotnet/corefx/issues/19624" target="_blank" rel="noopener">issue #19624, Remove conditional compilation in System.Diagnostics.Tracing</a> from CoreFX.</p><p>I went and started to read <a href="https://github.com/dotnet/corefx/wiki/New-contributor-Docs#contributing-guide" target="_blank" rel="noopener">contribution guide</a> and started by installing the tooling, making a fork and clone of the CoreFX repo! All went quite well, even if the documentation could be improved in some places.</p><p>I tried to have the tests running inside Visual Studio, but after some pains and no success with <a href="https://www.jetbrains.com/resharper/?fromMenu" target="_blank" rel="noopener">ReSharper</a> and <a href="(https://visualstudio.microsoft.com/">Visual Studio</a>, I asked some help on the gitter which <a href="https://github.com/ViktorHofer" target="_blank" rel="noopener">Viktor Hofer</a> <a href="https://gitter.im/dotnet/corefx-hackathon?at=5b1259f5f9f2e56cf234c485" target="_blank" rel="noopener">provided kindly</a>. You need to use the command </p><figure class="highlight plain"><figcaption><span>Running tests from MSBuild</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msbuild /t:RebuildAndTest</span><br></pre></td></tr></table></figure><p>By running the tests I found an issue with one tests and quickly guessed that it was because my Windows 10 Pro installation is in en-US and I set my first day of the week to Monday! So I reported the <a href="https://github.com/dotnet/corefx/issues/30074" target="_blank" rel="noopener">issue on Github</a>. The issue went through a discussion in the team and was finally fixed after being first rejected. I have to say that I agree that when someone clones a repository and run the tests, then everything should be working even in a weird setting like mine.</p><p>Back to my pull request, <a href="https://github.com/dotnet/corefx/pull/30071" target="_blank" rel="noopener">Remove FEATURE_ETLEVENTS conditional compilation</a> which was super easy, nothing really hard when you just need to remove conditional compilation. I just had to disable some Visual Studio plugin which format the code, especially removing extra spaces at the end of lines, which I was surprised to see on some files.</p><p>Finally after reviews and final approval from <a href="https://github.com/stephentoub" target="_blank" rel="noopener">Stephen Toub</a> the pull request was merged and will be part of .NET Core 3.0!</p><p><img src="https://farm2.staticflickr.com/1839/29090676488_e79f80d854_o.png" alt="Pull Request merged"></p><p>So in the end, I was able to fix one issue due for the hackathon, created one issue which was fixed by the team and had some fun and some learning participating in this online Hackathon!</p><p>Thanks for organizing it and thanks to the people from the team which was present and helped us!</p>]]></content>
+    <title>WPF with Application Insights</title>
+    <link href="https://laurentkempe.com/2018/09/08/WPF-with-Application-Insights/"/>
+    <id>https://laurentkempe.com/2018/09/08/WPF-with-Application-Insights/</id>
+    <published>2018-09-08T06:34:53.000Z</published>
+    <updated>2018-09-08T06:34:53.326Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;On Saturday, June 2, 2018, I had the chance to participate in the .NET Core Community online Hackathon.&lt;/p&gt;
-&lt;p&gt;As I got up really early this Saturday morning, I took the opportunity to participate. My goal was to see something new and learn a bit about how .NET Core is built and gain some new experience.&lt;br&gt;
-    
     </summary>
     
-    
-      <category term=".NET Core" scheme="https://laurentkempe.com/tags/NET-Core/"/>
     
   </entry>
   

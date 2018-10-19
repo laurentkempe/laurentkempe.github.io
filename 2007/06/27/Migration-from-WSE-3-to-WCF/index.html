@@ -13,7 +13,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"I started to migrate the Tech Head Brothers authoring tool and portal from Web Service Enhancement 3 (WSE 3) to Windows Communication Foundation (WCF). This is a next step in the integration of .NET Framework 3 in Tech Head Brothers portal.\nTill today I was using WSE 3 from the Word VSTO solution to securely publish content to the portal directly out of Word 2003/2007.\nThe migration went straight due to my initial implementation that was already using interfaces and implementation classes. So basically I had to :\n\nRemove the reference to WSE 3 and add one to System.ServiceModel\nChange the attributes on the interface to ServiceContract and OperationContract\nUpdate the web.config to parameterize the new WCF endpoint, binding…\nRegenerate the client proxy and update a bit the client code \n\nThis first step took me around 1h30 and was working very good but was still missing all the security of the old version.\nThen to implement the security part of the web services:\n\nI created a new certificate\nRemoved the Policy using the self developed aspnetUsernameTokenSecurity that is not needed anymore\nConfigured the web.config with a new wcf service behavior using userNameAuthentication and serviceAuthorization linked to ASP.NET providers\nReplaced code checking the role of the user calling the service with an attribute PrincipalPermission\nRegenerated the client proxy and reconfigured it \n\nSo now I have security at the level of the message that is encrypted using the certificate and at the web service with role access check.\nCurrently the solution uses attributes to check the role of the user that access the web service. I don’t find the solution flexible enough and the next step will be to have the configuration in a configuration file, that would let me change access rights without changing any line of code.\nAs always when this will work I will publish the source code of the VSTO client authoring tool (Tech Head Brothers Authoring) on the codeplex project: THBAuthoring.\n","dateCreated":"2007-06-27T16:28:25+02:00","dateModified":"2007-06-27T16:28:25+02:00","datePublished":"2007-06-27T16:28:25+02:00","description":"I started to migrate the Tech Head Brothers authoring tool and portal from Web Service Enhancement 3 (WSE 3) to Windows Communication Foundation (WCF). This is a next step in the integration of .NET Framework 3 in Tech Head Brothers portal.\nTill today I was using WSE 3 from the Word VSTO solution to securely publish content to the portal directly out of Word 2003/2007.","headline":"Migration from WSE 3 to WCF","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/","keywords":"ASP.NET 2.0, Web Services, WCF, SOAP, VSTO"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I started to migrate the Tech Head Brothers authoring tool and portal from Web Service Enhancement 3 (WSE 3) to Windows Communication Foundation (WCF). This is a next step in the integration of .NET Framework 3 in Tech Head Brothers portal.\nTill today I was using WSE 3 from the Word VSTO solution to securely publish content to the portal directly out of Word 2003/2007.\nThe migration went straight due to my initial implementation that was already using interfaces and implementation classes. So basically I had to :\n\nRemove the reference to WSE 3 and add one to System.ServiceModel\nChange the attributes on the interface to ServiceContract and OperationContract\nUpdate the web.config to parameterize the new WCF endpoint, binding…\nRegenerate the client proxy and update a bit the client code \n\nThis first step took me around 1h30 and was working very good but was still missing all the security of the old version.\nThen to implement the security part of the web services:\n\nI created a new certificate\nRemoved the Policy using the self developed aspnetUsernameTokenSecurity that is not needed anymore\nConfigured the web.config with a new wcf service behavior using userNameAuthentication and serviceAuthorization linked to ASP.NET providers\nReplaced code checking the role of the user calling the service with an attribute PrincipalPermission\nRegenerated the client proxy and reconfigured it \n\nSo now I have security at the level of the message that is encrypted using the certificate and at the web service with role access check.\nCurrently the solution uses attributes to check the role of the user that access the web service. I don’t find the solution flexible enough and the next step will be to have the configuration in a configuration file, that would let me change access rights without changing any line of code.\nAs always when this will work I will publish the source code of the VSTO client authoring tool (Tech Head Brothers Authoring) on the codeplex project: THBAuthoring.\n","dateCreated":"2007-06-27T16:28:25+02:00","dateModified":"2007-06-27T16:28:25+02:00","datePublished":"2007-06-27T16:28:25+02:00","description":"I started to migrate the Tech Head Brothers authoring tool and portal from Web Service Enhancement 3 (WSE 3) to Windows Communication Foundation (WCF). This is a next step in the integration of .NET Framework 3 in Tech Head Brothers portal.\nTill today I was using WSE 3 from the Word VSTO solution to securely publish content to the portal directly out of Word 2003/2007.","headline":"Migration from WSE 3 to WCF","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/","keywords":"ASP.NET 2.0, Web Services, WCF, SOAP, VSTO"}</script>
     <meta name="description" content="I started to migrate the Tech Head Brothers authoring tool and portal from Web Service Enhancement 3 (WSE 3) to Windows Communication Foundation (WCF). This is a next step in the integration of .NET F">
 <meta name="keywords" content="ASP.NET 2.0,Web Services,WCF,SOAP,VSTO">
 <meta property="og:type" content="blog">
@@ -32,13 +32,13 @@
         
     
     
-        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
     
     
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
     <!--STYLES END-->
     
     <script type="text/javascript">
@@ -77,7 +77,7 @@
                 href="#about">
         
         
-            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -95,7 +95,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -115,7 +115,7 @@
                             title="Home"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
                     </a>
             </li>
@@ -128,7 +128,7 @@
                             title="Tags"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
                     </a>
             </li>
@@ -141,7 +141,7 @@
                             title="Archives"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
                     </a>
             </li>
@@ -154,7 +154,7 @@
                             title="About"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
@@ -167,7 +167,7 @@
                     
                         <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
                     </a>
             </li>
@@ -176,7 +176,7 @@
                     
                         <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
                     </a>
             </li>
@@ -185,7 +185,7 @@
                     
                         <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
                     </a>
             </li>
@@ -198,7 +198,7 @@
                     
                         <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
                     </a>
             </li>
@@ -309,7 +309,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -317,7 +317,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -325,7 +325,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -333,7 +333,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -405,7 +405,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -413,7 +413,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -421,7 +421,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -429,7 +429,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -447,14 +447,14 @@
 
                 </div>
                 <div id="share-options-bar" class="share-options-bar" data-behavior="5">
-    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
     <ul class="share-options">
         
             
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
                 </a>
             </li>
         
@@ -462,7 +462,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/">
-                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
                 </a>
             </li>
         
@@ -470,7 +470,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2007/06/27/Migration-from-WSE-3-to-WCF/">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
                 </a>
             </li>
         
@@ -489,10 +489,10 @@
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
-            <i class="fa fa-remove"></i>
+            <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -509,7 +509,7 @@
         
         
             <div id="about-card-location">
-                <i class="fa fa-map-marker"></i>
+                <i class="fa fa-map-marker-alt"></i>
                 <br/>
                 Illzach, France
             </div>
@@ -521,7 +521,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
 
     

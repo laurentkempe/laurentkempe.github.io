@@ -13,7 +13,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"Following my previous posts on ASP.NET Core RC2, Docker and HipChat Connect add-on and Deploying Docker containers running ASP.NET Core RC2 to Microsoft Azure Cloud I needed, as promised in the last post, to come with a solution to secure the whole with an HTTPS certificate!\nSo the overall goal is to have my Hipchat Connect add-on written in C# and ASP.NET Core RC2 hosted in a Linux Docker container running in Microsoft Azure and secured by an HTTPS certificate.\nI am following for quite some time the Let’s Encrypt project which is just perfect for what I want to do!\n\nLet’s Encrypt is a new Certificate Authority: It’s free, automated, and open.\n\nNow that I know that I can get in an automated way and for free an HTTPS certificate, the question is how should I architecture the solution? The answer is quite simple. As I use Docker, I can plug another Docker container with a reverse proxy in front of my current container which runs the Kestrel web server hosting our C# and ASP.NET Core RC2 code.\nReverse proxy & Kestrel containers architecture\nOk which reverse proxy then? First, I had a look to NGINX which I knew then found Traefik. I liked very much the DEVOXX presentation, in French, from its author Emile Vauge and it, supports Let’s Encrypt out of the box.\n\nI tried Traefik but till now could not make it work the way I wanted, so back to NGINX. But I do not give up.\nI searched for a Docker image which runs NGINX and can be configured to get automatically and renew Let’s Encrypt certificates! I finally found HTTPS-PORTAL which was looking very promising.\n\nA fully automated HTTPS server powered by Nginx, Let’s Encrypt and Docker.\n\nTo achieve the architecture I described before I started to use Docker compose so that with one command I can start/stop both containers either locally or on Microsoft Azure!\nFollowing the documentation of HTTPS-PORTAL I finally got the whole working with the following docker-compose.yml file\n\nI fell into a trap, so be aware of it! I got first NGINX 502 Bad gateway error. I thought that the docker-compose.yml part for hipchat had to declare an exposed port. In fact, it doesn’t work like that. We are using links so that both containers are on the same internal network and that they can communicate. But that happens on their internal ports, so in our case for Kestrel and our Docker image, it is the port 5000. To realize that I had to connect to the container using\n> docker exec -i -t CONTAINER /bin/bash\n\nI installed wget, got the IP of the Kestrel container and tried to connect to it using wget also to get an error. That’s the moment I realized about the port!\nTo have Let’s Encrypt set up our HTTPS server and have it automatically obtain a browser-trusted certificate, without any human intervention, we need first to own a domain and to configure the DNS so that it resolves to the public IP of our virtual machine.\nBut first of all we need to configure our Azure IP address to be static\n\nAnd don’t forget to open the 443 HTTPS port on the Microsoft Azure firewall.\nNow we are ready to start both containers using Docker compose\n\nTo be able to see what’s going on in the container we can use docker ps then docker logs\n\n\nFinally, we can use a web browser to access our public API now through HTTPS. And we can add the HipChat Connect add-on to one of our room.\n\nThe next step will be to automate all of this process so that we can develop, build and deploy all of this quickly and automatically!\n","dateCreated":"2016-06-20T19:51:30+02:00","dateModified":"2018-05-29T17:42:44+02:00","datePublished":"2016-06-20T19:51:30+02:00","description":"Following my previous posts on ASP.NET Core RC2, Docker and HipChat Connect add-on and Deploying Docker containers running ASP.NET Core RC2 to Microsoft Azure Cloud I needed, as promised in the last post, to come with a solution to secure the whole with an HTTPS certificate!","headline":"Free HTTPS certificates for Docker containers running ASP.NET Core RC2 on Microsoft Azure","image":["https://c3.staticflickr.com/2/1522/25005836130_8b9c330c8e_q.jpg","https://c3.staticflickr.com/2/1522/25005836130_d09528cb16_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2016/06/20/Free-HTTPS-certificates-for-Docker-containers-running-ASPNET-Core-RC2-on-Microsoft-Azure/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2016/06/20/Free-HTTPS-certificates-for-Docker-containers-running-ASPNET-Core-RC2-on-Microsoft-Azure/","keywords":"ASP.NET Core RC2, Docker, HipChat Connect, Microsoft Azure","thumbnailUrl":"https://c3.staticflickr.com/2/1522/25005836130_8b9c330c8e_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Following my previous posts on ASP.NET Core RC2, Docker and HipChat Connect add-on and Deploying Docker containers running ASP.NET Core RC2 to Microsoft Azure Cloud I needed, as promised in the last post, to come with a solution to secure the whole with an HTTPS certificate!\nSo the overall goal is to have my Hipchat Connect add-on written in C# and ASP.NET Core RC2 hosted in a Linux Docker container running in Microsoft Azure and secured by an HTTPS certificate.\nI am following for quite some time the Let’s Encrypt project which is just perfect for what I want to do!\n\nLet’s Encrypt is a new Certificate Authority: It’s free, automated, and open.\n\nNow that I know that I can get in an automated way and for free an HTTPS certificate, the question is how should I architecture the solution? The answer is quite simple. As I use Docker, I can plug another Docker container with a reverse proxy in front of my current container which runs the Kestrel web server hosting our C# and ASP.NET Core RC2 code.\nReverse proxy & Kestrel containers architecture\nOk which reverse proxy then? First, I had a look to NGINX which I knew then found Traefik. I liked very much the DEVOXX presentation, in French, from its author Emile Vauge and it, supports Let’s Encrypt out of the box.\n\nI tried Traefik but till now could not make it work the way I wanted, so back to NGINX. But I do not give up.\nI searched for a Docker image which runs NGINX and can be configured to get automatically and renew Let’s Encrypt certificates! I finally found HTTPS-PORTAL which was looking very promising.\n\nA fully automated HTTPS server powered by Nginx, Let’s Encrypt and Docker.\n\nTo achieve the architecture I described before I started to use Docker compose so that with one command I can start/stop both containers either locally or on Microsoft Azure!\nFollowing the documentation of HTTPS-PORTAL I finally got the whole working with the following docker-compose.yml file\n\nI fell into a trap, so be aware of it! I got first NGINX 502 Bad gateway error. I thought that the docker-compose.yml part for hipchat had to declare an exposed port. In fact, it doesn’t work like that. We are using links so that both containers are on the same internal network and that they can communicate. But that happens on their internal ports, so in our case for Kestrel and our Docker image, it is the port 5000. To realize that I had to connect to the container using\n> docker exec -i -t CONTAINER /bin/bash\n\nI installed wget, got the IP of the Kestrel container and tried to connect to it using wget also to get an error. That’s the moment I realized about the port!\nTo have Let’s Encrypt set up our HTTPS server and have it automatically obtain a browser-trusted certificate, without any human intervention, we need first to own a domain and to configure the DNS so that it resolves to the public IP of our virtual machine.\nBut first of all we need to configure our Azure IP address to be static\n\nAnd don’t forget to open the 443 HTTPS port on the Microsoft Azure firewall.\nNow we are ready to start both containers using Docker compose\n\nTo be able to see what’s going on in the container we can use docker ps then docker logs\n\n\nFinally, we can use a web browser to access our public API now through HTTPS. And we can add the HipChat Connect add-on to one of our room.\n\nThe next step will be to automate all of this process so that we can develop, build and deploy all of this quickly and automatically!\n","dateCreated":"2016-06-20T19:51:30+02:00","dateModified":"2018-05-29T17:42:44+02:00","datePublished":"2016-06-20T19:51:30+02:00","description":"Following my previous posts on ASP.NET Core RC2, Docker and HipChat Connect add-on and Deploying Docker containers running ASP.NET Core RC2 to Microsoft Azure Cloud I needed, as promised in the last post, to come with a solution to secure the whole with an HTTPS certificate!","headline":"Free HTTPS certificates for Docker containers running ASP.NET Core RC2 on Microsoft Azure","image":["https://c3.staticflickr.com/2/1522/25005836130_8b9c330c8e_q.jpg","https://c3.staticflickr.com/2/1522/25005836130_d09528cb16_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2016/06/20/Free-HTTPS-certificates-for-Docker-containers-running-ASPNET-Core-RC2-on-Microsoft-Azure/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2016/06/20/Free-HTTPS-certificates-for-Docker-containers-running-ASPNET-Core-RC2-on-Microsoft-Azure/","keywords":"ASP.NET Core RC2, Docker, HipChat Connect, Microsoft Azure","thumbnailUrl":"https://c3.staticflickr.com/2/1522/25005836130_8b9c330c8e_q.jpg"}</script>
     <meta name="description" content="Following my previous posts on ASP.NET Core RC2, Docker and HipChat Connect add-on and Deploying Docker containers running ASP.NET Core RC2 to Microsoft Azure Cloud I needed, as promised in the last p">
 <meta name="keywords" content="ASP.NET Core RC2,Docker,HipChat Connect,Microsoft Azure">
 <meta property="og:type" content="blog">
@@ -36,7 +36,7 @@
         
     
     
-        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
     
     
         <meta property="og:image" content="https://c3.staticflickr.com/2/1522/25005836130_8b9c330c8e_q.jpg"/>
@@ -48,7 +48,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
     <!--STYLES END-->
     
     <script type="text/javascript">
@@ -87,7 +87,7 @@
                 href="#about">
         
         
-            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -105,7 +105,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -125,7 +125,7 @@
                             title="Home"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
                     </a>
             </li>
@@ -138,7 +138,7 @@
                             title="Tags"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
                     </a>
             </li>
@@ -151,7 +151,7 @@
                             title="Archives"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
                     </a>
             </li>
@@ -164,7 +164,7 @@
                             title="About"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
@@ -177,7 +177,7 @@
                     
                         <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
                     </a>
             </li>
@@ -186,7 +186,7 @@
                     
                         <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
                     </a>
             </li>
@@ -195,7 +195,7 @@
                     
                         <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
                     </a>
             </li>
@@ -208,7 +208,7 @@
                     
                         <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
                     </a>
             </li>
@@ -342,7 +342,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2016/06/20/Free-HTTPS-certificates-for-Docker-containers-running-ASPNET-Core-RC2-on-Microsoft-Azure/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -350,7 +350,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2016/06/20/Free-HTTPS-certificates-for-Docker-containers-running-ASPNET-Core-RC2-on-Microsoft-Azure/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -358,7 +358,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2016/06/20/Free-HTTPS-certificates-for-Docker-containers-running-ASPNET-Core-RC2-on-Microsoft-Azure/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -366,7 +366,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -438,7 +438,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2016/06/20/Free-HTTPS-certificates-for-Docker-containers-running-ASPNET-Core-RC2-on-Microsoft-Azure/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -446,7 +446,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2016/06/20/Free-HTTPS-certificates-for-Docker-containers-running-ASPNET-Core-RC2-on-Microsoft-Azure/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -454,7 +454,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2016/06/20/Free-HTTPS-certificates-for-Docker-containers-running-ASPNET-Core-RC2-on-Microsoft-Azure/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -462,7 +462,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -480,14 +480,14 @@
 
                 </div>
                 <div id="share-options-bar" class="share-options-bar" data-behavior="5">
-    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
     <ul class="share-options">
         
             
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2016/06/20/Free-HTTPS-certificates-for-Docker-containers-running-ASPNET-Core-RC2-on-Microsoft-Azure/">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
                 </a>
             </li>
         
@@ -495,7 +495,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2016/06/20/Free-HTTPS-certificates-for-Docker-containers-running-ASPNET-Core-RC2-on-Microsoft-Azure/">
-                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
                 </a>
             </li>
         
@@ -503,7 +503,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2016/06/20/Free-HTTPS-certificates-for-Docker-containers-running-ASPNET-Core-RC2-on-Microsoft-Azure/">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
                 </a>
             </li>
         
@@ -522,10 +522,10 @@
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
-            <i class="fa fa-remove"></i>
+            <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -542,7 +542,7 @@
         
         
             <div id="about-card-location">
-                <i class="fa fa-map-marker"></i>
+                <i class="fa fa-map-marker-alt"></i>
                 <br/>
                 Illzach, France
             </div>
@@ -554,7 +554,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
 
     

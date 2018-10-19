@@ -13,7 +13,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"\nFinishing this week sprint I decided to inspect some code using ReSharper 6.1 EAP and I started to give ReSharper a chance to help me find some of broken code.\nWhen I started I had some of the following inspection results. It is clearly showing that some properties wasn’t identified as used in a WPF binding.\n\nSo ReSharper proposed to make the property private which for sure was not ok for me has I knew it was used.\nSome time ago I started to assign some design DataContext to be able to navigate from View to my ViewModel just by pressing Go to Declaration (CTRL-B in IDEA scheme) in ReSharper.\n\n.csharpcode, .csharpcode pre\n{\n    font-size: small;\n    color: black;\n    font-family: consolas, \"Courier New\", courier, monospace;\n    background-color: #ffffff;\n    /*white-space: pre;*/\n}\n.csharpcode pre { margin: 0em; }\n.csharpcode .rem { color: #008000; }\n.csharpcode .kwrd { color: #0000ff; }\n.csharpcode .str { color: #006080; }\n.csharpcode .op { color: #0000c0; }\n.csharpcode .preproc { color: #cc6633; }\n.csharpcode .asp { background-color: #ffff00; }\n.csharpcode .html { color: #800000; }\n.csharpcode .attr { color: #ff0000; }\n.csharpcode .alt \n{\n    background-color: #f4f4f4;\n    width: 100%;\n    margin: 0em;\n}\n.csharpcode .lnum { color: #606060; }\n.code { font-size: 12px; color: #000; font-family: Consolas, \"Courier New\", Courier, Monospace; background-color: #F1F1F1; line-height: normal; }\n.code p        { padding: 5px; }\n.code .rem    { color: #008000; }\n.code .kwrd    { color: #0000ff; }\n.code .str    { color: #006080; }\n.code .op    { color: #0000c0; }\n.code .preproc { color: #0000ff; }\n.code .asp    { background-color: #ffff00; }\n.code .html { color: #800000; }\n.code .attr { color: #ff0000; }\n.code .alt    { background-color: #f4f4f4; }\n.code .lnum    { color: #606060; }\n\n\n&lt;UserControl x:Class=\"skyeEditor.View.StatusBarView\"\n             xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"\n             xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"\n             xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\"\n             xmlns:d=\"http://schemas.microsoft.com/expression/blend/2008\"\n             xmlns:ViewModel=\"clr-namespace:skyeEditor.ViewModel\"\n             mc:Ignorable=\"d\"\n             d:DataContext=\"{d:DesignInstance Type=ViewModel:StatusBarViewModel}\"&gt;\n\n\nThis for sure helps ReSharper code inspection as you can see on the following screenshot\n\nNow I can navigate from View to ViewModel, can avoid to have developer deleting properties that are sued in XAML bindings, but I can also get an idea of where a ViewModel property is used by using ReSharper Find Usage (Alt-F7). I see right away that the StatusBarView.xaml is using the property ShowActivityProgress.\n\nSo don’t forget to add the d:DataContext into your XAML !\n","dateCreated":"2011-11-12T01:45:52+01:00","dateModified":"2011-11-12T02:52:24+01:00","datePublished":"2011-11-12T01:45:52+01:00","description":"\nFinishing this week sprint I decided to inspect some code using ReSharper 6.1 EAP and I started to give ReSharper a chance to help me find some of broken code.\nWhen I started I had some of the following inspection results. It is clearly showing that some properties wasn’t identified as used in a WPF binding.","headline":"Fixing ReSharper inspection Results used from XAML","image":["https://farm6.staticflickr.com/5297/5515390031_ee3ab01e4a_q.jpg","https://farm6.staticflickr.com/5297/5515390031_ee3ab01e4a_b.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2011/11/12/Fixing-ReSharper-inspection-Results-used-from-XAML/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2011/11/12/Fixing-ReSharper-inspection-Results-used-from-XAML/","keywords":"ReSharper, Silverlight, WPF, XAML, WP7","thumbnailUrl":"https://farm6.staticflickr.com/5297/5515390031_ee3ab01e4a_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"\nFinishing this week sprint I decided to inspect some code using ReSharper 6.1 EAP and I started to give ReSharper a chance to help me find some of broken code.\nWhen I started I had some of the following inspection results. It is clearly showing that some properties wasn’t identified as used in a WPF binding.\n\nSo ReSharper proposed to make the property private which for sure was not ok for me has I knew it was used.\nSome time ago I started to assign some design DataContext to be able to navigate from View to my ViewModel just by pressing Go to Declaration (CTRL-B in IDEA scheme) in ReSharper.\n\n.csharpcode, .csharpcode pre\n{\n    font-size: small;\n    color: black;\n    font-family: consolas, \"Courier New\", courier, monospace;\n    background-color: #ffffff;\n    /*white-space: pre;*/\n}\n.csharpcode pre { margin: 0em; }\n.csharpcode .rem { color: #008000; }\n.csharpcode .kwrd { color: #0000ff; }\n.csharpcode .str { color: #006080; }\n.csharpcode .op { color: #0000c0; }\n.csharpcode .preproc { color: #cc6633; }\n.csharpcode .asp { background-color: #ffff00; }\n.csharpcode .html { color: #800000; }\n.csharpcode .attr { color: #ff0000; }\n.csharpcode .alt \n{\n    background-color: #f4f4f4;\n    width: 100%;\n    margin: 0em;\n}\n.csharpcode .lnum { color: #606060; }\n.code { font-size: 12px; color: #000; font-family: Consolas, \"Courier New\", Courier, Monospace; background-color: #F1F1F1; line-height: normal; }\n.code p        { padding: 5px; }\n.code .rem    { color: #008000; }\n.code .kwrd    { color: #0000ff; }\n.code .str    { color: #006080; }\n.code .op    { color: #0000c0; }\n.code .preproc { color: #0000ff; }\n.code .asp    { background-color: #ffff00; }\n.code .html { color: #800000; }\n.code .attr { color: #ff0000; }\n.code .alt    { background-color: #f4f4f4; }\n.code .lnum    { color: #606060; }\n\n\n&lt;UserControl x:Class=\"skyeEditor.View.StatusBarView\"\n             xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"\n             xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"\n             xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\"\n             xmlns:d=\"http://schemas.microsoft.com/expression/blend/2008\"\n             xmlns:ViewModel=\"clr-namespace:skyeEditor.ViewModel\"\n             mc:Ignorable=\"d\"\n             d:DataContext=\"{d:DesignInstance Type=ViewModel:StatusBarViewModel}\"&gt;\n\n\nThis for sure helps ReSharper code inspection as you can see on the following screenshot\n\nNow I can navigate from View to ViewModel, can avoid to have developer deleting properties that are sued in XAML bindings, but I can also get an idea of where a ViewModel property is used by using ReSharper Find Usage (Alt-F7). I see right away that the StatusBarView.xaml is using the property ShowActivityProgress.\n\nSo don’t forget to add the d:DataContext into your XAML !\n","dateCreated":"2011-11-12T01:45:52+01:00","dateModified":"2011-11-12T02:52:24+01:00","datePublished":"2011-11-12T01:45:52+01:00","description":"\nFinishing this week sprint I decided to inspect some code using ReSharper 6.1 EAP and I started to give ReSharper a chance to help me find some of broken code.\nWhen I started I had some of the following inspection results. It is clearly showing that some properties wasn’t identified as used in a WPF binding.","headline":"Fixing ReSharper inspection Results used from XAML","image":["https://farm6.staticflickr.com/5297/5515390031_ee3ab01e4a_q.jpg","https://farm6.staticflickr.com/5297/5515390031_ee3ab01e4a_b.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2011/11/12/Fixing-ReSharper-inspection-Results-used-from-XAML/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2011/11/12/Fixing-ReSharper-inspection-Results-used-from-XAML/","keywords":"ReSharper, Silverlight, WPF, XAML, WP7","thumbnailUrl":"https://farm6.staticflickr.com/5297/5515390031_ee3ab01e4a_q.jpg"}</script>
     <meta name="description" content="Finishing this week sprint I decided to inspect some code using ReSharper 6.1 EAP and I started to give ReSharper a chance to help me find some of broken code. When I started I had some of the follow">
 <meta name="keywords" content="ReSharper,Silverlight,WPF,XAML,WP7">
 <meta property="og:type" content="blog">
@@ -36,7 +36,7 @@
         
     
     
-        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
     
     
         <meta property="og:image" content="https://farm6.staticflickr.com/5297/5515390031_ee3ab01e4a_q.jpg"/>
@@ -48,7 +48,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
     <!--STYLES END-->
     
     <script type="text/javascript">
@@ -87,7 +87,7 @@
                 href="#about">
         
         
-            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -105,7 +105,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -125,7 +125,7 @@
                             title="Home"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
                     </a>
             </li>
@@ -138,7 +138,7 @@
                             title="Tags"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
                     </a>
             </li>
@@ -151,7 +151,7 @@
                             title="Archives"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
                     </a>
             </li>
@@ -164,7 +164,7 @@
                             title="About"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
@@ -177,7 +177,7 @@
                     
                         <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
                     </a>
             </li>
@@ -186,7 +186,7 @@
                     
                         <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
                     </a>
             </li>
@@ -195,7 +195,7 @@
                     
                         <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
                     </a>
             </li>
@@ -208,7 +208,7 @@
                     
                         <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
                     </a>
             </li>
@@ -368,7 +368,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2011/11/12/Fixing-ReSharper-inspection-Results-used-from-XAML/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -376,7 +376,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2011/11/12/Fixing-ReSharper-inspection-Results-used-from-XAML/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -384,7 +384,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2011/11/12/Fixing-ReSharper-inspection-Results-used-from-XAML/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -392,7 +392,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -464,7 +464,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2011/11/12/Fixing-ReSharper-inspection-Results-used-from-XAML/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -472,7 +472,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2011/11/12/Fixing-ReSharper-inspection-Results-used-from-XAML/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -480,7 +480,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2011/11/12/Fixing-ReSharper-inspection-Results-used-from-XAML/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -488,7 +488,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -506,14 +506,14 @@
 
                 </div>
                 <div id="share-options-bar" class="share-options-bar" data-behavior="5">
-    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
     <ul class="share-options">
         
             
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2011/11/12/Fixing-ReSharper-inspection-Results-used-from-XAML/">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
                 </a>
             </li>
         
@@ -521,7 +521,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2011/11/12/Fixing-ReSharper-inspection-Results-used-from-XAML/">
-                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
                 </a>
             </li>
         
@@ -529,7 +529,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2011/11/12/Fixing-ReSharper-inspection-Results-used-from-XAML/">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
                 </a>
             </li>
         
@@ -548,10 +548,10 @@
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
-            <i class="fa fa-remove"></i>
+            <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -568,7 +568,7 @@
         
         
             <div id="about-card-location">
-                <i class="fa fa-map-marker"></i>
+                <i class="fa fa-map-marker-alt"></i>
                 <br/>
                 Illzach, France
             </div>
@@ -580,7 +580,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
 
     

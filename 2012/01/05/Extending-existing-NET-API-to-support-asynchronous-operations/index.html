@@ -13,7 +13,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"\nThe other day I needed a way in a project I am working on to turn a .NET API, RestSharp to name it, so that I could use it in an asynchronous way.\nThe goal was to have the API returning a Task so that I could use it if I want with the Async CTP. I also wanted to have something running both on .NET 4.0 and on Windows Phone 7.5. \nTo achieve this goal I used \n\nTaskCompletionSource Class.NET Framework 4\n\nand defined two helper extension methods on the RestClient class of RestSharp as this:\n\n.csharpcode, .csharpcode pre\n{\n    font-size: small;\n    color: black;\n    font-family: consolas, \"Courier New\", courier, monospace;\n    background-color: #ffffff;\n    /*white-space: pre;*/\n}\n.csharpcode pre { margin: 0em; }\n.csharpcode .rem { color: #008000; }\n.csharpcode .kwrd { color: #0000ff; }\n.csharpcode .str { color: #006080; }\n.csharpcode .op { color: #0000c0; }\n.csharpcode .preproc { color: #cc6633; }\n.csharpcode .asp { background-color: #ffff00; }\n.csharpcode .html { color: #800000; }\n.csharpcode .attr { color: #ff0000; }\n.csharpcode .alt \n{\n    background-color: #f4f4f4;\n    width: 100%;\n    margin: 0em;\n}\n.csharpcode .lnum { color: #606060; }\n.code { font-size: 12px; color: #000; font-family: Consolas, \"Courier New\", Courier, Monospace; background-color: #F1F1F1; line-height: normal; }\n.code p        { padding: 5px; }\n.code .rem    { color: #008000; }\n.code .kwrd    { color: #0000ff; }\n.code .str    { color: #006080; }\n.code .op    { color: #0000c0; }\n.code .preproc { color: #0000ff; }\n.code .asp    { background-color: #ffff00; }\n.code .html { color: #800000; }\n.code .attr { color: #ff0000; }\n.code .alt    { background-color: #f4f4f4; }\n.code .lnum    { color: #606060; }\n\n\n#region using\n\nusing System;\nusing System.Threading;\nusing System.Threading.Tasks;\nusing RestSharp;\n\n#endregion\n\nnamespace Sharper\n{\n    public static class RestClientExtensions\n    {\n        public static Task&lt;TResult&gt; ExecuteTask&lt;TResult&gt;(this RestClient client,\n                                                         RestRequest request) where TResult : new()\n        {\n            var tcs = new TaskCompletionSource&lt;TResult&gt;();\n\n            WaitCallback\n                asyncWork = _ =&gt;\n                                {\n                                    try\n                                    {\n                                        client.ExecuteAsync&lt;TResult&gt;(request,\n                                                                     response =&gt; tcs.SetResult(response.Data));\n                                    }\n                                    catch (Exception exc)\n                                    {\n                                        tcs.SetException(exc);\n                                    }\n                                };\n\n            return ExecuteTask(asyncWork, tcs);\n        }\n\n        public static Task&lt;TResult&gt; ExecuteTask&lt;T, TResult&gt;(this RestClient client,\n                                                            RestRequest request,\n                                                            Func&lt;T, TResult&gt; adapter) where T : new()\n        {\n            var tcs = new TaskCompletionSource&lt;TResult&gt;();\n\n            WaitCallback\n                asyncWork = _ =&gt;\n                                {\n                                    try\n                                    {\n                                        client.ExecuteAsync&lt;T&gt;(request,\n                                                               response =&gt;\n                                                               tcs.SetResult(adapter.Invoke(response.Data)));\n                                    }\n                                    catch (Exception exc)\n                                    {\n                                        tcs.SetException(exc);\n                                    }\n                                };\n\n            return ExecuteTask(asyncWork, tcs);\n        }\n\n        private static Task&lt;TResult&gt; ExecuteTask&lt;TResult&gt;(WaitCallback asyncWork,\n                                                          TaskCompletionSource&lt;TResult&gt; tcs)\n        {\n            ThreadPool.QueueUserWorkItem(asyncWork);\n\n            return tcs.Task;\n        }\n    }\n}\n\n\nNow I can write asynchronous code like this:\npublic Task GetAllProjects()\n{\n    var request = new RestRequest { Resource = \"/httpAuth/app/rest/projects\", RootElement = \"project\" };\n    request.AddHeader(\"Accept\", \"application/json\");\n\n    return _restClient.ExecuteTask(request);\n}\n\n\nSo TaskCompletionSource is a nice class to know about!\nYou might also watch this short video by Phil Pennington to get a better idea about it:\n\n","dateCreated":"2012-01-05T07:10:53+01:00","dateModified":"2012-11-13T11:05:11+01:00","datePublished":"2012-01-05T07:10:53+01:00","description":"\nThe other day I needed a way in a project I am working on to turn a .NET API, RestSharp to name it, so that I could use it in an asynchronous way.","headline":"Extending existing .NET API to support asynchronous operations","image":["https://farm6.staticflickr.com/5057/5517072642_bc446224c7_q.jpg","https://farm6.staticflickr.com/5057/5517072642_bc446224c7_b.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2012/01/05/Extending-existing-NET-API-to-support-asynchronous-operations/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2012/01/05/Extending-existing-NET-API-to-support-asynchronous-operations/","thumbnailUrl":"https://farm6.staticflickr.com/5057/5517072642_bc446224c7_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"\nThe other day I needed a way in a project I am working on to turn a .NET API, RestSharp to name it, so that I could use it in an asynchronous way.\nThe goal was to have the API returning a Task so that I could use it if I want with the Async CTP. I also wanted to have something running both on .NET 4.0 and on Windows Phone 7.5. \nTo achieve this goal I used \n\nTaskCompletionSource Class.NET Framework 4\n\nand defined two helper extension methods on the RestClient class of RestSharp as this:\n\n.csharpcode, .csharpcode pre\n{\n    font-size: small;\n    color: black;\n    font-family: consolas, \"Courier New\", courier, monospace;\n    background-color: #ffffff;\n    /*white-space: pre;*/\n}\n.csharpcode pre { margin: 0em; }\n.csharpcode .rem { color: #008000; }\n.csharpcode .kwrd { color: #0000ff; }\n.csharpcode .str { color: #006080; }\n.csharpcode .op { color: #0000c0; }\n.csharpcode .preproc { color: #cc6633; }\n.csharpcode .asp { background-color: #ffff00; }\n.csharpcode .html { color: #800000; }\n.csharpcode .attr { color: #ff0000; }\n.csharpcode .alt \n{\n    background-color: #f4f4f4;\n    width: 100%;\n    margin: 0em;\n}\n.csharpcode .lnum { color: #606060; }\n.code { font-size: 12px; color: #000; font-family: Consolas, \"Courier New\", Courier, Monospace; background-color: #F1F1F1; line-height: normal; }\n.code p        { padding: 5px; }\n.code .rem    { color: #008000; }\n.code .kwrd    { color: #0000ff; }\n.code .str    { color: #006080; }\n.code .op    { color: #0000c0; }\n.code .preproc { color: #0000ff; }\n.code .asp    { background-color: #ffff00; }\n.code .html { color: #800000; }\n.code .attr { color: #ff0000; }\n.code .alt    { background-color: #f4f4f4; }\n.code .lnum    { color: #606060; }\n\n\n#region using\n\nusing System;\nusing System.Threading;\nusing System.Threading.Tasks;\nusing RestSharp;\n\n#endregion\n\nnamespace Sharper\n{\n    public static class RestClientExtensions\n    {\n        public static Task&lt;TResult&gt; ExecuteTask&lt;TResult&gt;(this RestClient client,\n                                                         RestRequest request) where TResult : new()\n        {\n            var tcs = new TaskCompletionSource&lt;TResult&gt;();\n\n            WaitCallback\n                asyncWork = _ =&gt;\n                                {\n                                    try\n                                    {\n                                        client.ExecuteAsync&lt;TResult&gt;(request,\n                                                                     response =&gt; tcs.SetResult(response.Data));\n                                    }\n                                    catch (Exception exc)\n                                    {\n                                        tcs.SetException(exc);\n                                    }\n                                };\n\n            return ExecuteTask(asyncWork, tcs);\n        }\n\n        public static Task&lt;TResult&gt; ExecuteTask&lt;T, TResult&gt;(this RestClient client,\n                                                            RestRequest request,\n                                                            Func&lt;T, TResult&gt; adapter) where T : new()\n        {\n            var tcs = new TaskCompletionSource&lt;TResult&gt;();\n\n            WaitCallback\n                asyncWork = _ =&gt;\n                                {\n                                    try\n                                    {\n                                        client.ExecuteAsync&lt;T&gt;(request,\n                                                               response =&gt;\n                                                               tcs.SetResult(adapter.Invoke(response.Data)));\n                                    }\n                                    catch (Exception exc)\n                                    {\n                                        tcs.SetException(exc);\n                                    }\n                                };\n\n            return ExecuteTask(asyncWork, tcs);\n        }\n\n        private static Task&lt;TResult&gt; ExecuteTask&lt;TResult&gt;(WaitCallback asyncWork,\n                                                          TaskCompletionSource&lt;TResult&gt; tcs)\n        {\n            ThreadPool.QueueUserWorkItem(asyncWork);\n\n            return tcs.Task;\n        }\n    }\n}\n\n\nNow I can write asynchronous code like this:\npublic Task GetAllProjects()\n{\n    var request = new RestRequest { Resource = \"/httpAuth/app/rest/projects\", RootElement = \"project\" };\n    request.AddHeader(\"Accept\", \"application/json\");\n\n    return _restClient.ExecuteTask(request);\n}\n\n\nSo TaskCompletionSource is a nice class to know about!\nYou might also watch this short video by Phil Pennington to get a better idea about it:\n\n","dateCreated":"2012-01-05T07:10:53+01:00","dateModified":"2012-11-13T11:05:11+01:00","datePublished":"2012-01-05T07:10:53+01:00","description":"\nThe other day I needed a way in a project I am working on to turn a .NET API, RestSharp to name it, so that I could use it in an asynchronous way.","headline":"Extending existing .NET API to support asynchronous operations","image":["https://farm6.staticflickr.com/5057/5517072642_bc446224c7_q.jpg","https://farm6.staticflickr.com/5057/5517072642_bc446224c7_b.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2012/01/05/Extending-existing-NET-API-to-support-asynchronous-operations/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2012/01/05/Extending-existing-NET-API-to-support-asynchronous-operations/","thumbnailUrl":"https://farm6.staticflickr.com/5057/5517072642_bc446224c7_q.jpg"}</script>
     <meta name="description" content="The other day I needed a way in a project I am working on to turn a .NET API, RestSharp to name it, so that I could use it in an asynchronous way.">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Extending existing .NET API to support asynchronous operations">
@@ -31,7 +31,7 @@
         
     
     
-        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
     
     
         <meta property="og:image" content="https://farm6.staticflickr.com/5057/5517072642_bc446224c7_q.jpg"/>
@@ -43,7 +43,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
     <!--STYLES END-->
     
     <script type="text/javascript">
@@ -82,7 +82,7 @@
                 href="#about">
         
         
-            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -100,7 +100,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -120,7 +120,7 @@
                             title="Home"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
                     </a>
             </li>
@@ -133,7 +133,7 @@
                             title="Tags"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
                     </a>
             </li>
@@ -146,7 +146,7 @@
                             title="Archives"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
                     </a>
             </li>
@@ -159,7 +159,7 @@
                             title="About"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
@@ -172,7 +172,7 @@
                     
                         <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
                     </a>
             </li>
@@ -181,7 +181,7 @@
                     
                         <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
                     </a>
             </li>
@@ -190,7 +190,7 @@
                     
                         <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
                     </a>
             </li>
@@ -203,7 +203,7 @@
                     
                         <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
                     </a>
             </li>
@@ -426,7 +426,7 @@ namespace </span><span style="color: #f8f8f2">Sharper
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2012/01/05/Extending-existing-NET-API-to-support-asynchronous-operations/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -434,7 +434,7 @@ namespace </span><span style="color: #f8f8f2">Sharper
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2012/01/05/Extending-existing-NET-API-to-support-asynchronous-operations/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -442,7 +442,7 @@ namespace </span><span style="color: #f8f8f2">Sharper
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2012/01/05/Extending-existing-NET-API-to-support-asynchronous-operations/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -450,7 +450,7 @@ namespace </span><span style="color: #f8f8f2">Sharper
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -522,7 +522,7 @@ namespace </span><span style="color: #f8f8f2">Sharper
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2012/01/05/Extending-existing-NET-API-to-support-asynchronous-operations/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -530,7 +530,7 @@ namespace </span><span style="color: #f8f8f2">Sharper
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2012/01/05/Extending-existing-NET-API-to-support-asynchronous-operations/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -538,7 +538,7 @@ namespace </span><span style="color: #f8f8f2">Sharper
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2012/01/05/Extending-existing-NET-API-to-support-asynchronous-operations/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -546,7 +546,7 @@ namespace </span><span style="color: #f8f8f2">Sharper
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -564,14 +564,14 @@ namespace </span><span style="color: #f8f8f2">Sharper
 
                 </div>
                 <div id="share-options-bar" class="share-options-bar" data-behavior="5">
-    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
     <ul class="share-options">
         
             
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2012/01/05/Extending-existing-NET-API-to-support-asynchronous-operations/">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
                 </a>
             </li>
         
@@ -579,7 +579,7 @@ namespace </span><span style="color: #f8f8f2">Sharper
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2012/01/05/Extending-existing-NET-API-to-support-asynchronous-operations/">
-                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
                 </a>
             </li>
         
@@ -587,7 +587,7 @@ namespace </span><span style="color: #f8f8f2">Sharper
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2012/01/05/Extending-existing-NET-API-to-support-asynchronous-operations/">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
                 </a>
             </li>
         
@@ -606,10 +606,10 @@ namespace </span><span style="color: #f8f8f2">Sharper
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
-            <i class="fa fa-remove"></i>
+            <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -626,7 +626,7 @@ namespace </span><span style="color: #f8f8f2">Sharper
         
         
             <div id="about-card-location">
-                <i class="fa fa-map-marker"></i>
+                <i class="fa fa-map-marker-alt"></i>
                 <br/>
                 Illzach, France
             </div>
@@ -638,7 +638,7 @@ namespace </span><span style="color: #f8f8f2">Sharper
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
 
     

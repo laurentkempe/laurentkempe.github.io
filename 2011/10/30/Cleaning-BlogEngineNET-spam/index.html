@@ -13,7 +13,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"\nI just migrated my blog to the latest version of BlogEngine.NET 2.5.0.6.\nI had a shock when I saw the number of spam that I had on the blog! \n\n447883 Spam! Wow. So I started the cleaning by using BlogEngine tools but it was damn slow, and no way to stop it when you started the delete all.\nSo I stopped the web site which was a bad idea because then one XML file was damaged. As I always do a backup before doing something like that I was on the safe side, and just reverted the files.\nThen I used 7zip to zip the posts folder which is located in the App_Data which was 338 MB, again wow.\n\nDownloaded the zip file on my local machine, installed BlogEngine and imported the post.\nI thought it would be faster on my machine because it is a recent one. But still to slow to treat 447833 spam messages.\nSo as a developer I went on and wrote a little application to do it. And after cleanup the spam which took less than 10 seconds I went to this folder size of the posts\n\nQuite a difference ! And BlogEngine showing me the results\n\nAnd here is the code, it is using .NET Framework 4 and the parallelization of queries to treat files:\n\n.csharpcode, .csharpcode pre\n{\n    font-size: small;\n    color: black;\n    font-family: consolas, \"Courier New\", courier, monospace;\n    background-color: #ffffff;\n    /*white-space: pre;*/\n    line-height: 135%;\n}\n.csharpcode pre { margin: 0em; }\n.csharpcode .rem { color: #008000; }\n.csharpcode .kwrd { color: #0000ff; }\n.csharpcode .str { color: #006080; }\n.csharpcode .op { color: #0000c0; }\n.csharpcode .preproc { color: #cc6633; }\n.csharpcode .asp { background-color: #ffff00; }\n.csharpcode .html { color: #800000; }\n.csharpcode .attr { color: #ff0000; }\n.csharpcode .alt \n{\n    background-color: #f4f4f4;\n    width: 100%;\n    margin: 0em;\n}\n.csharpcode .lnum { color: #606060; }\n\n#region using\n\nusing System;\nusing System.IO;\nusing System.Linq;\nusing System.Xml;\nusing System.Xml.Linq;\n\n#endregion\n\nnamespace BlogEngineSpamDelete\n{\n    internal class Program\n    {\n        private static void Main(string[] args)\n        {\n            var files = Directory.GetFiles(@\"C:\\Temp\\blogengine\\posts\", \"*.xml\");\n            foreach (var file in files.AsParallel())\n            {\n                FixPost(file);\n            }\n        }\n\n        private static void FixPost(string file)\n        {\n            XDocument doc;\n            using (var stream = File.OpenRead(file))\n            {\n                doc = XDocument.Load(stream);\n            }\n\n            var comments = from comment in doc.Descendants(XName.Get(\"comment\", String.Empty))\n                           select comment;\n\n            var spamComments = from comment in comments.ToArray()\n                               let data = new CommentState(comment.Attribute(\"spam\").Value,\n                                                           comment.Attribute(\"approved\").Value,\n                                                           comment.Attribute(\"deleted\").Value) \n                               where ShouldDeleteSpamAndUnApproved(data)\n                               select comment;\n\n            foreach (var spamComment in spamComments)\n            {\n                spamComment.Remove();\n            }\n\n            using (var writer = XmlWriter.Create(file, new XmlWriterSettings {Indent = true}))\n            {\n                doc.WriteTo(writer);\n            }\n        }\n\n        private static bool ShouldDeleteSpam(CommentState commentState)\n        {\n            return !commentState.Approved &amp;&amp; \n                   (commentState.Spam || commentState.Deleted);\n        }\n\n        private static bool ShouldDeleteSpamAndUnApproved(CommentState commentState)\n        {\n            return !commentState.Approved || \n                   commentState.Spam ||\n                   commentState.Deleted;\n        }\n\n        private class CommentState\n        {\n            public CommentState(String spam, String approved, String deleted)\n            {\n                Approved = bool.Parse(approved);\n                Spam = bool.Parse(spam);\n                Deleted = bool.Parse(deleted);\n            }\n\n            public bool Approved { get; private set; }\n            public bool Spam { get; private set; }\n            public bool Deleted { get; private set; }\n        }\n    }\n}\n\nUpdate: I also posted the code on bitbucket: https://bitbucket.org/lkempe/blogenginespamdelete\n","dateCreated":"2011-10-30T20:45:39+01:00","dateModified":"2011-11-06T00:28:19+01:00","datePublished":"2011-10-30T20:45:39+01:00","description":"\nI just migrated my blog to the latest version of BlogEngine.NET 2.5.0.6.","headline":"Cleaning BlogEngine.NET spam","image":["https://farm6.staticflickr.com/5266/5561291406_3371746e56_q.jpg","https://farm6.staticflickr.com/5266/5561291406_3371746e56_b.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2011/10/30/Cleaning-BlogEngineNET-spam/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2011/10/30/Cleaning-BlogEngineNET-spam/","thumbnailUrl":"https://farm6.staticflickr.com/5266/5561291406_3371746e56_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"\nI just migrated my blog to the latest version of BlogEngine.NET 2.5.0.6.\nI had a shock when I saw the number of spam that I had on the blog! \n\n447883 Spam! Wow. So I started the cleaning by using BlogEngine tools but it was damn slow, and no way to stop it when you started the delete all.\nSo I stopped the web site which was a bad idea because then one XML file was damaged. As I always do a backup before doing something like that I was on the safe side, and just reverted the files.\nThen I used 7zip to zip the posts folder which is located in the App_Data which was 338 MB, again wow.\n\nDownloaded the zip file on my local machine, installed BlogEngine and imported the post.\nI thought it would be faster on my machine because it is a recent one. But still to slow to treat 447833 spam messages.\nSo as a developer I went on and wrote a little application to do it. And after cleanup the spam which took less than 10 seconds I went to this folder size of the posts\n\nQuite a difference ! And BlogEngine showing me the results\n\nAnd here is the code, it is using .NET Framework 4 and the parallelization of queries to treat files:\n\n.csharpcode, .csharpcode pre\n{\n    font-size: small;\n    color: black;\n    font-family: consolas, \"Courier New\", courier, monospace;\n    background-color: #ffffff;\n    /*white-space: pre;*/\n    line-height: 135%;\n}\n.csharpcode pre { margin: 0em; }\n.csharpcode .rem { color: #008000; }\n.csharpcode .kwrd { color: #0000ff; }\n.csharpcode .str { color: #006080; }\n.csharpcode .op { color: #0000c0; }\n.csharpcode .preproc { color: #cc6633; }\n.csharpcode .asp { background-color: #ffff00; }\n.csharpcode .html { color: #800000; }\n.csharpcode .attr { color: #ff0000; }\n.csharpcode .alt \n{\n    background-color: #f4f4f4;\n    width: 100%;\n    margin: 0em;\n}\n.csharpcode .lnum { color: #606060; }\n\n#region using\n\nusing System;\nusing System.IO;\nusing System.Linq;\nusing System.Xml;\nusing System.Xml.Linq;\n\n#endregion\n\nnamespace BlogEngineSpamDelete\n{\n    internal class Program\n    {\n        private static void Main(string[] args)\n        {\n            var files = Directory.GetFiles(@\"C:\\Temp\\blogengine\\posts\", \"*.xml\");\n            foreach (var file in files.AsParallel())\n            {\n                FixPost(file);\n            }\n        }\n\n        private static void FixPost(string file)\n        {\n            XDocument doc;\n            using (var stream = File.OpenRead(file))\n            {\n                doc = XDocument.Load(stream);\n            }\n\n            var comments = from comment in doc.Descendants(XName.Get(\"comment\", String.Empty))\n                           select comment;\n\n            var spamComments = from comment in comments.ToArray()\n                               let data = new CommentState(comment.Attribute(\"spam\").Value,\n                                                           comment.Attribute(\"approved\").Value,\n                                                           comment.Attribute(\"deleted\").Value) \n                               where ShouldDeleteSpamAndUnApproved(data)\n                               select comment;\n\n            foreach (var spamComment in spamComments)\n            {\n                spamComment.Remove();\n            }\n\n            using (var writer = XmlWriter.Create(file, new XmlWriterSettings {Indent = true}))\n            {\n                doc.WriteTo(writer);\n            }\n        }\n\n        private static bool ShouldDeleteSpam(CommentState commentState)\n        {\n            return !commentState.Approved &amp;&amp; \n                   (commentState.Spam || commentState.Deleted);\n        }\n\n        private static bool ShouldDeleteSpamAndUnApproved(CommentState commentState)\n        {\n            return !commentState.Approved || \n                   commentState.Spam ||\n                   commentState.Deleted;\n        }\n\n        private class CommentState\n        {\n            public CommentState(String spam, String approved, String deleted)\n            {\n                Approved = bool.Parse(approved);\n                Spam = bool.Parse(spam);\n                Deleted = bool.Parse(deleted);\n            }\n\n            public bool Approved { get; private set; }\n            public bool Spam { get; private set; }\n            public bool Deleted { get; private set; }\n        }\n    }\n}\n\nUpdate: I also posted the code on bitbucket: https://bitbucket.org/lkempe/blogenginespamdelete\n","dateCreated":"2011-10-30T20:45:39+01:00","dateModified":"2011-11-06T00:28:19+01:00","datePublished":"2011-10-30T20:45:39+01:00","description":"\nI just migrated my blog to the latest version of BlogEngine.NET 2.5.0.6.","headline":"Cleaning BlogEngine.NET spam","image":["https://farm6.staticflickr.com/5266/5561291406_3371746e56_q.jpg","https://farm6.staticflickr.com/5266/5561291406_3371746e56_b.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2011/10/30/Cleaning-BlogEngineNET-spam/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2011/10/30/Cleaning-BlogEngineNET-spam/","thumbnailUrl":"https://farm6.staticflickr.com/5266/5561291406_3371746e56_q.jpg"}</script>
     <meta name="description" content="I just migrated my blog to the latest version of BlogEngine.NET 2.5.0.6.">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Cleaning BlogEngine.NET spam">
@@ -36,7 +36,7 @@
         
     
     
-        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
     
     
         <meta property="og:image" content="https://farm6.staticflickr.com/5266/5561291406_3371746e56_q.jpg"/>
@@ -48,7 +48,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
     <!--STYLES END-->
     
     <script type="text/javascript">
@@ -87,7 +87,7 @@
                 href="#about">
         
         
-            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -105,7 +105,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -125,7 +125,7 @@
                             title="Home"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
                     </a>
             </li>
@@ -138,7 +138,7 @@
                             title="Tags"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
                     </a>
             </li>
@@ -151,7 +151,7 @@
                             title="Archives"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
                     </a>
             </li>
@@ -164,7 +164,7 @@
                             title="About"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
@@ -177,7 +177,7 @@
                     
                         <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
                     </a>
             </li>
@@ -186,7 +186,7 @@
                     
                         <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
                     </a>
             </li>
@@ -195,7 +195,7 @@
                     
                         <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
                     </a>
             </li>
@@ -208,7 +208,7 @@
                     
                         <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
                     </a>
             </li>
@@ -425,7 +425,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2011/10/30/Cleaning-BlogEngineNET-spam/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -433,7 +433,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2011/10/30/Cleaning-BlogEngineNET-spam/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -441,7 +441,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2011/10/30/Cleaning-BlogEngineNET-spam/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -449,7 +449,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -521,7 +521,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2011/10/30/Cleaning-BlogEngineNET-spam/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -529,7 +529,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2011/10/30/Cleaning-BlogEngineNET-spam/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -537,7 +537,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2011/10/30/Cleaning-BlogEngineNET-spam/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -545,7 +545,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -563,14 +563,14 @@
 
                 </div>
                 <div id="share-options-bar" class="share-options-bar" data-behavior="5">
-    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
     <ul class="share-options">
         
             
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2011/10/30/Cleaning-BlogEngineNET-spam/">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
                 </a>
             </li>
         
@@ -578,7 +578,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2011/10/30/Cleaning-BlogEngineNET-spam/">
-                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
                 </a>
             </li>
         
@@ -586,7 +586,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2011/10/30/Cleaning-BlogEngineNET-spam/">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
                 </a>
             </li>
         
@@ -605,10 +605,10 @@
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
-            <i class="fa fa-remove"></i>
+            <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -625,7 +625,7 @@
         
         
             <div id="about-card-location">
-                <i class="fa fa-map-marker"></i>
+                <i class="fa fa-map-marker-alt"></i>
                 <br/>
                 Illzach, France
             </div>
@@ -637,7 +637,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
 
     

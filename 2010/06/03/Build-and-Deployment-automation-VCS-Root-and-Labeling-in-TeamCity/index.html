@@ -13,7 +13,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"As you might now from reading my blog I tend to automate as much as I can. \nWhy? Because I hate to do repetitive tasks. First because it is boring, at least for me, and as a developer we have more interesting things to do. Second because executing repetitive tasks tend to be error prone.\nSo last week I decided that it was enough for me to have to create manually a subversion tag for Jobping web site then also took the time to do the same for my portal Tech Head Brothers.\nAt Jobping we are using TeamCity and Subversion. We use it as our Continuous Integration system but also to deploy to production server in one click. Something I promised to talk later on in more details.\nSo it was relatively easy to configure TeamCity so that after build/deployment process it tags our subversion.\nFirst of all, I realized only the other day the way TeamCity works with VCS root \n\nA VCS Root is a set of settings that defines how TeamCity communicates with a version control (SCM) system to monitor for changes and to get sources for a build.\n\nWe are using the convention of trunk, branches, tags in our Subversion server (which is the great Visual SVN Server). In the past I always set the TeamCity VCS Root to our myproject/trunk url, and I have seen lots of people doing so on different websites/blogs…\nAt this point I realized that I missed a point with TeamCity VCS Root is that it contains Root in it’s name. So I might be using myproject/ in place of myproject/trunk as the VCS Root. But wait, if I do that TeamCity agent will make a checkout of my whole Subversion repository! \nAnd here comes the VCS Checkout rules, which you can configure on every project which is using the VCS Root\n\nSo in my case it looks like that\n\nWhich specify that for that particular build I want to checkout from my VCS Root extended with trunk to the build folder /. So with that I restrict the checkout to the trunk. Good\nNow back to my first topic, which was to automate the subversion tag creation when our build is successful which is done using TeamCity VCS Labeling.\nHere is how we set it up for our staging build\n\nFor sure we have another one for our production build.\nAnd here is the result in Subversion\n\nAnother thing that I will not forget as it is automated\nOne last issue that I had which you see only if you register to get info about failed build in TeamCity is the following\n\n[TeamCity, LABELING FAILED] Staging - CI Trunk, Unit Tests, Deploy #1072Jetbrains.buildServer.vcs.VcsException:\nLabeling the path ‘trunk’ to ‘tags/staging-1072’ has failed with the error: svn: MKACTIVITY of ‘/svn/!svn/act/7caf50f8-2801-0010-9e80-1fedd46c5a33’: 403 Forbidden \n\nWith this error message it was then easy to figure it out. I just had to modify the access right of the build user to have read/write access right and not only read.\n","dateCreated":"2010-06-03T03:11:49+02:00","dateModified":"2010-06-03T03:11:49+02:00","datePublished":"2010-06-03T03:11:49+02:00","description":"As you might now from reading my blog I tend to automate as much as I can. \nWhy? Because I hate to do repetitive tasks. First because it is boring, at least for me, and as a developer we have more interesting things to do. Second because executing repetitive tasks tend to be error prone.","headline":"Build and Deployment automation, VCS Root and Labeling in TeamCity","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/","keywords":"Tech Head Brothers, Jobping, Team City"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"As you might now from reading my blog I tend to automate as much as I can. \nWhy? Because I hate to do repetitive tasks. First because it is boring, at least for me, and as a developer we have more interesting things to do. Second because executing repetitive tasks tend to be error prone.\nSo last week I decided that it was enough for me to have to create manually a subversion tag for Jobping web site then also took the time to do the same for my portal Tech Head Brothers.\nAt Jobping we are using TeamCity and Subversion. We use it as our Continuous Integration system but also to deploy to production server in one click. Something I promised to talk later on in more details.\nSo it was relatively easy to configure TeamCity so that after build/deployment process it tags our subversion.\nFirst of all, I realized only the other day the way TeamCity works with VCS root \n\nA VCS Root is a set of settings that defines how TeamCity communicates with a version control (SCM) system to monitor for changes and to get sources for a build.\n\nWe are using the convention of trunk, branches, tags in our Subversion server (which is the great Visual SVN Server). In the past I always set the TeamCity VCS Root to our myproject/trunk url, and I have seen lots of people doing so on different websites/blogs…\nAt this point I realized that I missed a point with TeamCity VCS Root is that it contains Root in it’s name. So I might be using myproject/ in place of myproject/trunk as the VCS Root. But wait, if I do that TeamCity agent will make a checkout of my whole Subversion repository! \nAnd here comes the VCS Checkout rules, which you can configure on every project which is using the VCS Root\n\nSo in my case it looks like that\n\nWhich specify that for that particular build I want to checkout from my VCS Root extended with trunk to the build folder /. So with that I restrict the checkout to the trunk. Good\nNow back to my first topic, which was to automate the subversion tag creation when our build is successful which is done using TeamCity VCS Labeling.\nHere is how we set it up for our staging build\n\nFor sure we have another one for our production build.\nAnd here is the result in Subversion\n\nAnother thing that I will not forget as it is automated\nOne last issue that I had which you see only if you register to get info about failed build in TeamCity is the following\n\n[TeamCity, LABELING FAILED] Staging - CI Trunk, Unit Tests, Deploy #1072Jetbrains.buildServer.vcs.VcsException:\nLabeling the path ‘trunk’ to ‘tags/staging-1072’ has failed with the error: svn: MKACTIVITY of ‘/svn/!svn/act/7caf50f8-2801-0010-9e80-1fedd46c5a33’: 403 Forbidden \n\nWith this error message it was then easy to figure it out. I just had to modify the access right of the build user to have read/write access right and not only read.\n","dateCreated":"2010-06-03T03:11:49+02:00","dateModified":"2010-06-03T03:11:49+02:00","datePublished":"2010-06-03T03:11:49+02:00","description":"As you might now from reading my blog I tend to automate as much as I can. \nWhy? Because I hate to do repetitive tasks. First because it is boring, at least for me, and as a developer we have more interesting things to do. Second because executing repetitive tasks tend to be error prone.","headline":"Build and Deployment automation, VCS Root and Labeling in TeamCity","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/","keywords":"Tech Head Brothers, Jobping, Team City"}</script>
     <meta name="description" content="As you might now from reading my blog I tend to automate as much as I can.  Why? Because I hate to do repetitive tasks. First because it is boring, at least for me, and as a developer we have more int">
 <meta name="keywords" content="Tech Head Brothers,Jobping,Team City">
 <meta property="og:type" content="blog">
@@ -37,13 +37,13 @@
         
     
     
-        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
     
     
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
     <!--STYLES END-->
     
     <script type="text/javascript">
@@ -82,7 +82,7 @@
                 href="#about">
         
         
-            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -100,7 +100,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -120,7 +120,7 @@
                             title="Home"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
                     </a>
             </li>
@@ -133,7 +133,7 @@
                             title="Tags"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
                     </a>
             </li>
@@ -146,7 +146,7 @@
                             title="Archives"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
                     </a>
             </li>
@@ -159,7 +159,7 @@
                             title="About"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
@@ -172,7 +172,7 @@
                     
                         <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
                     </a>
             </li>
@@ -181,7 +181,7 @@
                     
                         <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
                     </a>
             </li>
@@ -190,7 +190,7 @@
                     
                         <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
                     </a>
             </li>
@@ -203,7 +203,7 @@
                     
                         <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
                     </a>
             </li>
@@ -322,7 +322,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -330,7 +330,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -338,7 +338,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -346,7 +346,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -418,7 +418,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -426,7 +426,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -434,7 +434,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -442,7 +442,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -460,14 +460,14 @@
 
                 </div>
                 <div id="share-options-bar" class="share-options-bar" data-behavior="5">
-    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
     <ul class="share-options">
         
             
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
                 </a>
             </li>
         
@@ -475,7 +475,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/">
-                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
                 </a>
             </li>
         
@@ -483,7 +483,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2010/06/03/Build-and-Deployment-automation-VCS-Root-and-Labeling-in-TeamCity/">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
                 </a>
             </li>
         
@@ -502,10 +502,10 @@
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
-            <i class="fa fa-remove"></i>
+            <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -522,7 +522,7 @@
         
         
             <div id="about-card-location">
-                <i class="fa fa-map-marker"></i>
+                <i class="fa fa-map-marker-alt"></i>
                 <br/>
                 Illzach, France
             </div>
@@ -534,7 +534,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
 
     

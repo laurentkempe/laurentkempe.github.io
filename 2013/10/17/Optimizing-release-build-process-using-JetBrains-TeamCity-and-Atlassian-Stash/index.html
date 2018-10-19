@@ -13,7 +13,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"   \nAutomating and optimizing the processes I use everyday to work is something important so that I get more productive and spend less time in things that a computer is better at.\nPreviously I had 3 builds defined in TeamCity one for all feature branches, one for release and one for patch. For feature branch and patch branch I needed to go to TeamCity to define two Build Parameters: the branch name and the release number.\nMy goal was to avoid to go to TeamCity when we have a release and have to set those Build Parameters.\nI wanted one TeamCity build which would\n\nDetermine automatically the version number \nDetermine the branch to use to build that release   \n\nThe second point was easy! You just need to follow the same principles defined for feature branches. I defined the following branch naming convention: any release should have a branch name like this release/skye-editor-2.26.0 for a release of Skye Editor 2.26.0. Then I defined in my VCS Root of my TeamCity Build the branch specification:\n\n+:refs/heads/release/skye-editor-*\n\nand the same for the Build Triggers / VCS Trigger / Branch filter.\nNow the first point is a bit more complex!\nAs we want to determine automatically the version number we quickly realize that the release number is defined in the branch name itself, e.g. release/skye-editor-2.26.0. \nSo why not use it? Yeah great idea but how? \nFirst idea that came was to pass that value as a parameter to the build script and deal with splitting the branch name to the release number into the build script. As Yegor was confirming that currently TeamCity has no way to parse values. I didn’t really like that idea of passing that parameter! So I continued to think about alternatives and finally came to ask Yegor:\n\nI had another idea, in teamcity when the active builds are displayed for a feature branch build only the second part is displayed, e.g. if I specify as branch specification SKYE-* and I have a branch with SKYE-1077-blabla then it wil show 1077-blabla. Is there a build parameter which would map this 1077-blabla?\n\nAnd the answer was\n\nIf you have something like refs/heads/SKYE-(*), then only the part in the brackets is regarded as logic branch name. Logic branch name is available as %teamcity.build.branch%\n\nThat’s it! Thanks Yegor. We have the way to get our version without having to change our build script and without writing any code!\nSo I just used the logical branch name %teamcity.build.branch% as my configuration parameter CurrentRelease which was already existing and that I had to manually update before:\n\nReplacing the previous two manual configurations\n\nSo now I create easily a Git release branch; release/skye-editor-2.26.0, then use pull requests of Atlassian Stash to review and merge my feature branches to that release branch which is automatically built using TeamCity.\nThis is a great improvement and shorten my release check list, all good!\n","dateCreated":"2013-10-17T19:34:14+02:00","dateModified":"2013-10-17T21:55:36+02:00","datePublished":"2013-10-17T19:34:14+02:00","description":"   \nAutomating and optimizing the processes I use everyday to work is something important so that I get more productive and spend less time in things that a computer is better at.","headline":"Optimizing release build process using JetBrains TeamCity and Atlassian Stash","image":["https://farm8.staticflickr.com/7421/9599787416_582f4ab142_q.jpg","https://farm8.staticflickr.com/7421/9599787416_9e67712879_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2013/10/17/Optimizing-release-build-process-using-JetBrains-TeamCity-and-Atlassian-Stash/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2013/10/17/Optimizing-release-build-process-using-JetBrains-TeamCity-and-Atlassian-Stash/","keywords":"Git, Team City, Stash","thumbnailUrl":"https://farm8.staticflickr.com/7421/9599787416_582f4ab142_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"   \nAutomating and optimizing the processes I use everyday to work is something important so that I get more productive and spend less time in things that a computer is better at.\nPreviously I had 3 builds defined in TeamCity one for all feature branches, one for release and one for patch. For feature branch and patch branch I needed to go to TeamCity to define two Build Parameters: the branch name and the release number.\nMy goal was to avoid to go to TeamCity when we have a release and have to set those Build Parameters.\nI wanted one TeamCity build which would\n\nDetermine automatically the version number \nDetermine the branch to use to build that release   \n\nThe second point was easy! You just need to follow the same principles defined for feature branches. I defined the following branch naming convention: any release should have a branch name like this release/skye-editor-2.26.0 for a release of Skye Editor 2.26.0. Then I defined in my VCS Root of my TeamCity Build the branch specification:\n\n+:refs/heads/release/skye-editor-*\n\nand the same for the Build Triggers / VCS Trigger / Branch filter.\nNow the first point is a bit more complex!\nAs we want to determine automatically the version number we quickly realize that the release number is defined in the branch name itself, e.g. release/skye-editor-2.26.0. \nSo why not use it? Yeah great idea but how? \nFirst idea that came was to pass that value as a parameter to the build script and deal with splitting the branch name to the release number into the build script. As Yegor was confirming that currently TeamCity has no way to parse values. I didn’t really like that idea of passing that parameter! So I continued to think about alternatives and finally came to ask Yegor:\n\nI had another idea, in teamcity when the active builds are displayed for a feature branch build only the second part is displayed, e.g. if I specify as branch specification SKYE-* and I have a branch with SKYE-1077-blabla then it wil show 1077-blabla. Is there a build parameter which would map this 1077-blabla?\n\nAnd the answer was\n\nIf you have something like refs/heads/SKYE-(*), then only the part in the brackets is regarded as logic branch name. Logic branch name is available as %teamcity.build.branch%\n\nThat’s it! Thanks Yegor. We have the way to get our version without having to change our build script and without writing any code!\nSo I just used the logical branch name %teamcity.build.branch% as my configuration parameter CurrentRelease which was already existing and that I had to manually update before:\n\nReplacing the previous two manual configurations\n\nSo now I create easily a Git release branch; release/skye-editor-2.26.0, then use pull requests of Atlassian Stash to review and merge my feature branches to that release branch which is automatically built using TeamCity.\nThis is a great improvement and shorten my release check list, all good!\n","dateCreated":"2013-10-17T19:34:14+02:00","dateModified":"2013-10-17T21:55:36+02:00","datePublished":"2013-10-17T19:34:14+02:00","description":"   \nAutomating and optimizing the processes I use everyday to work is something important so that I get more productive and spend less time in things that a computer is better at.","headline":"Optimizing release build process using JetBrains TeamCity and Atlassian Stash","image":["https://farm8.staticflickr.com/7421/9599787416_582f4ab142_q.jpg","https://farm8.staticflickr.com/7421/9599787416_9e67712879_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2013/10/17/Optimizing-release-build-process-using-JetBrains-TeamCity-and-Atlassian-Stash/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2013/10/17/Optimizing-release-build-process-using-JetBrains-TeamCity-and-Atlassian-Stash/","keywords":"Git, Team City, Stash","thumbnailUrl":"https://farm8.staticflickr.com/7421/9599787416_582f4ab142_q.jpg"}</script>
     <meta name="description" content="Automating and optimizing the processes I use everyday to work is something important so that I get more productive and spend less time in things that a computer is better at.">
 <meta name="keywords" content="Git,Team City,Stash">
 <meta property="og:type" content="blog">
@@ -35,7 +35,7 @@
         
     
     
-        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
     
     
         <meta property="og:image" content="https://farm8.staticflickr.com/7421/9599787416_582f4ab142_q.jpg"/>
@@ -47,7 +47,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
     <!--STYLES END-->
     
     <script type="text/javascript">
@@ -86,7 +86,7 @@
                 href="#about">
         
         
-            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -104,7 +104,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -124,7 +124,7 @@
                             title="Home"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
                     </a>
             </li>
@@ -137,7 +137,7 @@
                             title="Tags"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
                     </a>
             </li>
@@ -150,7 +150,7 @@
                             title="Archives"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
                     </a>
             </li>
@@ -163,7 +163,7 @@
                             title="About"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
@@ -176,7 +176,7 @@
                     
                         <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
                     </a>
             </li>
@@ -185,7 +185,7 @@
                     
                         <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
                     </a>
             </li>
@@ -194,7 +194,7 @@
                     
                         <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
                     </a>
             </li>
@@ -207,7 +207,7 @@
                     
                         <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
                     </a>
             </li>
@@ -339,7 +339,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2013/10/17/Optimizing-release-build-process-using-JetBrains-TeamCity-and-Atlassian-Stash/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -347,7 +347,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2013/10/17/Optimizing-release-build-process-using-JetBrains-TeamCity-and-Atlassian-Stash/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -355,7 +355,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2013/10/17/Optimizing-release-build-process-using-JetBrains-TeamCity-and-Atlassian-Stash/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -363,7 +363,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -435,7 +435,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2013/10/17/Optimizing-release-build-process-using-JetBrains-TeamCity-and-Atlassian-Stash/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -443,7 +443,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2013/10/17/Optimizing-release-build-process-using-JetBrains-TeamCity-and-Atlassian-Stash/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -451,7 +451,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2013/10/17/Optimizing-release-build-process-using-JetBrains-TeamCity-and-Atlassian-Stash/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -459,7 +459,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -477,14 +477,14 @@
 
                 </div>
                 <div id="share-options-bar" class="share-options-bar" data-behavior="5">
-    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
     <ul class="share-options">
         
             
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2013/10/17/Optimizing-release-build-process-using-JetBrains-TeamCity-and-Atlassian-Stash/">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
                 </a>
             </li>
         
@@ -492,7 +492,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2013/10/17/Optimizing-release-build-process-using-JetBrains-TeamCity-and-Atlassian-Stash/">
-                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
                 </a>
             </li>
         
@@ -500,7 +500,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2013/10/17/Optimizing-release-build-process-using-JetBrains-TeamCity-and-Atlassian-Stash/">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
                 </a>
             </li>
         
@@ -519,10 +519,10 @@
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
-            <i class="fa fa-remove"></i>
+            <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -539,7 +539,7 @@
         
         
             <div id="about-card-location">
-                <i class="fa fa-map-marker"></i>
+                <i class="fa fa-map-marker-alt"></i>
                 <br/>
                 Illzach, France
             </div>
@@ -551,7 +551,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
 
     

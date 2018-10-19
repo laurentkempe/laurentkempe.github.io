@@ -13,7 +13,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"For three night now I focused on one scenario for the Tech Head Brothers authoring tool:\n\nAs an author I want to be able to copy source code from Visual Studio and insert it into the authored Word document\nAs an author I want to preview a document with source code inserted in Internet Explorer  \n\nThis might not look really difficult at first, but I had some difficulties to fulfill the requirements of those two user story.\nThe first one was almost already implemented in step 7, using CustomXML capabilities of WordML.\nThe biggest issue I had was to figure out why when I was inserting CustomXML, the WordML format of the hyperlink was changing. It took me the most time to realize that inserting CustomXML was not the issue. The issue was proofing. Somehow inserting CustomXML was activating the auto proofing and then I got some error like on the following picture. The red underlined Brothers which is a link was the issue. In fact this simple thing change the WordML representation of the hyperlink.\nAs I had something working I had to find a way other than adding a second way to parse Hyperlinks. I came to the solution of disabling proofing then saving the document before making my projection to Tech Head Brothers XML. Then for sure re-enabling the proofing. Nice and easy!\nThe next issue was to be able at the time of parsing the WordML to identify that source code was at at the current position in the WordML. I turned and turned the problem, than asked some clever WordML guys (Julien, Pierre) and some generally good advisor (Mitsu, Cyril). Nothing! I finally came to a solution tonight:\n\nGetting the Id of the PlainTextContentControl from the WordML\nSearching for this Control in the Controls collection\nFinally using the plainTextContentControl.XMLMapping.CustomXMLPart.XML property I had access to my CustomXML  \n\nI couldn’t find any way to do that parsing the WordML and honestly tonight I don’t know how it is possible to go from the WordML to the CustomXML.\nThe result is here!\nCopying source code from Visual Studio\n \nInserting it in Word 2007\n \nFinal result in Internet Explorer\n  \nThere is still a little bug with the spacing that will solved tomorrow or later!\nNow the next steps will be: \n\nProjection of hyperlink\nProjection of picture\nProjection of numbered list and bullet list\nFixing bugs found by Sébastien and Rédo \nPicture caption\nGiving the possibility to insert source code \nProjection of the source code \nAdding the possibility to the author to post the article directly from Word to Tech Head Brothers web site using secured web services made out of WCF \nAdding all validation of the content\n\n","dateCreated":"2008-08-09T06:26:19+02:00","dateModified":"2008-08-09T06:26:19+02:00","datePublished":"2008-08-09T06:26:19+02:00","description":"For three night now I focused on one scenario for the Tech Head Brothers authoring tool:\n\nAs an author I want to be able to copy source code from Visual Studio and insert it into the authored Word document","headline":"Tech Head Brothers new authoring tool, step 8","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/08/09/Tech-Head-Brothers-new-authoring-tool-step-8/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2008/08/09/Tech-Head-Brothers-new-authoring-tool-step-8/","keywords":"Tech Head Brothers, WCF, VSTO, Office 2007"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"For three night now I focused on one scenario for the Tech Head Brothers authoring tool:\n\nAs an author I want to be able to copy source code from Visual Studio and insert it into the authored Word document\nAs an author I want to preview a document with source code inserted in Internet Explorer  \n\nThis might not look really difficult at first, but I had some difficulties to fulfill the requirements of those two user story.\nThe first one was almost already implemented in step 7, using CustomXML capabilities of WordML.\nThe biggest issue I had was to figure out why when I was inserting CustomXML, the WordML format of the hyperlink was changing. It took me the most time to realize that inserting CustomXML was not the issue. The issue was proofing. Somehow inserting CustomXML was activating the auto proofing and then I got some error like on the following picture. The red underlined Brothers which is a link was the issue. In fact this simple thing change the WordML representation of the hyperlink.\nAs I had something working I had to find a way other than adding a second way to parse Hyperlinks. I came to the solution of disabling proofing then saving the document before making my projection to Tech Head Brothers XML. Then for sure re-enabling the proofing. Nice and easy!\nThe next issue was to be able at the time of parsing the WordML to identify that source code was at at the current position in the WordML. I turned and turned the problem, than asked some clever WordML guys (Julien, Pierre) and some generally good advisor (Mitsu, Cyril). Nothing! I finally came to a solution tonight:\n\nGetting the Id of the PlainTextContentControl from the WordML\nSearching for this Control in the Controls collection\nFinally using the plainTextContentControl.XMLMapping.CustomXMLPart.XML property I had access to my CustomXML  \n\nI couldn’t find any way to do that parsing the WordML and honestly tonight I don’t know how it is possible to go from the WordML to the CustomXML.\nThe result is here!\nCopying source code from Visual Studio\n \nInserting it in Word 2007\n \nFinal result in Internet Explorer\n  \nThere is still a little bug with the spacing that will solved tomorrow or later!\nNow the next steps will be: \n\nProjection of hyperlink\nProjection of picture\nProjection of numbered list and bullet list\nFixing bugs found by Sébastien and Rédo \nPicture caption\nGiving the possibility to insert source code \nProjection of the source code \nAdding the possibility to the author to post the article directly from Word to Tech Head Brothers web site using secured web services made out of WCF \nAdding all validation of the content\n\n","dateCreated":"2008-08-09T06:26:19+02:00","dateModified":"2008-08-09T06:26:19+02:00","datePublished":"2008-08-09T06:26:19+02:00","description":"For three night now I focused on one scenario for the Tech Head Brothers authoring tool:\n\nAs an author I want to be able to copy source code from Visual Studio and insert it into the authored Word document","headline":"Tech Head Brothers new authoring tool, step 8","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/08/09/Tech-Head-Brothers-new-authoring-tool-step-8/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2008/08/09/Tech-Head-Brothers-new-authoring-tool-step-8/","keywords":"Tech Head Brothers, WCF, VSTO, Office 2007"}</script>
     <meta name="description" content="For three night now I focused on one scenario for the Tech Head Brothers authoring tool:  As an author I want to be able to copy source code from Visual Studio and insert it into the authored Word doc">
 <meta name="keywords" content="Tech Head Brothers,WCF,VSTO,Office 2007">
 <meta property="og:type" content="blog">
@@ -37,13 +37,13 @@
         
     
     
-        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
     
     
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
     <!--STYLES END-->
     
     <script type="text/javascript">
@@ -82,7 +82,7 @@
                 href="#about">
         
         
-            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -100,7 +100,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -120,7 +120,7 @@
                             title="Home"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
                     </a>
             </li>
@@ -133,7 +133,7 @@
                             title="Tags"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
                     </a>
             </li>
@@ -146,7 +146,7 @@
                             title="Archives"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
                     </a>
             </li>
@@ -159,7 +159,7 @@
                             title="About"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
@@ -172,7 +172,7 @@
                     
                         <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
                     </a>
             </li>
@@ -181,7 +181,7 @@
                     
                         <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
                     </a>
             </li>
@@ -190,7 +190,7 @@
                     
                         <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
                     </a>
             </li>
@@ -203,7 +203,7 @@
                     
                         <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
                     </a>
             </li>
@@ -329,7 +329,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2008/08/09/Tech-Head-Brothers-new-authoring-tool-step-8/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -337,7 +337,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2008/08/09/Tech-Head-Brothers-new-authoring-tool-step-8/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -345,7 +345,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2008/08/09/Tech-Head-Brothers-new-authoring-tool-step-8/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -353,7 +353,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -425,7 +425,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2008/08/09/Tech-Head-Brothers-new-authoring-tool-step-8/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -433,7 +433,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2008/08/09/Tech-Head-Brothers-new-authoring-tool-step-8/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -441,7 +441,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2008/08/09/Tech-Head-Brothers-new-authoring-tool-step-8/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -449,7 +449,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -467,14 +467,14 @@
 
                 </div>
                 <div id="share-options-bar" class="share-options-bar" data-behavior="5">
-    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
     <ul class="share-options">
         
             
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2008/08/09/Tech-Head-Brothers-new-authoring-tool-step-8/">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
                 </a>
             </li>
         
@@ -482,7 +482,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2008/08/09/Tech-Head-Brothers-new-authoring-tool-step-8/">
-                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
                 </a>
             </li>
         
@@ -490,7 +490,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2008/08/09/Tech-Head-Brothers-new-authoring-tool-step-8/">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
                 </a>
             </li>
         
@@ -509,10 +509,10 @@
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
-            <i class="fa fa-remove"></i>
+            <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -529,7 +529,7 @@
         
         
             <div id="about-card-location">
-                <i class="fa fa-map-marker"></i>
+                <i class="fa fa-map-marker-alt"></i>
                 <br/>
                 Illzach, France
             </div>
@@ -541,7 +541,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
 
     

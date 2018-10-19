@@ -13,7 +13,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"Now that there is a distribution of .NET Core on a Linux distro running on my Raspberry Pi 3, I had to try it.\nIn this post, I will explain all the steps I had to execute to be able to run my first Hello World application.First, you will need to install on your Pi the Ubuntu MATE distribution. Currently, the RASPBIAN distribution, which is the mostly used, is not supported but it seems that it will be soon the case according to this Github issue on dotnet / core.\nDownload Ubuntu MATE 16.04.2 LTS for Raspberry Pi, then extract the image out of the archive.\nTo install it on your microSDHC, the best is to use Win32 Disk Imager which you can install using Chocolatey with the command ‘choco install win32diskimager‘.\nThen just write the image you extracted on your microSDHC using Win32 Disk Imager, like this:\n\nWait a couple of minutes then plug the microSDHC in your Pi and boot it, then follow the installation instruction and create your user.\nCurrently, there is no .NET Core SDK running on ARM processor, the CPU architecture of the Pi. So you will have to write and compile your program from another machine, in my case I run on Windows.\nNow to simplify all the operations I installed a SSH server on the Pi to make it easy to access it remotely and copy files from my Surface.\nTo install the SSH server, run a shell, and run the following commands\n\nThen we will need to install some .NET Core native prerequisites for Ubuntu as explained on the Github dotnet / core documentation.\n\nYou will need the IP of your Pi, so use the command ‘ifconfig‘ which will output something like that\n\nThen back to your PC, install Putty using ‘choco install putty‘ and WinSCP using ‘choco install winscp‘.\nConfigure both Putty and WinSCP to connect to your Pi using the IP address you’ve got from the ifconfig command\nNow that we have the Pi running the right Linux distribution on it and we can connect to it easily from our computer, it is time to create a first .NET Core project. For sure, we will start with the famous Hello World.\nInstall .NET Core 2.0 SDK, I used the Windows x64 version 2.0.0-preview1-005685 which I downloaded as a zip. Unpack it on your hard drive in a folder named dotnet, then create another folder at the same level called hello and create a new console application:\n\nEdit the file hello.csproj created in the folder. I use Visual Studio Code for that, which again can be installed using Chocolatey ‘choco install visualstudiocode‘. You will need to update the RuntimeFrameworkVersion with the version that you can find on the page .NET Core Runtime &amp; Host Setup Repo / Daily Builds then find Ubuntu 16.04 (arm32) and get the version, in my case 2.0.0-preview1-005685.\n\nThen run, and publish\n\nFinally, you will get the publish results in the folder .\\hello\\bin\\Debug\\netcoreapp2.0\\ubuntu.16.04-arm which you can easily upload to your Pi using WinSCP previously installed.\nYou need then to set the hello executable to have the execution rights on the Pi, which you can also do easily from WinSCP\n\nThe final step is to run you hello executable on the Pi, which you can do using Putty over SSH then, or by having your Pi connected to a monitor, mouse, and keyboard!\nHere is the result\n\n","dateCreated":"2017-04-03T21:40:07+02:00","dateModified":"2018-05-29T17:42:44+02:00","datePublished":"2017-04-03T21:40:07+02:00","description":"Now that there is a distribution of .NET Core on a Linux distro running on my Raspberry Pi 3, I had to try it.\nIn this post, I will explain all the steps I had to execute to be able to run my first Hello World application.","headline":".NET Core console app running on Raspberry Pi","image":["https://c1.staticflickr.com/4/3808/33008049230_89efeeb73d_q.jpg","https://c1.staticflickr.com/4/3808/33008049230_fcb508209e_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/","keywords":".NET Core, Raspberry Pi, Linux","thumbnailUrl":"https://c1.staticflickr.com/4/3808/33008049230_89efeeb73d_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Now that there is a distribution of .NET Core on a Linux distro running on my Raspberry Pi 3, I had to try it.\nIn this post, I will explain all the steps I had to execute to be able to run my first Hello World application.First, you will need to install on your Pi the Ubuntu MATE distribution. Currently, the RASPBIAN distribution, which is the mostly used, is not supported but it seems that it will be soon the case according to this Github issue on dotnet / core.\nDownload Ubuntu MATE 16.04.2 LTS for Raspberry Pi, then extract the image out of the archive.\nTo install it on your microSDHC, the best is to use Win32 Disk Imager which you can install using Chocolatey with the command ‘choco install win32diskimager‘.\nThen just write the image you extracted on your microSDHC using Win32 Disk Imager, like this:\n\nWait a couple of minutes then plug the microSDHC in your Pi and boot it, then follow the installation instruction and create your user.\nCurrently, there is no .NET Core SDK running on ARM processor, the CPU architecture of the Pi. So you will have to write and compile your program from another machine, in my case I run on Windows.\nNow to simplify all the operations I installed a SSH server on the Pi to make it easy to access it remotely and copy files from my Surface.\nTo install the SSH server, run a shell, and run the following commands\n\nThen we will need to install some .NET Core native prerequisites for Ubuntu as explained on the Github dotnet / core documentation.\n\nYou will need the IP of your Pi, so use the command ‘ifconfig‘ which will output something like that\n\nThen back to your PC, install Putty using ‘choco install putty‘ and WinSCP using ‘choco install winscp‘.\nConfigure both Putty and WinSCP to connect to your Pi using the IP address you’ve got from the ifconfig command\nNow that we have the Pi running the right Linux distribution on it and we can connect to it easily from our computer, it is time to create a first .NET Core project. For sure, we will start with the famous Hello World.\nInstall .NET Core 2.0 SDK, I used the Windows x64 version 2.0.0-preview1-005685 which I downloaded as a zip. Unpack it on your hard drive in a folder named dotnet, then create another folder at the same level called hello and create a new console application:\n\nEdit the file hello.csproj created in the folder. I use Visual Studio Code for that, which again can be installed using Chocolatey ‘choco install visualstudiocode‘. You will need to update the RuntimeFrameworkVersion with the version that you can find on the page .NET Core Runtime &amp; Host Setup Repo / Daily Builds then find Ubuntu 16.04 (arm32) and get the version, in my case 2.0.0-preview1-005685.\n\nThen run, and publish\n\nFinally, you will get the publish results in the folder .\\hello\\bin\\Debug\\netcoreapp2.0\\ubuntu.16.04-arm which you can easily upload to your Pi using WinSCP previously installed.\nYou need then to set the hello executable to have the execution rights on the Pi, which you can also do easily from WinSCP\n\nThe final step is to run you hello executable on the Pi, which you can do using Putty over SSH then, or by having your Pi connected to a monitor, mouse, and keyboard!\nHere is the result\n\n","dateCreated":"2017-04-03T21:40:07+02:00","dateModified":"2018-05-29T17:42:44+02:00","datePublished":"2017-04-03T21:40:07+02:00","description":"Now that there is a distribution of .NET Core on a Linux distro running on my Raspberry Pi 3, I had to try it.\nIn this post, I will explain all the steps I had to execute to be able to run my first Hello World application.","headline":".NET Core console app running on Raspberry Pi","image":["https://c1.staticflickr.com/4/3808/33008049230_89efeeb73d_q.jpg","https://c1.staticflickr.com/4/3808/33008049230_fcb508209e_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/","keywords":".NET Core, Raspberry Pi, Linux","thumbnailUrl":"https://c1.staticflickr.com/4/3808/33008049230_89efeeb73d_q.jpg"}</script>
     <meta name="description" content="Now that there is a distribution of .NET Core on a Linux distro running on my Raspberry Pi 3, I had to try it. In this post, I will explain all the steps I had to execute to be able to run my first He">
 <meta name="keywords" content=".NET Core,Raspberry Pi,Linux">
 <meta property="og:type" content="blog">
@@ -37,7 +37,7 @@
         
     
     
-        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
     
     
         <meta property="og:image" content="https://c1.staticflickr.com/4/3808/33008049230_89efeeb73d_q.jpg"/>
@@ -49,7 +49,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
     <!--STYLES END-->
     
     <script type="text/javascript">
@@ -88,7 +88,7 @@
                 href="#about">
         
         
-            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -106,7 +106,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -126,7 +126,7 @@
                             title="Home"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
                     </a>
             </li>
@@ -139,7 +139,7 @@
                             title="Tags"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
                     </a>
             </li>
@@ -152,7 +152,7 @@
                             title="Archives"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
                     </a>
             </li>
@@ -165,7 +165,7 @@
                             title="About"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
@@ -178,7 +178,7 @@
                     
                         <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
                     </a>
             </li>
@@ -187,7 +187,7 @@
                     
                         <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
                     </a>
             </li>
@@ -196,7 +196,7 @@
                     
                         <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
                     </a>
             </li>
@@ -209,7 +209,7 @@
                     
                         <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
                     </a>
             </li>
@@ -339,7 +339,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -347,7 +347,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -355,7 +355,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -363,7 +363,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -435,7 +435,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -443,7 +443,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -451,7 +451,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -459,7 +459,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -477,14 +477,14 @@
 
                 </div>
                 <div id="share-options-bar" class="share-options-bar" data-behavior="5">
-    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
     <ul class="share-options">
         
             
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
                 </a>
             </li>
         
@@ -492,7 +492,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/">
-                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
                 </a>
             </li>
         
@@ -500,7 +500,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
                 </a>
             </li>
         
@@ -519,10 +519,10 @@
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
-            <i class="fa fa-remove"></i>
+            <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -539,7 +539,7 @@
         
         
             <div id="about-card-location">
-                <i class="fa fa-map-marker"></i>
+                <i class="fa fa-map-marker-alt"></i>
                 <br/>
                 Illzach, France
             </div>
@@ -551,7 +551,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
 
     

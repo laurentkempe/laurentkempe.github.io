@@ -13,7 +13,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"},"articleBody":"In the last posts, we looked at the code to build a HipChat Connect add-on with ASP.NET Core, run the solution in a Docker container and secure the access to the application with a valid HTTPS certificate that we got from Let’s Encrypt for free and finally deploy all of this on Azure!\nOne of my priority while working on new projects is to put in place Continous Integration/Continuous Delivery so that developers can develop and integrate the result of their work in a fast, efficient and easy way.\nWe have now all the necessary components to create that Continuous Integration and Continuous Delivery pipeline!\nThe goal is to have something which operates like that\n\nA developer merges something on the master branch of our Github repository\nIt triggers a build of a Docker container image using the Dockerfile versioned in Github, which internally compile our new version of our ASP.NET Core web application\nIn case of a successful build, it pushes the new Docker container image to a Docker repository\nFinally, the new Docker image is deployed as a Docker container on Azure\n\nTo fulfill those requirements, we will use Docker Cloud which lets you\n\nBuild, ship, and run - any app, anywhere\n\nExactly what we need!\n\nAutomate Pipelines - Set up a fully automated CI/CD workflow in minutes, from git push to production.\n\nAnd as we want to use Docker the next argument is also interesting\n\nA Single Docker Platform- Docker Cloud has everything you need to build, ship and run your Dockerized application.\n\nSo if you haven’t any Docker account you will first need to create one to be able to log in Docker Cloud.\nThen you will need to link Docker Cloud to your provider, in our case Microsoft Azure.\nNow that Docker Cloud can operate Microsoft Azure, the next step is to create a node. A node is a Linux host or virtual machine used to deploy and run containers. It is the equivalent of what we did with the docker-machine command line on the post “Deploying Docker containers running ASP.NET Core RC2 to Microsoft Azure Cloud“. You can get all the instruction on the page “Deploy Your First Node“.\nIn our case we created the following node:\n\nCurrently, we have a machine, a node in Docker Cloud wording, so we are ready to deploy our containers on that node. We could create a service, which is a container, or a group of containers from the same Docker repository. But we are more interested in creating a stack,  which specifies a group of services that make up an application, similar to Docker Compose. As we have seen in “Free HTTPS certificates for Docker containers running ASP.NET Core RC2 on Microsoft Azure,” our application is currently made of two components served as two containers: \n\nNGINX, reverse proxy and setting up Let’s Encrypt certificates\nKestrel delivering our ASP.NET Core 1.0 hipchat connect web application\n\nTo create our stack, we are re-using our docker-compose.yml file set up in the previous post\n\nwhich we modify slightly to describe our stack\n\nThe only difference, except the reordering, is to instruct automatic redeployment of the hipchatconnect container when an update of its image occurs in Docker Cloud registry, with the following line\n\nautoredeploy: true\n\nAfter creating the stack file and hitting the deploy button, we see the result of our stack with its two containers running on our node on Microsoft Azure!\n\nLet’s have a break a moment to see what we have achieved at the moment and what remains to accomplish our goal to have a proper CI/CD pipeline and be able to deploy to production from a simple commit/merge in source code repository.We have at the moment all the infrastructure ready. We have a node which is a machine in Azure running our application which is composed of two Docker containers.So the last point is to connect this infrastructure to our source code repository which is a git repository on Github.\nTo do that we will use the Build part offered by Docker Cloud and the repositories. A repository is a collection of tagged images. When you create a service, you choose an image to use to create containers. You can read more about it on the page “Docker Cloud repositories“Then we will enable the autobuild by connecting it to our Github repository which will trigger a new build with every git push to our source code repository.\n\nPretty impressive results in such a little effort and short time! I have built some CI/CD in the past, but it wasn’t that easy, we see clearly the potential of today’s tooling that gives us so much power as software engineers!\n","dateCreated":"2016-07-18T19:04:21+02:00","dateModified":"2018-05-29T17:42:44+02:00","datePublished":"2016-07-18T19:04:21+02:00","description":"In the last posts, we looked at the code to build a HipChat Connect add-on with ASP.NET Core, run the solution in a Docker container and secure the access to the application with a valid HTTPS certificate that we got from Let’s Encrypt for free and finally deploy all of this on Azure!","headline":"Build, ship and run ASP.NET Core on Microsoft Azure using Docker Cloud","image":["https://c7.staticflickr.com/9/8689/16775792438_8366ee5732_q.jpg","https://c7.staticflickr.com/9/8689/16775792438_e45283970c_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2016/07/18/Build-ship-and-run-ASP-NET-Core-on-Microsoft-Azure-using-Docker-Cloud/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg","logo":{"@type":"ImageObject","url":"https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"}},"url":"https://laurentkempe.com/2016/07/18/Build-ship-and-run-ASP-NET-Core-on-Microsoft-Azure-using-Docker-Cloud/","keywords":"Docker, HipChat Connect, ASP.NET Core, Microsoft Azure","thumbnailUrl":"https://c7.staticflickr.com/9/8689/16775792438_8366ee5732_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"In the last posts, we looked at the code to build a HipChat Connect add-on with ASP.NET Core, run the solution in a Docker container and secure the access to the application with a valid HTTPS certificate that we got from Let’s Encrypt for free and finally deploy all of this on Azure!\nOne of my priority while working on new projects is to put in place Continous Integration/Continuous Delivery so that developers can develop and integrate the result of their work in a fast, efficient and easy way.\nWe have now all the necessary components to create that Continuous Integration and Continuous Delivery pipeline!\nThe goal is to have something which operates like that\n\nA developer merges something on the master branch of our Github repository\nIt triggers a build of a Docker container image using the Dockerfile versioned in Github, which internally compile our new version of our ASP.NET Core web application\nIn case of a successful build, it pushes the new Docker container image to a Docker repository\nFinally, the new Docker image is deployed as a Docker container on Azure\n\nTo fulfill those requirements, we will use Docker Cloud which lets you\n\nBuild, ship, and run - any app, anywhere\n\nExactly what we need!\n\nAutomate Pipelines - Set up a fully automated CI/CD workflow in minutes, from git push to production.\n\nAnd as we want to use Docker the next argument is also interesting\n\nA Single Docker Platform- Docker Cloud has everything you need to build, ship and run your Dockerized application.\n\nSo if you haven’t any Docker account you will first need to create one to be able to log in Docker Cloud.\nThen you will need to link Docker Cloud to your provider, in our case Microsoft Azure.\nNow that Docker Cloud can operate Microsoft Azure, the next step is to create a node. A node is a Linux host or virtual machine used to deploy and run containers. It is the equivalent of what we did with the docker-machine command line on the post “Deploying Docker containers running ASP.NET Core RC2 to Microsoft Azure Cloud“. You can get all the instruction on the page “Deploy Your First Node“.\nIn our case we created the following node:\n\nCurrently, we have a machine, a node in Docker Cloud wording, so we are ready to deploy our containers on that node. We could create a service, which is a container, or a group of containers from the same Docker repository. But we are more interested in creating a stack,  which specifies a group of services that make up an application, similar to Docker Compose. As we have seen in “Free HTTPS certificates for Docker containers running ASP.NET Core RC2 on Microsoft Azure,” our application is currently made of two components served as two containers: \n\nNGINX, reverse proxy and setting up Let’s Encrypt certificates\nKestrel delivering our ASP.NET Core 1.0 hipchat connect web application\n\nTo create our stack, we are re-using our docker-compose.yml file set up in the previous post\n\nwhich we modify slightly to describe our stack\n\nThe only difference, except the reordering, is to instruct automatic redeployment of the hipchatconnect container when an update of its image occurs in Docker Cloud registry, with the following line\n\nautoredeploy: true\n\nAfter creating the stack file and hitting the deploy button, we see the result of our stack with its two containers running on our node on Microsoft Azure!\n\nLet’s have a break a moment to see what we have achieved at the moment and what remains to accomplish our goal to have a proper CI/CD pipeline and be able to deploy to production from a simple commit/merge in source code repository.We have at the moment all the infrastructure ready. We have a node which is a machine in Azure running our application which is composed of two Docker containers.So the last point is to connect this infrastructure to our source code repository which is a git repository on Github.\nTo do that we will use the Build part offered by Docker Cloud and the repositories. A repository is a collection of tagged images. When you create a service, you choose an image to use to create containers. You can read more about it on the page “Docker Cloud repositories“Then we will enable the autobuild by connecting it to our Github repository which will trigger a new build with every git push to our source code repository.\n\nPretty impressive results in such a little effort and short time! I have built some CI/CD in the past, but it wasn’t that easy, we see clearly the potential of today’s tooling that gives us so much power as software engineers!\n","dateCreated":"2016-07-18T19:04:21+02:00","dateModified":"2018-05-29T17:42:44+02:00","datePublished":"2016-07-18T19:04:21+02:00","description":"In the last posts, we looked at the code to build a HipChat Connect add-on with ASP.NET Core, run the solution in a Docker container and secure the access to the application with a valid HTTPS certificate that we got from Let’s Encrypt for free and finally deploy all of this on Azure!","headline":"Build, ship and run ASP.NET Core on Microsoft Azure using Docker Cloud","image":["https://c7.staticflickr.com/9/8689/16775792438_8366ee5732_q.jpg","https://c7.staticflickr.com/9/8689/16775792438_e45283970c_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2016/07/18/Build-ship-and-run-ASP-NET-Core-on-Microsoft-Azure-using-Docker-Cloud/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2016/07/18/Build-ship-and-run-ASP-NET-Core-on-Microsoft-Azure-using-Docker-Cloud/","keywords":"Docker, HipChat Connect, ASP.NET Core, Microsoft Azure","thumbnailUrl":"https://c7.staticflickr.com/9/8689/16775792438_8366ee5732_q.jpg"}</script>
     <meta name="description" content="In the last posts, we looked at the code to build a HipChat Connect add-on with ASP.NET Core, run the solution in a Docker container and secure the access to the application with a valid HTTPS certifi">
 <meta name="keywords" content="Docker,HipChat Connect,ASP.NET Core,Microsoft Azure">
 <meta property="og:type" content="blog">
@@ -36,7 +36,7 @@
         
     
     
-        <meta property="og:image" content="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg"/>
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
     
     
         <meta property="og:image" content="https://c7.staticflickr.com/9/8689/16775792438_8366ee5732_q.jpg"/>
@@ -48,7 +48,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-1udptkpril81ozu8ifd8zpujn7ipu7lefxsiu5gxx0dpnzntdx6dusvki3ao.min.css">
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
     <!--STYLES END-->
     
     <script type="text/javascript">
@@ -87,7 +87,7 @@
                 href="#about">
         
         
-            <img class="header-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -105,7 +105,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -125,7 +125,7 @@
                             title="Home"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
                     </a>
             </li>
@@ -138,7 +138,7 @@
                             title="Tags"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
                     </a>
             </li>
@@ -151,7 +151,7 @@
                             title="Archives"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
                     </a>
             </li>
@@ -164,7 +164,7 @@
                             title="About"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
@@ -177,7 +177,7 @@
                     
                         <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
                     </a>
             </li>
@@ -186,7 +186,7 @@
                     
                         <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-twitter" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
                     </a>
             </li>
@@ -195,7 +195,7 @@
                     
                         <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-linkedin" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
                     </a>
             </li>
@@ -208,7 +208,7 @@
                     
                         <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
                     </a>
             </li>
@@ -354,7 +354,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2016/07/18/Build-ship-and-run-ASP-NET-Core-on-Microsoft-Azure-using-Docker-Cloud/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -362,7 +362,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2016/07/18/Build-ship-and-run-ASP-NET-Core-on-Microsoft-Azure-using-Docker-Cloud/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -370,7 +370,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2016/07/18/Build-ship-and-run-ASP-NET-Core-on-Microsoft-Azure-using-Docker-Cloud/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -378,7 +378,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -450,7 +450,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2016/07/18/Build-ship-and-run-ASP-NET-Core-on-Microsoft-Azure-using-Docker-Cloud/" title="Share on Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -458,7 +458,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2016/07/18/Build-ship-and-run-ASP-NET-Core-on-Microsoft-Azure-using-Docker-Cloud/" title="Share on Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -466,7 +466,7 @@
             
             <li class="post-action hide-xs">
                 <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2016/07/18/Build-ship-and-run-ASP-NET-Core-on-Microsoft-Azure-using-Docker-Cloud/" title="Share on Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -474,7 +474,7 @@
             
                 <li class="post-action">
                     <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
@@ -492,14 +492,14 @@
 
                 </div>
                 <div id="share-options-bar" class="share-options-bar" data-behavior="5">
-    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
     <ul class="share-options">
         
             
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2016/07/18/Build-ship-and-run-ASP-NET-Core-on-Microsoft-Azure-using-Docker-Cloud/">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>Share on Facebook</span>
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
                 </a>
             </li>
         
@@ -507,7 +507,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2016/07/18/Build-ship-and-run-ASP-NET-Core-on-Microsoft-Azure-using-Docker-Cloud/">
-                    <i class="fa fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
                 </a>
             </li>
         
@@ -515,7 +515,7 @@
             
             <li class="share-option">
                 <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2016/07/18/Build-ship-and-run-ASP-NET-Core-on-Microsoft-Azure-using-Docker-Cloud/">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
                 </a>
             </li>
         
@@ -534,10 +534,10 @@
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
-            <i class="fa fa-remove"></i>
+            <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://c1.staticflickr.com/8/7632/16914282046_1faa3eb299_m.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -554,7 +554,7 @@
         
         
             <div id="about-card-location">
-                <i class="fa fa-map-marker"></i>
+                <i class="fa fa-map-marker-alt"></i>
                 <br/>
                 Illzach, France
             </div>
@@ -566,7 +566,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-yhuo2grt8r7qkqumzgjoglkfbicl1thukjgmla6jopu56zpcowfedi5zjcor.min.js"></script>
+<script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
 
     
