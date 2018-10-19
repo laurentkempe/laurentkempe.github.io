@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://laurentkempe.com/"/>
-  <updated>2018-09-08T06:34:53.326Z</updated>
+  <updated>2018-06-02T05:27:51.859Z</updated>
   <id>https://laurentkempe.com/</id>
   
   <author>
@@ -15,20 +15,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>WPF with Application Insights</title>
-    <link href="https://laurentkempe.com/2018/09/08/WPF-with-Application-Insights/"/>
-    <id>https://laurentkempe.com/2018/09/08/WPF-with-Application-Insights/</id>
-    <published>2018-09-08T06:34:53.000Z</published>
-    <updated>2018-09-08T06:34:53.326Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
-    
-  </entry>
   
   <entry>
     <title>Automating my development machine installation</title>
@@ -471,6 +457,34 @@
       <category term="Team City" scheme="https://laurentkempe.com/tags/Team-City/"/>
     
       <category term="Stash" scheme="https://laurentkempe.com/tags/Stash/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Functional Programming Principles in Scala using JetBrains IntelliJ IDEA</title>
+    <link href="https://laurentkempe.com/2013/09/20/Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA/"/>
+    <id>https://laurentkempe.com/2013/09/20/Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA/</id>
+    <published>2013-09-20T18:43:00.000Z</published>
+    <updated>2013-10-04T02:53:57.000Z</updated>
+    
+    <content type="html"><![CDATA[<!-- [![Another great shot of our friend the Whale of last week in Cape Bridgewater](http://farm4.staticflickr.com/3798/9553182109_bcac5e189d_m.jpg)](http://www.flickr.com/photos/laurentkempe/9553182109/ "Another great shot of our friend the Whale of last week in Cape Bridgewater by Laurent Kempé, on Flickr") --><p>This week I started the <a href="https://www.coursera.org/" target="_blank" rel="noopener">Coursera</a> course <a href="https://www.coursera.org/course/progfun" target="_blank" rel="noopener">Functional Programming Principles in Scala</a> with Martin Odersky as instructor.</p><p>One of my first step was to have <a href="http://www.jetbrains.com/idea/" target="_blank" rel="noopener">JetBrains IntelliJ IDEA</a> working with the <a href="http://www.scala-lang.org/" target="_blank" rel="noopener">Scala programming language</a> so that I can work on the course assignments using my preferred IDE.<br><a id="more"></a></p><p>I have seen that The Guardian published a blog post <a href="http://www.theguardian.com/info/developer-blog/2012/sep/21/funtional-programming-principles-scala-setting-up-intellij" target="_blank" rel="noopener">Functional Programming Principles in Scala: Setting up IntelliJ</a> but it focus on the Unix-like operating systems (OSX and Linux). As I work on Windows I for sure installed it on my machine running Windows 8.1! I also use a different set of tools so here is the way I did it!</p><p>First of all I am assuming that you have <a href="http://www.jetbrains.com/idea/" target="_blank" rel="noopener">JetBrains IntelliJ IDEA 12</a> and JDK installed.</p><p>From IntelliJ you need to install the Scala plugin so go to File / Settings then on the dialog search for plugins, click on Browse Repositories button and search for Scala then select Scala v.0.19.299 from JetBrains</p><p><img src="http://farm8.staticflickr.com/7341/9834166825_2867bcc1ba_o.png" alt=""></p><p>Then you also need to install the <a href="http://blog.jetbrains.com/scala/2013/07/17/sbt-plugin-nightly-builds/" target="_blank" rel="noopener">SBT plugin also from JetBrains</a> which is still in development and get nightly builds.</p><p>Add the following URL to the list of custom plugin repositories in Settings / Plugins / Browse Repositories / Manage Repositories:</p><blockquote><p><a href="http://download.jetbrains.com/scala/sbt-nightly-leda.xml" target="_blank" rel="noopener">http://download.jetbrains.com/scala/sbt-nightly-leda.xml</a></p></blockquote><p>After that, you may install the plugin via Settings | Plugins | Browse Repositories. IDEA will check for the latest plugin builds automatically.</p><p><img src="http://farm8.staticflickr.com/7363/9834729745_f23a4eed10_o.png" alt=""></p><p>Now extract the assignment zip that the coursera course is providing; e.g. for the example assignment, unpack the example.zip to a folder then in IntelliJ use File / Import Project. IntelliJ already recognize the folder as project:</p><p><img src="http://farm3.staticflickr.com/2818/9834957283_3cff547c6e_o.png" alt=""></p><p><img src="http://farm3.staticflickr.com/2893/9835093913_02feeb2bce_o.png" alt=""></p><p>Click Next</p><p><img src="http://farm8.staticflickr.com/7366/9835020965_200917fb2a_o.png" alt=""></p><p>Tick Use auto-import and click Finish. IntelliJ will then import your project:</p><p><img src="http://farm4.staticflickr.com/3818/9835074955_5eca26b99e_o.png" alt=""></p><p>Now you need to edit your project structure using File / Project Structure and choose Modules, then progfun-example</p><p><img src="http://farm6.staticflickr.com/5450/9835157816_aa231ca57e_o.png" alt=""></p><p>You will see on the dialog for the Source and Test Source Folders some folder in red, just click on the X to delete all the one in red to get to the following state, then finally click OK</p><p><img src="http://farm3.staticflickr.com/2832/9835244223_2f54a33cd8_o.png" alt=""></p><p>Now navigate to the test file ListsSuite and press ALT – SHIFT – F10 to start the tests</p><p><img src="http://farm8.staticflickr.com/7419/9835291836_9c3aba2a3f_o.png" alt=""></p><p>And if you implemented the assignment you should see this results:</p><p><img src="http://farm8.staticflickr.com/7409/9835313066_82e5e31067_o.png" alt=""></p><p>There is still two tests to fix in the first assignment, this is why there are red!</p><p>But as you can see now you have a full Scala development environment based on the great JetBrains IntelliJ IDEA IDE! Now you can code with pleasure!</p><p>I really enjoy the first week assignments and implemented the first two as <a href="http://www.laurentkempe.com/post/Test-Driven-Development-Kata-String-Calculator.aspx" target="_blank" rel="noopener">coding Kata</a>! And I even involved France-Anne for the second one; first time that she is coding something <img src="/images/wlEmoticon-smile.png" alt="Smile"> . Very nice!</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;!-- [![Another great shot of our friend the Whale of last week in Cape Bridgewater](http://farm4.staticflickr.com/3798/9553182109_bcac5e189d_m.jpg)](http://www.flickr.com/photos/laurentkempe/9553182109/ &quot;Another great shot of our friend the Whale of last week in Cape Bridgewater by Laurent Kempé, on Flickr&quot;) --&gt;
+&lt;p&gt;This week I started the &lt;a href=&quot;https://www.coursera.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Coursera&lt;/a&gt; course &lt;a href=&quot;https://www.coursera.org/course/progfun&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Functional Programming Principles in Scala&lt;/a&gt; with Martin Odersky as instructor.&lt;/p&gt;
+&lt;p&gt;One of my first step was to have &lt;a href=&quot;http://www.jetbrains.com/idea/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;JetBrains IntelliJ IDEA&lt;/a&gt; working with the &lt;a href=&quot;http://www.scala-lang.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scala programming language&lt;/a&gt; so that I can work on the course assignments using my preferred IDE.&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="Coursera" scheme="https://laurentkempe.com/tags/Coursera/"/>
+    
+      <category term="IntelliJ" scheme="https://laurentkempe.com/tags/IntelliJ/"/>
+    
+      <category term="Jetbrains" scheme="https://laurentkempe.com/tags/Jetbrains/"/>
+    
+      <category term="Scala" scheme="https://laurentkempe.com/tags/Scala/"/>
     
   </entry>
   
