@@ -13,9 +13,9 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"When I started to work on the new version of Tech Head Brothers I decided to use the new version of the unit testing framework from Microsoft. Before making this decision I read that it was much better and faster in several places. As I also wanted to get code coverage I thought it was a good idea.\nI also had to setup a version control system and decided to use subversion with the facility of the free VisualSVN Server. Very simple way to setup in less than 10 min (including download time) a subversion repository on a Windows server. I highly recommend it ! I am also now, for some months, using VisualSVN that provides a seamless integration between subversion and Visual Studio 2005 and 2008. VisualSVN Limited offered a license of VisualSVN to me and my brother. Thanks a lot, really appreciated! And now at innoveo solutions, my company, we are also using it.\nThen came the time to have a continuous integration server. After having CC.NET installed and used at innoveo solutions I decided to give a try to JetBrains Team City for my personal use  on Tech Head Brothers development. The installation and configuration with subversion was straight and achieved in less than two hours. So I had a version control system and continuous integration process setup in less than 2 hours and a half. Isn’t that incredible?\nBut as you can see on the following picture I had and still had an issue!\n \nMy unit tests aren’t running at all! And you know what? What I feared the most was actually true!\nAs you can read it on this msdn article: How to: Set Up a Build Computer \n\nImportant Note:\nIn order to run tests during the build, Test Edition must be installed on the build computer. In order to run unit testing, code coverage, or code analysis, Visual Studio Team System Development Edition must be installed on the build computer.\n\nOr on this forum post “Strange MSTest.exe problems with Build Server 2008 RTM“ \n\nWe are indeed hoping to address this issue in a future release, but for now running unit tests with Team Build does require VS Team Suite or VS Team Tester on the build machine.\n\nSo no what I need to do as a next step is to convert my Visual Studio unit tests to a framework, like NUnit, that doesn’t needs a development environment installed on a build server. What a waste of time! \nAt innoveo we are successfully using NUnit and Rhino Mocks with Team City!\n","dateCreated":"2008-03-21T08:55:32+01:00","dateModified":"2008-03-21T08:55:32+01:00","datePublished":"2008-03-21T08:55:32+01:00","description":"When I started to work on the new version of Tech Head Brothers I decided to use the new version of the unit testing framework from Microsoft. Before making this decision I read that it was much better and faster in several places. As I also wanted to get code coverage I thought it was a good idea.\nI also had to setup a version control system and decided to use subversion with the facility of the free VisualSVN Server. Very simple way to setup in less than 10 min (including download time) a subversion repository on a Windows server. I highly recommend it ! I am also now, for some months, using VisualSVN that provides a seamless integration between subversion and Visual Studio 2005 and 2008. VisualSVN Limited offered a license of VisualSVN to me and my brother. Thanks a lot, really appreciated! And now at innoveo solutions, my company, we are also using it.","headline":"Set Up a Build Computer using VisualSVN, Team City, MsTest, NUnit","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/03/21/Set-Up-a-Build-Computer-using-VisualSVN-Team-City-MsTest-NUnit/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2008/03/21/Set-Up-a-Build-Computer-using-VisualSVN-Team-City-MsTest-NUnit/","keywords":"innoveo solutions, Tech Head Brothers, unit test, continuous integration, Team City"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"When I started to work on the new version of Tech Head Brothers I decided to use the new version of the unit testing framework from Microsoft. Before making this decision I read that it was much better and faster in several places. As I also wanted to get code coverage I thought it was a good idea.\nI also had to setup a version control system and decided to use subversion with the facility of the free VisualSVN Server. Very simple way to setup in less than 10 min (including download time) a subversion repository on a Windows server. I highly recommend it ! I am also now, for some months, using VisualSVN that provides a seamless integration between subversion and Visual Studio 2005 and 2008. VisualSVN Limited offered a license of VisualSVN to me and my brother. Thanks a lot, really appreciated! And now at innoveo solutions, my company, we are also using it.\nThen came the time to have a continuous integration server. After having CC.NET installed and used at innoveo solutions I decided to give a try to JetBrains Team City for my personal use  on Tech Head Brothers development. The installation and configuration with subversion was straight and achieved in less than two hours. So I had a version control system and continuous integration process setup in less than 2 hours and a half. Isn’t that incredible?\nBut as you can see on the following picture I had and still had an issue!\n \nMy unit tests aren’t running at all! And you know what? What I feared the most was actually true!\nAs you can read it on this msdn article: How to: Set Up a Build Computer \n\nImportant Note:\nIn order to run tests during the build, Test Edition must be installed on the build computer. In order to run unit testing, code coverage, or code analysis, Visual Studio Team System Development Edition must be installed on the build computer.\n\nOr on this forum post “Strange MSTest.exe problems with Build Server 2008 RTM“ \n\nWe are indeed hoping to address this issue in a future release, but for now running unit tests with Team Build does require VS Team Suite or VS Team Tester on the build machine.\n\nSo no what I need to do as a next step is to convert my Visual Studio unit tests to a framework, like NUnit, that doesn’t needs a development environment installed on a build server. What a waste of time! \nAt innoveo we are successfully using NUnit and Rhino Mocks with Team City!\n","dateCreated":"2008-03-21T08:55:32+01:00","dateModified":"2008-03-21T08:55:32+01:00","datePublished":"2008-03-21T08:55:32+01:00","description":"When I started to work on the new version of Tech Head Brothers I decided to use the new version of the unit testing framework from Microsoft. Before making this decision I read that it was much better and faster in several places. As I also wanted to get code coverage I thought it was a good idea.\nI also had to setup a version control system and decided to use subversion with the facility of the free VisualSVN Server. Very simple way to setup in less than 10 min (including download time) a subversion repository on a Windows server. I highly recommend it ! I am also now, for some months, using VisualSVN that provides a seamless integration between subversion and Visual Studio 2005 and 2008. VisualSVN Limited offered a license of VisualSVN to me and my brother. Thanks a lot, really appreciated! And now at innoveo solutions, my company, we are also using it.","headline":"Set Up a Build Computer using VisualSVN, Team City, MsTest, NUnit","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/03/21/Set-Up-a-Build-Computer-using-VisualSVN-Team-City-MsTest-NUnit/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2008/03/21/Set-Up-a-Build-Computer-using-VisualSVN-Team-City-MsTest-NUnit/","keywords":"Tech Head Brothers, innoveo solutions, unit test, continuous integration, Team City"}</script>
     <meta name="description" content="When I started to work on the new version of Tech Head Brothers I decided to use the new version of the unit testing framework from Microsoft. Before making this decision I read that it was much bette">
-<meta name="keywords" content="innoveo solutions,Tech Head Brothers,unit test,continuous integration,Team City">
+<meta name="keywords" content="Tech Head Brothers,innoveo solutions,unit test,continuous integration,Team City">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Set Up a Build Computer using VisualSVN, Team City, MsTest, NUnit">
 <meta property="og:url" content="https://laurentkempe.com/2008/03/21/Set-Up-a-Build-Computer-using-VisualSVN-Team-City-MsTest-NUnit/index.html">
@@ -75,11 +75,10 @@
     </div>
     
         
-            <a  class="header-right-picture "
-                href="#about">
+            <a class="header-right-picture " href="#about">
         
         
-            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
         
         </a>
     
@@ -97,7 +96,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -111,11 +110,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/ "
-                            
-                            title="Home"
-                        >
+                        <a class="sidebar-button-link " href="/ " title="Home">
                     
                         <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
@@ -124,11 +119,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/all-tags"
-                            
-                            title="Tags"
-                        >
+                        <a class="sidebar-button-link " href="/all-tags" title="Tags">
                     
                         <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
@@ -137,11 +128,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/all-archives"
-                            
-                            title="Archives"
-                        >
+                        <a class="sidebar-button-link " href="/all-archives" title="Archives">
                     
                         <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
@@ -150,11 +137,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/about-laurent-kempe.html"
-                            
-                            title="About"
-                        >
+                        <a class="sidebar-button-link " href="/about-laurent-kempe.html" title="About">
                     
                         <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
@@ -167,7 +150,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                        <a class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
                         <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
@@ -176,7 +159,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                        <a class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
                         <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
@@ -185,7 +168,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                        <a class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
                         <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
@@ -198,7 +181,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                        <a class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
                         <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
@@ -266,7 +249,7 @@
     <div id="post-footer" class="post-footer main-content-wrap">
         
             <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                <span class="text-color-light text-small">TAGGED IN</span><br>
                 
     <a class="tag tag--primary tag--small t-link" href="/tags/Team-City/">Team City</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tech-Head-Brothers/">Tech Head Brothers</a> <a class="tag tag--primary tag--small t-link" href="/tags/continuous-integration/">continuous integration</a> <a class="tag tag--primary tag--small t-link" href="/tags/innoveo-solutions/">innoveo solutions</a> <a class="tag tag--primary tag--small t-link" href="/tags/unit-test/">unit test</a>
 
@@ -362,7 +345,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+        Copyrights &copy; 2019 Laurent Kempé. All Rights Reserved.
     </span>
 </footer>
 
@@ -490,7 +473,7 @@
             <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -500,7 +483,7 @@
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
-                <br/>
+                <br>
                 <p>Team Leader, Senior Solutions Architect</p>
 
             </div>
@@ -508,7 +491,7 @@
         
             <div id="about-card-location">
                 <i class="fa fa-map-marker-alt"></i>
-                <br/>
+                <br>
                 Illzach, France
             </div>
         

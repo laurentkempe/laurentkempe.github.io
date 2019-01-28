@@ -13,7 +13,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"In the past in my team, we were storing the Telerik assemblies into our SVN repository then in Git! I wasn’t happy about that for a really long time. Each releases our repository was growing much more than it was needed for nothing!One day Telerik shipped their great WPF controls as nugets which solved half of our problem! Now the next problem was where do we store those nugets so that we can get those back. Searching a bit we found some solutions like myget but we wanted one which we could host on our infrastructure. After some more research, we found ou that TeamCity, could work as a Nuget server.\nThat was just perfect because we have been using TeamCity from day 1 of the project. We finally go the  second half of our solution.\nYou first need to activate the Nuget server on TeamCity:\n\nWe have activated the guest account so that the Nuget feed URL is accessible without any credentials. We use it on our LAN so that’s not really an issue for us. But it also works with credentials if you want.\nThe way TeamCity works with Nuget server is quite easy: any artifacts resolved after a build are then available through the Nuget server.\nSo next step was to define how to we bring a new version of the Telerik nugets when they ship a new version.\n\nAgain easy, just configure a build which takes the .nupkg from one folder and then bundle those as a build artifact.\n\nSo when Telerik release a new version we just need to upload all the .nupkg files to the folder C:\\Telerik\\ and run the build!\nOne more step in the good direction of automation!\n","dateCreated":"2016-04-14T22:04:11+02:00","dateModified":"2018-05-29T17:42:44+02:00","datePublished":"2016-04-14T22:04:11+02:00","description":"In the past in my team, we were storing the Telerik assemblies into our SVN repository then in Git! I wasn’t happy about that for a really long time. Each releases our repository was growing much more than it was needed for nothing!","headline":"Hosting nugets in TeamCity","image":["https://farm2.staticflickr.com/1604/25521348035_20fa6744ce_q.jpg","https://farm2.staticflickr.com/1604/25521348035_047dad2235_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2016/04/14/Hosting-nugets-in-TeamCity/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2016/04/14/Hosting-nugets-in-TeamCity/","keywords":".NET Development, continuous integration","thumbnailUrl":"https://farm2.staticflickr.com/1604/25521348035_20fa6744ce_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"In the past in my team, we were storing the Telerik assemblies into our SVN repository then in Git! I wasn’t happy about that for a really long time. Each releases our repository was growing much more than it was needed for nothing!One day Telerik shipped their great WPF controls as nugets which solved half of our problem! Now the next problem was where do we store those nugets so that we can get those back. Searching a bit we found some solutions like myget but we wanted one which we could host on our infrastructure. After some more research, we found ou that TeamCity, could work as a Nuget server.\nThat was just perfect because we have been using TeamCity from day 1 of the project. We finally go the  second half of our solution.\nYou first need to activate the Nuget server on TeamCity:\n\nWe have activated the guest account so that the Nuget feed URL is accessible without any credentials. We use it on our LAN so that’s not really an issue for us. But it also works with credentials if you want.\nThe way TeamCity works with Nuget server is quite easy: any artifacts resolved after a build are then available through the Nuget server.\nSo next step was to define how to we bring a new version of the Telerik nugets when they ship a new version.\n\nAgain easy, just configure a build which takes the .nupkg from one folder and then bundle those as a build artifact.\n\nSo when Telerik release a new version we just need to upload all the .nupkg files to the folder C:\\Telerik\\ and run the build!\nOne more step in the good direction of automation!\n","dateCreated":"2016-04-14T22:04:11+02:00","dateModified":"2018-12-17T12:08:39+01:00","datePublished":"2016-04-14T22:04:11+02:00","description":"In the past in my team, we were storing the Telerik assemblies into our SVN repository then in Git! I wasn’t happy about that for a really long time. Each releases our repository was growing much more than it was needed for nothing!","headline":"Hosting nugets in TeamCity","image":["https://farm2.staticflickr.com/1604/25521348035_20fa6744ce_q.jpg","https://farm2.staticflickr.com/1604/25521348035_047dad2235_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2016/04/14/Hosting-nugets-in-TeamCity/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2016/04/14/Hosting-nugets-in-TeamCity/","keywords":".NET Development, continuous integration","thumbnailUrl":"https://farm2.staticflickr.com/1604/25521348035_20fa6744ce_q.jpg"}</script>
     <meta name="description" content="In the past in my team, we were storing the Telerik assemblies into our SVN repository then in Git! I wasn’t happy about that for a really long time. Each releases our repository was growing much more">
 <meta name="keywords" content=".NET Development,continuous integration">
 <meta property="og:type" content="blog">
@@ -25,7 +25,7 @@
 <meta property="og:image" content="https://farm2.staticflickr.com/1674/26338964882_405d486347_o.png">
 <meta property="og:image" content="https://farm2.staticflickr.com/1441/26365113121_7f3047a0da_o.png">
 <meta property="og:image" content="https://farm2.staticflickr.com/1671/25828490813_5a089e7001_o.png">
-<meta property="og:updated_time" content="2018-05-29T15:42:44.749Z">
+<meta property="og:updated_time" content="2018-12-17T11:08:39.398Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hosting nugets in TeamCity">
 <meta name="twitter:description" content="In the past in my team, we were storing the Telerik assemblies into our SVN repository then in Git! I wasn’t happy about that for a really long time. Each releases our repository was growing much more">
@@ -83,11 +83,10 @@
     </div>
     
         
-            <a  class="header-right-picture "
-                href="#about">
+            <a class="header-right-picture " href="#about">
         
         
-            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
         
         </a>
     
@@ -105,7 +104,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -119,11 +118,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/ "
-                            
-                            title="Home"
-                        >
+                        <a class="sidebar-button-link " href="/ " title="Home">
                     
                         <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
@@ -132,11 +127,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/all-tags"
-                            
-                            title="Tags"
-                        >
+                        <a class="sidebar-button-link " href="/all-tags" title="Tags">
                     
                         <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
@@ -145,11 +136,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/all-archives"
-                            
-                            title="Archives"
-                        >
+                        <a class="sidebar-button-link " href="/all-archives" title="Archives">
                     
                         <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
@@ -158,11 +145,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/about-laurent-kempe.html"
-                            
-                            title="About"
-                        >
+                        <a class="sidebar-button-link " href="/about-laurent-kempe.html" title="About">
                     
                         <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
@@ -175,7 +158,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                        <a class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
                         <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
@@ -184,7 +167,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                        <a class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
                         <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
@@ -193,7 +176,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                        <a class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
                         <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
@@ -206,7 +189,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                        <a class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
                         <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
@@ -221,9 +204,7 @@
             
         <div class="post-header-cover
                     text-left
-                    post-header-cover--partial"
-             style="background-image:url('https://farm2.staticflickr.com/1604/25521348035_047dad2235_h.jpg');"
-             data-behavior="5">
+                    post-header-cover--partial" style="background-image:url('https://farm2.staticflickr.com/1604/25521348035_047dad2235_h.jpg');" data-behavior="5">
             
                 <div class="post-header main-content-wrap text-left">
     
@@ -279,7 +260,7 @@
     <div id="post-footer" class="post-footer main-content-wrap">
         
             <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                <span class="text-color-light text-small">TAGGED IN</span><br>
                 
     <a class="tag tag--primary tag--small t-link" href="/tags/NET-Development/">.NET Development</a> <a class="tag tag--primary tag--small t-link" href="/tags/continuous-integration/">continuous integration</a>
 
@@ -375,7 +356,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+        Copyrights &copy; 2019 Laurent Kempé. All Rights Reserved.
     </span>
 </footer>
 
@@ -503,7 +484,7 @@
             <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -513,7 +494,7 @@
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
-                <br/>
+                <br>
                 <p>Team Leader, Senior Solutions Architect</p>
 
             </div>
@@ -521,7 +502,7 @@
         
             <div id="about-card-location">
                 <i class="fa fa-map-marker-alt"></i>
-                <br/>
+                <br>
                 Illzach, France
             </div>
         

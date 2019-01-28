@@ -1,0 +1,542 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>.NET Core Community online Hackathon - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"On Saturday, June 2, 2018, I had the chance to participate in the .NET Core Community online Hackathon.\nAs I got up really early this Saturday morning, I took the opportunity to participate. My goal was to see something new and learn a bit about how .NET Core is built and gain some new experience.\nI heard about the online Hackathon on a tweet of Karel Zikmund \nThen reading about it on the Github page linked to the tweet I decided to participate.\nI wanted to start with a really small thing because I wasn’t sure about the time I had, and I wanted to be sure to finish it!\nI decided to go with CoreFX because it seemed easier than CoreCLR. I also had a look to CoreFxLab. And I might implement something there later as there is some migration to Benchmark.DotNet which I would also like to learn a bit about.\nI joined the gitter chat which proved to be really helpful.\nThen I picked the issue #19624, Remove conditional compilation in System.Diagnostics.Tracing from CoreFX.\nI went and started to read contribution guide and started by installing the tooling, making a fork and clone of the CoreFX repo! All went quite well, even if the documentation could be improved in some places.\nI tried to have the tests running inside Visual Studio, but after some pains and no success with ReSharper and Visual Studio, I asked some help on the gitter which Viktor Hofer provided kindly. You need to use the command \nRunning tests from MSBuild1msbuild /t:RebuildAndTest\nBy running the tests I found an issue with one tests and quickly guessed that it was because my Windows 10 Pro installation is in en-US and I set my first day of the week to Monday! So I reported the issue on Github. The issue went through a discussion in the team and was finally fixed after being first rejected. I have to say that I agree that when someone clones a repository and run the tests, then everything should be working even in a weird setting like mine.\nBack to my pull request, Remove FEATURE_ETLEVENTS conditional compilation which was super easy, nothing really hard when you just need to remove conditional compilation. I just had to disable some Visual Studio plugin which format the code, especially removing extra spaces at the end of lines, which I was surprised to see on some files.\nFinally after reviews and final approval from Stephen Toub the pull request was merged and will be part of .NET Core 3.0!\n\nSo in the end, I was able to fix one issue due for the hackathon, created one issue which was fixed by the team and had some fun and some learning participating in this online Hackathon!\nThanks for organizing it and thanks to the people from the team which was present and helped us!\n","dateCreated":"2018-06-06T08:20:54+02:00","dateModified":"2019-01-28T20:25:48+01:00","datePublished":"2018-06-06T08:20:54+02:00","description":"On Saturday, June 2, 2018, I had the chance to participate in the .NET Core Community online Hackathon.\nAs I got up really early this Saturday morning, I took the opportunity to participate. My goal was to see something new and learn a bit about how .NET Core is built and gain some new experience.","headline":".NET Core Community online Hackathon","image":["https://farm5.staticflickr.com/4396/36453581072_a92ff68f56_q.jpg","https://farm5.staticflickr.com/4396/36453581072_9c7848b74c_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2018/06/06/dotnet-core-community-online-hackathon/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2018/06/06/dotnet-core-community-online-hackathon/","keywords":".NET Core","thumbnailUrl":"https://farm5.staticflickr.com/4396/36453581072_a92ff68f56_q.jpg"}</script>
+    <meta name="description" content="On Saturday, June 2, 2018, I had the chance to participate in the .NET Core Community online Hackathon. As I got up really early this Saturday morning, I took the opportunity to participate. My goal w">
+<meta name="keywords" content=".NET Core">
+<meta property="og:type" content="blog">
+<meta property="og:title" content=".NET Core Community online Hackathon">
+<meta property="og:url" content="https://laurentkempe.com/2018/06/06/dotnet-core-community-online-hackathon/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="On Saturday, June 2, 2018, I had the chance to participate in the .NET Core Community online Hackathon. As I got up really early this Saturday morning, I took the opportunity to participate. My goal w">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://farm2.staticflickr.com/1839/29090676488_e79f80d854_o.png">
+<meta property="og:updated_time" content="2019-01-28T19:25:48.354Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content=".NET Core Community online Hackathon">
+<meta name="twitter:description" content="On Saturday, June 2, 2018, I had the chance to participate in the .NET Core Community online Hackathon. As I got up really early this Saturday morning, I took the opportunity to participate. My goal w">
+<meta name="twitter:image" content="https://farm2.staticflickr.com/1839/29090676488_e79f80d854_o.png">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://farm5.staticflickr.com/4396/36453581072_a92ff68f56_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://farm5.staticflickr.com/4396/36453581072_a92ff68f56_q.jpg" />
+    
+    
+        <meta property="og:image" content="https://farm5.staticflickr.com/4396/36453581072_9c7848b74c_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://farm5.staticflickr.com/4396/36453581072_9c7848b74c_h.jpg" />
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a class="header-right-picture " href="#about">
+        
+        
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/ " title="Home">
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/all-tags" title="Tags">
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/all-archives" title="Archives">
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/about-laurent-kempe.html" title="About">
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial" style="background-image:url('https://farm5.staticflickr.com/4396/36453581072_9c7848b74c_h.jpg');" data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            .NET Core Community online Hackathon
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2018-06-06T08:20:54+02:00">
+	
+		    Jun 06, 2018
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Tahiti, France</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>On Saturday, June 2, 2018, I had the chance to participate in the .NET Core Community online Hackathon.</p>
+<p>As I got up really early this Saturday morning, I took the opportunity to participate. My goal was to see something new and learn a bit about how .NET Core is built and gain some new experience.<br><a id="more"></a></p>
+<p>I heard about the online Hackathon on a tweet of Karel Zikmund <div class="twitter-wrapper"><blockquote class="twitter-tweet"><a href="https://twitter.com/ziki_cz/status/999804438104625153" target="_blank" rel="noopener"></a></blockquote></div><script async defer src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+<p>Then reading about it on the <a href="https://github.com/dotnet/corefx/wiki/Hackathon" target="_blank" rel="noopener">Github page</a> linked to the tweet I decided to participate.</p>
+<p>I wanted to start with a really small thing because I wasn’t sure about the time I had, and I wanted to be sure to finish it!</p>
+<p>I decided to go with <a href="https://github.com/dotnet/corefx/blob/master/README.md" target="_blank" rel="noopener">CoreFX</a> because it seemed easier than <a href="https://github.com/dotnet/coreclr/blob/master/README.md" target="_blank" rel="noopener">CoreCLR</a>. I also had a look to <a href="https://github.com/dotnet/corefxlab/blob/master/README.md" target="_blank" rel="noopener">CoreFxLab</a>. And I might implement something there later as there is some migration to <a href="https://benchmarkdotnet.org/" target="_blank" rel="noopener">Benchmark.DotNet</a> which I would also like to learn a bit about.</p>
+<p>I joined the <a href="https://gitter.im/dotnet/corefx-hackathon?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge" target="_blank" rel="noopener">gitter chat</a> which proved to be really helpful.</p>
+<p>Then I picked the <a href="https://github.com/dotnet/corefx/issues/19624" target="_blank" rel="noopener">issue #19624, Remove conditional compilation in System.Diagnostics.Tracing</a> from CoreFX.</p>
+<p>I went and started to read <a href="https://github.com/dotnet/corefx/wiki/New-contributor-Docs#contributing-guide" target="_blank" rel="noopener">contribution guide</a> and started by installing the tooling, making a fork and clone of the CoreFX repo! All went quite well, even if the documentation could be improved in some places.</p>
+<p>I tried to have the tests running inside Visual Studio, but after some pains and no success with <a href="https://www.jetbrains.com/resharper/?fromMenu" target="_blank" rel="noopener">ReSharper</a> and <a href="(https://visualstudio.microsoft.com/">Visual Studio</a>, I asked some help on the gitter which <a href="https://github.com/ViktorHofer" target="_blank" rel="noopener">Viktor Hofer</a> <a href="https://gitter.im/dotnet/corefx-hackathon?at=5b1259f5f9f2e56cf234c485" target="_blank" rel="noopener">provided kindly</a>. You need to use the command </p>
+<figure class="highlight plain"><figcaption><span>Running tests from MSBuild</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msbuild /t:RebuildAndTest</span><br></pre></td></tr></table></figure>
+<p>By running the tests I found an issue with one tests and quickly guessed that it was because my Windows 10 Pro installation is in en-US and I set my first day of the week to Monday! So I reported the <a href="https://github.com/dotnet/corefx/issues/30074" target="_blank" rel="noopener">issue on Github</a>. The issue went through a discussion in the team and was finally fixed after being first rejected. I have to say that I agree that when someone clones a repository and run the tests, then everything should be working even in a weird setting like mine.</p>
+<p>Back to my pull request, <a href="https://github.com/dotnet/corefx/pull/30071" target="_blank" rel="noopener">Remove FEATURE_ETLEVENTS conditional compilation</a> which was super easy, nothing really hard when you just need to remove conditional compilation. I just had to disable some Visual Studio plugin which format the code, especially removing extra spaces at the end of lines, which I was surprised to see on some files.</p>
+<p>Finally after reviews and final approval from <a href="https://github.com/stephentoub" target="_blank" rel="noopener">Stephen Toub</a> the pull request was merged and will be part of .NET Core 3.0!</p>
+<p><img src="https://farm2.staticflickr.com/1839/29090676488_e79f80d854_o.png" alt="Pull Request merged"></p>
+<p>So in the end, I was able to fix one issue due for the hackathon, created one issue which was fixed by the team and had some fun and some learning participating in this online Hackathon!</p>
+<p>Thanks for organizing it and thanks to the people from the team which was present and helped us!</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/NET-Core/">.NET Core</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/06/01/Automating-development-machine-installation/" data-tooltip="Automating my development machine installation" aria-label="NEXT: Automating my development machine installation">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2018/06/06/dotnet-core-community-online-hackathon/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2018/06/06/dotnet-core-community-online-hackathon/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2018/06/06/dotnet-core-community-online-hackathon/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/06/01/Automating-development-machine-installation/" data-tooltip="Automating my development machine installation" aria-label="NEXT: Automating my development machine installation">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2018/06/06/dotnet-core-community-online-hackathon/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2018/06/06/dotnet-core-community-online-hackathon/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2018/06/06/dotnet-core-community-online-hackathon/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2018/06/06/dotnet-core-community-online-hackathon/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2018/06/06/dotnet-core-community-online-hackathon/">
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2018/06/06/dotnet-core-community-online-hackathon/">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2018/06/06/dotnet-core-community-online-hackathon/';
+                 
+                    this.page.identifier = '20180606082054';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

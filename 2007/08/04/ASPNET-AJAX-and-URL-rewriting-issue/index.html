@@ -13,9 +13,9 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"If you are using URL rewriting you might know that you have to take care about the way you reference resources has written in the Scott Guthrie post; Tip/Trick: Url Rewriting with ASP.NET:\n\nHandling CSS and Image Reference Correctly\nOne gotcha that people sometime run into when using Url Rewriting for the very first time is that they find that their image and CSS stylesheet references sometimes seem to stop working.  This is because they have relative references to these files within their HTML pages - and when you start to re-write URLs within an application you need to be aware that the browser will often be requesting files in different logical hierarchy levels than what is really stored on the server.\nFor example, if our /products.aspx page above had a relative reference to “logo.jpg” in the .aspx page, but was requested via the /products/books.aspx url, then the browser will send a request for /products/logo.jpg instead of /logo.jpg when it renders the page.  To reference this file correctly, make sure you root qualify CSS and Image references (“/style.css” instead of “style.css”).  For ASP.NET controls, you can also use the ~ syntax to reference files from the root of the application (for example: &lt;asp:image imageurl=”~/images/logo.jpg” runat=”server”/&gt;\n\nThis is for sure also the case for javascript. \nI am using the Request.PathInfo way described in Scott’s post to rewrite one url on Tech Head Brothers. Everything works fine except that Sys.Services.AuthenticationService get confused about the rewriting of the URL and tries to post back on : \nhttp://localhost:8080/Auteurs.aspx/laurent-kempe/Authentication_JSON_AppService.axd/Login \nWhen I expect  \nhttp://localhost:8080/Authentication_JSON_AppService.axd/Login \nLooking at the page rendered by ASP.NET I see that the following is rendered:\n  \n  \n\n\nSo I am clearly missing a / in the path and due to that the URL rewriting confuse the post to the server.\nThe first solution was found by Cyril Durand (always of good help in this AJAX world ;) and is to add this line of code:\nScriptManager.GetCurrent(Page).AuthenticationService.Path = “/Authentication_JSON_AppService.axd”;\nBut I did it a bit differently, directly in the javascript adding the following line:\nSys.Services.AuthenticationService.set_path(‘/Authentication_JSON_AppService.axd’);\nBtw this javascript line would be generated at rendering time by the solution of Cyril.\nThanks Cyril for the always nice talks.\n","dateCreated":"2007-08-04T08:29:46+02:00","dateModified":"2007-08-04T08:29:46+02:00","datePublished":"2007-08-04T08:29:46+02:00","description":"If you are using URL rewriting you might know that you have to take care about the way you reference resources has written in the Scott Guthrie post; Tip/Trick: Url Rewriting with ASP.NET:\n\nHandling CSS and Image Reference Correctly","headline":"ASP.NET AJAX and URL rewriting issue","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/08/04/ASPNET-AJAX-and-URL-rewriting-issue/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2007/08/04/ASPNET-AJAX-and-URL-rewriting-issue/","keywords":"ASP.NET AJAX, ASP.NET 2.0"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"If you are using URL rewriting you might know that you have to take care about the way you reference resources has written in the Scott Guthrie post; Tip/Trick: Url Rewriting with ASP.NET:\n\nHandling CSS and Image Reference Correctly\nOne gotcha that people sometime run into when using Url Rewriting for the very first time is that they find that their image and CSS stylesheet references sometimes seem to stop working.  This is because they have relative references to these files within their HTML pages - and when you start to re-write URLs within an application you need to be aware that the browser will often be requesting files in different logical hierarchy levels than what is really stored on the server.\nFor example, if our /products.aspx page above had a relative reference to “logo.jpg” in the .aspx page, but was requested via the /products/books.aspx url, then the browser will send a request for /products/logo.jpg instead of /logo.jpg when it renders the page.  To reference this file correctly, make sure you root qualify CSS and Image references (“/style.css” instead of “style.css”).  For ASP.NET controls, you can also use the ~ syntax to reference files from the root of the application (for example: &lt;asp:image imageurl=”~/images/logo.jpg” runat=”server”/&gt;\n\nThis is for sure also the case for javascript. \nI am using the Request.PathInfo way described in Scott’s post to rewrite one url on Tech Head Brothers. Everything works fine except that Sys.Services.AuthenticationService get confused about the rewriting of the URL and tries to post back on : \nhttp://localhost:8080/Auteurs.aspx/laurent-kempe/Authentication_JSON_AppService.axd/Login \nWhen I expect  \nhttp://localhost:8080/Authentication_JSON_AppService.axd/Login \nLooking at the page rendered by ASP.NET I see that the following is rendered:\n  \n  \n\n\nSo I am clearly missing a / in the path and due to that the URL rewriting confuse the post to the server.\nThe first solution was found by Cyril Durand (always of good help in this AJAX world ;) and is to add this line of code:\nScriptManager.GetCurrent(Page).AuthenticationService.Path = “/Authentication_JSON_AppService.axd”;\nBut I did it a bit differently, directly in the javascript adding the following line:\nSys.Services.AuthenticationService.set_path(‘/Authentication_JSON_AppService.axd’);\nBtw this javascript line would be generated at rendering time by the solution of Cyril.\nThanks Cyril for the always nice talks.\n","dateCreated":"2007-08-04T08:29:46+02:00","dateModified":"2007-08-04T08:29:46+02:00","datePublished":"2007-08-04T08:29:46+02:00","description":"If you are using URL rewriting you might know that you have to take care about the way you reference resources has written in the Scott Guthrie post; Tip/Trick: Url Rewriting with ASP.NET:\n\nHandling CSS and Image Reference Correctly","headline":"ASP.NET AJAX and URL rewriting issue","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/08/04/ASPNET-AJAX-and-URL-rewriting-issue/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2007/08/04/ASPNET-AJAX-and-URL-rewriting-issue/","keywords":"ASP.NET 2.0, ASP.NET AJAX"}</script>
     <meta name="description" content="If you are using URL rewriting you might know that you have to take care about the way you reference resources has written in the Scott Guthrie post; Tip/Trick: Url Rewriting with ASP.NET:  Handling C">
-<meta name="keywords" content="ASP.NET AJAX,ASP.NET 2.0">
+<meta name="keywords" content="ASP.NET 2.0,ASP.NET AJAX">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="ASP.NET AJAX and URL rewriting issue">
 <meta property="og:url" content="https://laurentkempe.com/2007/08/04/ASPNET-AJAX-and-URL-rewriting-issue/index.html">
@@ -73,11 +73,10 @@
     </div>
     
         
-            <a  class="header-right-picture "
-                href="#about">
+            <a class="header-right-picture " href="#about">
         
         
-            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
         
         </a>
     
@@ -95,7 +94,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -109,11 +108,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/ "
-                            
-                            title="Home"
-                        >
+                        <a class="sidebar-button-link " href="/ " title="Home">
                     
                         <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
@@ -122,11 +117,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/all-tags"
-                            
-                            title="Tags"
-                        >
+                        <a class="sidebar-button-link " href="/all-tags" title="Tags">
                     
                         <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
@@ -135,11 +126,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/all-archives"
-                            
-                            title="Archives"
-                        >
+                        <a class="sidebar-button-link " href="/all-archives" title="Archives">
                     
                         <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
@@ -148,11 +135,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/about-laurent-kempe.html"
-                            
-                            title="About"
-                        >
+                        <a class="sidebar-button-link " href="/about-laurent-kempe.html" title="About">
                     
                         <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
@@ -165,7 +148,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                        <a class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
                         <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
@@ -174,7 +157,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                        <a class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
                         <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
@@ -183,7 +166,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                        <a class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
                         <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
@@ -196,7 +179,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                        <a class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
                         <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
@@ -272,7 +255,7 @@ Sys.Services._AuthenticationService.DefaultWebServicePath = 'Authentication_JSON
     <div id="post-footer" class="post-footer main-content-wrap">
         
             <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                <span class="text-color-light text-small">TAGGED IN</span><br>
                 
     <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET-2-0/">ASP.NET 2.0</a> <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET-AJAX/">ASP.NET AJAX</a>
 
@@ -368,7 +351,7 @@ Sys.Services._AuthenticationService.DefaultWebServicePath = 'Authentication_JSON
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+        Copyrights &copy; 2019 Laurent Kempé. All Rights Reserved.
     </span>
 </footer>
 
@@ -496,7 +479,7 @@ Sys.Services._AuthenticationService.DefaultWebServicePath = 'Authentication_JSON
             <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -506,7 +489,7 @@ Sys.Services._AuthenticationService.DefaultWebServicePath = 'Authentication_JSON
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
-                <br/>
+                <br>
                 <p>Team Leader, Senior Solutions Architect</p>
 
             </div>
@@ -514,7 +497,7 @@ Sys.Services._AuthenticationService.DefaultWebServicePath = 'Authentication_JSON
         
             <div id="about-card-location">
                 <i class="fa fa-map-marker-alt"></i>
-                <br/>
+                <br>
                 Illzach, France
             </div>
         

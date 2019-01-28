@@ -13,9 +13,9 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"One of the first development rule is to write human readablecode. Why ? To avoid to have to write comments ;-) Because itwill be read as a spoken language and itseparate important code from distracting one.\nWhat do you think about that line of code:\nreturn DAL.FindAll(PublishedBy(Author));\nSomeone that has no clue about development might even read that code. Okexcept the DAL word ;-)\nWith C# 2.0 you are able to write readable code like this using Generics, andthe power of closures.In C# 2.0 closure are supported through the form of anonymous delegates.\nCheck out the different methods returning collection accordign to predefinedrules: getAllUnpublished(), getAllPublished(),getAllPublishedBy()… There are all using Predicate, so to sayanonymous delegate, that gives you human readable code.\nClient code:\n  1 protected void Page_Load(object sender, EventArgs e)  2 {  3     GridView2.DataSource = TechHeadBrothers.Portal.BLL.ArticleBLL.getAllPublishedBy(“Laurent Kempé”);  4     GridView2.DataBind();  5  6     GridView3.DataSource = TechHeadBrothers.Portal.BLL.ArticleBLL.getAllWaitPublishingBy(“Laurent Kempé”);  7     GridView3.DataBind();  8 }\nThe Business Layer:\n  1 #region Using  2  3 using System;  4 using System.Collections.Generic;  5 using System.Text;  6 using TechHeadBrothers.Portal.Entities;  7 using TechHeadBrothers.Portal.DAL;  8  9 #endregion 10 11 namespace TechHeadBrothers.Portal.BLL 12 { 13     public static class ArticleBLL 14     { 15         static ArticleDAL DAL = new ArticleDAL(); 16 17         public static List getAll() 18         { 19             return DAL.GetAll(); 20         } 21 22         public static List getAllUnpublished() 23         { 24             return DAL.FindAll(NotPublished()); 25         } 26 27         public static List getAllPublished() 28         { 29             return DAL.FindAll(Published()); 30         } 31 32         public static List getAllPublishedBy(string Author) 33         { 34             return DAL.FindAll(PublishedBy(Author)); 35         } 36 37         public static List getAllWaitPublishingBy(string Author) 38         { 39             return DAL.FindAll(WaitPublishingBy(Author)); 40         } 41 42         protected static Predicate WaitPublishingBy(string author) 43         { 44             return delegate(Article a) 45             { 46                 return !a.isPublished &amp;&amp; (a.Author.ToLower() == author.ToLower()); 47             }; 48         } 49 50         protected static Predicate PublishedBy(string author) 51         { 52             return delegate(Article a) 53             { 54                 return a.isPublished &amp;&amp; (a.Author.ToLower() == author.ToLower()); 55             }; 56         } 57 58         protected static Predicate Published() 59         { 60             return delegate(Article a) 61             { 62                 return a.isPublished; 63             }; 64         } 65 66         protected static Predicate NotPublished() 67         { 68             return delegate(Article a) 69             { 70                 return (!a.isPublished); 71             }; 72         } 73     } 74 } 75 \nThe Entity class is represented as:\n  1 #region Using  2  3 using System;  4 using System.Collections.Generic;  5 using System.Text;  6  7 #endregion  8  9 namespace TechHeadBrothers.Portal.Entities 10 { 11     public class Article 12     { 13         private Guid uuid; 14 15         public Guid Uuid 16         { 17             get { return uuid; } 18             set { uuid = value; } 19         } 20 21         private string title; 22 23         public string Title 24         { 25             get { return title; } 26             set { title = value; } 27         } 28 29         private string description; 30 31         public string Description 32         { 33             get { return description; } 34             set { description = value; } 35         } 36 37         private bool ispublished; 38 39         public bool isPublished 40         { 41             get { return ispublished; } 42             set { ispublished = value; } 43         } 44 45         private string author; 46 47         public string Author 48         { 49             get { return author; } 50             set { author = value; } 51         } 52 53         public Article(Guid uuid, string title, string description, string author) 54         { 55             this.Uuid = uuid; 56             this.Title = title; 57             this.Description = description; 58             this.isPublished = false; 59             this.Author = author; 60         } 61 62         public Article(string uuid, string title, string description, string author) 63             : this(new Guid (uuid), title, description, author) 64         { 65 66         } 67 68         public Article(string title, string description, string author) 69             : this(Guid.NewGuid(), title, description, author) 70         { 71 72         } 73     } 74 } \nAnd the Data Access Layer Article class:\n  1 #region Using  2  3 using System;  4 using System.Collections.Generic;  5 using System.Text;  6  7 #endregion  8  9 namespace TechHeadBrothers.Portal.DAL 10 { 11     interface IDataAccess 12     { 13         T Get(Guid uuid); 14 15         T Get(string uuid); 16 17         List GetAll(); 18 19         List FindAll(Predicate match); 20     } 21 22     public class ArticleDAL : IDataAccess&lt;TechHeadBrothers.Portal.Entities.Article&gt; 23     { 24         List&lt;TechHeadBrothers.Portal.Entities.Article&gt; articles; 25 26         public ArticleDAL(List&lt;TechHeadBrothers.Portal.Entities.Article&gt; articles) 27         { 28             this.articles = articles; 29         } 30 31         public ArticleDAL() 32         { 33             this.articles = new List&lt;TechHeadBrothers.Portal.Entities.Article&gt;(); 34 35             //TODO: Remove this is just for test 36             this.articles.Add( 37                 new TechHeadBrothers.Portal.Entities.Article(“Les generics dans C#”, 38                 “Démonstration de l’utilisation des générics dans C# 2.0”, 39                 “Laurent Kempé”)); 40 41             TechHeadBrothers.Portal.Entities.Article article = 42                 new TechHeadBrothers.Portal.Entities.Article(“8BF7FEBE-9FEB-4db6-86B7-70A6C44B1CAA”, 43                 “Les iterators dans C#”, 44                 “Démonstration de l’utilisation des iterators dans C# 2.0”, 45                 “Laurent Kempé”); 46             article.isPublished = true; 47             this.articles.Add(article); 48         } 49 50         #region IDataAccess Members 51 52         public TechHeadBrothers.Portal.Entities.Article Get(Guid uuid) 53         { 54             for (int i = 0; i &lt; articles.Count; i++) 55             { 56                 if (articles[i].Uuid == uuid) 57                 { 58                     return articles[i]; 59                 } 60             } 61 62             return null; 63         } 64 65         public TechHeadBrothers.Portal.Entities.Article Get(string uuid) 66         { 67             return this.Get(new Guid(uuid)); 68         } 69 70         public List&lt;TechHeadBrothers.Portal.Entities.Article&gt; GetAll() 71         { 72             return articles; 73         } 74 75         public List&lt;TechHeadBrothers.Portal.Entities.Article&gt; FindAll(Predicate&lt;TechHeadBrothers.Portal.Entities.Article&gt; match) 76         { 77             return articles.FindAll(match); 78         } 79 80         #endregion 81     } 82 } 83 \n[ Currently Playing : Sound Enforcer / Impact - Carl Cox (04:10)]\n","dateCreated":"2005-03-10T07:43:00+01:00","dateModified":"2005-03-10T07:43:00+01:00","datePublished":"2005-03-10T07:43:00+01:00","description":"One of the first development rule is to write human readablecode. Why ? To avoid to have to write comments ;-) Because itwill be read as a spoken language and itseparate important code from distracting one.","headline":"DataAccessLayer.FindAll(PublishedBy(Author))","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2005/03/10/DataAccessLayerFindAll(PublishedBy(Author))/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2005/03/10/DataAccessLayerFindAll(PublishedBy(Author))/","keywords":"Whidbey, ASP.NET 2.0, .NET Framework 2.0"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"One of the first development rule is to write human readablecode. Why ? To avoid to have to write comments ;-) Because itwill be read as a spoken language and itseparate important code from distracting one.\nWhat do you think about that line of code:\nreturn DAL.FindAll(PublishedBy(Author));\nSomeone that has no clue about development might even read that code. Okexcept the DAL word ;-)\nWith C# 2.0 you are able to write readable code like this using Generics, andthe power of closures.In C# 2.0 closure are supported through the form of anonymous delegates.\nCheck out the different methods returning collection accordign to predefinedrules: getAllUnpublished(), getAllPublished(),getAllPublishedBy()… There are all using Predicate, so to sayanonymous delegate, that gives you human readable code.\nClient code:\n  1 protected void Page_Load(object sender, EventArgs e)  2 {  3     GridView2.DataSource = TechHeadBrothers.Portal.BLL.ArticleBLL.getAllPublishedBy(“Laurent Kempé”);  4     GridView2.DataBind();  5  6     GridView3.DataSource = TechHeadBrothers.Portal.BLL.ArticleBLL.getAllWaitPublishingBy(“Laurent Kempé”);  7     GridView3.DataBind();  8 }\nThe Business Layer:\n  1 #region Using  2  3 using System;  4 using System.Collections.Generic;  5 using System.Text;  6 using TechHeadBrothers.Portal.Entities;  7 using TechHeadBrothers.Portal.DAL;  8  9 #endregion 10 11 namespace TechHeadBrothers.Portal.BLL 12 { 13     public static class ArticleBLL 14     { 15         static ArticleDAL DAL = new ArticleDAL(); 16 17         public static List getAll() 18         { 19             return DAL.GetAll(); 20         } 21 22         public static List getAllUnpublished() 23         { 24             return DAL.FindAll(NotPublished()); 25         } 26 27         public static List getAllPublished() 28         { 29             return DAL.FindAll(Published()); 30         } 31 32         public static List getAllPublishedBy(string Author) 33         { 34             return DAL.FindAll(PublishedBy(Author)); 35         } 36 37         public static List getAllWaitPublishingBy(string Author) 38         { 39             return DAL.FindAll(WaitPublishingBy(Author)); 40         } 41 42         protected static Predicate WaitPublishingBy(string author) 43         { 44             return delegate(Article a) 45             { 46                 return !a.isPublished &amp;&amp; (a.Author.ToLower() == author.ToLower()); 47             }; 48         } 49 50         protected static Predicate PublishedBy(string author) 51         { 52             return delegate(Article a) 53             { 54                 return a.isPublished &amp;&amp; (a.Author.ToLower() == author.ToLower()); 55             }; 56         } 57 58         protected static Predicate Published() 59         { 60             return delegate(Article a) 61             { 62                 return a.isPublished; 63             }; 64         } 65 66         protected static Predicate NotPublished() 67         { 68             return delegate(Article a) 69             { 70                 return (!a.isPublished); 71             }; 72         } 73     } 74 } 75 \nThe Entity class is represented as:\n  1 #region Using  2  3 using System;  4 using System.Collections.Generic;  5 using System.Text;  6  7 #endregion  8  9 namespace TechHeadBrothers.Portal.Entities 10 { 11     public class Article 12     { 13         private Guid uuid; 14 15         public Guid Uuid 16         { 17             get { return uuid; } 18             set { uuid = value; } 19         } 20 21         private string title; 22 23         public string Title 24         { 25             get { return title; } 26             set { title = value; } 27         } 28 29         private string description; 30 31         public string Description 32         { 33             get { return description; } 34             set { description = value; } 35         } 36 37         private bool ispublished; 38 39         public bool isPublished 40         { 41             get { return ispublished; } 42             set { ispublished = value; } 43         } 44 45         private string author; 46 47         public string Author 48         { 49             get { return author; } 50             set { author = value; } 51         } 52 53         public Article(Guid uuid, string title, string description, string author) 54         { 55             this.Uuid = uuid; 56             this.Title = title; 57             this.Description = description; 58             this.isPublished = false; 59             this.Author = author; 60         } 61 62         public Article(string uuid, string title, string description, string author) 63             : this(new Guid (uuid), title, description, author) 64         { 65 66         } 67 68         public Article(string title, string description, string author) 69             : this(Guid.NewGuid(), title, description, author) 70         { 71 72         } 73     } 74 } \nAnd the Data Access Layer Article class:\n  1 #region Using  2  3 using System;  4 using System.Collections.Generic;  5 using System.Text;  6  7 #endregion  8  9 namespace TechHeadBrothers.Portal.DAL 10 { 11     interface IDataAccess 12     { 13         T Get(Guid uuid); 14 15         T Get(string uuid); 16 17         List GetAll(); 18 19         List FindAll(Predicate match); 20     } 21 22     public class ArticleDAL : IDataAccess&lt;TechHeadBrothers.Portal.Entities.Article&gt; 23     { 24         List&lt;TechHeadBrothers.Portal.Entities.Article&gt; articles; 25 26         public ArticleDAL(List&lt;TechHeadBrothers.Portal.Entities.Article&gt; articles) 27         { 28             this.articles = articles; 29         } 30 31         public ArticleDAL() 32         { 33             this.articles = new List&lt;TechHeadBrothers.Portal.Entities.Article&gt;(); 34 35             //TODO: Remove this is just for test 36             this.articles.Add( 37                 new TechHeadBrothers.Portal.Entities.Article(“Les generics dans C#”, 38                 “Démonstration de l’utilisation des générics dans C# 2.0”, 39                 “Laurent Kempé”)); 40 41             TechHeadBrothers.Portal.Entities.Article article = 42                 new TechHeadBrothers.Portal.Entities.Article(“8BF7FEBE-9FEB-4db6-86B7-70A6C44B1CAA”, 43                 “Les iterators dans C#”, 44                 “Démonstration de l’utilisation des iterators dans C# 2.0”, 45                 “Laurent Kempé”); 46             article.isPublished = true; 47             this.articles.Add(article); 48         } 49 50         #region IDataAccess Members 51 52         public TechHeadBrothers.Portal.Entities.Article Get(Guid uuid) 53         { 54             for (int i = 0; i &lt; articles.Count; i++) 55             { 56                 if (articles[i].Uuid == uuid) 57                 { 58                     return articles[i]; 59                 } 60             } 61 62             return null; 63         } 64 65         public TechHeadBrothers.Portal.Entities.Article Get(string uuid) 66         { 67             return this.Get(new Guid(uuid)); 68         } 69 70         public List&lt;TechHeadBrothers.Portal.Entities.Article&gt; GetAll() 71         { 72             return articles; 73         } 74 75         public List&lt;TechHeadBrothers.Portal.Entities.Article&gt; FindAll(Predicate&lt;TechHeadBrothers.Portal.Entities.Article&gt; match) 76         { 77             return articles.FindAll(match); 78         } 79 80         #endregion 81     } 82 } 83 \n[ Currently Playing : Sound Enforcer / Impact - Carl Cox (04:10)]\n","dateCreated":"2005-03-10T07:43:00+01:00","dateModified":"2005-03-10T07:43:00+01:00","datePublished":"2005-03-10T07:43:00+01:00","description":"One of the first development rule is to write human readablecode. Why ? To avoid to have to write comments ;-) Because itwill be read as a spoken language and itseparate important code from distracting one.","headline":"DataAccessLayer.FindAll(PublishedBy(Author))","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2005/03/10/DataAccessLayerFindAll(PublishedBy(Author))/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2005/03/10/DataAccessLayerFindAll(PublishedBy(Author))/","keywords":"ASP.NET 2.0, Whidbey, .NET Framework 2.0"}</script>
     <meta name="description" content="One of the first development rule is to write human readablecode. Why ? To avoid to have to write comments ;-) Because itwill be read as a spoken language and itseparate important code from distractin">
-<meta name="keywords" content="Whidbey,ASP.NET 2.0,.NET Framework 2.0">
+<meta name="keywords" content="ASP.NET 2.0,Whidbey,.NET Framework 2.0">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="DataAccessLayer.FindAll(PublishedBy(Author))">
 <meta property="og:url" content="https://laurentkempe.com/2005/03/10/DataAccessLayerFindAll(PublishedBy(Author))/index.html">
@@ -73,11 +73,10 @@
     </div>
     
         
-            <a  class="header-right-picture "
-                href="#about">
+            <a class="header-right-picture " href="#about">
         
         
-            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
         
         </a>
     
@@ -95,7 +94,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -109,11 +108,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/ "
-                            
-                            title="Home"
-                        >
+                        <a class="sidebar-button-link " href="/ " title="Home">
                     
                         <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
@@ -122,11 +117,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/all-tags"
-                            
-                            title="Tags"
-                        >
+                        <a class="sidebar-button-link " href="/all-tags" title="Tags">
                     
                         <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
@@ -135,11 +126,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/all-archives"
-                            
-                            title="Archives"
-                        >
+                        <a class="sidebar-button-link " href="/all-archives" title="Archives">
                     
                         <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
@@ -148,11 +135,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/about-laurent-kempe.html"
-                            
-                            title="About"
-                        >
+                        <a class="sidebar-button-link " href="/about-laurent-kempe.html" title="About">
                     
                         <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
@@ -165,7 +148,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                        <a class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
                         <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
@@ -174,7 +157,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                        <a class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
                         <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
@@ -183,7 +166,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                        <a class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
                         <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
@@ -196,7 +179,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                        <a class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
                         <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
@@ -262,7 +245,7 @@
     <div id="post-footer" class="post-footer main-content-wrap">
         
             <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                <span class="text-color-light text-small">TAGGED IN</span><br>
                 
     <a class="tag tag--primary tag--small t-link" href="/tags/NET-Framework-2-0/">.NET Framework 2.0</a> <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET-2-0/">ASP.NET 2.0</a> <a class="tag tag--primary tag--small t-link" href="/tags/Whidbey/">Whidbey</a>
 
@@ -358,7 +341,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2018 Laurent Kempé. All Rights Reserved.
+        Copyrights &copy; 2019 Laurent Kempé. All Rights Reserved.
     </span>
 </footer>
 
@@ -486,7 +469,7 @@
             <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -496,7 +479,7 @@
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
-                <br/>
+                <br>
                 <p>Team Leader, Senior Solutions Architect</p>
 
             </div>
@@ -504,7 +487,7 @@
         
             <div id="about-card-location">
                 <i class="fa fa-map-marker-alt"></i>
-                <br/>
+                <br>
                 Illzach, France
             </div>
         
