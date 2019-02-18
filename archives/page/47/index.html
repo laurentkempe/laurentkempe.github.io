@@ -195,6 +195,49 @@
     <section class="postShorten-group main-content-wrap">
     
     
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2004/08/04/Webpart-portal-personalization/">
+                            Webpart portal personalization
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2004-08-04T07:52:00+02:00">
+	
+		    Aug 04, 2004
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p>In some portal scenarios you might want to have only webmaster(s) manage the layout of the site. So your goal is  to avoid that a registered user change it.</p><br><p>With Webparts you might build portal that match this scenario like this:</p><br><p>Add to you web.config:</p><br><p>&lt;system.web&gt;<br>    …</p><br><p>    <webparts><br>        <personalization><br>            <authorization><br>                <allow roles="webmasters" verbs="enterSharedScope"><br>            </allow></authorization><br>        </personalization><br>    </webparts><br>    …</p><br><p>&lt;/system.web&gt;</p><br><p>This configuration set that only users with the role webmaster might change the layout.</p><br><p></p><br><p>Then you might place a WebPartPageMenu control on your site. This control is listing all the personalisation to the webpart system you might do as a logged in user. In the case of a user in the role of webmasters, the WebPartPageMenu will have one of it entries set to: Show Share view.<br>You can select this entry and then Design Page Layout to be able to design the layout of the page for the user the anonymous users.</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2004/08/04/Webpart-portal-personalization/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
     <article class="postShorten postShorten--thumbnailimg-right">
         <div class="postShorten-wrap">
             
@@ -537,45 +580,6 @@
                         
                     
                 </td></tr></tbody></table></div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2004/07/21/Sauce-Reader-16-released/">
-                            Sauce Reader 1.6 released
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2004-07-21T05:55:00+02:00">
-	
-		    Jul 21, 2004
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>I’ve got this late afternoon a popup saying that release 1.6 is out. So I updated my favorite blog tools. I will test soon the image uploading tool that i just configured. And now posting to a .Text blog is working without issue and kind of update of already posted message (erase, post). So cool.<br>Nice to see that such a company is hiring, a bit far, but who knows. </p>
-<blockquote>
-<p><a href="http://www.synop.com/Weblogs/SauceReader/PermaLink.aspx?guid=84af447a-39ce-4c3d-98be-f9eaea9787d3" target="_blank" rel="noopener">Sauce Reader v1.6 (BETA) released</a><br>
-                    
-                        <a href="/2004/07/21/Sauce-Reader-16-released/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </p></blockquote></div>
             
         </div>
         

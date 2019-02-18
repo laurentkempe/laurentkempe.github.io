@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://laurentkempe.com/"/>
-  <updated>2019-01-28T19:25:48.354Z</updated>
+  <updated>2019-02-18T19:50:39.539Z</updated>
   <id>https://laurentkempe.com/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Dynamically compile and run code using .NET Core 3.0</title>
+    <link href="https://laurentkempe.com/2019/02/18/Moving-to-Cake-CSharp-Make/"/>
+    <id>https://laurentkempe.com/2019/02/18/Moving-to-Cake-CSharp-Make/</id>
+    <published>2019-02-18T19:30:12.000Z</published>
+    <updated>2019-02-18T19:50:39.539Z</updated>
+    
+    <content type="html"><![CDATA[<p>Let’ see in this blog post the new possibility offered by <strong>.NET Core 3.0 preview 2</strong> to load and unload assemblies at run time using <strong><a href="https://github.com/dotnet/coreclr/blob/master/src/System.Private.CoreLib/src/System/Runtime/Loader/AssemblyLoadContext.cs#L14" target="_blank" rel="noopener">AssemblyLoadContext</a></strong>.</p><a id="more"></a><p>You can read more about it on the <a href="https://github.com/dotnet/coreclr/blob/master/Documentation/design-docs/assemblyloadcontext.md" target="_blank" rel="noopener">dotnet / coreclr github repository</a>. You can also see the progress of the .NET Core team on that particular topic on the <a href="https://github.com/dotnet/coreclr/projects/9" target="_blank" rel="noopener">Unloadability Github project page</a>.</p><blockquote><p>Here are some of the scenarios that motivated this work:</p><ul><li>Ability to load multiple versions of the same assembly within a given process (e.g. for plugin frameworks)</li><li>Ability to load assemblies explicitly in a context isolated from that of the application.</li><li>Ability to override assemblies being resolved from application context.</li><li>Ability to have isolation of statics (as they are tied to the LoadContext)</li><li>Expose LoadContext as a first class concept for developers to interface with and not be a magic.</li></ul></blockquote><p>In our case, the idea of this tiny project is the following:</p><ul><li>Watch a C# source code file for any modification using Rx and the FileWatcher</li><li>On any change on that file, load it in memory as text</li><li>Compile the file using Roslyn into an assembly which is kept in memory</li><li>Execute the entry point of the assembly</li><li>Unload the assembly</li></ul><p>We will start with a simple hello world application, what else 😉 and we will allow the main application to pass some arguments to the dynamically compiled assembly.</p><p>First, we are using some Rx code to observe the file, I won’t go into that detail because it is not the purpose of that post. The code is coming from <a href="https://github.com/g0t4" target="_blank" rel="noopener">Wes Higbee</a> from the repository <a href="https://github.com/g0t4/Rx-FileSystemWatcher" target="_blank" rel="noopener">g0t4/Rx-FileSystemWatcher</a>.</p><p>We are using Rx-FileSystemWatcher to observe the <em>Sources</em> folder and filter for <em>DynamicProgram.cs</em>. When this file is changed, we trigger the build, load the assembly generated, find the entry point and invoke it passing “France” as the first parameter.</p><p><div style="clear:both;"></div><script src="//gist.github.com/1ea03376d0ef2a4da3358ab2629cccf2.js?file=Program.cs"></script></p><p>The main program delegates the compilation to the <em>Compiler</em> class, which is using Roslyn to compile the C# file <em>DynamicProgram.cs</em>. If there are some compilation errors, those are displayed on the console output. Otherwise, the compilation result is a <em>Hello.dll</em> returned as a byte array.</p><p><div style="clear:both;"></div><script src="//gist.github.com/1ea03376d0ef2a4da3358ab2629cccf2.js?file=Compiler.cs"></script></p><p>Then, the main program delegate to the <em>Runner</em> class which is in charge of loading and executing the entry point of the just compiled new assembly.<br>We are marking the method <em>LoadAndExecute</em> with <strong>[MethodImpl(MethodImplOptions.NoInlining)]</strong> so that the method cannot be inlined and to ensure that nothing would be kept alive.</p><p><div style="clear:both;"></div><script src="//gist.github.com/1ea03376d0ef2a4da3358ab2629cccf2.js?file=Runner.cs"></script></p><p>We are loading the assembly using our own simple implementation of <strong>AssemblyLoadContext</strong>, this is just to mark that the context is collectible. So that we can unload the assembly using the method <strong>AssemblyLoadContext.Unload()</strong>.</p><p><div style="clear:both;"></div><script src="//gist.github.com/1ea03376d0ef2a4da3358ab2629cccf2.js?file=SimpleUnloadableAssemblyLoadContext.cs"></script></p><p>In fact, the unloading does not happen immediately, it will wait that the GC collect the assembly. This is why we are calling <strong>GC.Collect()</strong> and <strong>GC.WaitForPendingFinalizers()</strong> in the <em>Execute</em> method. This is not mandatory but in our case, we want to be sure that the previous assembly is unloaded before compiling and loading the new one.</p><p>Let’s run the application, change the file Program.cs in the folder Sources and see it working 😎</p><img src="https://raw.githubusercontent.com/laurentkempe/DynamicRun/master/doc/screenshot.png" title="Running"><p>This is opening some new capabilities which we might explore in some new posts!</p><p>You can access to the whole project on Github, <a href="https://github.com/laurentkempe/DynamicRun" target="_blank" rel="noopener">laurentkempe/DynamicRun</a>.</p><p>Finally, you can read even more about it on “<a href="https://github.com/dotnet/coreclr/blob/a7cbc5c8d1bd48cafec48ac50900ff9e96c1485c/Documentation/project-docs/unloadability-howto.md" target="_blank" rel="noopener">Using and debugging unloadability in .NET Core</a>“ and can also have a look at this interesting project  <a href="https://github.com/natemcmaster/DotNetCorePlugins" target="_blank" rel="noopener">natemcmaster/DotNetCorePlugins</a> which starts to talk about the same topic on “<a href="https://github.com/natemcmaster/DotNetCorePlugins/issues/16" target="_blank" rel="noopener">Make plugins unloadable</a>“.</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Let’ see in this blog post the new possibility offered by &lt;strong&gt;.NET Core 3.0 preview 2&lt;/strong&gt; to load and unload assemblies at run time using &lt;strong&gt;&lt;a href=&quot;https://github.com/dotnet/coreclr/blob/master/src/System.Private.CoreLib/src/System/Runtime/Loader/AssemblyLoadContext.cs#L14&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;AssemblyLoadContext&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term=".NET Core" scheme="https://laurentkempe.com/tags/NET-Core/"/>
+    
+      <category term="Roslyn" scheme="https://laurentkempe.com/tags/Roslyn/"/>
+    
+  </entry>
   
   <entry>
     <title>.NET Core Community online Hackathon</title>
@@ -453,31 +475,6 @@
       <category term="NDepend" scheme="https://laurentkempe.com/tags/NDepend/"/>
     
       <category term="dotCover" scheme="https://laurentkempe.com/tags/dotCover/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Optimizing release build process using JetBrains TeamCity and Atlassian Stash</title>
-    <link href="https://laurentkempe.com/2013/10/17/Optimizing-release-build-process-using-JetBrains-TeamCity-and-Atlassian-Stash/"/>
-    <id>https://laurentkempe.com/2013/10/17/Optimizing-release-build-process-using-JetBrains-TeamCity-and-Atlassian-Stash/</id>
-    <published>2013-10-17T17:34:14.000Z</published>
-    <updated>2013-10-17T19:55:36.000Z</updated>
-    
-    <content type="html"><![CDATA[<!-- [![Byron Bay Light House](http://farm8.staticflickr.com/7421/9599787416_582f4ab142_m.jpg)](http://www.flickr.com/photos/laurentkempe/9599787416/ "Byron Bay Light House by Laurent Kempé, on Flickr") -->   <p>Automating and optimizing the processes I use everyday to work is something important so that I get more productive and spend less time in things that a computer is better at.<br><a id="more"></a></p><p>Previously I had 3 builds defined in <a href="http://www.jetbrains.com/teamcity/" target="_blank" rel="noopener">TeamCity</a> one for all <a href="http://confluence.jetbrains.com/display/TCD8/Working+with+Feature+Branches" target="_blank" rel="noopener">feature branches</a>, one for release and one for patch. For feature branch and patch branch I needed to go to TeamCity to define two Build Parameters: the branch name and the release number.</p><p>My goal was to avoid to go to TeamCity when we have a release and have to set those <a href="http://confluence.jetbrains.com/display/TCD8/Configuring+Build+Parameters" target="_blank" rel="noopener">Build Parameters</a>.</p><p>I wanted one TeamCity build which would</p><ol><li>Determine automatically the version number </li><li>Determine the branch to use to build that release   </li></ol><p>The second point was easy! You just need to follow the same principles defined for <a href="http://confluence.jetbrains.com/display/TCD8/Working+with+Feature+Branches" target="_blank" rel="noopener">feature branches</a>. I defined the following branch naming convention: any release should have a branch name like this release/skye-editor-2.26.0 for a release of Skye Editor 2.26.0. Then I defined in my VCS Root of my TeamCity Build the branch specification:</p><blockquote><p>+:refs/heads/release/skye-editor-*</p></blockquote><p>and the same for the Build Triggers / VCS Trigger / Branch filter.</p><p>Now the first point is a bit more complex!</p><p>As we want to determine automatically the version number we quickly realize that the release number is defined in the branch name itself, e.g. release/skye-editor-<strong>2.26.0</strong>. </p><p>So why not use it? Yeah great idea but how? </p><p>First idea that came was to pass that value as a parameter to the build script and deal with splitting the branch name to the release number into the build script. As <a href="http://www.jetbrains.com/company/people/Yarko_Yegor.html" target="_blank" rel="noopener">Yegor</a> was confirming that currently TeamCity has no way to parse values. I didn’t really like that idea of passing that parameter! So I continued to think about alternatives and finally came to ask Yegor:</p><blockquote><p>I had another idea, in teamcity when the active builds are displayed for a feature branch build only the second part is displayed, e.g. if I specify as branch specification SKYE-* and I have a branch with SKYE-1077-blabla then it wil show 1077-blabla. Is there a build parameter which would map this 1077-blabla?</p></blockquote><p>And the answer was</p><blockquote><p>If you have something like refs/heads/SKYE-(*), then only the part in the brackets is regarded as logic branch name. Logic branch name is available as %teamcity.build.branch%</p></blockquote><p>That’s it! Thanks Yegor. We have the way to get our version without having to change our build script and without writing any code!</p><p>So I just used the logical branch name %teamcity.build.branch% as my configuration parameter CurrentRelease which was already existing and that I had to manually update before:</p><p><img src="http://farm4.staticflickr.com/3672/10324541816_1c57beaa6c_o.png" alt=""></p><p>Replacing the previous two manual configurations</p><p><img src="http://farm8.staticflickr.com/7453/10324571806_5a56729f3e_o.png" alt=""></p><p>So now I create easily a Git release branch; release/skye-editor-2.26.0, then use pull requests of <a href="https://www.atlassian.com/software/stash/overview" target="_blank" rel="noopener">Atlassian Stash</a> to review and merge my feature branches to that release branch which is automatically built using TeamCity.</p><p>This is a great improvement and shorten my release check list, all good!</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;!-- [![Byron Bay Light House](http://farm8.staticflickr.com/7421/9599787416_582f4ab142_m.jpg)](http://www.flickr.com/photos/laurentkempe/9599787416/ &quot;Byron Bay Light House by Laurent Kempé, on Flickr&quot;) --&gt;   
-&lt;p&gt;Automating and optimizing the processes I use everyday to work is something important so that I get more productive and spend less time in things that a computer is better at.&lt;br&gt;
-    
-    </summary>
-    
-    
-      <category term="Git" scheme="https://laurentkempe.com/tags/Git/"/>
-    
-      <category term="Team City" scheme="https://laurentkempe.com/tags/Team-City/"/>
-    
-      <category term="Stash" scheme="https://laurentkempe.com/tags/Stash/"/>
     
   </entry>
   

@@ -201,6 +201,44 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2009/12/03/ProjectReference-with-Condition-in-your-MSBuild-project-files/">
+                            ProjectReference with Condition in your MSBuild project files
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2009-12-03T07:24:42+01:00">
+	
+		    Dec 03, 2009
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>Since some time I have the current scenario where I need to have conditional reference in a project. Basically the application must reference an assembly in one case in other it should reference another one. This was working correctly from an MSBuild point of view as the first implemented solution let me compile and run the application on my development machine and it was also working for our <a href="http://www.jetbrains.com/teamcity/index.html" target="_blank" rel="noopener">TeamCity</a> build server. So everything was fine in this perfect word expect one thing!</p>
+<p>The issue was the following; Visual Studio was showing two references of the ‘same assembly’ with different path. Not really an issue you would say because the correct one was used at compile time and at run time in all configurations. So the issue was that this had an impact of <a href="http://www.jetbrains.com/resharper/index.html" target="_blank" rel="noopener">ReSharper</a>. And this is I cannot accept because it affect my productivity.<br>
+                    
+                        <a href="/2009/12/03/ProjectReference-with-Condition-in-your-MSBuild-project-files/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </p></div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2009/12/01/MVVM-Light-Toolkit-V3-Alpha-3-for-WPF4SL4/">
                             MVVM Light Toolkit V3 Alpha 3 for WPF4/SL4
                         </a>
@@ -527,44 +565,6 @@
 <p>First I fully re-installed TeamCity using the Windows Setup that JetBrains delivered on the new server.<br>
                     
                         <a href="/2009/11/03/TeamCity-migration-tip/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </p></div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2009/10/27/Build-ClickOnce-deployment-packages-using-MSBuild-and-Team-City/">
-                            Build ClickOnce deployment packages using MSBuild and Team City
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2009-10-27T20:25:26+01:00">
-	
-		    Oct 27, 2009
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>The other day I was requested to automate our build process to issue different <a href="http://msdn.microsoft.com/en-us/library/t71a733d(VS.80" target="_blank" rel="noopener">ClickOnce</a>.aspx) setup for the same application. The main difference was some configuration files pointing to different back end web services.</p>
-<p>To start I had to create new build configurations on <a href="http://www.jetbrains.com/teamcity/index.html" target="_blank" rel="noopener">Team City</a> which used the following settings for the Build Runner:<br>
-                    
-                        <a href="/2009/10/27/Build-ClickOnce-deployment-packages-using-MSBuild-and-Team-City/" class="postShorten-excerpt_link link">
                             Continue reading
                         </a>
                         
