@@ -1,0 +1,602 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Azure DevOps for Visual Studio Extensions - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"As you might have guessed reading some of my older posts, I like to automate things which I believe a computer should do in place of humans.\n\nIt is true for “Automating my development machine installation“ or deploying software in “Build, ship and run ASP.NET Core on Microsoft Azure using Docker Cloud“… Today I will show you how to publish Visual Studio extensions using Azure DevOps.\nI am the author of Git Diff Margin, a Visual Studio extension displaying live Git changes of the currently edited file on Visual Studio margin and scroll bar. It supports Visual Studio 2012 through Visual Studio 2019 Preview. You can watch a short video about some of its features at the end of this blog post.\nPreviouslyMy way of releasing Git Diff Margin was tedious with lots of manual steps\n\nUpdate versions in all AssemblyInfo.cs, in source.extension.vsixmanifest\nBuild on my local machine\nGet the vsix, install it in Visual Studio and test it\nTag with Git and push to Github\nLogin to the Visual Studio marketplace, upload by hand the vsix, adapt the description and publish\nCreate a release on Github, upload by hand the vsix, adapt the description and publish\nLogin to Chocolatey.org, upload by hand the nupkg, adapt the description and publish\n\nThere is clearly lots of place for some automation.\nFirst improvementFor some time, I have used AppVeyor to at least have a Continuous Integration build. This was helping already to be sure that a Pull Request would build correctly and to get the vsix artifact built somewhere else than on my developer machine.\nA good step for sure, but not enough to please me.\nTodayI have greatly reduced the burden using Azure DevOps 💕 and this at no cost!Microsoft is supporting the open source community with Azure Pipelines with 10 parallel jobs with unlimited minutes for CI/CD! Thanks for that.\nYou can watch a great quick intro video from Abel Wang to get a better idea\nBuild pipelineSo, creating a build pipeline on Azure DevOps is the first step and it is super easy! It comes in two flavors; one with a visual editor and one as a YAML file.\nThe overall goal of the build pipeline is to\n\nStart a build when something changes on the master branch of Git Diff Margin Github repository\nProduce artifacts resulting from a successful build\n\nTo achieve this here are the steps executed by the build pipeline\n\nInstalling Nuget Tool\nUpdating all AssemblyInfo.cs automatically using Assembly Info extension\nUpdate Git Diff Margin Vsix Version using Vsix Tools extension\nBuilding Git Diff Margin Visual Studio solution using Visual Studio Build task\nRunning the tests. ❗ Currently, I still need to have this working\nCopy build artifacts to a staging folder and to the Chocolatey folder\nRun Chocolatey pack\nFinally, publish the build artifacts so that they can be downloaded later on\n\nYou can see that we already automated a good part of the manual tasks that we had to do previously. In fact, now we still need to update the version manually but only in one place which is the Azure DevOps YAML file: azure-pipelines.yml.\nThe remaining manual tasks are\n\nGet the vsix, install it in Visual Studio and test it\nUpdate README-Marketplace.md file which will be uploaded to the Visual Studio Marketplace as a description file \nTag with Git and push to Github\n\nThis is the azure-pipelines.yml file which automates the whole build step!\n\nBy the way, you can get nice clickable build status badge like the following one\n \nRelease pipelineNow that we have access to the build artifacts; GitDiffMargin.vsix for the Visual Studio Marketplace and GitDiffMargin.nupkg for Chocolatey we can automate the next step through a Azure DevOps release pipeline.\nIn this step, we would like to automate the following\n\nLogin to the Visual Studio marketplace, upload by hand the vsix, adapt the description and publish\nCreate a draft release on Github, upload by hand the vsix, create a description based on changes\nLogin to Chocolatey.org, upload by hand the nupkg, adapt the description and publish\n\nFor that, we created a release pipeline job named “Marketplace - Github - Choco” with 3 tasks connected to our previously defined build pipeline artifactsAzure DevOps Release pipeline\nIn the detailsAzure DevOps Release pipeline tasks\nThe first task publish Git Diff Margin to Visual Studio Extension using Azure DevOps Extension Tasks\n\nThe second task creates a GitHub release draft using GitHub Release task\n\nThe third task publish to Chocolatey using Chocolatey\n\nThe release pipeline is triggered manually when I am ready to publish a new version\nAzure DevOps Releasing\nAnd if everything worked correctly you see the following resultAzure DevOps Release result\nAnd now people have access to the latest version of Git Diff Margin on Visual Studio Marketplace, on Github release and on Chocolatey.\nFinally, we achieved our goal and let the machines do the work, which saves us time and avoid some mistakes.\nThanks\nGary Ewan Park aka @gep13 for the great help he provided me on the Chocolatey part of this journey!\nUtkarsh Shigihalli aka @onlyutkarsh for extending of Azure DevOps Extension Tasks for the Visual Studio marketplace\n\nGit Diff Margin feature demo\n","dateCreated":"2019-03-05T22:14:42+01:00","dateModified":"2019-03-05T22:19:42+01:00","datePublished":"2019-03-05T22:14:42+01:00","description":"As you might have guessed reading some of my older posts, I like to automate things which I believe a computer should do in place of humans.","headline":"Azure DevOps for Visual Studio Extensions","image":["https://farm5.staticflickr.com/4350/36640551660_cb7e3db2b0_q.jpg","https://farm5.staticflickr.com/4350/36640551660_cb7e3db2b0_b.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2019/03/05/Azure-DevOps-for-Visual-Studio-Extensions/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2019/03/05/Azure-DevOps-for-Visual-Studio-Extensions/","keywords":"Visual Studio, Azure DevOps, Chocolatey, Github","thumbnailUrl":"https://farm5.staticflickr.com/4350/36640551660_cb7e3db2b0_q.jpg"}</script>
+    <meta name="description" content="As you might have guessed reading some of my older posts, I like to automate things which I believe a computer should do in place of humans.">
+<meta name="keywords" content="Visual Studio,Azure DevOps,Chocolatey,Github">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Azure DevOps for Visual Studio Extensions">
+<meta property="og:url" content="https://laurentkempe.com/2019/03/05/Azure-DevOps-for-Visual-Studio-Extensions/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="As you might have guessed reading some of my older posts, I like to automate things which I believe a computer should do in place of humans.">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://dev.azure.com/techheadbrothers/GitDiffMargin/_apis/build/status/laurentkempe.GitDiffMargin">
+<meta property="og:image" content="https://farm8.staticflickr.com/7807/32349146347_f88d9b1fce_o.png">
+<meta property="og:image" content="https://farm8.staticflickr.com/7840/47290958411_251b163117_o.png">
+<meta property="og:image" content="https://farm8.staticflickr.com/7820/46376429945_e3fde68d19_o.png">
+<meta property="og:image" content="https://farm8.staticflickr.com/7883/40326503893_58116c2328_o.png">
+<meta property="og:image" content="https://farm6.staticflickr.com/5562/14879945429_cc40e1db81_o.jpg">
+<meta property="og:updated_time" content="2019-03-05T21:19:42.479Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Azure DevOps for Visual Studio Extensions">
+<meta name="twitter:description" content="As you might have guessed reading some of my older posts, I like to automate things which I believe a computer should do in place of humans.">
+<meta name="twitter:image" content="https://dev.azure.com/techheadbrothers/GitDiffMargin/_apis/build/status/laurentkempe.GitDiffMargin">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://farm5.staticflickr.com/4350/36640551660_cb7e3db2b0_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://farm5.staticflickr.com/4350/36640551660_cb7e3db2b0_q.jpg" />
+    
+    
+        <meta property="og:image" content="https://farm5.staticflickr.com/4350/36640551660_cb7e3db2b0_b.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://farm5.staticflickr.com/4350/36640551660_cb7e3db2b0_b.jpg" />
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a class="header-right-picture " href="#about">
+        
+        
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/ " title="Home">
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/all-tags" title="Tags">
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/all-archives" title="Archives">
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/about-laurent-kempe.html" title="About">
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial" style="background-image:url('https://farm5.staticflickr.com/4350/36640551660_cb7e3db2b0_b.jpg');" data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Azure DevOps for Visual Studio Extensions
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-03-05T22:14:42+01:00">
+	
+		    Mar 05, 2019
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Moorea, Polynésie française, France</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>As you might have guessed reading some of my older posts, I like to automate things which I believe a computer should do in place of humans.</p>
+<a id="more"></a>
+<p>It is true for “<a href="https://laurentkempe.com/2018/06/01/Automating-development-machine-installation/">Automating my development machine installation</a>“ or deploying software in “<a href="https://laurentkempe.com/2016/07/18/Build-ship-and-run-ASP-NET-Core-on-Microsoft-Azure-using-Docker-Cloud/">Build, ship and run ASP.NET Core on Microsoft Azure using Docker Cloud</a>“… Today I will show you how to publish Visual Studio extensions using <a href="https://azure.microsoft.com/en-us/services/devops/" target="_blank" rel="noopener">Azure DevOps</a>.</p>
+<p>I am the author of <strong><a href="https://marketplace.visualstudio.com/items?itemName=LaurentKempe.GitDiffMargin" target="_blank" rel="noopener">Git Diff Margin</a></strong>, a Visual Studio extension displaying live Git changes of the currently edited file on Visual Studio margin and scroll bar. It supports Visual Studio 2012 through Visual Studio 2019 Preview. You can <a href="#Git-Diff-Margin-feature-demo">watch a short video</a> about some of its features at the end of this blog post.</p>
+<h1 id="Previously"><a href="#Previously" class="headerlink" title="Previously"></a>Previously</h1><p>My way of releasing <a href="https://github.com/laurentkempe/GitDiffMargin" target="_blank" rel="noopener">Git Diff Margin</a> was tedious with lots of manual steps</p><p></p><p></p>
+<ol>
+<li>Update versions in all AssemblyInfo.cs, in source.extension.vsixmanifest</li>
+<li>Build on my local machine</li>
+<li>Get the vsix, install it in Visual Studio and test it</li>
+<li>Tag with Git and push to Github</li>
+<li>Login to the Visual Studio marketplace, upload by hand the vsix, adapt the description and publish</li>
+<li>Create a release on Github, upload by hand the vsix, adapt the description and publish</li>
+<li>Login to Chocolatey.org, upload by hand the nupkg, adapt the description and publish</li>
+</ol>
+<p>There is clearly lots of place for some automation.</p>
+<h1 id="First-improvement"><a href="#First-improvement" class="headerlink" title="First improvement"></a>First improvement</h1><p>For some time, I have used <a href="https://www.appveyor.com/" target="_blank" rel="noopener">AppVeyor</a> to at least have a Continuous Integration build. This was helping already to be sure that a Pull Request would build correctly and to get the vsix artifact built somewhere else than on my developer machine.</p>
+<p>A good step for sure, but not enough to please me.</p>
+<h1 id="Today"><a href="#Today" class="headerlink" title="Today"></a>Today</h1><p>I have greatly reduced the burden using <a href="https://azure.microsoft.com/en-us/services/devops/" target="_blank" rel="noopener">Azure DevOps</a> 💕 and this <strong>at no cost</strong>!<br>Microsoft is supporting the open source community with <a href="https://azure.microsoft.com/en-us/services/devops/pipelines/" target="_blank" rel="noopener">Azure Pipelines</a> with 10 parallel jobs with unlimited minutes for CI/CD! Thanks for that.</p>
+<p>You can watch a great quick intro video from <a href="https://twitter.com/AbelSquidHead" target="_blank" rel="noopener">Abel Wang</a> to get a better idea<br><div class="video-container"><iframe src="//www.youtube.com/embed/NuYDAs3kNV8" frameborder="0" allowfullscreen></iframe></div></p>
+<h2 id="Build-pipeline"><a href="#Build-pipeline" class="headerlink" title="Build pipeline"></a>Build pipeline</h2><p>So, creating a build pipeline on Azure DevOps is the first step and it is super easy! It comes in two flavors; one with a <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/get-started-designer?view=azure-devops&amp;tabs=new-nav" target="_blank" rel="noopener">visual editor</a> and one as a <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&amp;tabs=schema" target="_blank" rel="noopener">YAML file</a>.</p>
+<p>The overall goal of the build pipeline is to</p><p></p><p></p>
+<ol>
+<li>Start a build when something changes on the master branch of <a href="https://github.com/laurentkempe/GitDiffMargin" target="_blank" rel="noopener">Git Diff Margin Github repository</a></li>
+<li>Produce artifacts resulting from a successful build</li>
+</ol>
+<p>To achieve this here are the steps executed by the build pipeline</p><p></p><p></p>
+<ol>
+<li><a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/tool/nuget?view=azure-devops" target="_blank" rel="noopener">Installing Nuget Tool</a></li>
+<li>Updating all AssemblyInfo.cs automatically using <a href="https://marketplace.visualstudio.com/items?itemName=bleddynrichards.Assembly-Info-Task" target="_blank" rel="noopener">Assembly Info extension</a></li>
+<li>Update Git Diff Margin Vsix Version using <a href="https://marketplace.visualstudio.com/items?itemName=SamirBoulema.Vsix-Tools" target="_blank" rel="noopener">Vsix Tools extension</a></li>
+<li>Building Git Diff Margin Visual Studio solution using <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/visual-studio-build?view=azure-devops" target="_blank" rel="noopener">Visual Studio Build task</a></li>
+<li>Running the tests. ❗ Currently, I still need to have this working</li>
+<li><a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/copy-files?view=azure-devops&amp;tabs=yaml" target="_blank" rel="noopener">Copy</a> build artifacts to a staging folder and to the Chocolatey folder</li>
+<li>Run <a href="https://marketplace.visualstudio.com/items?itemName=gep13.chocolatey-azuredevops" target="_blank" rel="noopener">Chocolatey pack</a></li>
+<li>Finally, <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/publish-build-artifacts?view=azure-devops" target="_blank" rel="noopener">publish the build artifacts</a> so that they can be downloaded later on</li>
+</ol>
+<p>You can see that we already automated a good part of the manual tasks that we had to do previously. In fact, now we still need to update the version manually but only in one place which is the Azure DevOps YAML file: <em>azure-pipelines.yml</em>.</p>
+<p>The remaining manual tasks are</p>
+<ol>
+<li>Get the vsix, install it in Visual Studio and test it</li>
+<li>Update README-Marketplace.md file which will be uploaded to the Visual Studio Marketplace as a description file </li>
+<li>Tag with Git and push to Github</li>
+</ol>
+<p>This is the <em>azure-pipelines.yml</em> file which automates the whole build step!</p>
+<script src="//gist.github.com/dcc375c8bd03fb0367b5b6835464b45c.js?file=azure-pipelines.yml"></script>
+<p>By the way, you can get nice <a href="https://docs.microsoft.com/en-us/rest/api/azure/devops/build/badge/get%20build%20badge%20data?view=azure-devops-rest-5.0" target="_blank" rel="noopener">clickable build status badge</a> like the following one</p>
+<p><a href="https://dev.azure.com/techheadbrothers/GitDiffMargin/_build/latest?definitionId=7" target="_blank" rel="noopener"><img src="https://dev.azure.com/techheadbrothers/GitDiffMargin/_apis/build/status/laurentkempe.GitDiffMargin" alt="Build Status"></a> </p>
+<h2 id="Release-pipeline"><a href="#Release-pipeline" class="headerlink" title="Release pipeline"></a>Release pipeline</h2><p>Now that we have access to the build artifacts; <a href="https://marketplace.visualstudio.com/items?itemName=LaurentKempe.GitDiffMargin" target="_blank" rel="noopener">GitDiffMargin.vsix for the Visual Studio Marketplace</a> and <a href="https://www.chocolatey.org/packages/GitDiffMargin" target="_blank" rel="noopener">GitDiffMargin.nupkg for Chocolatey</a> we can automate the next step through a <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/release/?view=azure-devops" target="_blank" rel="noopener">Azure DevOps release pipeline</a>.</p>
+<p>In this step, we would like to automate the following</p>
+<ol start="5">
+<li>Login to the Visual Studio marketplace, upload by hand the vsix, adapt the description and publish</li>
+<li>Create a draft release on Github, upload by hand the vsix, create a description based on changes</li>
+<li>Login to Chocolatey.org, upload by hand the nupkg, adapt the description and publish</li>
+</ol>
+<p>For that, we created a release pipeline job named “Marketplace - Github - Choco” with 3 tasks connected to our previously defined build pipeline artifacts<br><div class="figure center" style="width:653;"><img class="fig-img" src="https://farm8.staticflickr.com/7807/32349146347_f88d9b1fce_o.png" style="width:653;height:423;" alt="Azure DevOps Release pipeline"><span class="caption">Azure DevOps Release pipeline</span></div><div style="clear:both;"></div></p>
+<p>In the details<br><div class="figure center" style="width:642;"><img class="fig-img" src="https://farm8.staticflickr.com/7840/47290958411_251b163117_o.png" style="width:642;height:296;" alt="Azure DevOps Release pipeline tasks"><span class="caption">Azure DevOps Release pipeline tasks</span></div><div style="clear:both;"></div></p>
+<p>The first task publish Git Diff Margin to Visual Studio Extension using <a href="https://marketplace.visualstudio.com/items?itemName=ms-devlabs.vsts-developer-tools-build-tasks" target="_blank" rel="noopener">Azure DevOps Extension Tasks</a></p>
+<script src="//gist.github.com/dcc375c8bd03fb0367b5b6835464b45c.js?file=azure-vs-release-pipelines.yml"></script>
+<p>The second task creates a GitHub release draft using <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/github-release?view=azure-devops" target="_blank" rel="noopener">GitHub Release task</a></p>
+<script src="//gist.github.com/dcc375c8bd03fb0367b5b6835464b45c.js?file=azure-github-release-pipelines.yml"></script>
+<p>The third task publish to Chocolatey using <a href="https://marketplace.visualstudio.com/items?itemName=gep13.chocolatey-azuredevops" target="_blank" rel="noopener">Chocolatey</a></p>
+<script src="//gist.github.com/dcc375c8bd03fb0367b5b6835464b45c.js?file=azure-chocolatey-release-pipelines.yml"></script>
+<p>The release pipeline is triggered manually when I am ready to publish a new version</p>
+<div class="figure center" style="width:661;"><img class="fig-img" src="https://farm8.staticflickr.com/7820/46376429945_e3fde68d19_o.png" style="width:661;height:142;" alt="Azure DevOps Releasing"><span class="caption">Azure DevOps Releasing</span></div><div style="clear:both;"></div>
+<p>And if everything worked correctly you see the following result<br><div class="figure center" style="width:687;"><img class="fig-img" src="https://farm8.staticflickr.com/7883/40326503893_58116c2328_o.png" style="width:687;height:497;" alt="Azure DevOps Release result"><span class="caption">Azure DevOps Release result</span></div><div style="clear:both;"></div></p>
+<p>And now people have access to the latest version of Git Diff Margin on <a href="https://marketplace.visualstudio.com/items?itemName=LaurentKempe.GitDiffMargin" target="_blank" rel="noopener">Visual Studio Marketplace</a>, on <a href="https://github.com/laurentkempe/GitDiffMargin/releases/tag/v3.9.3" target="_blank" rel="noopener">Github release</a> and on <a href="https://www.chocolatey.org/packages/GitDiffMargin/" target="_blank" rel="noopener">Chocolatey</a>.</p>
+<p>Finally, we achieved our goal and let the machines do the work, which saves us time and avoid some mistakes.</p>
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><ul>
+<li><a href="https://www.gep13.co.uk/" target="_blank" rel="noopener">Gary Ewan Park</a> aka <a href="https://twitter.com/gep13" target="_blank" rel="noopener">@gep13</a> for the great help he provided me on the <a href="https://www.chocolatey.org/" target="_blank" rel="noopener">Chocolatey</a> part of this journey!</li>
+<li><a href="https://github.com/onlyutkarsh" target="_blank" rel="noopener">Utkarsh Shigihalli</a> aka <a href="https://twitter.com/onlyutkarsh" target="_blank" rel="noopener">@onlyutkarsh</a> for <a href="https://github.com/Microsoft/vsts-extension-build-release-tasks/issues/103" target="_blank" rel="noopener">extending of Azure DevOps Extension Tasks for the Visual Studio marketplace</a></li>
+</ul>
+<h1 id="Git-Diff-Margin-feature-demo"><a href="#Git-Diff-Margin-feature-demo" class="headerlink" title="Git Diff Margin feature demo"></a>Git Diff Margin feature demo</h1><p><a data-flickr-embed="true" href="https://www.flickr.com/photos/laurentkempe/14879945429/" title="Git Diff Margin features demo" target="_blank" rel="noopener"><img src="https://farm6.staticflickr.com/5562/14879945429_cc40e1db81_o.jpg" width="480" height="360" alt="Git Diff Margin features demo"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script></p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/Azure-DevOps/">Azure DevOps</a> <a class="tag tag--primary tag--small t-link" href="/tags/Chocolatey/">Chocolatey</a> <a class="tag tag--primary tag--small t-link" href="/tags/Github/">Github</a> <a class="tag tag--primary tag--small t-link" href="/tags/Visual-Studio/">Visual Studio</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/02/18/dynamically-compile-and-run-code-using-dotNET-Core-3.0/" data-tooltip="Dynamically compile and run code using .NET Core 3.0" aria-label="NEXT: Dynamically compile and run code using .NET Core 3.0">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2019/03/05/Azure-DevOps-for-Visual-Studio-Extensions/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2019/03/05/Azure-DevOps-for-Visual-Studio-Extensions/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2019/03/05/Azure-DevOps-for-Visual-Studio-Extensions/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/02/18/dynamically-compile-and-run-code-using-dotNET-Core-3.0/" data-tooltip="Dynamically compile and run code using .NET Core 3.0" aria-label="NEXT: Dynamically compile and run code using .NET Core 3.0">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2019/03/05/Azure-DevOps-for-Visual-Studio-Extensions/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2019/03/05/Azure-DevOps-for-Visual-Studio-Extensions/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2019/03/05/Azure-DevOps-for-Visual-Studio-Extensions/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2019/03/05/Azure-DevOps-for-Visual-Studio-Extensions/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2019/03/05/Azure-DevOps-for-Visual-Studio-Extensions/">
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2019/03/05/Azure-DevOps-for-Visual-Studio-Extensions/">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2019/03/05/Azure-DevOps-for-Visual-Studio-Extensions/';
+                 
+                    this.page.identifier = '20190305221442';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>
