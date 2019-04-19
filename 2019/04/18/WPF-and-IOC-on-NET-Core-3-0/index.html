@@ -1,0 +1,556 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>WPF and IOC on .NET Core 3.0 - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"At work, we are planning to migrate our WPF application from .NET Framework 4.7 to .NET Core 3.0. The main reason for doing so is that it was always a big pain to organize the updates of the .NET Framework on our customer machines. So being able to bundle .NET Core with our application is a big plus for us. Then, for sure, we are looking for the performance improvements brought by .NET Core and finally the new capabilities brought by the fast pace of innovation of .NET Core.This is a great opportunity for us to see and renew a part of the libraries we depend on.  \nIn the current version of our application, we are using StructureMap as our IOC container. As you might have read StructureMap has been sunsetted and replaced by Lamar.\nWe could have gone to Lamar as it maintains API compatibility with SturtureMap. I just did not want to bring the dependency to Roslyn, but it seems that it was changed in Lamar 3.0. So, we surely will consider it.\nAs a first try, I would like to have a look at the IOC container brought by the ASP.NET team; Microsoft Extensions DependencyInjection. Even if it was brought by the ASP.NET team it doesn’t mean at all that it cannot be used outside of ASP.NET!It is marked as Fast by Daniel Palme in his post ‘IoC Container Benchmark - Performance comparison‘, so it is a good candidate.\nThe goal of this post is to see how we could use Microsoft Extensions DependencyInjection in a .NET Core 3.0 with WPF. We will start really easily by creating a new WPF application with the .NET Core CLI.\nProject creationWe create our project from the command line.\n123456789101112131415161718192021222324252627❯ mkdir WpfIoc❯ cd WpfIoc❯ dotnet.exe --version3.0.100-preview4-011223❯ dotnet new wpfThe template \"WPF Application\" was created successfully.Processing post-creation actions...Running 'dotnet restore' on C:\\Users\\laure\\projects\\WpfIoc\\WpfIoc.csproj...  Restore completed in 90.03 ms for C:\\Users\\laure\\projects\\WpfIoc\\WpfIoc.csproj.Restore succeeded.❯ dotnet buildMicrosoft (R) Build Engine version 16.1.54-preview+gd004974104 for .NET CoreCopyright (C) Microsoft Corporation. All rights reserved.  Restore completed in 19.92 ms for C:\\Users\\laure\\projects\\WpfIoc\\WpfIoc.csproj.C:\\Program Files\\dotnet\\sdk\\3.0.100-preview4-011223\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.NET.RuntimeIdentifierInference.targets(151,5): message NETSDK1057: You are using a preview version of .NET Core. See: https://aka.ms/dotnet-core-preview [C:\\Users\\laure\\projects\\WpfIoc\\WpfIoc.csproj]  WpfIoc -&gt; C:\\Users\\laure\\projects\\WpfIoc\\bin\\Debug\\netcoreapp3.0\\WpfIoc.dllBuild succeeded.    0 Warning(s)    0 Error(s)Time Elapsed 00:00:01.63\nWhat we want to achieve is to bootstrap the application and inject in the constructor of our MainWindow a service which will be called to display some text on the main window of the application.\nCodeFirst, we need to add the reference to the Microsoft Extensions DependencyInjection.\nWpfIoc.csproj12345678910111213&lt;Project Sdk=\"Microsoft.NET.Sdk.WindowsDesktop\"&gt;  &lt;PropertyGroup&gt;    &lt;OutputType&gt;WinExe&lt;/OutputType&gt;    &lt;TargetFramework&gt;netcoreapp3.0&lt;/TargetFramework&gt;    &lt;UseWPF&gt;true&lt;/UseWPF&gt;  &lt;/PropertyGroup&gt;  &lt;ItemGroup&gt;    &lt;PackageReference Include=\"Microsoft.Extensions.DependencyInjection\" Version=\"3.0.0-preview4.19216.2\" /&gt;    &lt;/ItemGroup&gt;&lt;/Project&gt;\nThen we create an interface ITextService which will be injected by the container into the MainWindow class.\nITextService.cs1234public interface ITextService&#123;    string GetText();&#125;\n In fact, it is a concrete implementation of that interface which will be injected TextService.\nTextService.cs1234567891011121314class TextService : ITextService&#123;    private string _text;    public TextService(string text)    &#123;        _text = text;    &#125;        public string GetText()    &#123;        return _text;    &#125;&#125;\nThen we need to configure our IOC container.\nApp.xaml.cs1services.AddSingleton&lt;ITextService&gt;(provider =&gt; new TextService(\"Hi WPF .NET Core 3.0!\"));\nSo this also means that we need to have our IOC container creating our WPF MainWindow, no problem it is just another normal C# class.\nApp.xaml.cs1services.AddSingleton&lt;MainWindow&gt;();\nNext piece which we need to put in place is the one linking all the other pieces together; the IOC container! That’s quite easy we just need to extend the App class to create ServiceCollection add the dependencies we want the IOC container to manage and then to call BuildServiceProvider.  \nApp.xaml.cs12345678910111213public App()&#123;    var serviceCollection = new ServiceCollection();    ConfigureServices(serviceCollection);    _serviceProvider = serviceCollection.BuildServiceProvider();&#125;private void ConfigureServices(IServiceCollection services)&#123;    services.AddSingleton&lt;ITextService&gt;(provider =&gt; new TextService(\"Hi WPF .NET Core 3.0!\"));    services.AddSingleton&lt;MainWindow&gt;();&#125;\nThen, on the App_OnStartup we are using the ServiceProvider to get an instance of MainWindow which would get the ITextService injected in its constructor.  \nApp.xaml.cs12345private void App_OnStartup(object sender, StartupEventArgs e)&#123;    var mainWindow = _serviceProvider.GetService&lt;MainWindow&gt;();    mainWindow.Show();&#125;\nWe also modified App.xaml to call App_OnStartup.\nApp.xaml12345678&lt;Application x:Class=\"wpfioc.App\"             xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"             xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"             xmlns:local=\"clr-namespace:wpfioc\"             Startup=\"App_OnStartup\"&gt;    &lt;Application.Resources&gt;    &lt;/Application.Resources&gt;&lt;/Application&gt;\nFinally, we modify the XAML of the MainWindow to display some text in a Label.\nMainWindow.xaml12345678910111213141516&lt;Window x:Class=\"WpfIoc.MainWindow\"        xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"        xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"        xmlns:d=\"http://schemas.microsoft.com/expression/blend/2008\"        xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\"        xmlns:local=\"clr-namespace:WpfIoc\"        mc:Ignorable=\"d\"        Title=\"MainWindow\" Height=\"450\" Width=\"800\"&gt;    &lt;Grid&gt;        &lt;Grid.RowDefinitions&gt;            &lt;RowDefinition Height=\"9*\" /&gt;            &lt;RowDefinition Height=\"1*\" /&gt;        &lt;/Grid.RowDefinitions&gt;        &lt;Label Name=\"Label\" Content=\"Hello .NET Core!\" HorizontalAlignment=\"Center\" VerticalAlignment=\"Center\" FontSize=\"40\" /&gt;    &lt;/Grid&gt;&lt;/Window&gt;\nAnd we inject through the constructor, the ITextService interface which is used to set the Label text.\nMainWindow.xaml.cs123456789public partial class MainWindow : Window&#123;    public MainWindow(ITextService textService)    &#123;        InitializeComponent();        Label.Content = textService.GetText();    &#125;&#125;\nResultWe can run the application and see that TextService is called and the WPF application correctly displays the text.\n\nYou can get all the code on GitHub at https://github.com/laurentkempe/WpfIoc\n","dateCreated":"2019-04-18T10:57:56+02:00","dateModified":"2019-04-19T10:57:19+02:00","datePublished":"2019-04-18T10:57:56+02:00","description":"At work, we are planning to migrate our WPF application from .NET Framework 4.7 to .NET Core 3.0. The main reason for doing so is that it was always a big pain to organize the updates of the .NET Framework on our customer machines. So being able to bundle .NET Core with our application is a big plus for us. Then, for sure, we are looking for the performance improvements brought by .NET Core and finally the new capabilities brought by the fast pace of innovation of .NET Core.","headline":"WPF and IOC on .NET Core 3.0","image":["https://live.staticflickr.com/4410/36576108926_04e831cc92_q.jpg","https://live.staticflickr.com/4410/36576108926_d296e0fa6b_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2019/04/18/WPF-and-IOC-on-NET-Core-3-0/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2019/04/18/WPF-and-IOC-on-NET-Core-3-0/","keywords":".NET Core, WPF","thumbnailUrl":"https://live.staticflickr.com/4410/36576108926_04e831cc92_q.jpg"}</script>
+    <meta name="description" content="At work, we are planning to migrate our WPF application from .NET Framework 4.7 to .NET Core 3.0. The main reason for doing so is that it was always a big pain to organize the updates of the .NET Fram">
+<meta name="keywords" content=".NET Core,WPF">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="WPF and IOC on .NET Core 3.0">
+<meta property="og:url" content="https://laurentkempe.com/2019/04/18/WPF-and-IOC-on-NET-Core-3-0/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="At work, we are planning to migrate our WPF application from .NET Framework 4.7 to .NET Core 3.0. The main reason for doing so is that it was always a big pain to organize the updates of the .NET Fram">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://live.staticflickr.com/65535/40675205763_ab0cd3c28b_o.png"">
+<meta property="og:updated_time" content="2019-04-19T08:57:19.561Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="WPF and IOC on .NET Core 3.0">
+<meta name="twitter:description" content="At work, we are planning to migrate our WPF application from .NET Framework 4.7 to .NET Core 3.0. The main reason for doing so is that it was always a big pain to organize the updates of the .NET Fram">
+<meta name="twitter:image" content="https://live.staticflickr.com/65535/40675205763_ab0cd3c28b_o.png"">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/4410/36576108926_04e831cc92_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/4410/36576108926_04e831cc92_q.jpg" />
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/4410/36576108926_d296e0fa6b_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/4410/36576108926_d296e0fa6b_h.jpg" />
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a class="header-right-picture " href="#about">
+        
+        
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/ " title="Home">
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/all-tags" title="Tags">
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/all-archives" title="Archives">
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/about-laurent-kempe.html" title="About">
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial" style="background-image:url('https://live.staticflickr.com/4410/36576108926_d296e0fa6b_h.jpg');" data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            WPF and IOC on .NET Core 3.0
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-04-18T10:57:56+02:00">
+	
+		    Apr 18, 2019
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Atimaono, Tahiti, France</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>At work, we are planning to migrate our WPF application from .NET Framework 4.7 to <a href="https://docs.microsoft.com/en-us/dotnet/core/whats-new/dotnet-core-3-0" target="_blank" rel="noopener">.NET Core 3.0</a>. The main reason for doing so is that it was always a big pain to organize the updates of the .NET Framework on our customer machines. So being able to bundle .NET Core with our application is a big plus for us. Then, for sure, we are looking for the performance improvements brought by .NET Core and finally the new capabilities brought by the fast pace of innovation of .NET Core.<br><a id="more"></a><br>This is a great opportunity for us to see and renew a part of the libraries we depend on.  </p>
+<p>In the current version of our application, we are using <a href="https://github.com/structuremap/structuremap" target="_blank" rel="noopener">StructureMap</a> as our <a href="https://en.wikipedia.org/wiki/Inversion_of_control" target="_blank" rel="noopener">IOC container</a>. As you might have read <a href="https://jeremydmiller.com/2018/01/29/sunsetting-structuremap/" target="_blank" rel="noopener">StructureMap has been sunsetted</a> and replaced by <a href="https://jasperfx.github.io/lamar/" target="_blank" rel="noopener">Lamar</a>.</p>
+<p>We could have gone to Lamar as it maintains API compatibility with SturtureMap. I just did not want to bring the dependency to Roslyn, but it seems that it was changed in <a href="https://jeremydmiller.com/2019/03/29/lamar-v3-is-released-faster-smaller-quicker-cold-starts-internal-type-friendly/" target="_blank" rel="noopener">Lamar 3.0</a>. So, we surely will consider it.</p>
+<p>As a first try, I would like to have a look at the IOC container brought by the ASP.NET team; <a href="https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection/3.0.0-preview4.19216.2" target="_blank" rel="noopener">Microsoft Extensions DependencyInjection</a>. Even if it was brought by the ASP.NET team it doesn’t mean at all that it cannot be used outside of ASP.NET!<br>It is marked as Fast by <a href="https://twitter.com/danielpalme" target="_blank" rel="noopener">Daniel Palme</a> in his post ‘<a href="http://www.palmmedia.de/blog/2011/8/30/ioc-container-benchmark-performance-comparison" target="_blank" rel="noopener">IoC Container Benchmark - Performance comparison</a>‘, so it is a good candidate.</p>
+<p>The goal of this post is to see how we could use Microsoft Extensions DependencyInjection in a .NET Core 3.0 with WPF. We will start really easily by creating a new WPF application with the .NET Core CLI.</p>
+<h1 id="Project-creation"><a href="#Project-creation" class="headerlink" title="Project creation"></a>Project creation</h1><p>We create our project from the command line.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">❯ mkdir WpfIoc</span><br><span class="line">❯ cd WpfIoc</span><br><span class="line">❯ dotnet.exe --version</span><br><span class="line">3.0.100-preview4-011223</span><br><span class="line"></span><br><span class="line">❯ dotnet new wpf</span><br><span class="line">The template "WPF Application" was created successfully.</span><br><span class="line"></span><br><span class="line">Processing post-creation actions...</span><br><span class="line">Running 'dotnet restore' on C:\Users\laure\projects\WpfIoc\WpfIoc.csproj...</span><br><span class="line">  Restore completed in 90.03 ms for C:\Users\laure\projects\WpfIoc\WpfIoc.csproj.</span><br><span class="line"></span><br><span class="line">Restore succeeded.</span><br><span class="line"></span><br><span class="line">❯ dotnet build</span><br><span class="line">Microsoft (R) Build Engine version 16.1.54-preview+gd004974104 for .NET Core</span><br><span class="line">Copyright (C) Microsoft Corporation. All rights reserved.</span><br><span class="line"></span><br><span class="line">  Restore completed in 19.92 ms for C:\Users\laure\projects\WpfIoc\WpfIoc.csproj.</span><br><span class="line">C:\Program Files\dotnet\sdk\3.0.100-preview4-011223\Sdks\Microsoft.NET.Sdk\targets\Microsoft.NET.RuntimeIdentifierInference.targets(151,5): message NETSDK1057: You are using a preview version of .NET Core. See: https://aka.ms/dotnet-core-preview [C:\Users\laure\projects\WpfIoc\WpfIoc.csproj]</span><br><span class="line">  WpfIoc -&gt; C:\Users\laure\projects\WpfIoc\bin\Debug\netcoreapp3.0\WpfIoc.dll</span><br><span class="line"></span><br><span class="line">Build succeeded.</span><br><span class="line">    0 Warning(s)</span><br><span class="line">    0 Error(s)</span><br><span class="line"></span><br><span class="line">Time Elapsed 00:00:01.63</span><br></pre></td></tr></table></figure>
+<p>What we want to achieve is to bootstrap the application and inject in the constructor of our MainWindow a service which will be called to display some text on the main window of the application.</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>First, we need to add the reference to the <em>Microsoft Extensions DependencyInjection</em>.</p>
+<figure class="highlight xml"><figcaption><span>WpfIoc.csproj</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Project</span> <span class="attr">Sdk</span>=<span class="string">"Microsoft.NET.Sdk.WindowsDesktop"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">OutputType</span>&gt;</span>WinExe<span class="tag">&lt;/<span class="name">OutputType</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TargetFramework</span>&gt;</span>netcoreapp3.0<span class="tag">&lt;/<span class="name">TargetFramework</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">UseWPF</span>&gt;</span>true<span class="tag">&lt;/<span class="name">UseWPF</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">"Microsoft.Extensions.DependencyInjection"</span> <span class="attr">Version</span>=<span class="string">"3.0.0-preview4.19216.2"</span> /&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;/<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">Project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Then we create an interface <em>ITextService</em> which will be injected by the container into the MainWindow class.</p>
+<figure class="highlight csharp"><figcaption><span>ITextService.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">ITextService</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">string</span> <span class="title">GetText</span>(<span class="params"></span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> In fact, it is a concrete implementation of that interface which will be injected <em>TextService</em>.</p>
+<figure class="highlight csharp"><figcaption><span>TextService.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">TextService</span> : <span class="title">ITextService</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">string</span> _text;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TextService</span>(<span class="params"><span class="keyword">string</span> text</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        _text = text;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">GetText</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> _text;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Then we need to configure our IOC container.</p>
+<figure class="highlight csharp"><figcaption><span>App.xaml.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">services.AddSingleton&lt;ITextService&gt;(provider =&gt; <span class="keyword">new</span> TextService(<span class="string">"Hi WPF .NET Core 3.0!"</span>));</span><br></pre></td></tr></table></figure>
+<p>So this also means that we need to have our IOC container creating our WPF MainWindow, no problem it is just another normal C# class.</p>
+<figure class="highlight csharp"><figcaption><span>App.xaml.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">services.AddSingleton&lt;MainWindow&gt;();</span><br></pre></td></tr></table></figure>
+<p>Next piece which we need to put in place is the one linking all the other pieces together; the IOC container! That’s quite easy we just need to extend the App class to create <em>ServiceCollection</em> add the dependencies we want the IOC container to manage and then to call <em>BuildServiceProvider</em>.  </p>
+<figure class="highlight csharp"><figcaption><span>App.xaml.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">App</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> serviceCollection = <span class="keyword">new</span> ServiceCollection();</span><br><span class="line">    ConfigureServices(serviceCollection);</span><br><span class="line"></span><br><span class="line">    _serviceProvider = serviceCollection.BuildServiceProvider();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ConfigureServices</span>(<span class="params">IServiceCollection services</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    services.AddSingleton&lt;ITextService&gt;(provider =&gt; <span class="keyword">new</span> TextService(<span class="string">"Hi WPF .NET Core 3.0!"</span>));</span><br><span class="line">    services.AddSingleton&lt;MainWindow&gt;();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Then, on the <em>App_OnStartup</em> we are using the ServiceProvider to get an instance of <em>MainWindow</em> which would get the <em>ITextService</em> injected in its constructor.  </p>
+<figure class="highlight csharp"><figcaption><span>App.xaml.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">App_OnStartup</span>(<span class="params"><span class="keyword">object</span> sender, StartupEventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> mainWindow = _serviceProvider.GetService&lt;MainWindow&gt;();</span><br><span class="line">    mainWindow.Show();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>We also modified <em>App.xaml</em> to call <em>App_OnStartup</em>.</p>
+<figure class="highlight xml"><figcaption><span>App.xaml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Application</span> <span class="attr">x:Class</span>=<span class="string">"wpfioc.App"</span></span></span><br><span class="line"><span class="tag">             <span class="attr">xmlns</span>=<span class="string">"http://schemas.microsoft.com/winfx/2006/xaml/presentation"</span></span></span><br><span class="line"><span class="tag">             <span class="attr">xmlns:x</span>=<span class="string">"http://schemas.microsoft.com/winfx/2006/xaml"</span></span></span><br><span class="line"><span class="tag">             <span class="attr">xmlns:local</span>=<span class="string">"clr-namespace:wpfioc"</span></span></span><br><span class="line"><span class="tag">             <span class="attr">Startup</span>=<span class="string">"App_OnStartup"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Application.Resources</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Application.Resources</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Application</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Finally, we modify the XAML of the MainWindow to display some text in a Label.</p>
+<figure class="highlight xml"><figcaption><span>MainWindow.xaml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Window</span> <span class="attr">x:Class</span>=<span class="string">"WpfIoc.MainWindow"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">xmlns</span>=<span class="string">"http://schemas.microsoft.com/winfx/2006/xaml/presentation"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">xmlns:x</span>=<span class="string">"http://schemas.microsoft.com/winfx/2006/xaml"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">xmlns:d</span>=<span class="string">"http://schemas.microsoft.com/expression/blend/2008"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">xmlns:mc</span>=<span class="string">"http://schemas.openxmlformats.org/markup-compatibility/2006"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">xmlns:local</span>=<span class="string">"clr-namespace:WpfIoc"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">mc:Ignorable</span>=<span class="string">"d"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Title</span>=<span class="string">"MainWindow"</span> <span class="attr">Height</span>=<span class="string">"450"</span> <span class="attr">Width</span>=<span class="string">"800"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Grid</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Grid.RowDefinitions</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">RowDefinition</span> <span class="attr">Height</span>=<span class="string">"9*"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">RowDefinition</span> <span class="attr">Height</span>=<span class="string">"1*"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">Grid.RowDefinitions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Label</span> <span class="attr">Name</span>=<span class="string">"Label"</span> <span class="attr">Content</span>=<span class="string">"Hello .NET Core!"</span> <span class="attr">HorizontalAlignment</span>=<span class="string">"Center"</span> <span class="attr">VerticalAlignment</span>=<span class="string">"Center"</span> <span class="attr">FontSize</span>=<span class="string">"40"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Grid</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Window</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>And we inject through the constructor, the <em>ITextService</em> interface which is used to set the Label text.</p>
+<figure class="highlight csharp"><figcaption><span>MainWindow.xaml.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">MainWindow</span> : <span class="title">Window</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MainWindow</span>(<span class="params">ITextService textService</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        InitializeComponent();</span><br><span class="line"></span><br><span class="line">        Label.Content = textService.GetText();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h1><p>We can run the application and see that <em>TextService</em> is called and the WPF application correctly displays the text.</p>
+<p><img src="https://live.staticflickr.com/65535/40675205763_ab0cd3c28b_o.png&quot;" alt="WPF IOC"></p>
+<p>You can get all the code on GitHub at <a href="https://github.com/laurentkempe/WpfIoc" target="_blank" rel="noopener">https://github.com/laurentkempe/WpfIoc</a></p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/NET-Core/">.NET Core</a> <a class="tag tag--primary tag--small t-link" href="/tags/WPF/">WPF</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/03/05/Azure-DevOps-for-Visual-Studio-Extensions/" data-tooltip="Azure DevOps for Visual Studio Extensions" aria-label="NEXT: Azure DevOps for Visual Studio Extensions">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2019/04/18/WPF-and-IOC-on-NET-Core-3-0/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2019/04/18/WPF-and-IOC-on-NET-Core-3-0/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2019/04/18/WPF-and-IOC-on-NET-Core-3-0/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/03/05/Azure-DevOps-for-Visual-Studio-Extensions/" data-tooltip="Azure DevOps for Visual Studio Extensions" aria-label="NEXT: Azure DevOps for Visual Studio Extensions">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2019/04/18/WPF-and-IOC-on-NET-Core-3-0/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2019/04/18/WPF-and-IOC-on-NET-Core-3-0/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2019/04/18/WPF-and-IOC-on-NET-Core-3-0/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2019/04/18/WPF-and-IOC-on-NET-Core-3-0/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2019/04/18/WPF-and-IOC-on-NET-Core-3-0/">
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2019/04/18/WPF-and-IOC-on-NET-Core-3-0/">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2019/04/18/WPF-and-IOC-on-NET-Core-3-0/';
+                 
+                    this.page.identifier = '20190418105756';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>
