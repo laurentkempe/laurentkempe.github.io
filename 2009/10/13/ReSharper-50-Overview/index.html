@@ -82,10 +82,11 @@
     </div>
     
         
-            <a class="header-right-picture " href="#about">
+            <a  class="header-right-picture "
+                href="#about">
         
         
-            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -103,7 +104,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -117,7 +118,11 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="/ " title="Home">
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
                     
                         <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
@@ -126,7 +131,11 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="/all-tags" title="Tags">
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
                     
                         <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
@@ -135,7 +144,11 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="/all-archives" title="Archives">
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
                     
                         <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
@@ -144,7 +157,11 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="/about-laurent-kempe.html" title="About">
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
                     
                         <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
@@ -157,7 +174,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
                         <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
@@ -166,7 +183,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
                         <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
@@ -175,7 +192,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
                         <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
@@ -184,7 +201,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="https://flickr.com/photos/laurentkempe/" target="_blank" rel="noopener" title="Flickr">
+                        <a  class="sidebar-button-link " href="https://flickr.com/photos/laurentkempe/" target="_blank" rel="noopener" title="Flickr">
                     
                         <i class="sidebar-button-icon fab fa-flickr" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Flickr</span>
@@ -197,7 +214,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
                         <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
@@ -246,26 +263,26 @@
 <p>As promised, we’re publishing general ReSharper 5.0 overview, elaborating on its feature set in more detail.</p>
 <p>Please keep in mind that this is a preliminary document. The general picture will stay unchanged but local amendments can not be ruled out at this point, and many user interface items will probably change.</p>
 <h5 id="Features"><a href="#Features" class="headerlink" title="Features"></a>Features</h5><ul>
-<li><strong>External Sources</strong><br>A solution is not limited to sources included in your projects, but it also contains sources that were used to build your libraries. Some companies publish parts of their sources using the Source Server feature of debug information files (<em>PDB</em>). This is the same technology that Microsoft uses to provide access to source code for parts of .NET Framework. With ReSharper 5, you can now access it as if it were a part of your solution. When no sources are available, ReSharper does a decent job of reconstructing types’ structure from metadata for your browsing pleasure.<br><a href="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/external_sources_crop.png" target="_blank" rel="noopener"><img src="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/external_sources_crop-247x300.png" alt="" title="external_sources_crop"></a></li>
-<li><strong>Structured Patterns</strong><br>“I was assigned to new project, and the source code is full of [<em>your favorite code smell here</em>]. Please, make ReSharper analyze and fix it!”. Fortunately, ReSharper 5 can address this demand. You can set up your own code patterns, search for them, replace them, include them into code analysis, and even use quick fixes to replace! Building patterns and enforcing good practices has never been easier. Corporate and team policies, your own frameworks, favorite open source libraries and tools — you can cover them all.<br><a href="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/structural_search.png" target="_blank" rel="noopener"><img src="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/structural_search-300x239.png" alt="" title="structural_search"></a></li>
+<li><strong>External Sources</strong><br>A solution is not limited to sources included in your projects, but it also contains sources that were used to build your libraries. Some companies publish parts of their sources using the Source Server feature of debug information files (<em>PDB</em>). This is the same technology that Microsoft uses to provide access to source code for parts of .NET Framework. With ReSharper 5, you can now access it as if it were a part of your solution. When no sources are available, ReSharper does a decent job of reconstructing types’ structure from metadata for your browsing pleasure.<br><a href="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/external_sources_crop.png" target="_blank" rel="noopener"><img src="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/external_sources_crop-247x300.png" alt title="external_sources_crop"></a></li>
+<li><strong>Structured Patterns</strong><br>“I was assigned to new project, and the source code is full of [<em>your favorite code smell here</em>]. Please, make ReSharper analyze and fix it!”. Fortunately, ReSharper 5 can address this demand. You can set up your own code patterns, search for them, replace them, include them into code analysis, and even use quick fixes to replace! Building patterns and enforcing good practices has never been easier. Corporate and team policies, your own frameworks, favorite open source libraries and tools — you can cover them all.<br><a href="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/structural_search.png" target="_blank" rel="noopener"><img src="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/structural_search-300x239.png" alt title="structural_search"></a></li>
 <li><strong>Project Refactorings and Dependencies View</strong><br>Once you are used to smart, automated refactorings provided by ReSharper, you can’t think of executing them manually anymore. In this release, we extend ReSharper’s coverage to bring you several refactorings for project structure. With ReSharper 5, you can move files and folders between projects, synchronize namespaces to folder structure in any scope as large as solution, safely delete obsolete subsystems without going type by type, and split a file with lots of types created from usages into their own dedicated files in one go. We have also added special project dependencies view to help you track down excessive dependencies between projects and eliminate them. As an early ReSharper 5 user said, “I no longer feel fear to restructure my project. I just go and do it when I feel it is right to do so”.</li>
-<li><strong>Call Tracking</strong><br>Find usages, find usages, find usages. Formerly, attempting to track call sequences in code could end up with lost context, lots of <em>Find Results</em> windows and frustration. With ReSharper 5, you can inspect an entire call sequence in a single window in a simple and straightforward manner. Stuck in unfamiliar code? ReSharper’s code inspecting tools for the rescue!<br><a href="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/calltracking.png" target="_blank" rel="noopener"><img src="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/calltracking-300x177.png" alt="" title="calltracking"></a></li>
-<li><strong>Value Tracking</strong><br>Value Tracking provides you with important information about data flow in your program. At any point in your source code, select a variable, parameter, field or property and ask ReSharper to inspect it. You will then see how its value flows through your program, back to its sources or straight to consumers. Wonder how null could be passed to a specific parameter? Track it!<br><a href="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/valuetracking.png" target="_blank" rel="noopener"><img src="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/valuetracking-300x205.png" alt="" title="valuetracking"></a></li>
+<li><strong>Call Tracking</strong><br>Find usages, find usages, find usages. Formerly, attempting to track call sequences in code could end up with lost context, lots of <em>Find Results</em> windows and frustration. With ReSharper 5, you can inspect an entire call sequence in a single window in a simple and straightforward manner. Stuck in unfamiliar code? ReSharper’s code inspecting tools for the rescue!<br><a href="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/calltracking.png" target="_blank" rel="noopener"><img src="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/calltracking-300x177.png" alt title="calltracking"></a></li>
+<li><strong>Value Tracking</strong><br>Value Tracking provides you with important information about data flow in your program. At any point in your source code, select a variable, parameter, field or property and ask ReSharper to inspect it. You will then see how its value flows through your program, back to its sources or straight to consumers. Wonder how null could be passed to a specific parameter? Track it!<br><a href="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/valuetracking.png" target="_blank" rel="noopener"><img src="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/valuetracking-300x205.png" alt title="valuetracking"></a></li>
 <li><strong>Internationalization</strong><br>Software localization and globalization has always been a tough and at times unwanted task for developers. ReSharper 5 greatly simplifies the process of working with resources by providing a full stack of features for <em>ResX</em> files and resource usages in C# and VB.NET code, in ASP.NET and XAML markup. <em>Move string to resource</em>, <em>Find usages of resource</em> and other navigation features, refactoring support, inspections and fixes — all ReSharper goodness for your localization pleasure.</li>
 </ul>
 <h5 id="Technologies-and-Languages"><a href="#Technologies-and-Languages" class="headerlink" title="Technologies and Languages"></a>Technologies and Languages</h5><ul>
 <li><strong>Visual Studio 2010</strong><br>We will publish more information about Visual Studio 2010 support when VS Beta 2 is released. Currently, ReSharper 5 builds support Visual Studio 2005 and Visual Studio 2008.</li>
 <li><strong>C# 4 and VB10</strong><br>New language versions appear at a great speed nowadays, and ReSharper team works hard to support them right when you need them. ReSharper 5 provides beta support for C# 4 and VB10, as Visual Studio 2010 does itself. Variance, dynamic types, named arguments and optional parameters, embedded COM assemblies — all of these features are supported in the new ReSharper. During VS 2010 Beta 2 phase we’re hoping to learn from your experience using these features and improve their support for Visual Studio 2010 release.</li>
-<li><strong>ASP.NET</strong><br>With this new version, ReSharper support for ASP.NET is improved tenfold. In addition to performance and responsiveness improvements, lots of new features for ASP.NET markup files are introduced to make your life easier. Web-specific navigation, master page support, new inspections and syntax highlighting for web files, <em>File Structure</em> and <em>Go to File Member</em> for in-page navigation and overview, live templates for common markup and more!<br><a href="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/asp_generate1.png" target="_blank" rel="noopener"><img src="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/asp_generate1-300x240.png" alt="" title="asp_generate1"></a></li>
-<li><strong>ASP.NET MVC</strong><br>ASP.NET MVC deserved our special attention: special syntax highlighting, inspections, navigation to and from action or controller, and even actions to create new types and methods from usage in pages.<br><a href="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/aspnetmvc.png" target="_blank" rel="noopener"><img src="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/aspnetmvc-300x135.png" alt="" title="aspnetmvc"></a></li>
+<li><strong>ASP.NET</strong><br>With this new version, ReSharper support for ASP.NET is improved tenfold. In addition to performance and responsiveness improvements, lots of new features for ASP.NET markup files are introduced to make your life easier. Web-specific navigation, master page support, new inspections and syntax highlighting for web files, <em>File Structure</em> and <em>Go to File Member</em> for in-page navigation and overview, live templates for common markup and more!<br><a href="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/asp_generate1.png" target="_blank" rel="noopener"><img src="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/asp_generate1-300x240.png" alt title="asp_generate1"></a></li>
+<li><strong>ASP.NET MVC</strong><br>ASP.NET MVC deserved our special attention: special syntax highlighting, inspections, navigation to and from action or controller, and even actions to create new types and methods from usage in pages.<br><a href="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/aspnetmvc.png" target="_blank" rel="noopener"><img src="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/aspnetmvc-300x135.png" alt title="aspnetmvc"></a></li>
 </ul>
 <h5 id="Productivity"><a href="#Productivity" class="headerlink" title="Productivity"></a>Productivity</h5><ul>
 <li><strong>IntelliSense</strong><br>ReSharper continues to bring first-class IntelliSense experience, and the new version gives even more. We have added automatic completion for enum members and boolean values, made automatic triggering smarter, and greatly improved speed. Completion for unresolved symbols in local scope is a new ReSharper IntelliSense feature. Another improvement is completion for all-lower text with CamelHumps  — to make <em>cocopro</em> match <em>CodeCompletionProvider</em> — and that means you don’t need to press <em>Shift</em> too often.</li>
-<li><strong>Bookmarks</strong><br>This is a simple yet powerful feature: drop a numbered marker with a single shortcut, jump back at any time with another keyboard key. Up to 10 numbered bookmarks, unlimited unnumbered bookmarks, full list of bookmarked positions in a single pop-up window — all to help you switch between several code spots instantly.<br><a href="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/bookmarks.png" target="_blank" rel="noopener"><img src="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/bookmarks-300x154.png" alt="" title="bookmarks"></a></li>
+<li><strong>Bookmarks</strong><br>This is a simple yet powerful feature: drop a numbered marker with a single shortcut, jump back at any time with another keyboard key. Up to 10 numbered bookmarks, unlimited unnumbered bookmarks, full list of bookmarked positions in a single pop-up window — all to help you switch between several code spots instantly.<br><a href="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/bookmarks.png" target="_blank" rel="noopener"><img src="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/bookmarks-300x154.png" alt title="bookmarks"></a></li>
 </ul>
 <h5 id="Inspections"><a href="#Inspections" class="headerlink" title="Inspections"></a>Inspections</h5><ul>
 <li><strong>Solution-Wide Warnings and Suggestions</strong><br>We have received a lot of positive feedback from our users regarding solution-wide error analysis that allows you to immediately see compilation errors in whole solution. In ReSharper 5, we took this technology to a new level by adding warnings and suggestions to the list. Now you can browse code smells that ReSharper finds across your solution and quickly improve quality of your code.</li>
-<li><strong>Upgrade-to-LINQ Actions</strong><br>With C# 3.0 and LINQ, developers are able to write data-intensive code more easily by directly describing their intent to the compiler. However, years of imperative programming left us with tons of <em>foreach</em>-style code waiting to be upgraded. ReSharper 5 detects parts of your code that can be rewritten using the new LINQ syntax and suggests to make the conversion automatically, to make the developer’s intent crystal clear.<br><a href="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/foreach_new.png" target="_blank" rel="noopener"><img src="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/foreach_new-300x232.png" alt="" title="foreach_new"></a></li>
+<li><strong>Upgrade-to-LINQ Actions</strong><br>With C# 3.0 and LINQ, developers are able to write data-intensive code more easily by directly describing their intent to the compiler. However, years of imperative programming left us with tons of <em>foreach</em>-style code waiting to be upgraded. ReSharper 5 detects parts of your code that can be rewritten using the new LINQ syntax and suggests to make the conversion automatically, to make the developer’s intent crystal clear.<br><a href="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/foreach_new.png" target="_blank" rel="noopener"><img src="http://blogs.jetbrains.com/dotnet/wp-content/uploads/2009/10/foreach_new-300x232.png" alt title="foreach_new"></a></li>
 <li><strong>Use IEnumerable Where Possible</strong><br>With the power of LINQ, <em>IEnumerable</em> is more than enough to pass a collection of values. So why restrict yourself with API requiring you to pass old-school arrays, <em>List</em>s and <em>ArrayList</em>s? ReSharper will scan your code base to detect methods that can safely return and accept <em>IEnumerable</em> instead of a more specific type. Of course, we will also take care of the conversion.</li>
 <li><strong>New and Improved Code Inspections</strong><br>We have collected rich customer feedback and went through a list of common errors that developers make in code. Based on that, we have added a ton of highly intelligent inspections to immediately boost your .NET expertise. For example, if you take your API seriously and want it to be well documented, ReSharper will help you by highlighting errors in XML comments.</li>
 </ul>
@@ -282,7 +299,7 @@
     <div id="post-footer" class="post-footer main-content-wrap">
         
             <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGED IN</span><br>
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
     <a class="tag tag--primary tag--small t-link" href="/tags/ReSharper/">ReSharper</a>
 
@@ -506,7 +523,7 @@
             <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -516,7 +533,7 @@
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
-                <br>
+                <br/>
                 <p>Team Leader, Senior Solutions Architect</p>
 
             </div>
@@ -524,7 +541,7 @@
         
             <div id="about-card-location">
                 <i class="fa fa-map-marker-alt"></i>
-                <br>
+                <br/>
                 Illzach, France
             </div>
         

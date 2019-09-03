@@ -78,10 +78,11 @@
     </div>
     
         
-            <a class="header-right-picture " href="#about">
+            <a  class="header-right-picture "
+                href="#about">
         
         
-            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -99,7 +100,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -113,7 +114,11 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="/ " title="Home">
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
                     
                         <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
@@ -122,7 +127,11 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="/all-tags" title="Tags">
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
                     
                         <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
@@ -131,7 +140,11 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="/all-archives" title="Archives">
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
                     
                         <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
@@ -140,7 +153,11 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="/about-laurent-kempe.html" title="About">
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
                     
                         <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
@@ -153,7 +170,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
                         <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
@@ -162,7 +179,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
                         <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
@@ -171,7 +188,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
                         <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
@@ -180,7 +197,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="https://flickr.com/photos/laurentkempe/" target="_blank" rel="noopener" title="Flickr">
+                        <a  class="sidebar-button-link " href="https://flickr.com/photos/laurentkempe/" target="_blank" rel="noopener" title="Flickr">
                     
                         <i class="sidebar-button-icon fab fa-flickr" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Flickr</span>
@@ -193,7 +210,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
                         <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
@@ -243,7 +260,7 @@
 </ul>
 <p>This might not look really difficult at first, but I had some difficulties to fulfill the requirements of those two user story.</p>
 <p>The first one was almost already implemented <a href="http://weblogs.asp.net/lkempe/archive/2008/03/12/tech-head-brothers-new-authoring-tool-step-7.aspx" target="_blank" rel="noopener">in step 7</a>, using CustomXML capabilities of WordML.</p>
-<p><img src="http://farm4.static.flickr.com/3228/2745205622_92d3d8e762_o.png" alt="">The biggest issue I had was to figure out why when I was inserting CustomXML, the WordML format of the hyperlink was changing. It took me the most time to realize that inserting CustomXML was not the issue. The issue was proofing. Somehow inserting CustomXML was activating the auto proofing and then I got some error like on the following picture. The red underlined Brothers which is a link was the issue. In fact this simple thing change the WordML representation of the hyperlink.</p>
+<p><img src="http://farm4.static.flickr.com/3228/2745205622_92d3d8e762_o.png" alt>The biggest issue I had was to figure out why when I was inserting CustomXML, the WordML format of the hyperlink was changing. It took me the most time to realize that inserting CustomXML was not the issue. The issue was proofing. Somehow inserting CustomXML was activating the auto proofing and then I got some error like on the following picture. The red underlined Brothers which is a link was the issue. In fact this simple thing change the WordML representation of the hyperlink.</p>
 <p>As I had something working I had to find a way other than adding a second way to parse Hyperlinks. I came to the solution of disabling proofing then saving the document before making my projection to Tech Head Brothers XML. Then for sure re-enabling the proofing. Nice and easy!</p>
 <p>The next issue was to be able at the time of parsing the WordML to identify that source code was at at the current position in the WordML. I turned and turned the problem, than asked some clever WordML guys (Julien, Pierre) and some generally good advisor (Mitsu, Cyril). Nothing! I finally came to a solution tonight:</p>
 <ol>
@@ -254,11 +271,11 @@
 <p>I couldn’t find any way to do that parsing the WordML and honestly tonight I don’t know how it is possible to go from the WordML to the CustomXML.</p>
 <p>The result is here!</p>
 <p><strong>Copying source code from Visual Studio</strong></p>
-<p><img src="http://farm4.static.flickr.com/3089/2744413383_26bf4a4025_o.png" alt=""> </p>
+<p><img src="http://farm4.static.flickr.com/3089/2744413383_26bf4a4025_o.png" alt> </p>
 <p><strong>Inserting it in Word 2007</strong></p>
-<p><img src="http://farm4.static.flickr.com/3001/2744414779_d4d7af5829_o.png" alt=""> </p>
+<p><img src="http://farm4.static.flickr.com/3001/2744414779_d4d7af5829_o.png" alt> </p>
 <p><strong>Final result in Internet Explorer</strong></p>
-<p><img src="http://farm4.static.flickr.com/3043/2744419063_c55860a60c_o.png" alt="">  </p>
+<p><img src="http://farm4.static.flickr.com/3043/2744419063_c55860a60c_o.png" alt>  </p>
 <p>There is still a little bug with the spacing that will solved tomorrow or later!</p>
 <p>Now the next steps will be: </p>
 <ol>
@@ -280,7 +297,7 @@
     <div id="post-footer" class="post-footer main-content-wrap">
         
             <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGED IN</span><br>
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
     <a class="tag tag--primary tag--small t-link" href="/tags/Office-2007/">Office 2007</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tech-Head-Brothers/">Tech Head Brothers</a> <a class="tag tag--primary tag--small t-link" href="/tags/VSTO/">VSTO</a> <a class="tag tag--primary tag--small t-link" href="/tags/WCF/">WCF</a>
 
@@ -504,7 +521,7 @@
             <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -514,7 +531,7 @@
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
-                <br>
+                <br/>
                 <p>Team Leader, Senior Solutions Architect</p>
 
             </div>
@@ -522,7 +539,7 @@
         
             <div id="about-card-location">
                 <i class="fa fa-map-marker-alt"></i>
-                <br>
+                <br/>
                 Illzach, France
             </div>
         

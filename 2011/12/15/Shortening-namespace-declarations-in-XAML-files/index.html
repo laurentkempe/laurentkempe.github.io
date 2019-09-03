@@ -13,9 +13,9 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"\nThis afternoon I was working on Innoveo Skye Editor which is a WPF application written in C#. \nThe application is using Telerik RadControls for WPF.\nI was facing the issue of having more and more namespace declarations like the following for RadInput and Rad:\n\n.csharpcode, .csharpcode pre\n{\n    font-size: small;\n    color: black;\n    font-family: consolas, \"Courier New\", courier, monospace;\n    background-color: #ffffff;\n    /*white-space: pre;*/\n}\n.csharpcode pre { margin: 0em; }\n.csharpcode .rem { color: #008000; }\n.csharpcode .kwrd { color: #0000ff; }\n.csharpcode .str { color: #006080; }\n.csharpcode .op { color: #0000c0; }\n.csharpcode .preproc { color: #cc6633; }\n.csharpcode .asp { background-color: #ffff00; }\n.csharpcode .html { color: #800000; }\n.csharpcode .attr { color: #ff0000; }\n.csharpcode .alt \n{\n    background-color: #f4f4f4;\n    width: 100%;\n    margin: 0em;\n}\n.csharpcode .lnum { color: #606060; }\n.code { font-size: 12px; color: #000; font-family: Consolas, \"Courier New\", Courier, Monospace; background-color: #F1F1F1; line-height: normal; }\n.code p        { padding: 5px; }\n.code .rem    { color: #008000; }\n.code .kwrd    { color: #0000ff; }\n.code .str    { color: #006080; }\n.code .op    { color: #0000c0; }\n.code .preproc { color: #0000ff; }\n.code .asp    { background-color: #ffff00; }\n.code .html { color: #800000; }\n.code .attr { color: #ff0000; }\n.code .alt    { background-color: #f4f4f4; }\n.code .lnum    { color: #606060; }\n\n\n&lt;Window x:Class=\"skyeEditor.View.Dialogs.ProductSettingsDialog\"\n        xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"\n        xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"\n        xmlns:RadInput=\"clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input\"\n        xmlns:Rad=\"clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls\"\n\n\nSearching for a solution I thought of ASP.NET in which you can declare in the web.config things like that:\n\n&lt;pages pageBaseType=”System.Web.Mvc.WebViewPage”&gt;  &lt;namespaces&gt;    &lt;add namespace=”MyNamespace” /&gt;\n\nMy goal was to have one namespace declaration for example telerik and be able to use it in all my XAML files without having to declare too much. \nSo I started an online discussion with Laurent Bugnion who has always shown me the good direction, which in this case is the \n\nXmlnsDefinitionAttribute Class\nFollowed by an article from Sandino Di Mattia about “A Guide to Cleaner XAML with Custom Namespaces and Prefixes (WPF/Silverlight)”.\nUsing the idea I was able to add the following to the AssemblyInfo.cs of my own project:\n[assembly: XmlnsDefinition(\"telerik\",\n                           \"Telerik.Windows.Controls\",\n                           AssemblyName = \"Telerik.Windows.Controls\")]\n\n[assembly: XmlnsDefinition(\"telerik\",\n                           \"Telerik.Windows.Controls\",\n                           AssemblyName = \"Telerik.Windows.Controls.Input\")]\n\n[assembly: XmlnsDefinition(\"telerik\",\n                           \"Telerik.Windows.Controls\",\n                           AssemblyName = \"Telerik.Windows.Controls.Navigation\")]\n\n[assembly: XmlnsDefinition(\"telerik\",\n                           \"Telerik.Windows.Controls\",\n                           AssemblyName = \"Telerik.Windows.Controls.RibbonView\")]\n\nAnd then my XAML file declaration looks like that:\n&lt;Window x:Class=\"skyeEditor.View.Dialogs.ProductSettingsDialog\"\n        xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"\n        xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"\n        xmlns:telerik=\"http://schemas.telerik.com/2008/xaml/presentation\"\n\n\nAnd I can use everywhere for all Telerik RadControls for WPF with the prefix telerik \n&lt;telerik:RadComboBox ItemsSource=\"{Binding ProductNodeLabels}\"\n                        SelectedItem=\"{Binding SelectedProductNodeLabel}\"\n                        Margin=\"0,0,0,5\" /&gt;\n\n\nA little step but a nice improvement!\n","dateCreated":"2011-12-15T02:49:43+01:00","dateModified":"2011-12-15T07:30:59+01:00","datePublished":"2011-12-15T02:49:43+01:00","description":"\nThis afternoon I was working on Innoveo Skye Editor which is a WPF application written in C#. \nThe application is using Telerik RadControls for WPF.","headline":"Shortening namespace declarations in XAML files","image":["https://farm6.staticflickr.com/5190/5563773074_38938ee129_q.jpg","https://farm6.staticflickr.com/5190/5563773074_38938ee129_b.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2011/12/15/Shortening-namespace-declarations-in-XAML-files/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2011/12/15/Shortening-namespace-declarations-in-XAML-files/","keywords":"WPF, Silverlight","thumbnailUrl":"https://farm6.staticflickr.com/5190/5563773074_38938ee129_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"\nThis afternoon I was working on Innoveo Skye Editor which is a WPF application written in C#. \nThe application is using Telerik RadControls for WPF.\nI was facing the issue of having more and more namespace declarations like the following for RadInput and Rad:\n\n.csharpcode, .csharpcode pre\n{\n    font-size: small;\n    color: black;\n    font-family: consolas, \"Courier New\", courier, monospace;\n    background-color: #ffffff;\n    /*white-space: pre;*/\n}\n.csharpcode pre { margin: 0em; }\n.csharpcode .rem { color: #008000; }\n.csharpcode .kwrd { color: #0000ff; }\n.csharpcode .str { color: #006080; }\n.csharpcode .op { color: #0000c0; }\n.csharpcode .preproc { color: #cc6633; }\n.csharpcode .asp { background-color: #ffff00; }\n.csharpcode .html { color: #800000; }\n.csharpcode .attr { color: #ff0000; }\n.csharpcode .alt \n{\n    background-color: #f4f4f4;\n    width: 100%;\n    margin: 0em;\n}\n.csharpcode .lnum { color: #606060; }\n.code { font-size: 12px; color: #000; font-family: Consolas, \"Courier New\", Courier, Monospace; background-color: #F1F1F1; line-height: normal; }\n.code p        { padding: 5px; }\n.code .rem    { color: #008000; }\n.code .kwrd    { color: #0000ff; }\n.code .str    { color: #006080; }\n.code .op    { color: #0000c0; }\n.code .preproc { color: #0000ff; }\n.code .asp    { background-color: #ffff00; }\n.code .html { color: #800000; }\n.code .attr { color: #ff0000; }\n.code .alt    { background-color: #f4f4f4; }\n.code .lnum    { color: #606060; }\n\n\n&lt;Window x:Class=\"skyeEditor.View.Dialogs.ProductSettingsDialog\"\n        xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"\n        xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"\n        xmlns:RadInput=\"clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input\"\n        xmlns:Rad=\"clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls\"\n\n\nSearching for a solution I thought of ASP.NET in which you can declare in the web.config things like that:\n\n&lt;pages pageBaseType=”System.Web.Mvc.WebViewPage”&gt;  &lt;namespaces&gt;    &lt;add namespace=”MyNamespace” /&gt;\n\nMy goal was to have one namespace declaration for example telerik and be able to use it in all my XAML files without having to declare too much. \nSo I started an online discussion with Laurent Bugnion who has always shown me the good direction, which in this case is the \n\nXmlnsDefinitionAttribute Class\nFollowed by an article from Sandino Di Mattia about “A Guide to Cleaner XAML with Custom Namespaces and Prefixes (WPF/Silverlight)”.\nUsing the idea I was able to add the following to the AssemblyInfo.cs of my own project:\n[assembly: XmlnsDefinition(\"telerik\",\n                           \"Telerik.Windows.Controls\",\n                           AssemblyName = \"Telerik.Windows.Controls\")]\n\n[assembly: XmlnsDefinition(\"telerik\",\n                           \"Telerik.Windows.Controls\",\n                           AssemblyName = \"Telerik.Windows.Controls.Input\")]\n\n[assembly: XmlnsDefinition(\"telerik\",\n                           \"Telerik.Windows.Controls\",\n                           AssemblyName = \"Telerik.Windows.Controls.Navigation\")]\n\n[assembly: XmlnsDefinition(\"telerik\",\n                           \"Telerik.Windows.Controls\",\n                           AssemblyName = \"Telerik.Windows.Controls.RibbonView\")]\n\nAnd then my XAML file declaration looks like that:\n&lt;Window x:Class=\"skyeEditor.View.Dialogs.ProductSettingsDialog\"\n        xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"\n        xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"\n        xmlns:telerik=\"http://schemas.telerik.com/2008/xaml/presentation\"\n\n\nAnd I can use everywhere for all Telerik RadControls for WPF with the prefix telerik \n&lt;telerik:RadComboBox ItemsSource=\"{Binding ProductNodeLabels}\"\n                        SelectedItem=\"{Binding SelectedProductNodeLabel}\"\n                        Margin=\"0,0,0,5\" /&gt;\n\n\nA little step but a nice improvement!\n","dateCreated":"2011-12-15T02:49:43+01:00","dateModified":"2011-12-15T07:30:59+01:00","datePublished":"2011-12-15T02:49:43+01:00","description":"\nThis afternoon I was working on Innoveo Skye Editor which is a WPF application written in C#. \nThe application is using Telerik RadControls for WPF.","headline":"Shortening namespace declarations in XAML files","image":["https://farm6.staticflickr.com/5190/5563773074_38938ee129_q.jpg","https://farm6.staticflickr.com/5190/5563773074_38938ee129_b.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2011/12/15/Shortening-namespace-declarations-in-XAML-files/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2011/12/15/Shortening-namespace-declarations-in-XAML-files/","keywords":"Silverlight, WPF","thumbnailUrl":"https://farm6.staticflickr.com/5190/5563773074_38938ee129_q.jpg"}</script>
     <meta name="description" content="This afternoon I was working on Innoveo Skye Editor which is a WPF application written in C#.  The application is using Telerik RadControls for WPF.">
-<meta name="keywords" content="WPF,Silverlight">
+<meta name="keywords" content="Silverlight,WPF">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Shortening namespace declarations in XAML files">
 <meta property="og:url" content="https://laurentkempe.com/2011/12/15/Shortening-namespace-declarations-in-XAML-files/index.html">
@@ -79,10 +79,11 @@
     </div>
     
         
-            <a class="header-right-picture " href="#about">
+            <a  class="header-right-picture "
+                href="#about">
         
         
-            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -100,7 +101,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -114,7 +115,11 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="/ " title="Home">
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
                     
                         <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
@@ -123,7 +128,11 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="/all-tags" title="Tags">
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
                     
                         <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
@@ -132,7 +141,11 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="/all-archives" title="Archives">
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
                     
                         <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
@@ -141,7 +154,11 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="/about-laurent-kempe.html" title="About">
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
                     
                         <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
@@ -154,7 +171,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
                         <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
@@ -163,7 +180,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
                         <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
@@ -172,7 +189,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
                         <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
@@ -181,7 +198,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="https://flickr.com/photos/laurentkempe/" target="_blank" rel="noopener" title="Flickr">
+                        <a  class="sidebar-button-link " href="https://flickr.com/photos/laurentkempe/" target="_blank" rel="noopener" title="Flickr">
                     
                         <i class="sidebar-button-icon fab fa-flickr" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Flickr</span>
@@ -194,7 +211,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
                         <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
@@ -209,7 +226,9 @@
             
         <div class="post-header-cover
                     text-left
-                    post-header-cover--partial" style="background-image:url('https://farm6.staticflickr.com/5190/5563773074_38938ee129_b.jpg');" data-behavior="5">
+                    post-header-cover--partial"
+             style="background-image:url('https://farm6.staticflickr.com/5190/5563773074_38938ee129_b.jpg');"
+             data-behavior="5">
             
                 <div class="post-header main-content-wrap text-left">
     
@@ -343,7 +362,7 @@
     <div id="post-footer" class="post-footer main-content-wrap">
         
             <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGED IN</span><br>
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
     <a class="tag tag--primary tag--small t-link" href="/tags/Silverlight/">Silverlight</a> <a class="tag tag--primary tag--small t-link" href="/tags/WPF/">WPF</a>
 
@@ -567,7 +586,7 @@
             <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -577,7 +596,7 @@
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
-                <br>
+                <br/>
                 <p>Team Leader, Senior Solutions Architect</p>
 
             </div>
@@ -585,7 +604,7 @@
         
             <div id="about-card-location">
                 <i class="fa fa-map-marker-alt"></i>
-                <br>
+                <br/>
                 Illzach, France
             </div>
         

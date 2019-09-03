@@ -13,9 +13,9 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"\nIn my humble opinion it is definitely not a good idea! Why?\n\nIt is brittle test because it depends to the CPU load of the machine running the test. Maybe it runs fine on your development machine, and will for sure from time to time fail on your build server because of the load on the server. \nIt is slower then needed. If you increase the sleep time so that you “ensure” that the test should pass in all situation then the test will always as long as this time.   \n\nSo what can we do about it?\nOne of the first approach is to using polling like NUnit and it’s Delayed Contraint does. But I am not a big fan of this because you have to remember the details of it, and you can fall in that trap easily:\n\nUse of a DelayedConstraint with a value argument makes no sense, since the value will be extracted at the point of call. It’s intended use is with delegates and references. If a delegate is used with polling, it may be called multiple times so only methods without side effects should be used in this way.\n\nMy personal preferred approach is:\n\nto expose as a protected property the Task running the background operation \nto create a SUT class in my test class which inherit from the class with the protected property \nto make the Task a public property of the SUT class \nto have my test use the Task by calling the Task.Wait() just before the assertion   \n\nFor example here is one of my test using that approach:\n \n","dateCreated":"2012-11-20T19:57:00+01:00","dateModified":"2012-11-20T20:25:46+01:00","datePublished":"2012-11-20T19:57:00+01:00","description":"\nIn my humble opinion it is definitely not a good idea! Why?\n\nIt is brittle test because it depends to the CPU load of the machine running the test. Maybe it runs fine on your development machine, and will for sure from time to time fail on your build server because of the load on the server.","headline":"Using Thread.Sleep() in Unit Test! A good idea?","image":["https://farm8.staticflickr.com/7040/6978718001_f2bdaca933_q.jpg","https://farm8.staticflickr.com/7040/6978718001_f2bdaca933_b.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2012/11/20/Using-ThreadSleep-in-unit-test-A-good-idea/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2012/11/20/Using-ThreadSleep-in-unit-test-A-good-idea/","keywords":".NET, TDD, C#","thumbnailUrl":"https://farm8.staticflickr.com/7040/6978718001_f2bdaca933_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"\nIn my humble opinion it is definitely not a good idea! Why?\n\nIt is brittle test because it depends to the CPU load of the machine running the test. Maybe it runs fine on your development machine, and will for sure from time to time fail on your build server because of the load on the server. \nIt is slower then needed. If you increase the sleep time so that you “ensure” that the test should pass in all situation then the test will always as long as this time.   \n\nSo what can we do about it?\nOne of the first approach is to using polling like NUnit and it’s Delayed Contraint does. But I am not a big fan of this because you have to remember the details of it, and you can fall in that trap easily:\n\nUse of a DelayedConstraint with a value argument makes no sense, since the value will be extracted at the point of call. It’s intended use is with delegates and references. If a delegate is used with polling, it may be called multiple times so only methods without side effects should be used in this way.\n\nMy personal preferred approach is:\n\nto expose as a protected property the Task running the background operation \nto create a SUT class in my test class which inherit from the class with the protected property \nto make the Task a public property of the SUT class \nto have my test use the Task by calling the Task.Wait() just before the assertion   \n\nFor example here is one of my test using that approach:\n \n","dateCreated":"2012-11-20T19:57:00+01:00","dateModified":"2012-11-20T20:25:46+01:00","datePublished":"2012-11-20T19:57:00+01:00","description":"\nIn my humble opinion it is definitely not a good idea! Why?\n\nIt is brittle test because it depends to the CPU load of the machine running the test. Maybe it runs fine on your development machine, and will for sure from time to time fail on your build server because of the load on the server.","headline":"Using Thread.Sleep() in Unit Test! A good idea?","image":["https://farm8.staticflickr.com/7040/6978718001_f2bdaca933_q.jpg","https://farm8.staticflickr.com/7040/6978718001_f2bdaca933_b.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2012/11/20/Using-ThreadSleep-in-unit-test-A-good-idea/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2012/11/20/Using-ThreadSleep-in-unit-test-A-good-idea/","keywords":".NET, C#, TDD","thumbnailUrl":"https://farm8.staticflickr.com/7040/6978718001_f2bdaca933_q.jpg"}</script>
     <meta name="description" content="In my humble opinion it is definitely not a good idea! Why?  It is brittle test because it depends to the CPU load of the machine running the test. Maybe it runs fine on your development machine, and">
-<meta name="keywords" content=".NET,TDD,C#">
+<meta name="keywords" content=".NET,C#,TDD">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Using Thread.Sleep() in Unit Test! A good idea?">
 <meta property="og:url" content="https://laurentkempe.com/2012/11/20/Using-ThreadSleep-in-unit-test-A-good-idea/index.html">
@@ -79,10 +79,11 @@
     </div>
     
         
-            <a class="header-right-picture " href="#about">
+            <a  class="header-right-picture "
+                href="#about">
         
         
-            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -100,7 +101,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -114,7 +115,11 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="/ " title="Home">
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
                     
                         <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
@@ -123,7 +128,11 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="/all-tags" title="Tags">
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
                     
                         <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
@@ -132,7 +141,11 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="/all-archives" title="Archives">
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
                     
                         <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
@@ -141,7 +154,11 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="/about-laurent-kempe.html" title="About">
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
                     
                         <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
@@ -154,7 +171,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
                         <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
@@ -163,7 +180,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
                         <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
@@ -172,7 +189,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
                         <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
@@ -181,7 +198,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="https://flickr.com/photos/laurentkempe/" target="_blank" rel="noopener" title="Flickr">
+                        <a  class="sidebar-button-link " href="https://flickr.com/photos/laurentkempe/" target="_blank" rel="noopener" title="Flickr">
                     
                         <i class="sidebar-button-icon fab fa-flickr" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Flickr</span>
@@ -194,7 +211,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
                         <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
@@ -209,7 +226,9 @@
             
         <div class="post-header-cover
                     text-left
-                    post-header-cover--partial" style="background-image:url('https://farm8.staticflickr.com/7040/6978718001_f2bdaca933_b.jpg');" data-behavior="5">
+                    post-header-cover--partial"
+             style="background-image:url('https://farm8.staticflickr.com/7040/6978718001_f2bdaca933_b.jpg');"
+             data-behavior="5">
             
                 <div class="post-header main-content-wrap text-left">
     
@@ -273,7 +292,7 @@
     <div id="post-footer" class="post-footer main-content-wrap">
         
             <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGED IN</span><br>
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
     <a class="tag tag--primary tag--small t-link" href="/tags/NET/">.NET</a> <a class="tag tag--primary tag--small t-link" href="/tags/C/">C#</a> <a class="tag tag--primary tag--small t-link" href="/tags/TDD/">TDD</a>
 
@@ -497,7 +516,7 @@
             <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -507,7 +526,7 @@
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
-                <br>
+                <br/>
                 <p>Team Leader, Senior Solutions Architect</p>
 
             </div>
@@ -515,7 +534,7 @@
         
             <div id="about-card-location">
                 <i class="fa fa-map-marker-alt"></i>
-                <br>
+                <br/>
                 Illzach, France
             </div>
         

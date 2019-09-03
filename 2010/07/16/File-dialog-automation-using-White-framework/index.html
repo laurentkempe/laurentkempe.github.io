@@ -13,9 +13,9 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Today TeamCity was showing me one functional test failure on my WPF application.\nI already discussed about this problem here: White’s tip for your automated WPF functional testsThe solution I presented at that time was working on my local development environment but not on my Continuous Integration system; aka TeamCity. So I went for another solution which was searching for the filename ComboBox and was setting the value. \nThis was working for some time but today not anymore. The issue I discovered is that using the ComboBox needed that the path was already used in the past otherwise setting the value was failing. So I was stuck and had to find another solution.\nI fired spy++ and searched for a solution and after some debugging I came to the following one:\n  var openModalWindow =  &nbsp;&nbsp;&nbsp;&nbsp;MainWindow.ModalWindow(“Please choose a Zip file”, InitializeOption.NoCache);  MainWindow.WaitWhileBusy(); Assert.IsNotNull(openModalWindow);  var filePath = Path.Combine(GetCurrentPath(), filename);  var filenameTextBox =  &nbsp;&nbsp;&nbsp;&nbsp;openModalWindow.Get&lt;TextBox&gt;(SearchCriteria.ByAutomationId(“1148”)); filenameTextBox.SetValue(filePath);  openModalWindow.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);  \n\nThis is working on my local environment but also on TeamCity!\nThe key point was to find the TextBox with the AutomationId of 1148.\n","dateCreated":"2010-07-16T03:22:07+02:00","dateModified":"2012-05-02T00:53:45+02:00","datePublished":"2010-07-16T03:22:07+02:00","description":"Today TeamCity was showing me one functional test failure on my WPF application.\nI already discussed about this problem here: White’s tip for your automated WPF functional tests","headline":"File dialog automation using White framework","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/07/16/File-dialog-automation-using-White-framework/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/07/16/File-dialog-automation-using-White-framework/","keywords":"white, acceptance test"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Today TeamCity was showing me one functional test failure on my WPF application.\nI already discussed about this problem here: White’s tip for your automated WPF functional testsThe solution I presented at that time was working on my local development environment but not on my Continuous Integration system; aka TeamCity. So I went for another solution which was searching for the filename ComboBox and was setting the value. \nThis was working for some time but today not anymore. The issue I discovered is that using the ComboBox needed that the path was already used in the past otherwise setting the value was failing. So I was stuck and had to find another solution.\nI fired spy++ and searched for a solution and after some debugging I came to the following one:\n  var openModalWindow =  &nbsp;&nbsp;&nbsp;&nbsp;MainWindow.ModalWindow(“Please choose a Zip file”, InitializeOption.NoCache);  MainWindow.WaitWhileBusy(); Assert.IsNotNull(openModalWindow);  var filePath = Path.Combine(GetCurrentPath(), filename);  var filenameTextBox =  &nbsp;&nbsp;&nbsp;&nbsp;openModalWindow.Get&lt;TextBox&gt;(SearchCriteria.ByAutomationId(“1148”)); filenameTextBox.SetValue(filePath);  openModalWindow.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);  \n\nThis is working on my local environment but also on TeamCity!\nThe key point was to find the TextBox with the AutomationId of 1148.\n","dateCreated":"2010-07-16T03:22:07+02:00","dateModified":"2012-05-02T00:53:45+02:00","datePublished":"2010-07-16T03:22:07+02:00","description":"Today TeamCity was showing me one functional test failure on my WPF application.\nI already discussed about this problem here: White’s tip for your automated WPF functional tests","headline":"File dialog automation using White framework","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/07/16/File-dialog-automation-using-White-framework/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/07/16/File-dialog-automation-using-White-framework/","keywords":"acceptance test, white"}</script>
     <meta name="description" content="Today TeamCity was showing me one functional test failure on my WPF application. I already discussed about this problem here: White’s tip for your automated WPF functional tests">
-<meta name="keywords" content="white,acceptance test">
+<meta name="keywords" content="acceptance test,white">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="File dialog automation using White framework">
 <meta property="og:url" content="https://laurentkempe.com/2010/07/16/File-dialog-automation-using-White-framework/index.html">
@@ -73,10 +73,11 @@
     </div>
     
         
-            <a class="header-right-picture " href="#about">
+            <a  class="header-right-picture "
+                href="#about">
         
         
-            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -94,7 +95,7 @@
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
@@ -108,7 +109,11 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="/ " title="Home">
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
                     
                         <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
@@ -117,7 +122,11 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="/all-tags" title="Tags">
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
                     
                         <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
@@ -126,7 +135,11 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="/all-archives" title="Archives">
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
                     
                         <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
@@ -135,7 +148,11 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="/about-laurent-kempe.html" title="About">
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
                     
                         <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
@@ -148,7 +165,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
                     
                         <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
@@ -157,7 +174,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
                     
                         <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
@@ -166,7 +183,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
                     
                         <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
@@ -175,7 +192,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="https://flickr.com/photos/laurentkempe/" target="_blank" rel="noopener" title="Flickr">
+                        <a  class="sidebar-button-link " href="https://flickr.com/photos/laurentkempe/" target="_blank" rel="noopener" title="Flickr">
                     
                         <i class="sidebar-button-icon fab fa-flickr" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Flickr</span>
@@ -188,7 +205,7 @@
             
                 <li class="sidebar-button">
                     
-                        <a class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
                     
                         <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
@@ -247,7 +264,7 @@
     <div id="post-footer" class="post-footer main-content-wrap">
         
             <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGED IN</span><br>
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
     <a class="tag tag--primary tag--small t-link" href="/tags/acceptance-test/">acceptance test</a> <a class="tag tag--primary tag--small t-link" href="/tags/white/">white</a>
 
@@ -471,7 +488,7 @@
             <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
@@ -481,7 +498,7 @@
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
-                <br>
+                <br/>
                 <p>Team Leader, Senior Solutions Architect</p>
 
             </div>
@@ -489,7 +506,7 @@
         
             <div id="about-card-location">
                 <i class="fa fa-map-marker-alt"></i>
-                <br>
+                <br/>
                 Illzach, France
             </div>
         

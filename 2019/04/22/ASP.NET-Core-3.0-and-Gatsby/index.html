@@ -1,0 +1,553 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>ASP.NET Core 3.0 and Gatsby - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I am not doing professional Web development for some time but I am still interested, watching and trying new things that keep emerging on the Web world. When I saw Gatsby, I immediately liked what I was seeing. And wanted to play with it!\nAs I like 💕 also ASP.NET Core, I decided that it would be nice to combine both together and see how it would work. This post is about the minimum things you need to do to have both working together.\nAbout GatsbyTODO ADD why I like it\nTODO add description and that it uses react https://reactjs.org/\nFirst, the Quick start and Tutorial for Gatsby are extremely well written! So, if you need to start somewhere, it is definitely the place.\nQuick startGatsbyIf you have node and npm installed, installing Gatsby CLI is as easy as this\ninstall Gatsby CLI1npm install -g gatsby-cli\nNow comes the more complex part, which is setting up your environment for building native Node.js modules but again the documentation is really well written.\nIf you are on Windows, then use Node.js 11.14.0 or Node.js 12.1.0 and not 12.0.0 or you will get issues with shapr npm package, which is a dependency of Gatsby.\n\n.NET Core 3.0 preview 5As we want to create an application using Gatsby on the client and .NET Core 3.0 as a backend Web API, we need to install .NET Core SDK 3.0. At the time of writing, Microsoft Build 2019 time, it is the .NET Core SDK 3.0 preview 5. As I am on Windows, I downloaded Windows .NET Core Installer - SDK 3.0.100-preview5-011568. Double clicked on it and installed it.\nProject creationLet’s create a project called GatsbyCore! As Gatsby is based on React, we will use the .NET Core template for React. But we will remove the ClientApp created by the template to use the one created by Gatsby CLI.\nProject creation1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253❯ mkdir GatsbyCore❯ cd .\\GatsbyCore\\❯ dotnet --version3.0.100-preview4-011223❯ dotnet new reactThe template \"ASP.NET Core with React.js\" was created successfully.Processing post-creation actions...Running 'dotnet restore' on C:\\Users\\laure\\projects\\Gatsby\\GatsbyCore\\GatsbyCore.csproj...  Restore completed in 8.64 sec for C:\\Users\\laure\\projects\\Gatsby\\GatsbyCore\\GatsbyCore.csproj.Restore succeeded.❯ rm -r .\\ClientApp\\*❯ rm .\\ClientApp\\❯ gatsby new ClientAppinfo Creating new site from git: https://github.com/gatsbyjs/gatsby-starter-default.git                                                                                                               Cloning into 'ClientApp'...                                                                                                                                                   ...                        added 1719 packages from 987 contributors and audited 25784 packages in 29.051s                                                                                                                       found 0 vulnerabilities                                                                                                                                                                                                                                                                                                                                                                                     info Initialising git in ClientApp                                                                                                                                                                    Initialized empty Git repository in C:/Users/laure/projects/Gatsby/GatsbyCore/ClientApp/.git/                                                                                                         info Create initial git commit in ClientApp                                                                                                                                                           ❯ dotnet build...Build succeeded.    0 Warning(s)    0 Error(s)Time Elapsed 00:00:05.03❯ dotnet run...Content root path: C:\\Users\\laure\\projects\\Gatsby\\GatsbyCoreNow listening on: https://localhost:5001Now listening on: http://localhost:5000Application started. Press Ctrl+C to shut down. npm run developinfo: Microsoft.AspNetCore.SpaServices[0]      &gt; gatsby-starter-default@0.1.0 develop C:\\Users\\laure\\projects\\Gatsby\\GatsbyCore\\ClientApp gatsby develop...  http://localhost:8000/View GraphiQL, an in-browser IDE, to explore your site's data and schema  http://localhost:8000/___graphql\nI have shortened a bit the output so that we can focus on the essential part of it.\nAs you can read on the log output, you can open your browser now on http://localhost:8000/ and you will see the Gatsby application. On http://localhost:8000/___graphql to see the GraphiQL interface which comes with Gatsby. And also, https://localhost:5001/api/SampleData/WeatherForecasts to see the .NET Core API controller displaying some JSON.\nNow that we have the basic setup we want to connect both world so that the Gatsby web application can get data from the .NET Core 3.0 Web API backend.To achieve that we will create a Gatsby component which will be in charge to query the server and display the data returned.\nGatsby component creationLet’s create a Gatsby component which will get data from our ASP.NET Core 3.0 API and display it.\nIn the folder ClientApp\\src\\components add a file called weather.js.\nWeather Gatsby component1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253import React, &#123; Component &#125; from 'react';export class Weather extends Component &#123;    displayName = Weather.name    constructor(props) &#123;        super(props);        this.state = &#123; data: &#123;&#125;, loading: true &#125;;    &#125;    async componentDidMount() &#123;        const response = await fetch('api/SampleData/WeatherForecasts');        const json = await response.json();        this.setState(&#123; data: json, loading: false &#125;);    &#125;    static renderUpcomingWeekTable(weatherForecasts) &#123;        return (            &lt;table className='table'&gt;                &lt;thead&gt;                    &lt;tr&gt;                        &lt;th&gt;Date&lt;/th&gt;                        &lt;th&gt;Temperature&lt;/th&gt;                        &lt;th&gt;Summary&lt;/th&gt;                    &lt;/tr&gt;                &lt;/thead&gt;                &lt;tbody&gt;                    &#123;weatherForecasts.map(forecast =&gt;                        &lt;tr key=&#123;forecast.dateFormatted&#125;&gt;                            &lt;td&gt;&#123;forecast.dateFormatted&#125;&lt;/td&gt;                            &lt;td&gt;&#123;forecast.temperatureC&#125;&lt;/td&gt;                            &lt;td&gt;&#123;forecast.summary&#125;&lt;/td&gt;                        &lt;/tr&gt;                    )&#125;                &lt;/tbody&gt;            &lt;/table&gt;        );    &#125;    render() &#123;        let contents = this.state.loading            ? &lt;p&gt;&lt;em&gt;Loading...&lt;/em&gt;&lt;/p&gt;            : Weather.renderUpcomingWeekTable(this.state.data)        return (            &lt;div&gt;                &lt;h1&gt;Weather&lt;/h1&gt;                &#123;contents&#125;            &lt;/div&gt;        );    &#125;&#125;\nAnd use it on the index.js page\nWeather Gatsby component123&lt;div&gt;    &lt;Weather /&gt;&lt;/div&gt;\n","dateCreated":"2019-04-22T11:38:01+02:00","dateModified":"2019-05-18T09:51:00+02:00","datePublished":"2019-04-22T11:38:01+02:00","description":"I am not doing professional Web development for some time but I am still interested, watching and trying new things that keep emerging on the Web world. When I saw Gatsby, I immediately liked what I was seeing. And wanted to play with it!\nAs I like 💕 also ASP.NET Core, I decided that it would be nice to combine both together and see how it would work. This post is about the minimum things you need to do to have both working together.","headline":"ASP.NET Core 3.0 and Gatsby","image":["https://live.staticflickr.com/65535/46976463274_2a1a30979c_q.jpg","https://live.staticflickr.com/65535/46976463274_aa47e1b4d3_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2019/04/22/ASP.NET-Core-3.0-and-Gatsby/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2019/04/22/ASP.NET-Core-3.0-and-Gatsby/","keywords":"ASP.NET Core, Gatsbyjs","thumbnailUrl":"https://live.staticflickr.com/65535/46976463274_2a1a30979c_q.jpg"}</script>
+    <meta name="description" content="I am not doing professional Web development for some time but I am still interested, watching and trying new things that keep emerging on the Web world. When I saw Gatsby, I immediately liked what I w">
+<meta name="keywords" content="ASP.NET Core,Gatsbyjs">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="ASP.NET Core 3.0 and Gatsby">
+<meta property="og:url" content="https://laurentkempe.com/2019/04/22/ASP.NET-Core-3.0-and-Gatsby/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="I am not doing professional Web development for some time but I am still interested, watching and trying new things that keep emerging on the Web world. When I saw Gatsby, I immediately liked what I w">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-05-18T07:51:00.972Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ASP.NET Core 3.0 and Gatsby">
+<meta name="twitter:description" content="I am not doing professional Web development for some time but I am still interested, watching and trying new things that keep emerging on the Web world. When I saw Gatsby, I immediately liked what I w">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/65535/46976463274_2a1a30979c_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/65535/46976463274_2a1a30979c_q.jpg" />
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/65535/46976463274_aa47e1b4d3_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/65535/46976463274_aa47e1b4d3_h.jpg" />
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-64298-8', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Laurent Kempé</a>
+    </div>
+    
+        
+            <a class="header-right-picture " href="#about">
+        
+        
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/ " title="Home">
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/all-tags" title="Tags">
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/all-archives" title="Archives">
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/about-laurent-kempe.html" title="About">
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://flickr.com/photos/laurentkempe/" target="_blank" rel="noopener" title="Flickr">
+                    
+                        <i class="sidebar-button-icon fab fa-flickr" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Flickr</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial" style="background-image:url('https://live.staticflickr.com/65535/46976463274_aa47e1b4d3_h.jpg');" data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            ASP.NET Core 3.0 and Gatsby
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-04-22T11:38:01+02:00">
+	
+		    Apr 22, 2019
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Le Lomont, Doubs, France</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>I am not doing professional Web development for some time but I am still interested, watching and trying new things that keep emerging on the Web world. When I saw <a href="https://www.gatsbyjs.org/" target="_blank" rel="noopener">Gatsby</a>, I immediately liked what I was seeing. And wanted to play with it!</p>
+<p>As I like 💕 also <a href="https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-3.0" target="_blank" rel="noopener">ASP.NET Core</a>, I decided that it would be nice to combine both together and see how it would work. This post is about the minimum things you need to do to have both working together.<br><a id="more"></a></p>
+<h1 id="About-Gatsby"><a href="#About-Gatsby" class="headerlink" title="About Gatsby"></a>About Gatsby</h1><p>TODO ADD why I like it</p>
+<p>TODO add description and that it uses react <a href="https://reactjs.org/" target="_blank" rel="noopener">https://reactjs.org/</a></p>
+<p>First, the <a href="https://www.gatsbyjs.org/docs/quick-start" target="_blank" rel="noopener">Quick start</a> and <a href="https://www.gatsbyjs.org/tutorial/" target="_blank" rel="noopener">Tutorial</a> for Gatsby are extremely well written! So, if you need to start somewhere, it is definitely the place.</p>
+<h1 id="Quick-start"><a href="#Quick-start" class="headerlink" title="Quick start"></a>Quick start</h1><h2 id="Gatsby"><a href="#Gatsby" class="headerlink" title="Gatsby"></a>Gatsby</h2><p>If you have node and npm installed, installing <a href="https://www.gatsbyjs.org/docs/gatsby-cli/" target="_blank" rel="noopener">Gatsby CLI</a> is as easy as this</p>
+<figure class="highlight shell"><figcaption><span>install Gatsby CLI</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g gatsby-cli</span><br></pre></td></tr></table></figure>
+<p>Now comes the more complex part, which is <a href="https://www.gatsbyjs.org/docs/gatsby-on-windows/" target="_blank" rel="noopener">setting up your environment for building native Node.js modules</a> but again the documentation is really well written.</p>
+<div class="alert warning"><p>If you are on Windows, then use <a href="https://www.chocolatey.org/packages/nodejs.install/11.14.0" target="_blank" rel="noopener">Node.js 11.14.0</a> or <a href="https://nodejs.org/dist/v12.1.0/node-v12.1.0-x64.msi" target="_blank" rel="noopener">Node.js 12.1.0</a> and not 12.0.0 or you will get issues with <a href="https://www.npmjs.com/package/sharp" target="_blank" rel="noopener">shapr</a> npm package, which is a dependency of Gatsby.</p>
+</div>
+<h2 id="NET-Core-3-0-preview-5"><a href="#NET-Core-3-0-preview-5" class="headerlink" title=".NET Core 3.0 preview 5"></a>.NET Core 3.0 preview 5</h2><p>As we want to create an application using Gatsby on the client and .NET Core 3.0 as a backend Web API, we need to install <a href="https://dotnet.microsoft.com/download/dotnet-core/3.0" target="_blank" rel="noopener">.NET Core SDK 3.0</a>. At the time of writing, <a href="https://news.microsoft.com/build2019/" target="_blank" rel="noopener">Microsoft Build 2019</a> time, it is the .NET Core SDK 3.0 preview 5. As I am on Windows, I downloaded <a href="https://dotnet.microsoft.com/download/thank-you/dotnet-sdk-3.0.100-preview5-windows-x64-installer" target="_blank" rel="noopener">Windows .NET Core Installer - SDK 3.0.100-preview5-011568</a>. Double clicked on it and installed it.</p>
+<h1 id="Project-creation"><a href="#Project-creation" class="headerlink" title="Project creation"></a>Project creation</h1><p>Let’s create a project called GatsbyCore! As Gatsby is based on React, we will use the <a href="https://docs.microsoft.com/en-us/aspnet/core/client-side/spa/react?view=aspnetcore-2.2&amp;tabs=visual-studio" target="_blank" rel="noopener">.NET Core template for React</a>. But we will remove the ClientApp created by the template to use the one created by Gatsby CLI.</p>
+<figure class="highlight shell"><figcaption><span>Project creation</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">❯ mkdir GatsbyCore</span><br><span class="line">❯ cd .\GatsbyCore\</span><br><span class="line"></span><br><span class="line">❯ dotnet --version</span><br><span class="line">3.0.100-preview4-011223</span><br><span class="line"></span><br><span class="line">❯ dotnet new react</span><br><span class="line">The template "ASP.NET Core with React.js" was created successfully.</span><br><span class="line"></span><br><span class="line">Processing post-creation actions...</span><br><span class="line">Running 'dotnet restore' on C:\Users\laure\projects\Gatsby\GatsbyCore\GatsbyCore.csproj...</span><br><span class="line">  Restore completed in 8.64 sec for C:\Users\laure\projects\Gatsby\GatsbyCore\GatsbyCore.csproj.</span><br><span class="line"></span><br><span class="line">Restore succeeded.</span><br><span class="line"></span><br><span class="line">❯ rm -r .\ClientApp\*</span><br><span class="line">❯ rm .\ClientApp\</span><br><span class="line">❯ gatsby new ClientApp</span><br><span class="line">info Creating new site from git: https://github.com/gatsbyjs/gatsby-starter-default.git                                                                                                               </span><br><span class="line">Cloning into 'ClientApp'...                                                                                                                                                   </span><br><span class="line">...                        </span><br><span class="line">added 1719 packages from 987 contributors and audited 25784 packages in 29.051s                                                                                                                       </span><br><span class="line">found 0 vulnerabilities                                                                                                                                                                               </span><br><span class="line">                                                                                                                                                                                                      </span><br><span class="line">info Initialising git in ClientApp                                                                                                                                                                    </span><br><span class="line">Initialized empty Git repository in C:/Users/laure/projects/Gatsby/GatsbyCore/ClientApp/.git/                                                                                                         </span><br><span class="line">info Create initial git commit in ClientApp                                                                                                                                                           </span><br><span class="line"></span><br><span class="line">❯ dotnet build</span><br><span class="line">...</span><br><span class="line">Build succeeded.</span><br><span class="line">    0 Warning(s)</span><br><span class="line">    0 Error(s)</span><br><span class="line"></span><br><span class="line">Time Elapsed 00:00:05.03</span><br><span class="line">❯ dotnet run</span><br><span class="line">...</span><br><span class="line">Content root path: C:\Users\laure\projects\Gatsby\GatsbyCore</span><br><span class="line">Now listening on: https://localhost:5001</span><br><span class="line">Now listening on: http://localhost:5000</span><br><span class="line">Application started. Press Ctrl+C to shut down.</span><br><span class="line"></span><br><span class="line"> npm run develop</span><br><span class="line"></span><br><span class="line">info: Microsoft.AspNetCore.SpaServices[0]</span><br><span class="line">      &gt; gatsby-starter-default@0.1.0 develop C:\Users\laure\projects\Gatsby\GatsbyCore\ClientApp</span><br><span class="line"> gatsby develop</span><br><span class="line">...</span><br><span class="line">  http://localhost:8000/</span><br><span class="line"></span><br><span class="line">View GraphiQL, an in-browser IDE, to explore your site's data and schema</span><br><span class="line"></span><br><span class="line">  http://localhost:8000/___graphql</span><br></pre></td></tr></table></figure>
+<p>I have shortened a bit the output so that we can focus on the essential part of it.</p>
+<p>As you can read on the log output, you can open your browser now on <a href="http://localhost:8000/" target="_blank" rel="noopener">http://localhost:8000/</a> and you will see the Gatsby application. On <a href="http://localhost:8000/___graphql" target="_blank" rel="noopener">http://localhost:8000/___graphql</a> to see the <a href="https://github.com/graphql/graphiql" target="_blank" rel="noopener">GraphiQL</a> interface which comes with Gatsby. And also, <a href="https://localhost:5001/api/SampleData/WeatherForecasts" target="_blank" rel="noopener">https://localhost:5001/api/SampleData/WeatherForecasts</a> to see the .NET Core API controller displaying some JSON.</p>
+<p>Now that we have the basic setup we want to connect both world so that the Gatsby web application can get data from the .NET Core 3.0 Web API backend.<br>To achieve that we will create a <a href="https://www.gatsbyjs.org/tutorial/part-one/#building-with-components" target="_blank" rel="noopener">Gatsby component</a> which will be in charge to query the server and display the data returned.</p>
+<h1 id="Gatsby-component-creation"><a href="#Gatsby-component-creation" class="headerlink" title="Gatsby component creation"></a>Gatsby component creation</h1><p>Let’s create a <a href="https://www.gatsbyjs.org/docs/building-with-components/" target="_blank" rel="noopener">Gatsby component</a> which will get data from our ASP.NET Core 3.0 API and display it.</p>
+<p>In the folder <em>ClientApp\src\components</em> add a file called <em>weather.js</em>.</p>
+<figure class="highlight js"><figcaption><span>Weather Gatsby component</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">Weather</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">    displayName = Weather.name</span><br><span class="line"></span><br><span class="line">    <span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">        <span class="keyword">super</span>(props);</span><br><span class="line">        <span class="keyword">this</span>.state = &#123; <span class="attr">data</span>: &#123;&#125;, <span class="attr">loading</span>: <span class="literal">true</span> &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> componentDidMount() &#123;</span><br><span class="line">        <span class="keyword">const</span> response = <span class="keyword">await</span> fetch(<span class="string">'api/SampleData/WeatherForecasts'</span>);</span><br><span class="line">        <span class="keyword">const</span> json = <span class="keyword">await</span> response.json();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.setState(&#123; <span class="attr">data</span>: json, <span class="attr">loading</span>: <span class="literal">false</span> &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> renderUpcomingWeekTable(weatherForecasts) &#123;</span><br><span class="line">        <span class="keyword">return</span> (</span><br><span class="line">            &lt;table className=<span class="string">'table'</span>&gt;</span><br><span class="line">                &lt;thead&gt;</span><br><span class="line">                    &lt;tr&gt;</span><br><span class="line">                        &lt;th&gt;<span class="built_in">Date</span>&lt;<span class="regexp">/th&gt;</span></span><br><span class="line"><span class="regexp">                        &lt;th&gt;Temperature&lt;/</span>th&gt;</span><br><span class="line">                        &lt;th&gt;Summary&lt;<span class="regexp">/th&gt;</span></span><br><span class="line"><span class="regexp">                    &lt;/</span>tr&gt;</span><br><span class="line">                &lt;<span class="regexp">/thead&gt;</span></span><br><span class="line"><span class="regexp">                &lt;tbody&gt;</span></span><br><span class="line"><span class="regexp">                    &#123;weatherForecasts.map(forecast =&gt;</span></span><br><span class="line"><span class="regexp">                        &lt;tr key=&#123;forecast.dateFormatted&#125;&gt;</span></span><br><span class="line"><span class="regexp">                            &lt;td&gt;&#123;forecast.dateFormatted&#125;&lt;/</span>td&gt;</span><br><span class="line">                            &lt;td&gt;&#123;forecast.temperatureC&#125;&lt;<span class="regexp">/td&gt;</span></span><br><span class="line"><span class="regexp">                            &lt;td&gt;&#123;forecast.summary&#125;&lt;/</span>td&gt;</span><br><span class="line">                        &lt;<span class="regexp">/tr&gt;</span></span><br><span class="line"><span class="regexp">                    )&#125;</span></span><br><span class="line"><span class="regexp">                &lt;/</span>tbody&gt;</span><br><span class="line">            &lt;<span class="regexp">/table&gt;</span></span><br><span class="line"><span class="regexp">        );</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">    render() &#123;</span></span><br><span class="line"><span class="regexp">        let contents = this.state.loading</span></span><br><span class="line"><span class="regexp">            ? &lt;p&gt;&lt;em&gt;Loading...&lt;/</span>em&gt;&lt;/p&gt;</span><br><span class="line">            : Weather.renderUpcomingWeekTable(<span class="keyword">this</span>.state.data)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> (</span><br><span class="line">            &lt;div&gt;</span><br><span class="line">                &lt;h1&gt;Weather&lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">                &#123;contents&#125;</span></span><br><span class="line"><span class="regexp">            &lt;/</span>div&gt;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>And use it on the <em>index.js</em> page</p>
+<figure class="highlight js"><figcaption><span>Weather Gatsby component</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;</span><br><span class="line">    &lt;Weather /&gt;</span><br><span class="line">&lt;<span class="regexp">/div&gt;</span></span><br></pre></td></tr></table></figure>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET-Core/">ASP.NET Core</a> <a class="tag tag--primary tag--small t-link" href="/tags/Gatsbyjs/">Gatsbyjs</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/04/18/WPF-and-IOC-on-NET-Core-3-0/" data-tooltip="WPF and IOC on .NET Core 3.0" aria-label="NEXT: WPF and IOC on .NET Core 3.0">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2019/04/22/ASP.NET-Core-3.0-and-Gatsby/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2019/04/22/ASP.NET-Core-3.0-and-Gatsby/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2019/04/22/ASP.NET-Core-3.0-and-Gatsby/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/04/18/WPF-and-IOC-on-NET-Core-3-0/" data-tooltip="WPF and IOC on .NET Core 3.0" aria-label="NEXT: WPF and IOC on .NET Core 3.0">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2019/04/22/ASP.NET-Core-3.0-and-Gatsby/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2019/04/22/ASP.NET-Core-3.0-and-Gatsby/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2019/04/22/ASP.NET-Core-3.0-and-Gatsby/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2019/04/22/ASP.NET-Core-3.0-and-Gatsby/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2019/04/22/ASP.NET-Core-3.0-and-Gatsby/">
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2019/04/22/ASP.NET-Core-3.0-and-Gatsby/">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture">
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://laurentkempe.com/2019/04/22/ASP.NET-Core-3.0-and-Gatsby/';
+                 
+                    this.page.identifier = '2019-04-22 10:38:01 &lt;!-- Remove space to have e.g. 20160405174628 --&gt;';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'laurentkempe';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>
