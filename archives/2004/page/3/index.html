@@ -246,7 +246,8 @@
                 <div class="postShorten-excerpt">
                     <p>I knew I read it somewhere !!! Latest release of Whidbey permits to hide the components on the designer. Use the <strong>View</strong> menu <strong>Non Visual Controls</strong>, shortcut Ctrl+Shift+N.</p>
 <blockquote>
-<p><a href="http://weblogs.asp.net/cazzu/archive/2004/10/12/241276.aspx" target="_blank" rel="noopener">A sad day for component developers</a><br>
+<p><a href="http://weblogs.asp.net/cazzu/archive/2004/10/12/241276.aspx" target="_blank" rel="noopener">A sad day for component developers</a></p>
+</blockquote>
                     
                         <a href="/2004/10/14/Not-such-a-sad-day-)/" class="postShorten-excerpt_link link">
                             Continue reading
@@ -284,7 +285,7 @@
             
                 <div class="postShorten-excerpt">
                     <p>I finally fixed the issue I reported in the post “<a href="http://weblogs.asp.net/lkempe/archive/2004/08/23/219122.aspx" target="_blank" rel="noopener">New milestone reached in the development of the authoring tool for Tech Head Brothers French portal</a> “. I am still waiting some feedback from Peter (he might be in holidays).</p>
-<p>I am getting an exception when I try to deserialize an object. This exception is due to a security problem.<br>
+<p>I am getting an exception when I try to deserialize an object. This exception is due to a security problem.</p>
                     
                         <a href="/2004/08/28/Visual-Studio-Office-Tools-and-Word-2003-using-deserialization-nightmare-end/" class="postShorten-excerpt_link link">
                             Continue reading
@@ -323,7 +324,8 @@
                 <div class="postShorten-excerpt">
                     <p>Thats right that we had some great time yesterday!!! But before that we worked like hell. Thursday , Friday, Monday for a total of more then 50 hours of workwith Philippe. Lorenz joined us on Monday. And today it was the same (9AM to 11PM). So I think we deserved that free half a day an dwe enjoyed it.</p>
 <blockquote>
-<p><a href="http://www.didierbeck.com/2004_08_01_blogs.php#109355527588927252" target="_blank" rel="noopener">NEWS: working session in Zurich :-)</a><br>
+<p><a href="http://www.didierbeck.com/2004_08_01_blogs.php#109355527588927252" target="_blank" rel="noopener">NEWS: working session in Zurich :-)</a></p>
+</blockquote>
                     
                         <a href="/2004/08/27/What-Didier-forgot-to-say-!/" class="postShorten-excerpt_link link">
                             Continue reading
@@ -362,7 +364,8 @@
                 <div class="postShorten-excerpt">
                     <p>It seems that we will be updated on Whidbey :-) Nice. I will add to my development an evoluation of the Team System tools.</p>
 <blockquote>
-<p><a href="http://www.activewin.com/awin/comments.asp?HeadlineIndex=25951" target="_blank" rel="noopener">Visual Studio 2005 Beta 1 refresh with Team System</a><br>
+<p><a href="http://www.activewin.com/awin/comments.asp?HeadlineIndex=25951" target="_blank" rel="noopener">Visual Studio 2005 Beta 1 refresh with Team System</a></p>
+</blockquote>
                     
                         <a href="/2004/08/27/Visual-Studio-2005-Beta-1-refresh-with-the-Team-System/" class="postShorten-excerpt_link link">
                             Continue reading
@@ -439,7 +442,7 @@
             
                 <div class="postShorten-excerpt">
                     <p>I worked in the fingerprint biometric business for almost 4 years and I am happy to see that Microsoft will deliver fingerprint readers. I am curious to see which company is providing the hardware, the algorithm and the software. Maybe the result of the acquisition of the <a href="http://www.iosoftware.com/pages/Products/Biometric%20API/index.asp" target="_blank" rel="noopener">BAPI technology</a> from <a href="http://www.iosoftware.com/" target="_blank" rel="noopener">I/OSoftware</a>. I am also curious to see if the reader is an optical one or a silicon one. I would really like them to provide us with the SDK based on BAPI so that I can develop a new version of the Windows login i developed in the past.</p>
-<p><img src="http://www.activewin.com/articles/2004/images/1f.jpg" alt><br>
+<p><img src="http://www.activewin.com/articles/2004/images/1f.jpg" alt></p>
                     
                         <a href="/2004/08/17/Wireless-IntelliMouse-Explorer-with-Fingerprint-Reader-Windows-USB/" class="postShorten-excerpt_link link">
                             Continue reading
@@ -519,7 +522,15 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>In some portal scenarios you might want to have only webmaster(s) manage the layout of the site. So your goal is  to avoid that a registered user change it.</p><br><p>With Webparts you might build portal that match this scenario like this:</p><br><p>Add to you web.config:</p><br><p>&lt;system.web&gt;<br>    …</p><br><p>    <webparts><br>        <personalization><br>            <authorization><br>                <allow roles="webmasters" verbs="enterSharedScope"><br>            </allow></authorization><br>        </personalization><br>    </webparts><br>    …</p><br><p>&lt;/system.web&gt;</p><br><p>This configuration set that only users with the role webmaster might change the layout.</p><br><p></p><br><p>Then you might place a WebPartPageMenu control on your site. This control is listing all the personalisation to the webpart system you might do as a logged in user. In the case of a user in the role of webmasters, the WebPartPageMenu will have one of it entries set to: Show Share view.<br>You can select this entry and then Design Page Layout to be able to design the layout of the page for the user the anonymous users.</p>
+                    <p>In some portal scenarios you might want to have only webmaster(s) manage the layout of the site. So your goal is  to avoid that a registered user change it.</p>
+<p>With Webparts you might build portal that match this scenario like this:</p>
+<p>Add to you web.config:</p>
+<p><system.web><br>    ...</system.web></p>
+<p>    <webparts><br>        <personalization><br>            <authorization><br>                <allow roles="webmasters" verbs="enterSharedScope"><br>            </allow></authorization><br>        </personalization><br>    </webparts><br>    ...</p>
+<p></p>
+<p>This configuration set that only users with the role webmaster might change the layout.</p>
+<p></p>
+<p>Then you might place a WebPartPageMenu control on your site. This control is listing all the personalisation to the webpart system you might do as a logged in user. In the case of a user in the role of webmasters, the WebPartPageMenu will have one of it entries set to: Show Share view.<br>You can select this entry and then Design Page Layout to be able to design the layout of the page for the user the anonymous users.</p>
 
                     
                         
@@ -564,7 +575,8 @@
                 <div class="postShorten-excerpt">
                     <p>I am reading through the different blog I subscribed to and saw that interesting entry. I have so many discussions at work concerning Free Software compared to Microsoft way of doing business with Not Free Software. Thats Life, real Life. Another way of seeing the real life is pointed by an opened letter from Clemens Vasters, <a href="http://staff.newtelligence.net/clemensv/PermaLink.aspx?guid=8fe41294-a988-4c73-948a-1bfab622fcce" target="_blank" rel="noopener">here</a>. So true.</p>
 <blockquote>
-<p><a href="http://weblogs.asp.net/alainler/archive/2004/07/31/202619.aspx" target="_blank" rel="noopener">About FREE software …</a><br>
+<p><a href="http://weblogs.asp.net/alainler/archive/2004/07/31/202619.aspx" target="_blank" rel="noopener">About FREE software …</a></p>
+</blockquote>
                     
                         <a href="/2004/08/01/Free-software/" class="postShorten-excerpt_link link">
                             Continue reading
@@ -603,7 +615,8 @@
                 <div class="postShorten-excerpt">
                     <p>I am currently working on our whole development process and I found this article really interesting. Thanks <a href="http://weblogs.asp.net/dirkpr" target="_blank" rel="noopener">Dirk</a> for the pointer to the article.</p>
 <blockquote>
-<p><a href="http://weblogs.asp.net/dirkpr/archive/2004/07/31/202795.aspx" target="_blank" rel="noopener">The development process of Windows Server 2003</a><br>
+<p><a href="http://weblogs.asp.net/dirkpr/archive/2004/07/31/202795.aspx" target="_blank" rel="noopener">The development process of Windows Server 2003</a></p>
+</blockquote>
                     
                         <a href="/2004/08/01/Development-process/" class="postShorten-excerpt_link link">
                             Continue reading

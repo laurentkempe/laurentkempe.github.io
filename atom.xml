@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://laurentkempe.com/"/>
-  <updated>2019-09-03T20:25:02.120Z</updated>
+  <updated>2019-09-18T17:23:18.947Z</updated>
   <id>https://laurentkempe.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>gRPC and C# 8 Async stream</title>
+    <link href="https://laurentkempe.com/2019/09/18/gRPC-and-csharp-8-Async-stream/"/>
+    <id>https://laurentkempe.com/2019/09/18/gRPC-and-csharp-8-Async-stream/</id>
+    <published>2019-09-18T17:23:00.000Z</published>
+    <updated>2019-09-18T17:23:18.947Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;a href=&quot;https://grpc.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;gRPC&lt;/a&gt; and its idea to describe an API in a standardized file, which can generate both client and server code to interact in different languages is a compelling idea.&lt;br&gt;In this post, I would like to have a quick look at the experience you would have with gRPC streaming capability and the new &lt;a href=&quot;https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-8.0/async-streams&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;C# 8 async streams&lt;/a&gt;, which sounds like a perfect match.&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="ASP.NET Core" scheme="https://laurentkempe.com/tags/ASP-NET-Core/"/>
+    
+      <category term="C#" scheme="https://laurentkempe.com/tags/C/"/>
+    
+      <category term="gRPC" scheme="https://laurentkempe.com/tags/gRPC/"/>
+    
+  </entry>
   
   <entry>
     <title>WPF and .NET Generic Host with .NET Core 3.0</title>
@@ -32,9 +55,12 @@
 &lt;li&gt;Dependency injection (DI)&lt;/li&gt;
 &lt;li&gt;Logging&lt;/li&gt;
 &lt;li&gt;Configuration&lt;/li&gt;
-&lt;li&gt;IHostedService implementations
+&lt;li&gt;IHostedService implementations&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
     
     </summary>
+    
     
     
       <category term=".NET Core" scheme="https://laurentkempe.com/tags/NET-Core/"/>
@@ -52,9 +78,10 @@
     
     <summary type="html">
     
-      &lt;p&gt;At work, we are planning to migrate our WPF application from .NET Framework 4.7 to &lt;a href=&quot;https://docs.microsoft.com/en-us/dotnet/core/whats-new/dotnet-core-3-0&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;.NET Core 3.0&lt;/a&gt;. The main reason for doing so is that it was always a big pain to organize the updates of the .NET Framework on our customer machines. So being able to bundle .NET Core with our application is a big plus for us. Then, for sure, we are looking for the performance improvements brought by .NET Core and finally the new capabilities brought by the fast pace of innovation of .NET Core.&lt;br&gt;
+      &lt;p&gt;At work, we are planning to migrate our WPF application from .NET Framework 4.7 to &lt;a href=&quot;https://docs.microsoft.com/en-us/dotnet/core/whats-new/dotnet-core-3-0&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;.NET Core 3.0&lt;/a&gt;. The main reason for doing so is that it was always a big pain to organize the updates of the .NET Framework on our customer machines. So being able to bundle .NET Core with our application is a big plus for us. Then, for sure, we are looking for the performance improvements brought by .NET Core and finally the new capabilities brought by the fast pace of innovation of .NET Core.&lt;/p&gt;
     
     </summary>
+    
     
     
       <category term=".NET Core" scheme="https://laurentkempe.com/tags/NET-Core/"/>
@@ -75,6 +102,7 @@
       &lt;p&gt;As you might have guessed reading some of my older posts, I like to automate things which I believe a computer should do in place of humans.&lt;/p&gt;
     
     </summary>
+    
     
     
       <category term="Visual Studio" scheme="https://laurentkempe.com/tags/Visual-Studio/"/>
@@ -101,6 +129,7 @@
     </summary>
     
     
+    
       <category term=".NET Core" scheme="https://laurentkempe.com/tags/NET-Core/"/>
     
       <category term="Roslyn" scheme="https://laurentkempe.com/tags/Roslyn/"/>
@@ -117,9 +146,10 @@
     <summary type="html">
     
       &lt;p&gt;On Saturday, June 2, 2018, I had the chance to participate in the .NET Core Community online Hackathon.&lt;/p&gt;
-&lt;p&gt;As I got up really early this Saturday morning, I took the opportunity to participate. My goal was to see something new and learn a bit about how .NET Core is built and gain some new experience.&lt;br&gt;
+&lt;p&gt;As I got up really early this Saturday morning, I took the opportunity to participate. My goal was to see something new and learn a bit about how .NET Core is built and gain some new experience.&lt;/p&gt;
     
     </summary>
+    
     
     
       <category term=".NET Core" scheme="https://laurentkempe.com/tags/NET-Core/"/>
@@ -136,9 +166,10 @@
     <summary type="html">
     
       &lt;p&gt;Since Microsoft went to &lt;a href=&quot;https://docs.microsoft.com/en-us/windows/deployment/update/waas-quick-start&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Windows as a service&lt;/a&gt;, so since Windows 10, I fully re-install my development machine, a Surface Book, with each main release of Windows.&lt;/p&gt;
-&lt;p&gt;As I hate to lose time, I searched a way to automate it, so that it is fast, repeatable and does the work, not me.&lt;br&gt;
+&lt;p&gt;As I hate to lose time, I searched a way to automate it, so that it is fast, repeatable and does the work, not me.&lt;/p&gt;
     
     </summary>
+    
     
     
       <category term="Windows" scheme="https://laurentkempe.com/tags/Windows/"/>
@@ -156,9 +187,10 @@
     
     <summary type="html">
     
-      &lt;p&gt;I am just back from 2.5 months unpaid leave which I used to spend time with my family. So, I almost did not spend time with software development. One exception is that I wanted to be able to configure Visual Studio 2017 to be able to debug into ASP.NET Core 2.0 source code.&lt;br&gt;
+      &lt;p&gt;I am just back from 2.5 months unpaid leave which I used to spend time with my family. So, I almost did not spend time with software development. One exception is that I wanted to be able to configure Visual Studio 2017 to be able to debug into ASP.NET Core 2.0 source code.&lt;/p&gt;
     
     </summary>
+    
     
     
       <category term="ASP.NET Core" scheme="https://laurentkempe.com/tags/ASP-NET-Core/"/>
@@ -181,6 +213,7 @@
     </summary>
     
     
+    
       <category term=".NET Core" scheme="https://laurentkempe.com/tags/NET-Core/"/>
     
       <category term="Raspberry Pi" scheme="https://laurentkempe.com/tags/Raspberry-Pi/"/>
@@ -199,9 +232,10 @@
     <summary type="html">
     
       &lt;p&gt;Now that there is a distribution of .NET Core on a Linux distro running on my &lt;a href=&quot;https://www.raspberrypi.org/products/raspberry-pi-3-model-b/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Raspberry Pi 3&lt;/a&gt;, I had to try it.&lt;/p&gt;
-&lt;p&gt;In this post, I will explain all the steps I had to execute to be able to run my first Hello World application.&lt;br&gt;
+&lt;p&gt;In this post, I will explain all the steps I had to execute to be able to run my first Hello World application.&lt;/p&gt;
     
     </summary>
+    
     
     
       <category term=".NET Core" scheme="https://laurentkempe.com/tags/NET-Core/"/>
@@ -221,9 +255,10 @@
     
     <summary type="html">
     
-      &lt;p&gt;In the last posts, we looked at the code to &lt;a href=&quot;http://laurentkempe.com/2016/05/16/ASP-NET-Core-RC2-Docker-and-HipChat-Connect-add-on/&quot;&gt;build a HipChat Connect add-on with ASP.NET Core&lt;/a&gt;, &lt;a href=&quot;http://laurentkempe.com/2016/06/08/Deploying-Docker-containers-running-ASPNET-Core-RC2-to-Microsoft-Azure-Cloud/&quot;&gt;run the solution in a Docker container&lt;/a&gt; and &lt;a href=&quot;http://laurentkempe.com/2016/06/20/Free-HTTPS-certificates-for-Docker-containers-running-ASPNET-Core-RC2-on-Microsoft-Azure/&quot;&gt;secure the access to the application with a valid HTTPS certificate that we got from Let’s Encrypt for free&lt;/a&gt; and finally deploy all of this on Azure!&lt;br&gt;
+      &lt;p&gt;In the last posts, we looked at the code to &lt;a href=&quot;http://laurentkempe.com/2016/05/16/ASP-NET-Core-RC2-Docker-and-HipChat-Connect-add-on/&quot;&gt;build a HipChat Connect add-on with ASP.NET Core&lt;/a&gt;, &lt;a href=&quot;http://laurentkempe.com/2016/06/08/Deploying-Docker-containers-running-ASPNET-Core-RC2-to-Microsoft-Azure-Cloud/&quot;&gt;run the solution in a Docker container&lt;/a&gt; and &lt;a href=&quot;http://laurentkempe.com/2016/06/20/Free-HTTPS-certificates-for-Docker-containers-running-ASPNET-Core-RC2-on-Microsoft-Azure/&quot;&gt;secure the access to the application with a valid HTTPS certificate that we got from Let’s Encrypt for free&lt;/a&gt; and finally deploy all of this on Azure!&lt;/p&gt;
     
     </summary>
+    
     
     
       <category term="ASP.NET Core" scheme="https://laurentkempe.com/tags/ASP-NET-Core/"/>
@@ -245,9 +280,10 @@
     
     <summary type="html">
     
-      &lt;p&gt;Following my previous posts on &lt;a href&gt;ASP.NET Core RC2, Docker and HipChat Connect add-on&lt;/a&gt; and &lt;a href&gt;Deploying Docker containers running ASP.NET Core RC2 to Microsoft Azure Cloud&lt;/a&gt; I needed, as promised in the last post, to come with a solution to secure the whole with an HTTPS certificate!&lt;br&gt;
+      &lt;p&gt;Following my previous posts on &lt;a href&gt;ASP.NET Core RC2, Docker and HipChat Connect add-on&lt;/a&gt; and &lt;a href&gt;Deploying Docker containers running ASP.NET Core RC2 to Microsoft Azure Cloud&lt;/a&gt; I needed, as promised in the last post, to come with a solution to secure the whole with an HTTPS certificate!&lt;/p&gt;
     
     </summary>
+    
     
     
       <category term="ASP.NET Core RC2" scheme="https://laurentkempe.com/tags/ASP-NET-Core-RC2/"/>
@@ -269,9 +305,10 @@
     
     <summary type="html">
     
-      &lt;p&gt;Following my previous post on &lt;a href=&quot;https://laurentkempe.com/2016/05/16/ASP-NET-Core-RC2-Docker-and-HipChat-Connect-add-on/&quot;&gt;ASP.NET Core RC2, Docker and HipChat Connect add-on&lt;/a&gt; I wanted to learn the next step which is to deploy my Docker container on the Microsoft Azure Cloud!&lt;br&gt;
+      &lt;p&gt;Following my previous post on &lt;a href=&quot;https://laurentkempe.com/2016/05/16/ASP-NET-Core-RC2-Docker-and-HipChat-Connect-add-on/&quot;&gt;ASP.NET Core RC2, Docker and HipChat Connect add-on&lt;/a&gt; I wanted to learn the next step which is to deploy my Docker container on the Microsoft Azure Cloud!&lt;/p&gt;
     
     </summary>
+    
     
     
       <category term="ASP.NET Core RC2" scheme="https://laurentkempe.com/tags/ASP-NET-Core-RC2/"/>
@@ -293,9 +330,10 @@
     
     <summary type="html">
     
-      &lt;p&gt;This weekend ASP.NET Core RC2 was starting to show up! And it finally was &lt;a href=&quot;https://blogs.msdn.microsoft.com/webdev/2016/05/16/announcing-asp-net-core-rc2/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;released today&lt;/a&gt;. Get it fresh from &lt;a href=&quot;https://www.microsoft.com/net/core&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;here&lt;/a&gt;. We had here a long three days weekend with quite awful gray clouds and cold weather for the season, so a perfect excuse to get started!&lt;br&gt;
+      &lt;p&gt;This weekend ASP.NET Core RC2 was starting to show up! And it finally was &lt;a href=&quot;https://blogs.msdn.microsoft.com/webdev/2016/05/16/announcing-asp-net-core-rc2/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;released today&lt;/a&gt;. Get it fresh from &lt;a href=&quot;https://www.microsoft.com/net/core&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;here&lt;/a&gt;. We had here a long three days weekend with quite awful gray clouds and cold weather for the season, so a perfect excuse to get started!&lt;/p&gt;
     
     </summary>
+    
     
     
       <category term="ASP.NET Core RC2" scheme="https://laurentkempe.com/tags/ASP-NET-Core-RC2/"/>
@@ -315,9 +353,10 @@
     
     <summary type="html">
     
-      &lt;p&gt;I have been playing with all Docker tools for quite some time now! Started with the command line and all its commands like docker start,  stop, ps, etc… Then I tried Kitematic and even compiled it from the source before it was supporting Windows! Then Docker Toolbox.&lt;br&gt;
+      &lt;p&gt;I have been playing with all Docker tools for quite some time now! Started with the command line and all its commands like docker start,  stop, ps, etc… Then I tried Kitematic and even compiled it from the source before it was supporting Windows! Then Docker Toolbox.&lt;/p&gt;
     
     </summary>
+    
     
     
       <category term="Docker" scheme="https://laurentkempe.com/tags/Docker/"/>
@@ -337,9 +376,10 @@
     
     <summary type="html">
     
-      &lt;p&gt;Even if online &lt;a href=&quot;https://help.github.com/articles/using-pull-requests/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Github Pull Request&lt;/a&gt; is a nice and effective tool, in some situation you need to open your solution in Visual Studio to verify something.&lt;br&gt;
+      &lt;p&gt;Even if online &lt;a href=&quot;https://help.github.com/articles/using-pull-requests/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Github Pull Request&lt;/a&gt; is a nice and effective tool, in some situation you need to open your solution in Visual Studio to verify something.&lt;/p&gt;
     
     </summary>
+    
     
     
       <category term="Git" scheme="https://laurentkempe.com/tags/Git/"/>
@@ -359,9 +399,10 @@
     
     <summary type="html">
     
-      &lt;p&gt;In the past in my team, we were storing the Telerik assemblies into our SVN repository then in Git! I wasn’t happy about that for a really long time. Each releases our repository was growing much more than it was needed for nothing!&lt;br&gt;
+      &lt;p&gt;In the past in my team, we were storing the Telerik assemblies into our SVN repository then in Git! I wasn’t happy about that for a really long time. Each releases our repository was growing much more than it was needed for nothing!&lt;/p&gt;
     
     </summary>
+    
     
     
       <category term=".NET Development" scheme="https://laurentkempe.com/tags/NET-Development/"/>
@@ -379,9 +420,10 @@
     
     <summary type="html">
     
-      &lt;p&gt;When I &lt;a href=&quot;http://laurentkempe.com/2016/04/05/Moving-to-Cake-CSharp-Make/&quot;&gt;migrated our build to Cake (C# Make)&lt;/a&gt; we had one requirement which was to upload some of the build output’s artifacts to DropBox at the end of the build.&lt;br&gt;
+      &lt;p&gt;When I &lt;a href=&quot;http://laurentkempe.com/2016/04/05/Moving-to-Cake-CSharp-Make/&quot;&gt;migrated our build to Cake (C# Make)&lt;/a&gt; we had one requirement which was to upload some of the build output’s artifacts to DropBox at the end of the build.&lt;/p&gt;
     
     </summary>
+    
     
     
       <category term="continuous integration" scheme="https://laurentkempe.com/tags/continuous-integration/"/>
@@ -399,9 +441,10 @@
     
     <summary type="html">
     
-      &lt;p&gt;I finally invested time to migrate our build from a heteroclite mixture of  MSBuild, TeamCity build steps and whatever to something that really delight me: &lt;a href=&quot;http://cakebuild.net/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Cake (C# Make)&lt;/a&gt;.&lt;br&gt;
+      &lt;p&gt;I finally invested time to migrate our build from a heteroclite mixture of  MSBuild, TeamCity build steps and whatever to something that really delight me: &lt;a href=&quot;http://cakebuild.net/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Cake (C# Make)&lt;/a&gt;.&lt;/p&gt;
     
     </summary>
+    
     
     
       <category term=".NET Development" scheme="https://laurentkempe.com/tags/NET-Development/"/>
@@ -419,32 +462,11 @@
     
     <summary type="html">
     
-      &lt;p&gt;After almost 6 years using &lt;a href=&quot;http://dotnetblogengine.net/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;BlogEngine.NET&lt;/a&gt; and a bit more of a year without any new post I decided that it was time to reboot my blog!&lt;br&gt;
+      &lt;p&gt;After almost 6 years using &lt;a href=&quot;http://dotnetblogengine.net/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;BlogEngine.NET&lt;/a&gt; and a bit more of a year without any new post I decided that it was time to reboot my blog!&lt;/p&gt;
     
     </summary>
     
     
-  </entry>
-  
-  <entry>
-    <title>TeamCity 9 project settings versioning in Git</title>
-    <link href="https://laurentkempe.com/2014/12/13/TeamCity-9-project-settings-versioning-in-Git/"/>
-    <id>https://laurentkempe.com/2014/12/13/TeamCity-9-project-settings-versioning-in-Git/</id>
-    <published>2014-12-13T02:16:58.000Z</published>
-    <updated>2014-12-13T02:39:12.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;!-- [![Anse Cafard](https://farm8.staticflickr.com/7480/16005747085_1d45cdda13_m.jpg)](https://www.flickr.com/photos/laurentkempe/16005747085 &quot;Anse Cafard by Laurent Kempé, on Flickr&quot;) --&gt;
-&lt;p&gt;One of the great new feature of &lt;a href=&quot;https://confluence.jetbrains.com/display/TCD9/What%27s+New+in+TeamCity+9.0&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;TeamCity 9&lt;/a&gt; is the possibility of &lt;a href=&quot;https://confluence.jetbrains.com/display/TCD9/What%27s+New+in+TeamCity+9.0#What%27sNewinTeamCity9.0-StoringprojectsettingsinGitandMercurial&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Storing project settings in Git and Mercurial&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;When you develop software it is primordial to be able to reproduce successfully builds. To achieve that goal you need for sure first to version the source code. But too often the build scripts are forgotten! Especially when the build scripts are created with such a great tool that is &lt;a href=&quot;https://www.jetbrains.com/teamcity/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;TeamCity&lt;/a&gt;.&lt;br&gt;
-    
-    </summary>
-    
-    
-      <category term="Git" scheme="https://laurentkempe.com/tags/Git/"/>
-    
-      <category term="Team City" scheme="https://laurentkempe.com/tags/Team-City/"/>
     
   </entry>
   

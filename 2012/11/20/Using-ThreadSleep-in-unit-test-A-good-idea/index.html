@@ -271,7 +271,7 @@
 <li>It is slower then needed. If you increase the sleep time so that you “ensure” that the test should pass in all situation then the test will always as long as this time.   </li>
 </ol>
 <p>So what can we do about it?</p>
-<p>One of the first approach is to using polling like <a href="http://www.nunit.org/index.php?p=delayedConstraint&amp;r=2.6" target="_blank" rel="noopener">NUnit and it’s Delayed Contraint</a> does. But I am not a big fan of this because you have to remember the details of it, and you can fall in that trap easily:</p>
+<p>One of the first approach is to using polling like <a href="http://www.nunit.org/index.php?p=delayedConstraint&r=2.6" target="_blank" rel="noopener">NUnit and it’s Delayed Contraint</a> does. But I am not a big fan of this because you have to remember the details of it, and you can fall in that trap easily:</p>
 <blockquote>
 <p>Use of a <strong>DelayedConstraint</strong> with a value argument makes no sense, since the value will be extracted at the point of call. It’s intended use is with delegates and references. If a delegate is used with polling, it may be called multiple times so only methods without side effects should be used in this way.</p>
 </blockquote>

@@ -245,7 +245,7 @@
             
                 <div class="postShorten-excerpt">
                     <p>In September 2009 I posted about a tool I am using to build my MSBuild projects from the shell “<a href="http://www.laurentkempe.com/post/Build-your-NET-project-with-a-right-click-in-Windows-Explorer.aspx" target="_blank" rel="noopener">Build your .NET project with a right click in Windows Explorer</a>”</p>
-<p>Last week I changed to <a href="http://msbuildlaunchpad.codeplex.com/" target="_blank" rel="noopener">MSBuild Launch Pad (mPad)</a> which also add a context menu when you right click your project or solution files.<br>
+<p>Last week I changed to <a href="http://msbuildlaunchpad.codeplex.com/" target="_blank" rel="noopener">MSBuild Launch Pad (mPad)</a> which also add a context menu when you right click your project or solution files.</p>
                     
                         <a href="/2010/06/04/Build-NET-projects-from-Windows-Explorer-using-MSBuild-Launch-Pad-(mPad)/" class="postShorten-excerpt_link link">
                             Continue reading
@@ -284,7 +284,8 @@
                 <div class="postShorten-excerpt">
                     <p>Tonight we got the following issue on our <a href="http://www.jetbrains.com/teamcity/index.html" target="_blank" rel="noopener">TeamCity</a> build server which produce different ClickOnce setups :</p>
 <blockquote>
-<p>c:\WINDOWS\Microsoft.NET\Framework\v3.5\Microsoft.Common.targets(3652, 9): <strong>error MSB3482: An error occurred while signing: Failed to sign ....\Tests\Output\bin\DeployClickOnce\app.publish\setup.exe</strong>.<br>
+<p>c:\WINDOWS\Microsoft.NET\Framework\v3.5\Microsoft.Common.targets(3652, 9): <strong>error MSB3482: An error occurred while signing: Failed to sign ....\Tests\Output\bin\DeployClickOnce\app.publish\setup.exe</strong>. </p>
+</blockquote>
                     
                         <a href="/2010/01/12/ClickOnce-ISignedCodeSign-returned-error-0x80880253/" class="postShorten-excerpt_link link">
                             Continue reading
@@ -322,7 +323,7 @@
             
                 <div class="postShorten-excerpt">
                     <p>Since some time I have the current scenario where I need to have conditional reference in a project. Basically the application must reference an assembly in one case in other it should reference another one. This was working correctly from an MSBuild point of view as the first implemented solution let me compile and run the application on my development machine and it was also working for our <a href="http://www.jetbrains.com/teamcity/index.html" target="_blank" rel="noopener">TeamCity</a> build server. So everything was fine in this perfect word expect one thing!</p>
-<p>The issue was the following; Visual Studio was showing two references of the ‘same assembly’ with different path. Not really an issue you would say because the correct one was used at compile time and at run time in all configurations. So the issue was that this had an impact of <a href="http://www.jetbrains.com/resharper/index.html" target="_blank" rel="noopener">ReSharper</a>. And this is I cannot accept because it affect my productivity.<br>
+<p>The issue was the following; Visual Studio was showing two references of the ‘same assembly’ with different path. Not really an issue you would say because the correct one was used at compile time and at run time in all configurations. So the issue was that this had an impact of <a href="http://www.jetbrains.com/resharper/index.html" target="_blank" rel="noopener">ReSharper</a>. And this is I cannot accept because it affect my productivity.</p>
                     
                         <a href="/2009/12/03/ProjectReference-with-Condition-in-your-MSBuild-project-files/" class="postShorten-excerpt_link link">
                             Continue reading
@@ -360,7 +361,7 @@
             
                 <div class="postShorten-excerpt">
                     <p>The other day I published different posts about the way I automated our build process at <a href="http://www.innoveo.com/" target="_blank" rel="noopener">Innoveo Solutions</a> to generate different ClickOnce setup using <a href="http://www.jetbrains.com/teamcity/index.html" target="_blank" rel="noopener">TeamCity</a>: </p>
-<p><a href="http://weblogs.asp.net/lkempe/archive/2009/11/03/build-multiple-clickonce-deployment-packages-using-msbuild-and-team-city.aspx" target="_blank" rel="noopener">Build multiple ClickOnce deployment packages using MSBuild and Team City</a><br>
+<p><a href="http://weblogs.asp.net/lkempe/archive/2009/11/03/build-multiple-clickonce-deployment-packages-using-msbuild-and-team-city.aspx" target="_blank" rel="noopener">Build multiple ClickOnce deployment packages using MSBuild and Team City</a>      </p>
                     
                         <a href="/2009/11/11/Automating-Publish-of-ClickOnce-with-TeamCity/" class="postShorten-excerpt_link link">
                             Continue reading
@@ -398,7 +399,7 @@
             
                 <div class="postShorten-excerpt">
                     <p>The other day I posted about <a href="http://weblogs.asp.net/lkempe/archive/2009/10/27/build-clickonce-deployment-packages-using-msbuild-and-team-city.aspx" target="_blank" rel="noopener">Build ClickOnce deployment packages using MSBuild and Team City</a>, and there were something that I didn’t liked in my way of doing it.</p>
-<p>I have multiple ClickOnce deployment packages created using TeamCity and MSBuild but each ClickOnce packages have their own Application Revision due to the usage of TeamCity <a href="http://www.jetbrains.net/confluence/display/TCD4/Predefined+Properties" target="_blank" rel="noopener">BUILD_NUMBER server build property</a>.<br>
+<p>I have multiple ClickOnce deployment packages created using TeamCity and MSBuild but each ClickOnce packages have their own Application Revision due to the usage of TeamCity <a href="http://www.jetbrains.net/confluence/display/TCD4/Predefined+Properties" target="_blank" rel="noopener">BUILD_NUMBER server build property</a>.</p>
                     
                         <a href="/2009/11/03/Build-multiple-ClickOnce-deployment-packages-using-MSBuild-and-Team-City/" class="postShorten-excerpt_link link">
                             Continue reading
@@ -435,8 +436,8 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <p>First you need to un-install the Silverlight 2.0 Beta 1 SDK from the build server! Then you can download the <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=50A9EC01-267B-4521-B7D7-C0DBA8866434&amp;displaylang=en" target="_blank" rel="noopener">Microsoft Silverlight Tools Beta 2 for Visual Studio 2008</a> and extract it on the server, there you will find the file <strong>silverlight_sdk.msi</strong>, that will allow you to install Silverlight 2.0 Beta 2 SDK.</p>
-<p>Now if you followed my post <a href="http://weblogs.asp.net/lkempe/archive/2008/05/19/msbuild-and-silverlight-2-0-beta-1-running-in-team-city.aspx" target="_blank" rel="noopener">MSBuild and Silverlight 2.0 Beta 1 running in Team City</a>, then you know about the issue:<br>
+                    <p>First you need to un-install the Silverlight 2.0 Beta 1 SDK from the build server! Then you can download the <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=50A9EC01-267B-4521-B7D7-C0DBA8866434&displaylang=en" target="_blank" rel="noopener">Microsoft Silverlight Tools Beta 2 for Visual Studio 2008</a> and extract it on the server, there you will find the file <strong>silverlight_sdk.msi</strong>, that will allow you to install Silverlight 2.0 Beta 2 SDK.</p>
+<p>Now if you followed my post <a href="http://weblogs.asp.net/lkempe/archive/2008/05/19/msbuild-and-silverlight-2-0-beta-1-running-in-team-city.aspx" target="_blank" rel="noopener">MSBuild and Silverlight 2.0 Beta 1 running in Team City</a>, then you know about the issue:</p>
                     
                         <a href="/2008/06/07/MSBuild-and-Silverlight-20-Beta-2-SDK-running-in-Team-City/" class="postShorten-excerpt_link link">
                             Continue reading
@@ -473,8 +474,8 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <p>If you want to integrate <a href="http://silverlight.net/GetStarted/" target="_blank" rel="noopener">Silverlight 2.0 Beta 1</a> in your <a href="http://en.wikipedia.org/wiki/Continuous_Integration" target="_blank" rel="noopener">Continuous Integration</a> system, in my case <a href="http://www.jetbrains.com/teamcity" target="_blank" rel="noopener">Team City</a>), it is better to read the readme of <a href="http://www.microsoft.com/silverlight/resources/readme.aspx?v=2.0&amp;sdk=true" target="_blank" rel="noopener">Silverlight 2.0 Beta 1 SDK here</a>.</p>
-<p>The important part in our case is the following one:<br>
+                    <p>If you want to integrate <a href="http://silverlight.net/GetStarted/" target="_blank" rel="noopener">Silverlight 2.0 Beta 1</a> in your <a href="http://en.wikipedia.org/wiki/Continuous_Integration" target="_blank" rel="noopener">Continuous Integration</a> system, in my case <a href="http://www.jetbrains.com/teamcity" target="_blank" rel="noopener">Team City</a>), it is better to read the readme of <a href="http://www.microsoft.com/silverlight/resources/readme.aspx?v=2.0&sdk=true" target="_blank" rel="noopener">Silverlight 2.0 Beta 1 SDK here</a>.</p>
+<p>The important part in our case is the following one:</p>
                     
                         <a href="/2008/05/20/MSBuild-and-Silverlight-20-Beta-1-running-in-Team-City/" class="postShorten-excerpt_link link">
                             Continue reading

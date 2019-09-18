@@ -245,7 +245,10 @@
             
                 <div class="postShorten-content">
                     <p>What is the difference between this code</p>
-<div style="line-height:135%; padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:4f938988-5f57-401f-aa50-3fabd8f1c6ed" class="wlWriterEditableSmartContent"> <div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt"> <div style="background-color: #ffffff; overflow: auto; padding: 2px 5px; white-space: nowrap"><span style="color:#0000ff">using</span> (<span style="color:#0000ff">var</span> fileStream = <span style="color:#0000ff">new</span> <span style="color:#2b91af">FileStream</span>(settingsFilename,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#2b91af">FileMode</span>.Open))<br> {<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000ff">return</span> ReadSettings(fileStream);<br> }</div> </div> </div><br>And this code<br><br><div style="line-height:135%; padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:d23edba0-0809-4467-80de-7e73647d4a04" class="wlWriterEditableSmartContent"> <div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt"> <div style="background-color: #ffffff; overflow: auto; padding: 2px 5px; white-space: nowrap"><span style="color:#0000ff">using</span> (<span style="color:#0000ff">var</span> fileStream = <span style="color:#0000ff">new</span> <span style="color:#2b91af">FileStream</span>(settingsFilename,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#2b91af">FileMode</span>.Open,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#2b91af">FileAccess</span>.Read))<br> {<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000ff">return</span> ReadSettings(fileStream);<br> }</div> </div> </div>  
+<div style="line-height:135%; padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:4f938988-5f57-401f-aa50-3fabd8f1c6ed" class="wlWriterEditableSmartContent"> <div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt"> <div style="background-color: #ffffff; overflow: auto; padding: 2px 5px; white-space: nowrap"><span style="color:#0000ff">using</span> (<span style="color:#0000ff">var</span> fileStream = <span style="color:#0000ff">new</span> <span style="color:#2b91af">FileStream</span>(settingsFilename,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#2b91af">FileMode</span>.Open))<br> {<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000ff">return</span> ReadSettings(fileStream);<br> }</div> </div> </div>
+And this code
+
+<div style="line-height:135%; padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:d23edba0-0809-4467-80de-7e73647d4a04" class="wlWriterEditableSmartContent"> <div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt"> <div style="background-color: #ffffff; overflow: auto; padding: 2px 5px; white-space: nowrap"><span style="color:#0000ff">using</span> (<span style="color:#0000ff">var</span> fileStream = <span style="color:#0000ff">new</span> <span style="color:#2b91af">FileStream</span>(settingsFilename,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#2b91af">FileMode</span>.Open,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#2b91af">FileAccess</span>.Read))<br> {<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000ff">return</span> ReadSettings(fileStream);<br> }</div> </div> </div>  
 
 <p>Almost nothing, just a little <strong>FileAccess.Read</strong> !</p>
 <p>But this little thing makes a big difference when you run your software in a secured environment.</p>
@@ -293,7 +296,7 @@
             
                 <div class="postShorten-excerpt">
                     <p>A couple of month ago I was introduced by a colleague to <a href="http://www.stereopsis.com/flux/" target="_blank" rel="noopener">f.lux</a>. </p>
-<p>At first I thought, hum ok another software that will just eat some memory for nothing. But after 2 days, in fact 2 evening, yeah I work a lot in front of monitors, I was conquered and I recommend this tool to all like me that spend their days and nights in front of monitors!<br>
+<p>At first I thought, hum ok another software that will just eat some memory for nothing. But after 2 days, in fact 2 evening, yeah I work a lot in front of monitors, I was conquered and I recommend this tool to all like me that spend their days and nights in front of monitors!</p>
                     
                         <a href="/2010/05/21/flux-Better-lightinge280a6for-your-computer/" class="postShorten-excerpt_link link">
                             Continue reading
@@ -331,7 +334,7 @@
             
                 <div class="postShorten-excerpt">
                     <p>The other day I posted about “<a href="http://www.laurentkempe.com/post/Automated-functional-tests-using-Watin-and-MSpec.aspx" target="_blank" rel="noopener">Automated functional tests using Watin and MSpec</a>” which we do at <a href="http://www.jobping.com" target="_blank" rel="noopener">Jobping</a> as a spike to automate our functional tests on our ASP.NET MVC 2 site.</p>
-<p>Yesterday evening I was facing an issue in my base class <strong>WebBaseSpec</strong> which led to really strange side effects. Basically when I was running one unit test alone it was Green, running all or more than one unit test will fail miserably with the well known STA issue of <a href="http://watin.sourceforge.net/" target="_blank" rel="noopener">Watin</a>.<br>
+<p>Yesterday evening I was facing an issue in my base class <strong>WebBaseSpec</strong> which led to really strange side effects. Basically when I was running one unit test alone it was Green, running all or more than one unit test will fail miserably with the well known STA issue of <a href="http://watin.sourceforge.net/" target="_blank" rel="noopener">Watin</a>.</p>
                     
                         <a href="/2010/05/19/ASPNET-MVC-2-MSpec-and-Watin/" class="postShorten-excerpt_link link">
                             Continue reading
@@ -369,7 +372,7 @@
             
                 <div class="postShorten-excerpt">
                     <p>We have updated our url shortener for<a href="http://www.jobping.com/" target="_blank" rel="noopener"> Jobping</a>. <a href="http://jobp.in/" target="_blank" rel="noopener">jobp.in</a> has moved along to Version 0.5. While maintaining as little features as possible!</p>
-<p>Since the initial version we have placed a restriction(web.configurable) on the domain names that the shortener will shorten. We did this so only domains under jobping.com would be processed by the shortener. We wanted to maintain the integrity of the jobp.in domain. With this in place you can be sure that if you click a link shortened by <a href="http://jobp.in/" target="_blank" rel="noopener">http://jobp.in</a>  it will always go to our site <a href="http://www.jobping.com" target="_blank" rel="noopener">www.jobping.com</a> site.<br>
+<p>Since the initial version we have placed a restriction(web.configurable) on the domain names that the shortener will shorten. We did this so only domains under jobping.com would be processed by the shortener. We wanted to maintain the integrity of the jobp.in domain. With this in place you can be sure that if you click a link shortened by <a href="http://jobp.in/" target="_blank" rel="noopener">http://jobp.in</a>  it will always go to our site <a href="http://www.jobping.com" target="_blank" rel="noopener">www.jobping.com</a> site.</p>
                     
                         <a href="/2010/05/14/Jobping-Open-Source-URL-Shortener-Goes-to-Version-05/" class="postShorten-excerpt_link link">
                             Continue reading
@@ -407,7 +410,7 @@
             
                 <div class="postShorten-excerpt">
                     <p>I am conducting a <a href="http://searchsoftwarequality.techtarget.com/sDefinition/0,,sid92_gci1306773,00.html" target="_blank" rel="noopener">spike</a> for a couple of evening on the way we might automate our functional tests at <a href="http://www.jobping.com" target="_blank" rel="noopener">Jobping</a>.  </p>
-<p>I started with <a href="http://watin.sourceforge.net/" target="_blank" rel="noopener">Watin</a> and <a href="http://github.com/machine/machine.specifications" target="_blank" rel="noopener">MSpec</a> and the MSpec excellent plugin for <a href="http://www.jetbrains.com/resharper/index.html" target="_blank" rel="noopener">ReSharper 5</a> which gives the following great outputs directly from Visual Studio<br>
+<p>I started with <a href="http://watin.sourceforge.net/" target="_blank" rel="noopener">Watin</a> and <a href="http://github.com/machine/machine.specifications" target="_blank" rel="noopener">MSpec</a> and the MSpec excellent plugin for <a href="http://www.jetbrains.com/resharper/index.html" target="_blank" rel="noopener">ReSharper 5</a> which gives the following great outputs directly from Visual Studio</p>
                     
                         <a href="/2010/05/13/Automated-functional-tests-using-Watin-and-MSpec/" class="postShorten-excerpt_link link">
                             Continue reading
@@ -445,7 +448,7 @@
             
                 <div class="postShorten-excerpt">
                     <p>Yesterday I got the new issue of MSDN Magazine in my mailbox and as often I started to go quickly around it to get an overview of what kind of subject’s it talks about. And as often I end up at the last page’s article which is the first I am reading.</p>
-<p>This time <a href="http://msdn.microsoft.com/ee532098.aspx?sdmr=DavidPlatt&amp;sdmi=authors" target="_blank" rel="noopener">David S. Platt</a> is writing about “<a href="http://msdn.microsoft.com/en-us/magazine/ff646970.aspx" target="_blank" rel="noopener">Fundamental Laws</a>” which start like that<br>
+<p>This time <a href="http://msdn.microsoft.com/ee532098.aspx?sdmr=DavidPlatt&sdmi=authors" target="_blank" rel="noopener">David S. Platt</a> is writing about “<a href="http://msdn.microsoft.com/en-us/magazine/ff646970.aspx" target="_blank" rel="noopener">Fundamental Laws</a>” which start like that</p>
                     
                         <a href="/2010/05/12/Fundamental-Laws-from-David-S-Platt-on-MSDN-Magazine/" class="postShorten-excerpt_link link">
                             Continue reading
@@ -483,7 +486,7 @@
             
                 <div class="postShorten-excerpt">
                     <p>Day after day I find little gems in <a href="http://www.jetbrains.com/idea/index.html" target="_blank" rel="noopener">IntelliJ 9</a> that just make me more productive and give me more time to deal with the real interesting things.</p>
-<p>Today for example I had to change a web.xml file which I was said that I should take care not to commit because if this file would go to our customer than we would have a problem.<br>
+<p>Today for example I had to change a web.xml file which I was said that I should take care not to commit because if this file would go to our customer than we would have a problem. </p>
                     
                         <a href="/2010/05/07/IntelliJ-9-and-changeset/" class="postShorten-excerpt_link link">
                             Continue reading
@@ -521,7 +524,7 @@
             
                 <div class="postShorten-excerpt">
                     <p>Today at <a href="http://www.innoveo.com/" target="_blank" rel="noopener">Innoveo Solutions</a>  I work on <a href="http://www.w3.org/Style/CSS/" target="_blank" rel="noopener">CSS</a> and <a href="http://www.w3.org/TR/xhtml1/" target="_blank" rel="noopener">XHTML</a> for our Skye® product.</p>
-<p>I am using <a href="http://www.jetbrains.com/" target="_blank" rel="noopener">JetBrains</a>  <a href="http://www.jetbrains.com/idea/index.html" target="_blank" rel="noopener">IntelliJ 9</a> since a couple of weeks now and I enjoy it very much.<br>
+<p>I am using <a href="http://www.jetbrains.com/" target="_blank" rel="noopener">JetBrains</a>  <a href="http://www.jetbrains.com/idea/index.html" target="_blank" rel="noopener">IntelliJ 9</a> since a couple of weeks now and I enjoy it very much.</p>
                     
                         <a href="/2010/05/06/IntelliJ-9-CSS-editor/" class="postShorten-excerpt_link link">
                             Continue reading
@@ -559,7 +562,7 @@
             
                 <div class="postShorten-excerpt">
                     <p>As you might have read on <a href="http://didierbeck.com/2010/01/laurent-is-a-certified-scrummaster/" target="_blank" rel="noopener">Didier’s blog</a> or even on <a href="http://blog.innoveo.com/post/Laurent-is-a-Certified-ScrumMaster!.aspx" target="_blank" rel="noopener">Innoveo’s blog</a> I passed the ScrumMaster’s certification end of last year. Yeah I know I am late to post this ;-)</p>
-<p>I must say that the course held  by <a href="http://www.danube.com/company/bios/jimi" target="_blank" rel="noopener">Jimi Fosdick</a> was interesting and brought me some new idea.<br>
+<p>I must say that the course held  by <a href="http://www.danube.com/company/bios/jimi" target="_blank" rel="noopener">Jimi Fosdick</a> was interesting and brought me some new idea.</p>
                     
                         <a href="/2010/05/05/Certified-ScrumMaster/" class="postShorten-excerpt_link link">
                             Continue reading
@@ -597,7 +600,7 @@
             
                 <div class="postShorten-excerpt">
                     <p>We at <a href="http://www.jobping.com/" title="Jobping" target="_blank" rel="noopener">Jobping</a> use different Open Source projects so we thought it would be nice to participate by giving back also to that eco-system. This is why we realized <a href="http://blog.jobping.com/2010/05/jobping-open-source-short-urls-service.html" target="_blank" rel="noopener">Jobping Open Source Short URLs Service</a> </p>
-<p>The project goal was to have our own branded short URL service: <a href="http://jobp.in" target="_blank" rel="noopener">http://jobp.in</a><br>
+<p>The project goal was to have our own branded short URL service: <a href="http://jobp.in" target="_blank" rel="noopener">http://jobp.in</a>      </p>
                     
                         <a href="/2010/05/04/Jobping-Open-Source-Short-URLs-Service/" class="postShorten-excerpt_link link">
                             Continue reading
