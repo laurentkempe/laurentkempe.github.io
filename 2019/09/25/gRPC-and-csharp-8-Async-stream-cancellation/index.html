@@ -13,16 +13,16 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"In the previous post “gRPC and C# 8 Async stream“, we looked at how gRPC server stream and C# 8 Async stream work great together. In this post, we are looking at the way we can, from the client, stop the server to stream results back.\n\nServerI need to extend a bit the original code of the GreeterService to take care of the client request to stop the streaming. This is done through the usage of ServerCallContext which exposes a CancellationToken.\nNote: we don’t need to change anything to our greet.proto file! The cancellation capability is coming out of the box from the framework.\nThen we need to check if the client requests the cancellation using IsCancellationRequested and in that case, stop writing back into the responseStream. Easy!\n\n{% codeblock GreeterService.cs lang:csharp %}\npublic class GreeterService : Greeter.GreeterBase\n{\n    private readonly ILogger< GreeterService> _logger;\n\n    public GreeterService(ILogger logger)\n    {\n        _logger = logger;\n    }\n\n    public override async Task SayHello(HelloRequest request, IServerStreamWriter responseStream, ServerCallContext context)\n    {\n        var contextCancellationToken = context.CancellationToken;\n\n        foreach (var n in Enumerable.Range(1, 10))\n        {\n            if (contextCancellationToken.IsCancellationRequested) return;\n\n            await responseStream.WriteAsync(new HelloReply\n            {\n                Message = $\"Hello {request.Name} {n}\"\n            });\n\n            await Task.Delay(200);\n        }\n    }\n}\n{% endcodeblock %}\n\n\nClientImagine that we want the client to stop getting results after getting 5 responses from the server. The client needs to signal to the server to stop sending responses.As we did for the server, we need to use cancellation token for that, which we simply pass to the ResponseStream.ReadAllAsync method.Then we need to surround our code with try…catch catching RpcException with a status code of StatusCode.Cancelled. Easy too!\n\n{% codeblock Program.cs lang:csharp %}\nstatic class Program\n{\n    static async Task Main(string[] args)\n    {\n        var channel = GrpcChannel.ForAddress(\"https://localhost:5001\");\n        var client = new Greeter.GreeterClient(channel);\n\n        var replies = client.SayHello(new HelloRequest {Name = \"Laurent\"});\n\n        var tokenSource = new CancellationTokenSource();\n        var n = 0;\n\n        try\n        {\n            await foreach (var reply in replies.ResponseStream.ReadAllAsync(tokenSource.Token))\n            {\n                Console.WriteLine(reply.Message);\n\n                if (++n == 5)\n                {\n                    tokenSource.Cancel();\n                }\n            }\n        }\n        catch (RpcException e) when (e.Status.StatusCode == StatusCode.Cancelled)\n        {\n            Console.WriteLine(\"Streaming was cancelled from the client!\");\n        }\n    }\n}\n{% endcodeblock %}\n\n\nConclusionWe have seen that C# 8 Async streams are nicely integrating with gRPC streaming capabilities. And it makes code more readable!\nYou can get all the code on GitHub\n\n  \n\n\n\n\nThanks, Sam Macpherson for asking the question “Would be cool to show cancellation on client-side propagating to the server using the async steam cancellation support and a gRPC signal.”\n","dateCreated":"2019-09-25T20:16:12+02:00","dateModified":"2019-09-25T20:44:40+02:00","datePublished":"2019-09-25T20:16:12+02:00","description":"In the previous post “gRPC and C# 8 Async stream“, we looked at how gRPC server stream and C# 8 Async stream work great together. In this post, we are looking at the way we can, from the client, stop the server to stream results back.","headline":"gRPC and C# 8 Async stream cancellation","image":["https://c7.staticflickr.com/9/8689/16775792438_8366ee5732_q.jpg","https://c7.staticflickr.com/9/8689/16775792438_e45283970c_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/","keywords":"ASP.NET Core, C#, gRPC","thumbnailUrl":"https://c7.staticflickr.com/9/8689/16775792438_8366ee5732_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"In the previous post “gRPC and C# 8 Async stream“, we looked at how gRPC server stream and C# 8 Async stream work great together. In this post, we are looking at the way we can, from the client, stop the server to stream results back.\n\nServerI need to extend a bit the original code of the GreeterService to take care of the client request to stop the streaming. This is done through the usage of ServerCallContext which exposes a CancellationToken.\nNote: we don’t need to change anything to our greet.proto file! The cancellation capability is coming out of the box from the framework.\n\n\nThen we need to check if the client requests the cancellation using IsCancellationRequested and in that case, stop writing back into the responseStream. Easy!\nGreeterService.cs1234567891011121314151617181920212223242526public class GreeterService : Greeter.GreeterBase&#123;    private readonly ILogger&lt; GreeterService&gt; _logger;    public GreeterService(ILogger&lt;GreeterService&gt; logger)    &#123;        _logger = logger;    &#125;    public override async Task SayHello(HelloRequest request, IServerStreamWriter&lt;HelloReply&gt; responseStream, ServerCallContext context)    &#123;        var contextCancellationToken = context.CancellationToken;        foreach (var n in Enumerable.Range(1, 10))        &#123;            if (contextCancellationToken.IsCancellationRequested) return;            await responseStream.WriteAsync(new HelloReply            &#123;                Message = $\"Hello &#123;request.Name&#125; &#123;n&#125;\"            &#125;);            await Task.Delay(200);        &#125;    &#125;&#125;\n\nClientImagine that we want the client to stop getting results after getting 5 responses from the server. The client needs to signal to the server to stop sending responses.\nAs we did for the server, we need to use cancellation token for that, which we simply pass to the ResponseStream.ReadAllAsync method.\nThen we need to surround our code with try…catch catching RpcException with a status code of StatusCode.Cancelled. Easy too!\nProgram.cs123456789101112131415161718192021222324252627282930static class Program&#123;    static async Task Main(string[] args)    &#123;        var channel = GrpcChannel.ForAddress(\"https://localhost:5001\");        var client = new Greeter.GreeterClient(channel);        var replies = client.SayHello(new HelloRequest &#123;Name = \"Laurent\"&#125;);        var tokenSource = new CancellationTokenSource();        var n = 0;        try        &#123;            await foreach (var reply in replies.ResponseStream.ReadAllAsync(tokenSource.Token))            &#123;                Console.WriteLine(reply.Message);                if (++n == 5)                &#123;                    tokenSource.Cancel();                &#125;            &#125;        &#125;        catch (RpcException e) when (e.Status.StatusCode == StatusCode.Cancelled)        &#123;            Console.WriteLine(\"Streaming was cancelled from the client!\");        &#125;    &#125;&#125;\n\nConclusionWe have seen that it is easy to cancel gRPC streaming from the client using C# 8 Async streams and cancellation token.\nYou can get all the code on GitHub\n\n  \n\n\n\n\nThanks, Sam Macpherson for asking the question on Twitter.\n\n","dateCreated":"2019-09-25T22:06:12+02:00","dateModified":"2019-09-25T22:15:23+02:00","datePublished":"2019-09-25T22:06:12+02:00","description":"In the previous post “gRPC and C# 8 Async stream“, we looked at how gRPC server stream and C# 8 Async stream work great together. In this post, we are looking at the way we can, from the client, stop the server to stream results back.","headline":"gRPC and C# 8 Async stream cancellation","image":["https://live.staticflickr.com/65535/48795276492_f1c5396f9c_q.jpg","https://live.staticflickr.com/65535/48795276492_5b02cadc71_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/","keywords":"ASP.NET Core, gRPC, C#","thumbnailUrl":"https://live.staticflickr.com/65535/48795276492_f1c5396f9c_q.jpg"}</script>
     <meta name="description" content="In the previous post “gRPC and C# 8 Async stream“, we looked at how gRPC server stream and C# 8 Async stream work great together. In this post, we are looking at the way we can, from the client, stop">
-<meta name="keywords" content="ASP.NET Core,C#,gRPC">
+<meta name="keywords" content="ASP.NET Core,gRPC,C#">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="gRPC and C# 8 Async stream cancellation">
 <meta property="og:url" content="https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="In the previous post “gRPC and C# 8 Async stream“, we looked at how gRPC server stream and C# 8 Async stream work great together. In this post, we are looking at the way we can, from the client, stop">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-09-25T18:44:40.836Z">
+<meta property="og:updated_time" content="2019-09-25T20:15:23.091Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="gRPC and C# 8 Async stream cancellation">
 <meta name="twitter:description" content="In the previous post “gRPC and C# 8 Async stream“, we looked at how gRPC server stream and C# 8 Async stream work great together. In this post, we are looking at the way we can, from the client, stop">
@@ -35,12 +35,12 @@
         <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
     
     
-        <meta property="og:image" content="https://c7.staticflickr.com/9/8689/16775792438_8366ee5732_q.jpg"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://c7.staticflickr.com/9/8689/16775792438_8366ee5732_q.jpg" />
+        <meta property="og:image" content="https://live.staticflickr.com/65535/48795276492_f1c5396f9c_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/65535/48795276492_f1c5396f9c_q.jpg" />
     
     
-        <meta property="og:image" content="https://c7.staticflickr.com/9/8689/16775792438_e45283970c_h.jpg"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://c7.staticflickr.com/9/8689/16775792438_e45283970c_h.jpg" />
+        <meta property="og:image" content="https://live.staticflickr.com/65535/48795276492_5b02cadc71_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/65535/48795276492_5b02cadc71_h.jpg" />
     
     
     <!--STYLES-->
@@ -227,7 +227,7 @@
         <div class="post-header-cover
                     text-left
                     post-header-cover--partial"
-             style="background-image:url('https://c7.staticflickr.com/9/8689/16775792438_e45283970c_h.jpg');"
+             style="background-image:url('https://live.staticflickr.com/65535/48795276492_5b02cadc71_h.jpg');"
              data-behavior="5">
             
                 <div class="post-header main-content-wrap text-left">
@@ -238,7 +238,7 @@
     
     
         <div class="post-meta">
-    <time datetime="2019-09-25T20:16:12+02:00">
+    <time datetime="2019-09-25T22:06:12+02:00">
 	
 		    Sep 25, 2019
     	
@@ -259,84 +259,26 @@
                 
 <article class="post">
     
-        <span class="post-header-cover-caption caption">LO Ferré, Petite Anse, Martinique, France</span>
+        <span class="post-header-cover-caption caption">Purcaraccia, Corse, France</span>
     
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
             <p>In the previous post “<a href="https://laurentkempe.com/2019/09/18/gRPC-and-csharp-8-Async-stream/">gRPC and C# 8 Async stream</a>“, we looked at how gRPC server stream and C# 8 Async stream work great together. In this post, we are looking at the way we can, from the client, stop the server to stream results back.</p>
 <a id="more"></a>
-<h1 id="Server"><a href="#Server" class="headerlink" title="Server"></a>Server</h1><p>I need to extend a bit the original code of the GreeterService to take care of the client request to stop the streaming. This is done through the usage of ServerCallContext which exposes a CancellationToken.</p>
-<p>Note: we don’t need to change anything to our greet.proto file! The cancellation capability is coming out of the box from the framework.</p>
-<p>Then we need to check if the client requests the cancellation using IsCancellationRequested and in that case, stop writing back into the responseStream. Easy!</p>
+<h1 id="Server"><a href="#Server" class="headerlink" title="Server"></a>Server</h1><p>I need to extend a bit the original code of the <em>GreeterService</em> to take care of the client request to stop the streaming. This is done through the usage of <em>ServerCallContext</em> which exposes a <em>CancellationToken</em>.</p>
+<div class="alert info"><p>Note: we don’t need to change anything to our greet.proto file! The cancellation capability is coming out of the box from the framework.</p>
+</div>
 
-{% codeblock GreeterService.cs lang:csharp %}
-public class GreeterService : Greeter.GreeterBase
-{
-    private readonly ILogger< GreeterService> _logger;
+<p>Then we need to check if the client requests the cancellation using <em>IsCancellationRequested</em> and in that case, stop writing back into the responseStream. Easy!</p>
+<figure class="highlight csharp"><figcaption><span>GreeterService.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">public class GreeterService : Greeter.GreeterBase</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">readonly</span> ILogger&lt; GreeterService&gt; _logger;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">GreeterService</span>(<span class="params">ILogger&lt;GreeterService&gt; logger</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        _logger = logger;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">async</span> Task <span class="title">SayHello</span>(<span class="params">HelloRequest request, IServerStreamWriter&lt;HelloReply&gt; responseStream, ServerCallContext context</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> contextCancellationToken = context.CancellationToken;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">foreach</span> (<span class="keyword">var</span> n <span class="keyword">in</span> Enumerable.Range(<span class="number">1</span>, <span class="number">10</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (contextCancellationToken.IsCancellationRequested) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">await</span> responseStream.WriteAsync(<span class="keyword">new</span> HelloReply</span><br><span class="line">            &#123;</span><br><span class="line">                Message = <span class="string">$"Hello <span class="subst">&#123;request.Name&#125;</span> <span class="subst">&#123;n&#125;</span>"</span></span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">await</span> Task.Delay(<span class="number">200</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-    public GreeterService(ILogger<greeterservice> logger)
-    {
-        _logger = logger;
-    }
+<h1 id="Client"><a href="#Client" class="headerlink" title="Client"></a>Client</h1><p>Imagine that we want the client to stop getting results after getting 5 responses from the server. The client needs to signal to the server to stop sending responses.</p>
+<p>As we did for the server, we need to use cancellation token for that, which we simply pass to the <em>ResponseStream.ReadAllAsync</em> method.</p>
+<p>Then we need to surround our code with <em>try…catch</em> catching RpcException with a status code of <em>StatusCode.Cancelled</em>. Easy too!</p>
+<figure class="highlight csharp"><figcaption><span>Program.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> channel = GrpcChannel.ForAddress(<span class="string">"https://localhost:5001"</span>);</span><br><span class="line">        <span class="keyword">var</span> client = <span class="keyword">new</span> Greeter.GreeterClient(channel);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> replies = client.SayHello(<span class="keyword">new</span> HelloRequest &#123;Name = <span class="string">"Laurent"</span>&#125;);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> tokenSource = <span class="keyword">new</span> CancellationTokenSource();</span><br><span class="line">        <span class="keyword">var</span> n = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">await</span> <span class="keyword">foreach</span> (<span class="keyword">var</span> reply <span class="keyword">in</span> replies.ResponseStream.ReadAllAsync(tokenSource.Token))</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(reply.Message);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (++n == <span class="number">5</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    tokenSource.Cancel();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (RpcException e) when (e.Status.StatusCode == StatusCode.Cancelled)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(<span class="string">"Streaming was cancelled from the client!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-    public override async Task SayHello(HelloRequest request, IServerStreamWriter<helloreply> responseStream, ServerCallContext context)
-    {
-        var contextCancellationToken = context.CancellationToken;
-
-        foreach (var n in Enumerable.Range(1, 10))
-        {
-            if (contextCancellationToken.IsCancellationRequested) return;
-
-            await responseStream.WriteAsync(new HelloReply
-            {
-                Message = $"Hello {request.Name} {n}"
-            });
-
-            await Task.Delay(200);
-        }
-    }
-}
-{% endcodeblock %}
-
-
-<h1 id="Client"><a href="#Client" class="headerlink" title="Client"></a>Client</h1><p>Imagine that we want the client to stop getting results after getting 5 responses from the server. The client needs to signal to the server to stop sending responses.<br>As we did for the server, we need to use cancellation token for that, which we simply pass to the ResponseStream.ReadAllAsync method.<br>Then we need to surround our code with try…catch catching RpcException with a status code of StatusCode.Cancelled. Easy too!</p>
-
-{% codeblock Program.cs lang:csharp %}
-static class Program
-{
-    static async Task Main(string[] args)
-    {
-        var channel = GrpcChannel.ForAddress("https://localhost:5001");
-        var client = new Greeter.GreeterClient(channel);
-
-        var replies = client.SayHello(new HelloRequest {Name = "Laurent"});
-
-        var tokenSource = new CancellationTokenSource();
-        var n = 0;
-
-        try
-        {
-            await foreach (var reply in replies.ResponseStream.ReadAllAsync(tokenSource.Token))
-            {
-                Console.WriteLine(reply.Message);
-
-                if (++n == 5)
-                {
-                    tokenSource.Cancel();
-                }
-            }
-        }
-        catch (RpcException e) when (e.Status.StatusCode == StatusCode.Cancelled)
-        {
-            Console.WriteLine("Streaming was cancelled from the client!");
-        }
-    }
-}
-{% endcodeblock %}
-
-
-<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>We have seen that C# 8 Async streams are nicely integrating with gRPC streaming capabilities. And it makes code more readable!</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>We have seen that it is easy to cancel gRPC streaming from the client using C# 8 Async streams and cancellation token.</p>
 <p>You can get all the code on GitHub</p>
 <div style="text-align: left">
   <div class="github-card" data-user="laurentkempe" data-repo="grpcAsyncStreamCancellation" data-height="200" data-width="400" data-theme="default" data-target data-client-id data-client-secret></div>
@@ -344,8 +286,9 @@ static class Program
 <script src="/github-card-lib/githubcard.js"></script>
 
 
-<p>Thanks, Sam Macpherson for asking the question “Would be cool to show cancellation on client-side propagating to the server using the async steam cancellation support and a gRPC signal.”</p>
-</helloreply></greeterservice>
+<p>Thanks, Sam Macpherson for asking the question on Twitter.</p>
+<div class="twitter-wrapper"><blockquote class="twitter-tweet"><a href="https://twitter.com/ichpuchtli/status/1174567298226503680" target="_blank" rel="noopener"></a></blockquote></div><script async defer src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
             
 
         </div>
@@ -612,7 +555,7 @@ static class Program
              var disqus_config = function () {
                  this.page.url = 'https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/';
                  
-                    this.page.identifier = '2019-09-25 18:16:12 &lt;!-- Remove space to have e.g. 20160405174628 --&gt;';
+                    this.page.identifier = '20190925220612';
                  
              };
             (function() {

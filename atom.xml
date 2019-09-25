@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://laurentkempe.com/"/>
-  <updated>2019-09-25T18:44:40.836Z</updated>
+  <updated>2019-09-25T20:15:23.091Z</updated>
   <id>https://laurentkempe.com/</id>
   
   <author>
@@ -20,8 +20,8 @@
     <title>gRPC and C# 8 Async stream cancellation</title>
     <link href="https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/"/>
     <id>https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/</id>
-    <published>2019-09-25T18:16:12.000Z</published>
-    <updated>2019-09-25T18:44:40.836Z</updated>
+    <published>2019-09-25T20:06:12.000Z</published>
+    <updated>2019-09-25T20:15:23.091Z</updated>
     
     <summary type="html">
     
@@ -33,9 +33,9 @@
     
       <category term="ASP.NET Core" scheme="https://laurentkempe.com/tags/ASP-NET-Core/"/>
     
-      <category term="C#" scheme="https://laurentkempe.com/tags/C/"/>
-    
       <category term="gRPC" scheme="https://laurentkempe.com/tags/gRPC/"/>
+    
+      <category term="C#" scheme="https://laurentkempe.com/tags/C/"/>
     
   </entry>
   
@@ -44,7 +44,7 @@
     <link href="https://laurentkempe.com/2019/09/18/gRPC-and-csharp-8-Async-stream/"/>
     <id>https://laurentkempe.com/2019/09/18/gRPC-and-csharp-8-Async-stream/</id>
     <published>2019-09-18T17:23:00.000Z</published>
-    <updated>2019-09-25T18:40:44.472Z</updated>
+    <updated>2019-09-25T20:15:23.091Z</updated>
     
     <summary type="html">
     
@@ -56,9 +56,9 @@
     
       <category term="ASP.NET Core" scheme="https://laurentkempe.com/tags/ASP-NET-Core/"/>
     
-      <category term="C#" scheme="https://laurentkempe.com/tags/C/"/>
-    
       <category term="gRPC" scheme="https://laurentkempe.com/tags/gRPC/"/>
+    
+      <category term="C#" scheme="https://laurentkempe.com/tags/C/"/>
     
   </entry>
   
