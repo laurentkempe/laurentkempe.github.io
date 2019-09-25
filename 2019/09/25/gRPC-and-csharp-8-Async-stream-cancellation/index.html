@@ -6,28 +6,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Laurent Kempé">
-    <title>Nice Resharper 4 feature - Laurent Kempé</title>
+    <title>gRPC and C# 8 Async stream cancellation - Laurent Kempé</title>
     <meta name="author" content="Laurent Kempé">
     
     
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Today I am developing for my company innoveo solutions, and hope to be able to tell you on what soon ;-)\nI came accross this great new feature of JetBrains ReSharper 4, read more about all features on this page.\n\n\n \nI used there:\n\nObject and collection initializers\nImplicitly typed locals and arrays\nCode Cleanup \n\nI will soon have to tell more about the usage of JetBrains Team City by innoveo solutions and personally!\n","dateCreated":"2008-02-29T22:30:50+01:00","dateModified":"2010-05-07T07:46:49+02:00","datePublished":"2008-02-29T22:30:50+01:00","description":"Today I am developing for my company innoveo solutions, and hope to be able to tell you on what soon ;-)\nI came accross this great new feature of JetBrains ReSharper 4, read more about all features on this page.","headline":"Nice Resharper 4 feature","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/02/29/Nice-Resharper-4-feature/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2008/02/29/Nice-Resharper-4-feature/","keywords":"ReSharper, innoveo solutions, Tools"}</script>
-    <meta name="description" content="Today I am developing for my company innoveo solutions, and hope to be able to tell you on what soon ;-) I came accross this great new feature of JetBrains ReSharper 4, read more about all features on">
-<meta name="keywords" content="ReSharper,innoveo solutions,Tools">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"In the previous post “gRPC and C# 8 Async stream“, we looked at how gRPC server stream and C# 8 Async stream work great together. In this post, we are looking at the way we can, from the client, stop the server to stream results back.\n\nServerI need to extend a bit the original code of the GreeterService to take care of the client request to stop the streaming. This is done through the usage of ServerCallContext which exposes a CancellationToken.\nNote: we don’t need to change anything to our greet.proto file! The cancellation capability is coming out of the box from the framework.\nThen we need to check if the client requests the cancellation using IsCancellationRequested and in that case, stop writing back into the responseStream. Easy!\n\n{% codeblock GreeterService.cs lang:csharp %}\npublic class GreeterService : Greeter.GreeterBase\n{\n    private readonly ILogger< GreeterService> _logger;\n\n    public GreeterService(ILogger logger)\n    {\n        _logger = logger;\n    }\n\n    public override async Task SayHello(HelloRequest request, IServerStreamWriter responseStream, ServerCallContext context)\n    {\n        var contextCancellationToken = context.CancellationToken;\n\n        foreach (var n in Enumerable.Range(1, 10))\n        {\n            if (contextCancellationToken.IsCancellationRequested) return;\n\n            await responseStream.WriteAsync(new HelloReply\n            {\n                Message = $\"Hello {request.Name} {n}\"\n            });\n\n            await Task.Delay(200);\n        }\n    }\n}\n{% endcodeblock %}\n\n\nClientImagine that we want the client to stop getting results after getting 5 responses from the server. The client needs to signal to the server to stop sending responses.As we did for the server, we need to use cancellation token for that, which we simply pass to the ResponseStream.ReadAllAsync method.Then we need to surround our code with try…catch catching RpcException with a status code of StatusCode.Cancelled. Easy too!\n\n{% codeblock Program.cs lang:csharp %}\nstatic class Program\n{\n    static async Task Main(string[] args)\n    {\n        var channel = GrpcChannel.ForAddress(\"https://localhost:5001\");\n        var client = new Greeter.GreeterClient(channel);\n\n        var replies = client.SayHello(new HelloRequest {Name = \"Laurent\"});\n\n        var tokenSource = new CancellationTokenSource();\n        var n = 0;\n\n        try\n        {\n            await foreach (var reply in replies.ResponseStream.ReadAllAsync(tokenSource.Token))\n            {\n                Console.WriteLine(reply.Message);\n\n                if (++n == 5)\n                {\n                    tokenSource.Cancel();\n                }\n            }\n        }\n        catch (RpcException e) when (e.Status.StatusCode == StatusCode.Cancelled)\n        {\n            Console.WriteLine(\"Streaming was cancelled from the client!\");\n        }\n    }\n}\n{% endcodeblock %}\n\n\nConclusionWe have seen that C# 8 Async streams are nicely integrating with gRPC streaming capabilities. And it makes code more readable!\nYou can get all the code on GitHub\n\n  \n\n\n\n\nThanks, Sam Macpherson for asking the question “Would be cool to show cancellation on client-side propagating to the server using the async steam cancellation support and a gRPC signal.”\n","dateCreated":"2019-09-25T20:16:12+02:00","dateModified":"2019-09-25T20:44:40+02:00","datePublished":"2019-09-25T20:16:12+02:00","description":"In the previous post “gRPC and C# 8 Async stream“, we looked at how gRPC server stream and C# 8 Async stream work great together. In this post, we are looking at the way we can, from the client, stop the server to stream results back.","headline":"gRPC and C# 8 Async stream cancellation","image":["https://c7.staticflickr.com/9/8689/16775792438_8366ee5732_q.jpg","https://c7.staticflickr.com/9/8689/16775792438_e45283970c_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/","keywords":"ASP.NET Core, C#, gRPC","thumbnailUrl":"https://c7.staticflickr.com/9/8689/16775792438_8366ee5732_q.jpg"}</script>
+    <meta name="description" content="In the previous post “gRPC and C# 8 Async stream“, we looked at how gRPC server stream and C# 8 Async stream work great together. In this post, we are looking at the way we can, from the client, stop">
+<meta name="keywords" content="ASP.NET Core,C#,gRPC">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="Nice Resharper 4 feature">
-<meta property="og:url" content="https://laurentkempe.com/2008/02/29/Nice-Resharper-4-feature/index.html">
+<meta property="og:title" content="gRPC and C# 8 Async stream cancellation">
+<meta property="og:url" content="https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/index.html">
 <meta property="og:site_name" content="Laurent Kempé">
-<meta property="og:description" content="Today I am developing for my company innoveo solutions, and hope to be able to tell you on what soon ;-) I came accross this great new feature of JetBrains ReSharper 4, read more about all features on">
+<meta property="og:description" content="In the previous post “gRPC and C# 8 Async stream“, we looked at how gRPC server stream and C# 8 Async stream work great together. In this post, we are looking at the way we can, from the client, stop">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://farm4.static.flickr.com/3263/2300267804_4ed7859fee_o_d.gif">
-<meta property="og:updated_time" content="2010-05-07T05:46:49.000Z">
+<meta property="og:updated_time" content="2019-09-25T18:44:40.836Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Nice Resharper 4 feature">
-<meta name="twitter:description" content="Today I am developing for my company innoveo solutions, and hope to be able to tell you on what soon ;-) I came accross this great new feature of JetBrains ReSharper 4, read more about all features on">
-<meta name="twitter:image" content="http://farm4.static.flickr.com/3263/2300267804_4ed7859fee_o_d.gif">
+<meta name="twitter:title" content="gRPC and C# 8 Async stream cancellation">
+<meta name="twitter:description" content="In the previous post “gRPC and C# 8 Async stream“, we looked at how gRPC server stream and C# 8 Async stream work great together. In this post, we are looking at the way we can, from the client, stop">
 <meta name="twitter:creator" content="@laurentkempe">
     
     
@@ -37,6 +35,12 @@
         <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
     
     
+        <meta property="og:image" content="https://c7.staticflickr.com/9/8689/16775792438_8366ee5732_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://c7.staticflickr.com/9/8689/16775792438_8366ee5732_q.jpg" />
+    
+    
+        <meta property="og:image" content="https://c7.staticflickr.com/9/8689/16775792438_e45283970c_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://c7.staticflickr.com/9/8689/16775792438_e45283970c_h.jpg" />
     
     
     <!--STYLES-->
@@ -220,25 +224,23 @@
 </nav>
 
             
-            <div id="main" data-behavior="5"
-                 class="
-                        hasCoverMetaIn
-                        ">
-                
-<article class="post">
-    
-    
-        <div class="post-header main-content-wrap text-left">
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial"
+             style="background-image:url('https://c7.staticflickr.com/9/8689/16775792438_e45283970c_h.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            Nice Resharper 4 feature
+            gRPC and C# 8 Async stream cancellation
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2008-02-29T22:30:50+01:00">
+    <time datetime="2019-09-25T20:16:12+02:00">
 	
-		    Feb 29, 2008
+		    Sep 25, 2019
     	
     </time>
     
@@ -247,22 +249,103 @@
     
 </div>
 
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">LO Ferré, Petite Anse, Martinique, France</span>
+    
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>Today I am developing for my company <a href="http://www.innoveo.com" target="_blank" rel="noopener">innoveo solutions</a>, and hope to be able to tell you on what soon ;-)</p>
-<p>I came accross this great new feature of JetBrains ReSharper 4, <a href="http://www.jetbrains.net/confluence/display/ReSharper/ReSharper+4.0+EAP+Notes" target="_blank" rel="noopener">read more about all features on this page</a>.</p>
+            <p>In the previous post “<a href="https://laurentkempe.com/2019/09/18/gRPC-and-csharp-8-Async-stream/">gRPC and C# 8 Async stream</a>“, we looked at how gRPC server stream and C# 8 Async stream work great together. In this post, we are looking at the way we can, from the client, stop the server to stream results back.</p>
 <a id="more"></a>
+<h1 id="Server"><a href="#Server" class="headerlink" title="Server"></a>Server</h1><p>I need to extend a bit the original code of the GreeterService to take care of the client request to stop the streaming. This is done through the usage of ServerCallContext which exposes a CancellationToken.</p>
+<p>Note: we don’t need to change anything to our greet.proto file! The cancellation capability is coming out of the box from the framework.</p>
+<p>Then we need to check if the client requests the cancellation using IsCancellationRequested and in that case, stop writing back into the responseStream. Easy!</p>
 
-<p><img src="http://farm4.static.flickr.com/3263/2300267804_4ed7859fee_o_d.gif" alt> </p>
-<p>I used there:</p>
-<ul>
-<li>Object and collection initializers</li>
-<li>Implicitly typed locals and arrays</li>
-<li>Code Cleanup </li>
-</ul>
-<p>I will soon have to tell more about the usage of JetBrains <a href="http://www.jetbrains.com/teamcity/" target="_blank" rel="noopener">Team City</a> by <a href="http://www.innoveo.com" target="_blank" rel="noopener">innoveo solutions</a> and personally!</p>
+{% codeblock GreeterService.cs lang:csharp %}
+public class GreeterService : Greeter.GreeterBase
+{
+    private readonly ILogger< GreeterService> _logger;
 
+    public GreeterService(ILogger<greeterservice> logger)
+    {
+        _logger = logger;
+    }
+
+    public override async Task SayHello(HelloRequest request, IServerStreamWriter<helloreply> responseStream, ServerCallContext context)
+    {
+        var contextCancellationToken = context.CancellationToken;
+
+        foreach (var n in Enumerable.Range(1, 10))
+        {
+            if (contextCancellationToken.IsCancellationRequested) return;
+
+            await responseStream.WriteAsync(new HelloReply
+            {
+                Message = $"Hello {request.Name} {n}"
+            });
+
+            await Task.Delay(200);
+        }
+    }
+}
+{% endcodeblock %}
+
+
+<h1 id="Client"><a href="#Client" class="headerlink" title="Client"></a>Client</h1><p>Imagine that we want the client to stop getting results after getting 5 responses from the server. The client needs to signal to the server to stop sending responses.<br>As we did for the server, we need to use cancellation token for that, which we simply pass to the ResponseStream.ReadAllAsync method.<br>Then we need to surround our code with try…catch catching RpcException with a status code of StatusCode.Cancelled. Easy too!</p>
+
+{% codeblock Program.cs lang:csharp %}
+static class Program
+{
+    static async Task Main(string[] args)
+    {
+        var channel = GrpcChannel.ForAddress("https://localhost:5001");
+        var client = new Greeter.GreeterClient(channel);
+
+        var replies = client.SayHello(new HelloRequest {Name = "Laurent"});
+
+        var tokenSource = new CancellationTokenSource();
+        var n = 0;
+
+        try
+        {
+            await foreach (var reply in replies.ResponseStream.ReadAllAsync(tokenSource.Token))
+            {
+                Console.WriteLine(reply.Message);
+
+                if (++n == 5)
+                {
+                    tokenSource.Cancel();
+                }
+            }
+        }
+        catch (RpcException e) when (e.Status.StatusCode == StatusCode.Cancelled)
+        {
+            Console.WriteLine("Streaming was cancelled from the client!");
+        }
+    }
+}
+{% endcodeblock %}
+
+
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>We have seen that C# 8 Async streams are nicely integrating with gRPC streaming capabilities. And it makes code more readable!</p>
+<p>You can get all the code on GitHub</p>
+<div style="text-align: left">
+  <div class="github-card" data-user="laurentkempe" data-repo="grpcAsyncStreamCancellation" data-height="200" data-width="400" data-theme="default" data-target data-client-id data-client-secret></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+<p>Thanks, Sam Macpherson for asking the question “Would be cool to show cancellation on client-side propagating to the server using the async steam cancellation support and a gRPC signal.”</p>
+</helloreply></greeterservice>
             
 
         </div>
@@ -272,7 +355,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/ReSharper/">ReSharper</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tools/">Tools</a> <a class="tag tag--primary tag--small t-link" href="/tags/innoveo-solutions/">innoveo solutions</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET-Core/">ASP.NET Core</a> <a class="tag tag--primary tag--small t-link" href="/tags/C/">C#</a> <a class="tag tag--primary tag--small t-link" href="/tags/gRPC/">gRPC</a>
 
             </div>
         
@@ -282,8 +365,7 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2008/03/01/NoteToSelf-aspnet_mergeexe-Team-City-and-Web-Deployment-for-Visual-Studio-2008/" data-tooltip="NoteToSelf: aspnet_merge.exe, Team City and Web Deployment for Visual Studio 2008" aria-label="PREVIOUS: NoteToSelf: aspnet_merge.exe, Team City and Web Deployment for Visual Studio 2008">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
@@ -292,7 +374,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2008/02/29/Silverlight-Streaming-updated-for-Mix08!/" data-tooltip="Silverlight Streaming updated for Mix&#39;08!" aria-label="NEXT: Silverlight Streaming updated for Mix&#39;08!">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/09/18/gRPC-and-csharp-8-Async-stream/" data-tooltip="gRPC and C# 8 Async stream" aria-label="NEXT: gRPC and C# 8 Async stream">
                 
                     <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -310,7 +392,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2008/02/29/Nice-Resharper-4-feature/" title="Share on Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/" title="Share on Facebook">
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
@@ -318,7 +400,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2008/02/29/Nice-Resharper-4-feature/" title="Share on Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/" title="Share on Twitter">
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -326,7 +408,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2008/02/29/Nice-Resharper-4-feature/" title="Share on Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/" title="Share on Google+">
                     <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -378,8 +460,7 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2008/03/01/NoteToSelf-aspnet_mergeexe-Team-City-and-Web-Deployment-for-Visual-Studio-2008/" data-tooltip="NoteToSelf: aspnet_merge.exe, Team City and Web Deployment for Visual Studio 2008" aria-label="PREVIOUS: NoteToSelf: aspnet_merge.exe, Team City and Web Deployment for Visual Studio 2008">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
@@ -388,7 +469,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2008/02/29/Silverlight-Streaming-updated-for-Mix08!/" data-tooltip="Silverlight Streaming updated for Mix&#39;08!" aria-label="NEXT: Silverlight Streaming updated for Mix&#39;08!">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/09/18/gRPC-and-csharp-8-Async-stream/" data-tooltip="gRPC and C# 8 Async stream" aria-label="NEXT: gRPC and C# 8 Async stream">
                 
                     <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -406,7 +487,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2008/02/29/Nice-Resharper-4-feature/" title="Share on Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/" title="Share on Facebook">
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
@@ -414,7 +495,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2008/02/29/Nice-Resharper-4-feature/" title="Share on Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/" title="Share on Twitter">
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -422,7 +503,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2008/02/29/Nice-Resharper-4-feature/" title="Share on Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/" title="Share on Google+">
                     <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -455,7 +536,7 @@
             
             
             <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2008/02/29/Nice-Resharper-4-feature/">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/">
                     <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
                 </a>
             </li>
@@ -463,7 +544,7 @@
             
             
             <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2008/02/29/Nice-Resharper-4-feature/">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/">
                     <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
                 </a>
             </li>
@@ -471,7 +552,7 @@
             
             
             <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2008/02/29/Nice-Resharper-4-feature/">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/">
                     <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
                 </a>
             </li>
@@ -529,9 +610,9 @@
     
         <script>
              var disqus_config = function () {
-                 this.page.url = 'https://laurentkempe.com/2008/02/29/Nice-Resharper-4-feature/';
+                 this.page.url = 'https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/';
                  
-                    this.page.identifier = '20080229103050';
+                    this.page.identifier = '2019-09-25 18:16:12 &lt;!-- Remove space to have e.g. 20160405174628 --&gt;';
                  
              };
             (function() {

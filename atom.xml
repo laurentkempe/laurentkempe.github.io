@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://laurentkempe.com/"/>
-  <updated>2019-09-25T17:26:59.994Z</updated>
+  <updated>2019-09-25T18:44:40.836Z</updated>
   <id>https://laurentkempe.com/</id>
   
   <author>
@@ -17,11 +17,34 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>gRPC and C# 8 Async stream cancellation</title>
+    <link href="https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/"/>
+    <id>https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/</id>
+    <published>2019-09-25T18:16:12.000Z</published>
+    <updated>2019-09-25T18:44:40.836Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;In the previous post “&lt;a href=&quot;https://laurentkempe.com/2019/09/18/gRPC-and-csharp-8-Async-stream/&quot;&gt;gRPC and C# 8 Async stream&lt;/a&gt;“, we looked at how gRPC server stream and C# 8 Async stream work great together. In this post, we are looking at the way we can, from the client, stop the server to stream results back.&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="ASP.NET Core" scheme="https://laurentkempe.com/tags/ASP-NET-Core/"/>
+    
+      <category term="C#" scheme="https://laurentkempe.com/tags/C/"/>
+    
+      <category term="gRPC" scheme="https://laurentkempe.com/tags/gRPC/"/>
+    
+  </entry>
+  
+  <entry>
     <title>gRPC and C# 8 Async stream</title>
     <link href="https://laurentkempe.com/2019/09/18/gRPC-and-csharp-8-Async-stream/"/>
     <id>https://laurentkempe.com/2019/09/18/gRPC-and-csharp-8-Async-stream/</id>
     <published>2019-09-18T17:23:00.000Z</published>
-    <updated>2019-09-25T17:26:59.994Z</updated>
+    <updated>2019-09-25T18:40:44.472Z</updated>
     
     <summary type="html">
     
@@ -450,23 +473,6 @@
       <category term=".NET Development" scheme="https://laurentkempe.com/tags/NET-Development/"/>
     
       <category term="continuous integration" scheme="https://laurentkempe.com/tags/continuous-integration/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Rebooting my blog</title>
-    <link href="https://laurentkempe.com/2016/03/29/Rebooting-my-blog/"/>
-    <id>https://laurentkempe.com/2016/03/29/Rebooting-my-blog/</id>
-    <published>2016-03-29T18:18:33.000Z</published>
-    <updated>2018-12-17T11:08:39.473Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;After almost 6 years using &lt;a href=&quot;http://dotnetblogengine.net/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;BlogEngine.NET&lt;/a&gt; and a bit more of a year without any new post I decided that it was time to reboot my blog!&lt;/p&gt;
-    
-    </summary>
-    
-    
     
   </entry>
   
