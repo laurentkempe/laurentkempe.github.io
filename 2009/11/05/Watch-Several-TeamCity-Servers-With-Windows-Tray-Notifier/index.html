@@ -13,22 +13,20 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Browsing TeamCity documentation this evening I discovered that it is possible to Watch Several TeamCity Servers With Windows Tray Notifier\n\nTeamCity Tray Notifier is used normally to watch builds and receive notifications from a single TeamCity server.\n\n\n\nIn situations, when you have more than one TeamCity server, and want to monitor them with Windows Tray Notifier simultaneously, you need to start a separate instance of Tray Notifier for each of the servers from the command line with the /allowMultiple option:\n\nnavigate to TeamCity Tray notifier installation folder (by default, it’s C:\\Program Files\\JetBrains\\TeamCity and run the command:\n\nJetBrains.TrayNotifier.exe /allowMultiple\nOptionally, for each of the Tray Notifier instances you can specify explicitly the URL of the the server to connect to with the /server option. Otherwise, for each further tray notifier instance you will need to log out and change server’s URL via UI.\nJetBrains.TrayNotifier.exe /allowMultiple /server:http://myTeamCityServer\nSee also details in the issue tracker.\n\nSo now I am able to have two TeamCity Tray notifier open:\n \nWhat I also like is to be able to start programs by typing the Windows key and then some text, here for example “te”\n[](http://weblogs.asp.net/blogs/lkempe/4076003432_6c2b8f449f_o1_01638B34.png) \nTo achieve this I created three shortcuts with the different servers configuration and then I placed the shortcuts in my folder C:\\Users\\Laurent\\AppData\\Roaming\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\StartMenu in which it is indexed.\nNice!\n","dateCreated":"2009-11-05T03:49:39+00:00","dateModified":"2009-11-05T03:49:39+00:00","datePublished":"2009-11-05T03:49:39+00:00","description":"Browsing TeamCity documentation this evening I discovered that it is possible to Watch Several TeamCity Servers With Windows Tray Notifier\n\nTeamCity Tray Notifier is used normally to watch builds and receive notifications from a single TeamCity server.\n","headline":"Watch Several TeamCity Servers With Windows Tray Notifier","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2009/11/05/Watch-Several-TeamCity-Servers-With-Windows-Tray-Notifier/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2009/11/05/Watch-Several-TeamCity-Servers-With-Windows-Tray-Notifier/","keywords":"Team City"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Browsing TeamCity documentation this evening I discovered that it is possible to Watch Several TeamCity Servers With Windows Tray Notifier\n\nTeamCity Tray Notifier is used normally to watch builds and receive notifications from a single TeamCity server.\n\n\n\nIn situations, when you have more than one TeamCity server, and want to monitor them with Windows Tray Notifier simultaneously, you need to start a separate instance of Tray Notifier for each of the servers from the command line with the /allowMultiple option:\n\nnavigate to TeamCity Tray notifier installation folder (by default, it’s C:\\Program Files\\JetBrains\\TeamCity and run the command:\n\nJetBrains.TrayNotifier.exe /allowMultiple\nOptionally, for each of the Tray Notifier instances you can specify explicitly the URL of the the server to connect to with the /server option. Otherwise, for each further tray notifier instance you will need to log out and change server’s URL via UI.\nJetBrains.TrayNotifier.exe /allowMultiple /server:http://myTeamCityServer\nSee also details in the issue tracker.\n\nSo now I am able to have two TeamCity Tray notifier open:\n \nWhat I also like is to be able to start programs by typing the Windows key and then some text, here for example “te”\n[](http://weblogs.asp.net/blogs/lkempe/4076003432_6c2b8f449f_o1_01638B34.png) \nTo achieve this I created three shortcuts with the different servers configuration and then I placed the shortcuts in my folder C:\\Users\\Laurent\\AppData\\Roaming\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\StartMenu in which it is indexed.\nNice!\n","dateCreated":"2009-11-05T03:49:39+00:00","dateModified":"2009-11-05T03:49:39+00:00","datePublished":"2009-11-05T03:49:39+00:00","description":"Browsing TeamCity documentation this evening I discovered that it is possible to Watch Several TeamCity Servers With Windows Tray Notifier\n\nTeamCity Tray Notifier is used normally to watch builds and receive notifications from a single TeamCity server.\n","headline":"Watch Several TeamCity Servers With Windows Tray Notifier","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2009/11/05/Watch-Several-TeamCity-Servers-With-Windows-Tray-Notifier/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2009/11/05/Watch-Several-TeamCity-Servers-With-Windows-Tray-Notifier/","keywords":"Team City"}</script>
     <meta name="description" content="Browsing TeamCity documentation this evening I discovered that it is possible to Watch Several TeamCity Servers With Windows Tray Notifier  TeamCity Tray Notifier is used normally to watch builds and">
 <meta name="keywords" content="Team City">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Watch Several TeamCity Servers With Windows Tray Notifier">
-<meta property="og:url" content="https://laurentkempe.com/2009/11/05/Watch-Several-TeamCity-Servers-With-Windows-Tray-Notifier/index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2009&#x2F;11&#x2F;05&#x2F;Watch-Several-TeamCity-Servers-With-Windows-Tray-Notifier&#x2F;index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="Browsing TeamCity documentation this evening I discovered that it is possible to Watch Several TeamCity Servers With Windows Tray Notifier  TeamCity Tray Notifier is used normally to watch builds and">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://weblogs.asp.net/blogs/lkempe/4075997580_e7abf7683e_o1_thumb_29F29315.png">
-<meta property="og:image" content="http://weblogs.asp.net/blogs/lkempe/4076003432_6c2b8f449f_o1_thumb_2BEF4644.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;weblogs.asp.net&#x2F;blogs&#x2F;lkempe&#x2F;4075997580_e7abf7683e_o1_thumb_29F29315.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;weblogs.asp.net&#x2F;blogs&#x2F;lkempe&#x2F;4076003432_6c2b8f449f_o1_thumb_2BEF4644.png">
 <meta property="og:updated_time" content="2009-11-05T03:49:39.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Watch Several TeamCity Servers With Windows Tray Notifier">
-<meta name="twitter:description" content="Browsing TeamCity documentation this evening I discovered that it is possible to Watch Several TeamCity Servers With Windows Tray Notifier  TeamCity Tray Notifier is used normally to watch builds and">
-<meta name="twitter:image" content="http://weblogs.asp.net/blogs/lkempe/4075997580_e7abf7683e_o1_thumb_29F29315.png">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;weblogs.asp.net&#x2F;blogs&#x2F;lkempe&#x2F;4075997580_e7abf7683e_o1_thumb_29F29315.png">
 <meta name="twitter:creator" content="@laurentkempe">
     
     
@@ -41,7 +39,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-mslcllntebz6bnaf9snd8szfnckrp584wuqit7q6whzvju7uxsrud8qspz4k.min.css">
+    <link rel="stylesheet" href="/assets/css/style-b05yginpngfjm2uxkufrlocarhamnyny8crwlumxxdjkx1olyzpkm4z4smqx.min.css">
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -77,7 +75,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/ "
+            href="/%20"
             aria-label=""
         >
             Laurent Kempé
@@ -128,7 +126,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/ "
+                             href="/%20"
                             
                             title="Home"
                         >
@@ -282,7 +280,7 @@
 <p>See also <a href="http://jetbrains.net/tracker/issue/TW-4230#comment=27-14194" target="_blank" rel="noopener">details</a> in the issue tracker.</p>
 </blockquote>
 <p>So now I am able to have two TeamCity Tray notifier open:</p>
-<p><a href="http://weblogs.asp.net/blogs/lkempe/4075997580_e7abf7683e_o1_5C2A092C.png" target="_blank" rel="noopener"><img src="http://weblogs.asp.net/blogs/lkempe/4075997580_e7abf7683e_o1_thumb_29F29315.png" alt></a> </p>
+<p><a href="http://weblogs.asp.net/blogs/lkempe/4075997580_e7abf7683e_o1_5C2A092C.png" target="_blank" rel="noopener"><img src="http://weblogs.asp.net/blogs/lkempe/4075997580_e7abf7683e_o1_thumb_29F29315.png" alt=""></a> </p>
 <p>What I also like is to be able to start programs by typing the Windows key and then some text, here for example “te”</p>
 <p>[<img src="http://weblogs.asp.net/blogs/lkempe/4076003432_6c2b8f449f_o1_thumb_2BEF4644.png" alt="4076003432_6c2b8f449f_o[1]" title="4076003432_6c2b8f449f_o[1]">](<a href="http://weblogs.asp.net/blogs/lkempe/4076003432_6c2b8f449f_o1_01638B34.png" target="_blank" rel="noopener">http://weblogs.asp.net/blogs/lkempe/4076003432_6c2b8f449f_o1_01638B34.png</a>) </p>
 <p>To achieve this I created three shortcuts with the different servers configuration and then I placed the shortcuts in my folder C:\Users\Laurent\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned\StartMenu in which it is indexed.</p>
@@ -298,7 +296,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/Team-City/">Team City</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/Team-City/" rel="tag">Team City</a>
 
             </div>
         
@@ -632,7 +630,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-7y6uwuqgbcvcyfh91qqqps0hepqhsodkqsffxy8xmvyy1e7fa02w63m4kwm9.min.js"></script>
+<script src="/assets/js/script-81vkfdsd6zncrgoppv4dqukrlu3ekrh5kij6va1fch99q17dfu9iukgoppf8.min.js"></script>
 <!--SCRIPTS END-->
 
 

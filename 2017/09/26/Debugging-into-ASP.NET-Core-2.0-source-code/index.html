@@ -13,27 +13,25 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I am just back from 2.5 months unpaid leave which I used to spend time with my family. So, I almost did not spend time with software development. One exception is that I wanted to be able to configure Visual Studio 2017 to be able to debug into ASP.NET Core 2.0 source code.\n\nSomething which should have been simple didn’t work for long because Microsoft wasn’t publishing the PDBs. There were other ways to achieve that goal but it was fairly complex, so I decided to wait. Now, this has changed with the release of ASP.NET Core 2.0.\nBut first, why would you want to step into the source code of ASP.NET Core 2.0?In my case, I find it very helpful to understand how the framework is working. So it is a great way to learn the internals of the framework and I am most particularly interested about the compilation of Razor pages.\nFinally, the team uploaded the PDBs of ASP.NET Core 2.0 on the Microsoft Symbol Servers. And it is coming with a bonus feature of Visual Studio 2017 15.3; Source Link Support for Windows PDB File Format, which makes everything easy again.\nSource Link is now supported for Windows PDB file format (in addition to Portable PDBs). Compilers that support it can put the necessary information in the Windows PDB file format and the debugger can retrieve source files based on that information.MicrosoftVisual Studio 2017 version 15.3 Release Notes\n\nIn this post, I will show you the fastest way to setup Visual Studio 2017 15.3 so that you can debug into ASP.NET Core 2.0 source code!\nTo start you can either use your current application or create a new ASP.NET Core 2.0 Web application.I have Visual Studio 2017.3 default collection settings set to Web Development.\nOpen you Startup class, and set a breakpoint on the ConfigureServices method, then if you start a debugging session with F5 you will end up in this situation\n\nIn the Call Stack window, we see only our code and [External Code]\nOpen Visual Studio options dialog, even without stopping your debugging session, using menu Tools / Options and choose Debugging, then untick Enable Just My Code. Click OK. Now the Call Stack Window show you much more like this\n\nWe see now, our code is called from Microsoft.AspNetCore.Hosting.dll\nRight click on Microsoft.AspNetCore.Hosting.dll and choose Load Symbols\n\nThen the following dialog will be shown, give it some time to download the symbols from Microsoft Symbol Servers\n\nNow you should see the Microsoft.AspNetCore.Hosting.dll in white in the Call Stack window and right-clicking it, you can now choose Go To Source Code\n\nFinally the new Source Link dialog popup and let you download the source automatically \n\nYou finally end up in the ASP.NET Core 2 source code, can set breakpoints and inspect some of the variables!\n\n","dateCreated":"2017-09-26T18:44:11+00:00","dateModified":"2019-12-05T21:12:51+00:00","datePublished":"2017-09-26T18:44:11+00:00","description":"I am just back from 2.5 months unpaid leave which I used to spend time with my family. So, I almost did not spend time with software development. One exception is that I wanted to be able to configure Visual Studio 2017 to be able to debug into ASP.NET Core 2.0 source code.","headline":"Debugging into ASP.NET Core 2.0 source code","image":["https://farm5.staticflickr.com/4385/36202322654_09850a5c86_q.jpg","https://farm5.staticflickr.com/4385/36202322654_cd05ca5740_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2017/09/26/Debugging-into-ASP.NET-Core-2.0-source-code/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2017/09/26/Debugging-into-ASP.NET-Core-2.0-source-code/","keywords":"ASP.NET Core, Visual Studio 2017","thumbnailUrl":"https://farm5.staticflickr.com/4385/36202322654_09850a5c86_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I am just back from 2.5 months unpaid leave which I used to spend time with my family. So, I almost did not spend time with software development. One exception is that I wanted to be able to configure Visual Studio 2017 to be able to debug into ASP.NET Core 2.0 source code.\n\nSomething which should have been simple didn’t work for long because Microsoft wasn’t publishing the PDBs. There were other ways to achieve that goal but it was fairly complex, so I decided to wait. Now, this has changed with the release of ASP.NET Core 2.0.\nBut first, why would you want to step into the source code of ASP.NET Core 2.0?In my case, I find it very helpful to understand how the framework is working. So it is a great way to learn the internals of the framework and I am most particularly interested about the compilation of Razor pages.\nFinally, the team uploaded the PDBs of ASP.NET Core 2.0 on the Microsoft Symbol Servers. And it is coming with a bonus feature of Visual Studio 2017 15.3; Source Link Support for Windows PDB File Format, which makes everything easy again.\nSource Link is now supported for Windows PDB file format (in addition to Portable PDBs). Compilers that support it can put the necessary information in the Windows PDB file format and the debugger can retrieve source files based on that information.MicrosoftVisual Studio 2017 version 15.3 Release Notes\n\nIn this post, I will show you the fastest way to setup Visual Studio 2017 15.3 so that you can debug into ASP.NET Core 2.0 source code!\nTo start you can either use your current application or create a new ASP.NET Core 2.0 Web application.I have Visual Studio 2017.3 default collection settings set to Web Development.\nOpen you Startup class, and set a breakpoint on the ConfigureServices method, then if you start a debugging session with F5 you will end up in this situation\n\nIn the Call Stack window, we see only our code and [External Code]\nOpen Visual Studio options dialog, even without stopping your debugging session, using menu Tools / Options and choose Debugging, then untick Enable Just My Code. Click OK. Now the Call Stack Window show you much more like this\n\nWe see now, our code is called from Microsoft.AspNetCore.Hosting.dll\nRight click on Microsoft.AspNetCore.Hosting.dll and choose Load Symbols\n\nThen the following dialog will be shown, give it some time to download the symbols from Microsoft Symbol Servers\n\nNow you should see the Microsoft.AspNetCore.Hosting.dll in white in the Call Stack window and right-clicking it, you can now choose Go To Source Code\n\nFinally the new Source Link dialog popup and let you download the source automatically \n\nYou finally end up in the ASP.NET Core 2 source code, can set breakpoints and inspect some of the variables!\n\n","dateCreated":"2017-09-26T18:44:11+00:00","dateModified":"2019-12-05T22:04:24+00:00","datePublished":"2017-09-26T18:44:11+00:00","description":"I am just back from 2.5 months unpaid leave which I used to spend time with my family. So, I almost did not spend time with software development. One exception is that I wanted to be able to configure Visual Studio 2017 to be able to debug into ASP.NET Core 2.0 source code.","headline":"Debugging into ASP.NET Core 2.0 source code","image":["https://farm5.staticflickr.com/4385/36202322654_09850a5c86_q.jpg","https://farm5.staticflickr.com/4385/36202322654_cd05ca5740_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2017/09/26/Debugging-into-ASP.NET-Core-2.0-source-code/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2017/09/26/Debugging-into-ASP.NET-Core-2.0-source-code/","keywords":"ASP.NET Core, Visual Studio 2017","thumbnailUrl":"https://farm5.staticflickr.com/4385/36202322654_09850a5c86_q.jpg"}</script>
     <meta name="description" content="I am just back from 2.5 months unpaid leave which I used to spend time with my family. So, I almost did not spend time with software development. One exception is that I wanted to be able to configure">
 <meta name="keywords" content="ASP.NET Core,Visual Studio 2017">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Debugging into ASP.NET Core 2.0 source code">
-<meta property="og:url" content="https://laurentkempe.com/2017/09/26/Debugging-into-ASP.NET-Core-2.0-source-code/index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2017&#x2F;09&#x2F;26&#x2F;Debugging-into-ASP.NET-Core-2.0-source-code&#x2F;index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="I am just back from 2.5 months unpaid leave which I used to spend time with my family. So, I almost did not spend time with software development. One exception is that I wanted to be able to configure">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https://farm5.staticflickr.com/4343/37372298705_65a2054a8d_c.jpg">
-<meta property="og:image" content="https://farm5.staticflickr.com/4427/37372901855_bc43c1e579_c.jpg">
-<meta property="og:image" content="https://farm5.staticflickr.com/4406/37287703876_296032f829_c.jpg">
-<meta property="og:image" content="https://farm5.staticflickr.com/4417/23483587158_1b3d16d4fc_z.jpg">
-<meta property="og:image" content="https://farm5.staticflickr.com/4478/36625825424_87d424b7ef_c.jpg">
-<meta property="og:image" content="https://farm5.staticflickr.com/4470/23483589828_59452c0da4_z.jpg">
-<meta property="og:image" content="https://farm5.staticflickr.com/4502/23483591168_c99dd6953f_c.jpg">
-<meta property="og:updated_time" content="2019-12-05T21:12:51.186Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;farm5.staticflickr.com&#x2F;4343&#x2F;37372298705_65a2054a8d_c.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;farm5.staticflickr.com&#x2F;4427&#x2F;37372901855_bc43c1e579_c.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;farm5.staticflickr.com&#x2F;4406&#x2F;37287703876_296032f829_c.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;farm5.staticflickr.com&#x2F;4417&#x2F;23483587158_1b3d16d4fc_z.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;farm5.staticflickr.com&#x2F;4478&#x2F;36625825424_87d424b7ef_c.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;farm5.staticflickr.com&#x2F;4470&#x2F;23483589828_59452c0da4_z.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;farm5.staticflickr.com&#x2F;4502&#x2F;23483591168_c99dd6953f_c.jpg">
+<meta property="og:updated_time" content="2019-12-05T22:04:24.950Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Debugging into ASP.NET Core 2.0 source code">
-<meta name="twitter:description" content="I am just back from 2.5 months unpaid leave which I used to spend time with my family. So, I almost did not spend time with software development. One exception is that I wanted to be able to configure">
-<meta name="twitter:image" content="https://farm5.staticflickr.com/4343/37372298705_65a2054a8d_c.jpg">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;farm5.staticflickr.com&#x2F;4343&#x2F;37372298705_65a2054a8d_c.jpg">
 <meta name="twitter:creator" content="@laurentkempe">
     
     
@@ -52,7 +50,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-mslcllntebz6bnaf9snd8szfnckrp584wuqit7q6whzvju7uxsrud8qspz4k.min.css">
+    <link rel="stylesheet" href="/assets/css/style-b05yginpngfjm2uxkufrlocarhamnyny8crwlumxxdjkx1olyzpkm4z4smqx.min.css">
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -88,7 +86,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/ "
+            href="/%20"
             aria-label=""
         >
             Laurent Kempé
@@ -139,7 +137,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/ "
+                             href="/%20"
                             
                             title="Home"
                         >
@@ -297,21 +295,21 @@
 <p>In this post, I will show you the fastest way to setup Visual Studio 2017 15.3 so that you can debug into ASP.NET Core 2.0 source code!</p>
 <p>To start you can either use your current application or create a new ASP.NET Core 2.0 Web application.<br>I have Visual Studio 2017.3 default collection settings set to Web Development.</p>
 <p>Open you Startup class, and set a breakpoint on the ConfigureServices method, then if you start a debugging session with F5 you will end up in this situation</p>
-<p><img src="https://farm5.staticflickr.com/4343/37372298705_65a2054a8d_c.jpg" alt></p>
+<p><img src="https://farm5.staticflickr.com/4343/37372298705_65a2054a8d_c.jpg" alt=""></p>
 <p>In the Call Stack window, we see only our code and [External Code]</p>
 <p>Open Visual Studio options dialog, even without stopping your debugging session, using menu <strong>Tools / Options</strong> and choose <strong>Debugging</strong>, then untick <strong>Enable Just My Code</strong>. Click OK. Now the Call Stack Window show you much more like this</p>
-<p><img src="https://farm5.staticflickr.com/4427/37372901855_bc43c1e579_c.jpg" alt></p>
+<p><img src="https://farm5.staticflickr.com/4427/37372901855_bc43c1e579_c.jpg" alt=""></p>
 <p>We see now, our code is called from <em>Microsoft.AspNetCore.Hosting.dll</em></p>
 <p>Right click on Microsoft.AspNetCore.Hosting.dll and choose <strong>Load Symbols</strong></p>
-<p><img src="https://farm5.staticflickr.com/4406/37287703876_296032f829_c.jpg" alt></p>
+<p><img src="https://farm5.staticflickr.com/4406/37287703876_296032f829_c.jpg" alt=""></p>
 <p>Then the following dialog will be shown, give it some time to download the symbols from Microsoft Symbol Servers</p>
-<p><img src="https://farm5.staticflickr.com/4417/23483587158_1b3d16d4fc_z.jpg" alt></p>
+<p><img src="https://farm5.staticflickr.com/4417/23483587158_1b3d16d4fc_z.jpg" alt=""></p>
 <p>Now you should see the <em>Microsoft.AspNetCore.Hosting.dll</em> in white in the Call Stack window and right-clicking it, you can now choose <strong>Go To Source Code</strong></p>
-<p><img src="https://farm5.staticflickr.com/4478/36625825424_87d424b7ef_c.jpg" alt></p>
+<p><img src="https://farm5.staticflickr.com/4478/36625825424_87d424b7ef_c.jpg" alt=""></p>
 <p>Finally the new Source Link dialog popup and let you download the source automatically </p>
-<p><img src="https://farm5.staticflickr.com/4470/23483589828_59452c0da4_z.jpg" alt></p>
+<p><img src="https://farm5.staticflickr.com/4470/23483589828_59452c0da4_z.jpg" alt=""></p>
 <p>You finally end up in the ASP.NET Core 2 source code, can set breakpoints and inspect some of the variables!</p>
-<p><img src="https://farm5.staticflickr.com/4502/23483591168_c99dd6953f_c.jpg" alt></p>
+<p><img src="https://farm5.staticflickr.com/4502/23483591168_c99dd6953f_c.jpg" alt=""></p>
 
             
 
@@ -323,7 +321,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET-Core/">ASP.NET Core</a> <a class="tag tag--primary tag--small t-link" href="/tags/Visual-Studio-2017/">Visual Studio 2017</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET-Core/" rel="tag">ASP.NET Core</a> <a class="tag tag--primary tag--small t-link" href="/tags/Visual-Studio-2017/" rel="tag">Visual Studio 2017</a>
 
             </div>
         
@@ -657,7 +655,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-7y6uwuqgbcvcyfh91qqqps0hepqhsodkqsffxy8xmvyy1e7fa02w63m4kwm9.min.js"></script>
+<script src="/assets/js/script-81vkfdsd6zncrgoppv4dqukrlu3ekrh5kij6va1fch99q17dfu9iukgoppf8.min.js"></script>
 <!--SCRIPTS END-->
 
 

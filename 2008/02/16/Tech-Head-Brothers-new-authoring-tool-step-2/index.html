@@ -13,21 +13,19 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":" \nToday I had the time to go on a bit with the new version of Tech Head Brothers, as you can see on the picture.\n\n\nI decided to use my last article as a test case for the tool.\nI went from the Ribbon (Visual Editor) to Ribbon (XML), it is not anymore grahical edition of the Ribbon but I can do more than what I was able to do in the Visual Editor.\nI started to implement some parsing logic, I first made a trial with an idea of Sébastien Ros and Fabien Reinle but finally got back to LINQ to XML to parse the WordML.\nThe general idea is to output a well formed XML document out of the WordML document. \nThe architecture I decided to use at the moment is to have special Word styles mapped to some part of my target XML structure. Doing so I can easily parse the WordML like this to get all pagaraph with Heading1 style:\nvar sections =    from p in styledPara    where p.Elements(w + “pPr”).Elements(w + “pStyle”).First().Attribute(w + “val”).Value == “Heading1”    select p;\n","dateCreated":"2008-02-16T21:30:03+00:00","dateModified":"2008-02-16T21:30:03+00:00","datePublished":"2008-02-16T21:30:03+00:00","description":" \nToday I had the time to go on a bit with the new version of Tech Head Brothers, as you can see on the picture.","headline":"Tech Head Brothers new authoring tool, step 2","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/02/16/Tech-Head-Brothers-new-authoring-tool-step-2/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2008/02/16/Tech-Head-Brothers-new-authoring-tool-step-2/","keywords":"Tech Head Brothers, Visual Studio, VSTO, .NET Framework 3.5, Office 2007"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":" \nToday I had the time to go on a bit with the new version of Tech Head Brothers, as you can see on the picture.\n\n\nI decided to use my last article as a test case for the tool.\nI went from the Ribbon (Visual Editor) to Ribbon (XML), it is not anymore grahical edition of the Ribbon but I can do more than what I was able to do in the Visual Editor.\nI started to implement some parsing logic, I first made a trial with an idea of Sébastien Ros and Fabien Reinle but finally got back to LINQ to XML to parse the WordML.\nThe general idea is to output a well formed XML document out of the WordML document. \nThe architecture I decided to use at the moment is to have special Word styles mapped to some part of my target XML structure. Doing so I can easily parse the WordML like this to get all pagaraph with Heading1 style:\nvar sections =    from p in styledPara    where p.Elements(w + “pPr”).Elements(w + “pStyle”).First().Attribute(w + “val”).Value == “Heading1”    select p;\n","dateCreated":"2008-02-16T21:30:03+00:00","dateModified":"2008-02-16T21:30:03+00:00","datePublished":"2008-02-16T21:30:03+00:00","description":" \nToday I had the time to go on a bit with the new version of Tech Head Brothers, as you can see on the picture.","headline":"Tech Head Brothers new authoring tool, step 2","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2008/02/16/Tech-Head-Brothers-new-authoring-tool-step-2/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2008/02/16/Tech-Head-Brothers-new-authoring-tool-step-2/","keywords":"Tech Head Brothers, Visual Studio, VSTO, .NET Framework 3.5, Office 2007"}</script>
     <meta name="description" content="Today I had the time to go on a bit with the new version of Tech Head Brothers, as you can see on the picture.">
 <meta name="keywords" content="Tech Head Brothers,Visual Studio,VSTO,.NET Framework 3.5,Office 2007">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Tech Head Brothers new authoring tool, step 2">
-<meta property="og:url" content="https://laurentkempe.com/2008/02/16/Tech-Head-Brothers-new-authoring-tool-step-2/index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2008&#x2F;02&#x2F;16&#x2F;Tech-Head-Brothers-new-authoring-tool-step-2&#x2F;index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="Today I had the time to go on a bit with the new version of Tech Head Brothers, as you can see on the picture.">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://farm3.static.flickr.com/2005/2268217977_fd02a77b95_o.jpg">
+<meta property="og:image" content="http:&#x2F;&#x2F;farm3.static.flickr.com&#x2F;2005&#x2F;2268217977_fd02a77b95_o.jpg">
 <meta property="og:updated_time" content="2008-02-16T21:30:03.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Tech Head Brothers new authoring tool, step 2">
-<meta name="twitter:description" content="Today I had the time to go on a bit with the new version of Tech Head Brothers, as you can see on the picture.">
-<meta name="twitter:image" content="http://farm3.static.flickr.com/2005/2268217977_fd02a77b95_o.jpg">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;farm3.static.flickr.com&#x2F;2005&#x2F;2268217977_fd02a77b95_o.jpg">
 <meta name="twitter:creator" content="@laurentkempe">
     
     
@@ -40,7 +38,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-mslcllntebz6bnaf9snd8szfnckrp584wuqit7q6whzvju7uxsrud8qspz4k.min.css">
+    <link rel="stylesheet" href="/assets/css/style-b05yginpngfjm2uxkufrlocarhamnyny8crwlumxxdjkx1olyzpkm4z4smqx.min.css">
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -76,7 +74,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/ "
+            href="/%20"
             aria-label=""
         >
             Laurent Kempé
@@ -127,7 +125,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/ "
+                             href="/%20"
                             
                             title="Home"
                         >
@@ -265,7 +263,7 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p><img src="http://farm3.static.flickr.com/2005/2268217977_fd02a77b95_o.jpg" alt> </p>
+            <p><img src="http://farm3.static.flickr.com/2005/2268217977_fd02a77b95_o.jpg" alt=""> </p>
 <p>Today I had the time to go on a bit with the new version of <a href="http://www.techheadbrothers.com/" target="_blank" rel="noopener">Tech Head Brothers</a>, as you can see on the picture.</p>
 <a id="more"></a>
 
@@ -286,7 +284,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/NET-Framework-3-5/">.NET Framework 3.5</a> <a class="tag tag--primary tag--small t-link" href="/tags/Office-2007/">Office 2007</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tech-Head-Brothers/">Tech Head Brothers</a> <a class="tag tag--primary tag--small t-link" href="/tags/VSTO/">VSTO</a> <a class="tag tag--primary tag--small t-link" href="/tags/Visual-Studio/">Visual Studio</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/NET-Framework-3-5/" rel="tag">.NET Framework 3.5</a> <a class="tag tag--primary tag--small t-link" href="/tags/Office-2007/" rel="tag">Office 2007</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tech-Head-Brothers/" rel="tag">Tech Head Brothers</a> <a class="tag tag--primary tag--small t-link" href="/tags/VSTO/" rel="tag">VSTO</a> <a class="tag tag--primary tag--small t-link" href="/tags/Visual-Studio/" rel="tag">Visual Studio</a>
 
             </div>
         
@@ -620,7 +618,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-7y6uwuqgbcvcyfh91qqqps0hepqhsodkqsffxy8xmvyy1e7fa02w63m4kwm9.min.js"></script>
+<script src="/assets/js/script-81vkfdsd6zncrgoppv4dqukrlu3ekrh5kij6va1fch99q17dfu9iukgoppf8.min.js"></script>
 <!--SCRIPTS END-->
 
 

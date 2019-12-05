@@ -13,21 +13,19 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"**Update: **Following the comment of Jon Galloway\nI know that there are other solutions doing this but I was just asked about how to do it today (hey Christine ;) and had this registry file stored somewhere for a while waiting for a blog post.\n\n\nSave this to a file with an extension .reg, e.g. “asp.net web server here.reg”:\nWindows Registry Editor Version 5.00  \n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Classes\\Folder\\shell\\VS2005 WebServer]@=”ASP.NET 2.0 Web Server Here”  \n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Classes\\Folder\\shell\\VS2005 WebServer\\command]@=”C:\\Windows\\Microsoft.NET\\Framework\\v2.0.50727\\Webdev.WebServer.exe /port:9081 /path:&quot;%1&quot;“ \nYou might also change the port used to start the ASP.NET Development Server. If this option is not specified then the port 80 is used.  \nThen double click on the .reg file to save the settings in the registry.  \nNow you will have access to the following right click menu in explorer and you can browse your site without running Visual Studio:  \n \nUpdate: This is not needed anymore\nYou will need to copy hstart.exe to your C:\\Windows\\system32\\ first, or change the path used in the .reg file. This little tool (3kb); Hidden start, by NTWind Software is really good for “small startup manager that allows console applications to be started without any windows in the background.”. Exactly what is need in our case. \n","dateCreated":"2007-07-06T22:18:37+00:00","dateModified":"2010-05-07T05:46:47+00:00","datePublished":"2007-07-06T22:18:37+00:00","description":"**Update: **Following the comment of Jon Galloway\nI know that there are other solutions doing this but I was just asked about how to do it today (hey Christine ;) and had this registry file stored somewhere for a while waiting for a blog post.","headline":"Starting ASP.NET Development Server from a right click in explorer","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/07/06/Starting-ASPNET-Development-Server-from-a-right-click-in-explorer/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2007/07/06/Starting-ASPNET-Development-Server-from-a-right-click-in-explorer/","keywords":"ASP.NET 2.0, ASP.NET, Visual Studio, Tools"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"**Update: **Following the comment of Jon Galloway\nI know that there are other solutions doing this but I was just asked about how to do it today (hey Christine ;) and had this registry file stored somewhere for a while waiting for a blog post.\n\n\nSave this to a file with an extension .reg, e.g. “asp.net web server here.reg”:\nWindows Registry Editor Version 5.00  \n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Classes\\Folder\\shell\\VS2005 WebServer]@=”ASP.NET 2.0 Web Server Here”  \n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Classes\\Folder\\shell\\VS2005 WebServer\\command]@=”C:\\Windows\\Microsoft.NET\\Framework\\v2.0.50727\\Webdev.WebServer.exe /port:9081 /path:&quot;%1&quot;“ \nYou might also change the port used to start the ASP.NET Development Server. If this option is not specified then the port 80 is used.  \nThen double click on the .reg file to save the settings in the registry.  \nNow you will have access to the following right click menu in explorer and you can browse your site without running Visual Studio:  \n \nUpdate: This is not needed anymore\nYou will need to copy hstart.exe to your C:\\Windows\\system32\\ first, or change the path used in the .reg file. This little tool (3kb); Hidden start, by NTWind Software is really good for “small startup manager that allows console applications to be started without any windows in the background.”. Exactly what is need in our case. \n","dateCreated":"2007-07-06T22:18:37+00:00","dateModified":"2010-05-07T05:46:47+00:00","datePublished":"2007-07-06T22:18:37+00:00","description":"**Update: **Following the comment of Jon Galloway\nI know that there are other solutions doing this but I was just asked about how to do it today (hey Christine ;) and had this registry file stored somewhere for a while waiting for a blog post.","headline":"Starting ASP.NET Development Server from a right click in explorer","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2007/07/06/Starting-ASPNET-Development-Server-from-a-right-click-in-explorer/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2007/07/06/Starting-ASPNET-Development-Server-from-a-right-click-in-explorer/","keywords":"ASP.NET 2.0, ASP.NET, Visual Studio, Tools"}</script>
     <meta name="description" content="**Update: **Following the comment of Jon Galloway I know that there are other solutions doing this but I was just asked about how to do it today (hey Christine ;) and had this registry file stored som">
 <meta name="keywords" content="ASP.NET 2.0,ASP.NET,Visual Studio,Tools">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Starting ASP.NET Development Server from a right click in explorer">
-<meta property="og:url" content="https://laurentkempe.com/2007/07/06/Starting-ASPNET-Development-Server-from-a-right-click-in-explorer/index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2007&#x2F;07&#x2F;06&#x2F;Starting-ASPNET-Development-Server-from-a-right-click-in-explorer&#x2F;index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="**Update: **Following the comment of Jon Galloway I know that there are other solutions doing this but I was just asked about how to do it today (hey Christine ;) and had this registry file stored som">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://www.techheadbrothers.com/images/blog/asp.netserverhere2.gif">
+<meta property="og:image" content="http:&#x2F;&#x2F;www.techheadbrothers.com&#x2F;images&#x2F;blog&#x2F;asp.netserverhere2.gif">
 <meta property="og:updated_time" content="2010-05-07T05:46:47.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Starting ASP.NET Development Server from a right click in explorer">
-<meta name="twitter:description" content="**Update: **Following the comment of Jon Galloway I know that there are other solutions doing this but I was just asked about how to do it today (hey Christine ;) and had this registry file stored som">
-<meta name="twitter:image" content="http://www.techheadbrothers.com/images/blog/asp.netserverhere2.gif">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;www.techheadbrothers.com&#x2F;images&#x2F;blog&#x2F;asp.netserverhere2.gif">
 <meta name="twitter:creator" content="@laurentkempe">
     
     
@@ -40,7 +38,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-mslcllntebz6bnaf9snd8szfnckrp584wuqit7q6whzvju7uxsrud8qspz4k.min.css">
+    <link rel="stylesheet" href="/assets/css/style-b05yginpngfjm2uxkufrlocarhamnyny8crwlumxxdjkx1olyzpkm4z4smqx.min.css">
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -76,7 +74,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/ "
+            href="/%20"
             aria-label=""
         >
             Laurent Kempé
@@ -127,7 +125,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/ "
+                             href="/%20"
                             
                             title="Home"
                         >
@@ -276,7 +274,7 @@
 <p>You might also change the port used to start the ASP.NET Development Server. If this option is not specified then the port 80 is used.  </p>
 <p>Then double click on the .reg file to save the settings in the registry.  </p>
 <p>Now you will have access to the following right click menu in explorer and you can browse your site without running Visual Studio:  </p>
-<p><img src="http://www.techheadbrothers.com/images/blog/asp.netserverhere2.gif" alt> </p>
+<p><img src="http://www.techheadbrothers.com/images/blog/asp.netserverhere2.gif" alt=""> </p>
 <p><strong><u>Update:</u></strong> This is not needed anymore</p>
 <p>You will need to copy <a href="http://www.ntwind.com/software/utilities/hstart.html" target="_blank" rel="noopener">hstart.exe</a> to your C:\Windows\system32\ first, or change the path used in the .reg file. This little tool (3kb); Hidden start, by <a href="http://www.ntwind.com/" target="_blank" rel="noopener">NTWind Software</a> is really good for “small startup manager that <strong>allows console applications to be started without any windows in the background</strong>.”. Exactly what is need in our case. </p>
 
@@ -290,7 +288,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET/">ASP.NET</a> <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET-2-0/">ASP.NET 2.0</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tools/">Tools</a> <a class="tag tag--primary tag--small t-link" href="/tags/Visual-Studio/">Visual Studio</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET/" rel="tag">ASP.NET</a> <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET-2-0/" rel="tag">ASP.NET 2.0</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tools/" rel="tag">Tools</a> <a class="tag tag--primary tag--small t-link" href="/tags/Visual-Studio/" rel="tag">Visual Studio</a>
 
             </div>
         
@@ -624,7 +622,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-7y6uwuqgbcvcyfh91qqqps0hepqhsodkqsffxy8xmvyy1e7fa02w63m4kwm9.min.js"></script>
+<script src="/assets/js/script-81vkfdsd6zncrgoppv4dqukrlu3ekrh5kij6va1fch99q17dfu9iukgoppf8.min.js"></script>
 <!--SCRIPTS END-->
 
 

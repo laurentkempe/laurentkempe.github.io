@@ -13,19 +13,17 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I needed to create a virtual directory in IIS 6 during the deployment of one of our backend application on a Windows 2003 server. This application is a COM component written in C++ that I developed wrapping a very old VB6 COM component. The whole exposed as a Web Service using the SOAP Toolkit 3. I already discussed about it here.\nSo I created a script that will register both COM component, by the way regsvr32 is really bad cause it doesn’t return different value if it fails. Right now I have no verification in the script that let me know if the registration went well. I plan to add it in a second step by reading the content of the registry using the reg command. The script is using the SOAPVDIR.CMD packaged with the SOAP Toolkit 3 to create the Virtual Directory with the soap ISAPI of the SOAP Toolkit 3:\n\n\n\n“c:\\Program Files\\MSSOAP\\Binaries&lt;strong&gt;SOAPVDIR.CMD“ CREATE $VDIR_NAME path\n\nThen I needed to change the user name used for the anonymous access:\n\ncscript c:\\Inetpub\\AdminScripts\\adsutil.vbs SET /W3SVC/1/ROOT/$VDIR_NAME/AnonymousUserName myusername\n\nand his password:\n\ncscript c:\\Inetpub\\AdminScripts\\adsutil.vbs SET /W3SVC/1/ROOT/$VDIR_NAME/AnonymousUserPass mypassword\n\nAt this point I am not that happy about this method cause I have to specify in clear text a password in a script. I have two options. Either the user has to pass the password when running the script, but as it is a script calling this new script and I don’t want to change it, I find that I could implement my own command using .NET and the namespace: System.DirectoryServices with such code:\nusing System;using System.DirectoryServices;using System.Reflection;\nnamespace ADSI1{  class ConfigIIS  {    [STAThread]    static void Main(string[] args)    {      string serverName = “localhost”;      string password = ““;      string serverID = “1234”;\n  CreateNewWebSite(serverName, password, serverID);\n  CreateVDir(serverName, password, serverID);\n}\n\nstatic void CreateNewWebSite(string serverName, string password, string serverID)\n{\n  DirectoryEntry w3svc = new DirectoryEntry (&quot;IIS://&quot; + serverName + &quot;/w3svc&quot;,serverName + &quot;\\\\administrator&quot;, password,AuthenticationTypes.Secure);\n  DirectoryEntries sites = w3svc.Children;\n  DirectoryEntry newSite = sites.Add(serverID,&quot;IIsWebServer&quot;); //create a new site\n  newSite.CommitChanges();\n}\n\nstatic DirectoryEntry CreateVDir (string vdirname, string serverID)\n{\n  DirectoryEntry newvdir;\n  DirectoryEntry root=new DirectoryEntry(&quot;IIS://localhost/W3SVC/&quot; + serverID + &quot;/Root&quot;);\n  newvdir=root.Children.Add(vdirname, &quot;IIsWebVirtualDir&quot;);\n  newvdir.Properties[&quot;Path&quot;][0]= &quot;c:\\\\inetpub\\\\wwwroot&quot;;\n  newvdir.Properties[&quot;AccessScript&quot;][0] = true;\n  newvdir.CommitChanges();\n  return newvdir;\n}  }}\nAnd then I could save the encrypted password in the config file of the tool.\nUpdate: I found some articles about the namespace System.DirectoryServices here:\n\n[Introduction to System.DirectoryServices, Part 1](http://www.ondotnet.com/lpt/a/4026)\n[Introduction to System.DirectoryServices, Part 2](http://www.ondotnet.com/lpt/a/4027)\n","dateCreated":"2004-07-22T22:14:00+00:00","dateModified":"2004-07-22T22:14:00+00:00","datePublished":"2004-07-22T22:14:00+00:00","description":"I needed to create a virtual directory in IIS 6 during the deployment of one of our backend application on a Windows 2003 server. This application is a COM component written in C++ that I developed wrapping a very old VB6 COM component. The whole exposed as a Web Service using the SOAP Toolkit 3. I already discussed about it here.\nSo I created a script that will register both COM component, by the way regsvr32 is really bad cause it doesn’t return different value if it fails. Right now I have no verification in the script that let me know if the registration went well. I plan to add it in a second step by reading the content of the registry using the reg command. The script is using the SOAPVDIR.CMD packaged with the SOAP Toolkit 3 to create the Virtual Directory with the soap ISAPI of the SOAP Toolkit 3:","headline":"Managing IIS with scripts","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2004/07/22/Managing-IIS-with-scripts/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2004/07/22/Managing-IIS-with-scripts/","keywords":"Infrastructure, Work"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I needed to create a virtual directory in IIS 6 during the deployment of one of our backend application on a Windows 2003 server. This application is a COM component written in C++ that I developed wrapping a very old VB6 COM component. The whole exposed as a Web Service using the SOAP Toolkit 3. I already discussed about it here.\nSo I created a script that will register both COM component, by the way regsvr32 is really bad cause it doesn’t return different value if it fails. Right now I have no verification in the script that let me know if the registration went well. I plan to add it in a second step by reading the content of the registry using the reg command. The script is using the SOAPVDIR.CMD packaged with the SOAP Toolkit 3 to create the Virtual Directory with the soap ISAPI of the SOAP Toolkit 3:\n\n\n\n“c:\\Program Files\\MSSOAP\\Binaries&lt;strong&gt;SOAPVDIR.CMD“ CREATE $VDIR_NAME path\n\nThen I needed to change the user name used for the anonymous access:\n\ncscript c:\\Inetpub\\AdminScripts\\adsutil.vbs SET /W3SVC/1/ROOT/$VDIR_NAME/AnonymousUserName myusername\n\nand his password:\n\ncscript c:\\Inetpub\\AdminScripts\\adsutil.vbs SET /W3SVC/1/ROOT/$VDIR_NAME/AnonymousUserPass mypassword\n\nAt this point I am not that happy about this method cause I have to specify in clear text a password in a script. I have two options. Either the user has to pass the password when running the script, but as it is a script calling this new script and I don’t want to change it, I find that I could implement my own command using .NET and the namespace: System.DirectoryServices with such code:\nusing System;using System.DirectoryServices;using System.Reflection;\nnamespace ADSI1{  class ConfigIIS  {    [STAThread]    static void Main(string[] args)    {      string serverName = “localhost”;      string password = ““;      string serverID = “1234”;\n  CreateNewWebSite(serverName, password, serverID);\n  CreateVDir(serverName, password, serverID);\n}\n\nstatic void CreateNewWebSite(string serverName, string password, string serverID)\n{\n  DirectoryEntry w3svc = new DirectoryEntry (&quot;IIS://&quot; + serverName + &quot;/w3svc&quot;,serverName + &quot;\\\\administrator&quot;, password,AuthenticationTypes.Secure);\n  DirectoryEntries sites = w3svc.Children;\n  DirectoryEntry newSite = sites.Add(serverID,&quot;IIsWebServer&quot;); //create a new site\n  newSite.CommitChanges();\n}\n\nstatic DirectoryEntry CreateVDir (string vdirname, string serverID)\n{\n  DirectoryEntry newvdir;\n  DirectoryEntry root=new DirectoryEntry(&quot;IIS://localhost/W3SVC/&quot; + serverID + &quot;/Root&quot;);\n  newvdir=root.Children.Add(vdirname, &quot;IIsWebVirtualDir&quot;);\n  newvdir.Properties[&quot;Path&quot;][0]= &quot;c:\\\\inetpub\\\\wwwroot&quot;;\n  newvdir.Properties[&quot;AccessScript&quot;][0] = true;\n  newvdir.CommitChanges();\n  return newvdir;\n}  }}\nAnd then I could save the encrypted password in the config file of the tool.\nUpdate: I found some articles about the namespace System.DirectoryServices here:\n\n[Introduction to System.DirectoryServices, Part 1](http://www.ondotnet.com/lpt/a/4026)\n[Introduction to System.DirectoryServices, Part 2](http://www.ondotnet.com/lpt/a/4027)\n","dateCreated":"2004-07-22T22:14:00+00:00","dateModified":"2004-07-22T22:14:00+00:00","datePublished":"2004-07-22T22:14:00+00:00","description":"I needed to create a virtual directory in IIS 6 during the deployment of one of our backend application on a Windows 2003 server. This application is a COM component written in C++ that I developed wrapping a very old VB6 COM component. The whole exposed as a Web Service using the SOAP Toolkit 3. I already discussed about it here.\nSo I created a script that will register both COM component, by the way regsvr32 is really bad cause it doesn’t return different value if it fails. Right now I have no verification in the script that let me know if the registration went well. I plan to add it in a second step by reading the content of the registry using the reg command. The script is using the SOAPVDIR.CMD packaged with the SOAP Toolkit 3 to create the Virtual Directory with the soap ISAPI of the SOAP Toolkit 3:","headline":"Managing IIS with scripts","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2004/07/22/Managing-IIS-with-scripts/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2004/07/22/Managing-IIS-with-scripts/","keywords":"Work, Infrastructure"}</script>
     <meta name="description" content="I needed to create a virtual directory in IIS 6 during the deployment of one of our backend application on a Windows 2003 server. This application is a COM component written in C++ that I developed wr">
-<meta name="keywords" content="Infrastructure,Work">
+<meta name="keywords" content="Work,Infrastructure">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Managing IIS with scripts">
-<meta property="og:url" content="https://laurentkempe.com/2004/07/22/Managing-IIS-with-scripts/index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2004&#x2F;07&#x2F;22&#x2F;Managing-IIS-with-scripts&#x2F;index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="I needed to create a virtual directory in IIS 6 during the deployment of one of our backend application on a Windows 2003 server. This application is a COM component written in C++ that I developed wr">
 <meta property="og:locale" content="en">
 <meta property="og:updated_time" content="2004-07-22T22:14:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Managing IIS with scripts">
-<meta name="twitter:description" content="I needed to create a virtual directory in IIS 6 during the deployment of one of our backend application on a Windows 2003 server. This application is a COM component written in C++ that I developed wr">
 <meta name="twitter:creator" content="@laurentkempe">
     
     
@@ -38,7 +36,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-mslcllntebz6bnaf9snd8szfnckrp584wuqit7q6whzvju7uxsrud8qspz4k.min.css">
+    <link rel="stylesheet" href="/assets/css/style-b05yginpngfjm2uxkufrlocarhamnyny8crwlumxxdjkx1olyzpkm4z4smqx.min.css">
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -74,7 +72,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/ "
+            href="/%20"
             aria-label=""
         >
             Laurent Kempé
@@ -125,7 +123,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/ "
+                             href="/%20"
                             
                             title="Home"
                         >
@@ -268,7 +266,7 @@
 <a id="more"></a>
 
 <blockquote>
-<p>“c:\Program Files\MSSOAP\Binaries&lt;strong&gt;SOAPVDIR.CMD“ <strong>CREATE</strong> $VDIR_NAME <em><strong>path</strong></em></p>
+<p>“c:\Program Files\MSSOAP\Binaries&lt;strong&gt;SOAPVDIR.CMD</strong>“ <strong>CREATE</strong> $VDIR_NAME <em><strong>path</strong></em></p>
 </blockquote>
 <p>Then I needed to change the user name used for the anonymous access:</p>
 <blockquote>
@@ -280,7 +278,7 @@
 </blockquote>
 <p>At this point I am not that happy about this method cause I have to specify in clear text a password in a script. I have two options. Either the user has to pass the password when running the script, but as it is a script calling this new script and I don’t want to change it, I find that I could implement my own command using .NET and the namespace: <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/iissdk/iis/using_system_directoryservices_to_configure_iis.asp" target="_blank" rel="noopener">System.DirectoryServices</a> with such code:</p>
 <p>using System;<br>using System.DirectoryServices;<br>using System.Reflection;</p>
-<p>namespace ADSI1<br>{<br>  class ConfigIIS<br>  {<br>    [STAThread]<br>    static void Main(string[] args)<br>    {<br>      string serverName = “localhost”;<br>      string password = “<administrative_password>“;<br>      string serverID = “1234”;</administrative_password></p>
+<p>namespace ADSI1<br>{<br>  class ConfigIIS<br>  {<br>    [STAThread]<br>    static void Main(string[] args)<br>    {<br>      string serverName = “localhost”;<br>      string password = “<administrative_password>“;<br>      string serverID = “1234”;</p>
 <pre><code>  CreateNewWebSite(serverName, password, serverID);
   CreateVDir(serverName, password, serverID);
 }
@@ -302,7 +300,7 @@ static DirectoryEntry CreateVDir (string vdirname, string serverID)
   newvdir.Properties[&quot;AccessScript&quot;][0] = true;
   newvdir.CommitChanges();
   return newvdir;
-}</code></pre><p>  }<br>}<br></p>
+}</code></pre><p>  }<br>}<br></administrative_password></p>
 <p>And then I could save the encrypted password in the config file of the tool.</p>
 <p><u>Update</u>: I found some articles about the namespace <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/iissdk/iis/using_system_directoryservices_to_configure_iis.asp" target="_blank" rel="noopener">System.DirectoryServices</a> here:</p>
 <ul>
@@ -319,7 +317,7 @@ static DirectoryEntry CreateVDir (string vdirname, string serverID)
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/Infrastructure/">Infrastructure</a> <a class="tag tag--primary tag--small t-link" href="/tags/Work/">Work</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/Infrastructure/" rel="tag">Infrastructure</a> <a class="tag tag--primary tag--small t-link" href="/tags/Work/" rel="tag">Work</a>
 
             </div>
         
@@ -653,7 +651,7 @@ static DirectoryEntry CreateVDir (string vdirname, string serverID)
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-7y6uwuqgbcvcyfh91qqqps0hepqhsodkqsffxy8xmvyy1e7fa02w63m4kwm9.min.js"></script>
+<script src="/assets/js/script-81vkfdsd6zncrgoppv4dqukrlu3ekrh5kij6va1fch99q17dfu9iukgoppf8.min.js"></script>
 <!--SCRIPTS END-->
 
 

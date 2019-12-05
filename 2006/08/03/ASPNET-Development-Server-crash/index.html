@@ -13,19 +13,17 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"This morning I had a strange crash of ASP.NET Development Server, it is the first time that it happens and I was really stressed about it.\nWith debugger I got: “An unhandled exception of type ‘System.StackOverflowException’ occurred in Unknown Module.”\n\n\nI thought of third parties assemblies but that wasn’t it, so I finally thought of infinite loop and pointed out that I was doing the following in my last changes:\n\n\npublic virtual string ChromeTemplateFile\n{\n&lt;span style=&quot;color: blue&quot;&gt;get&lt;/span&gt;\n\n{\n\n    &lt;span style=&quot;color: blue&quot;&gt;if&lt;/span&gt; (&lt;span style=&quot;color: teal&quot;&gt;WebPartManager&lt;/span&gt;.GetCurrentWebPartManager(Page).DisplayMode == &lt;span style=&quot;color: teal&quot;&gt;WebPartManager&lt;/span&gt;.BrowseDisplayMode)\n\n        &lt;span style=&quot;color: blue&quot;&gt;return&lt;/span&gt; BrowseDisplayModeChromeTemplateFile;\n\n    &lt;span style=&quot;color: blue&quot;&gt;else&lt;/span&gt;\n\n        &lt;span style=&quot;color: blue&quot;&gt;return&lt;/span&gt; **ChromeTemplateFile**;\n\n}\n\n&lt;span style=&quot;color: blue&quot;&gt;set&lt;/span&gt; { &lt;span style=&quot;color: blue&quot;&gt;throw&lt;/span&gt; &lt;span style=&quot;color: blue&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color: teal&quot;&gt;ApplicationException&lt;/span&gt;(&lt;span style=&quot;color: maroon&quot;&gt;&quot;Not Implemented&quot;&lt;/span&gt;); }}\n\n\nBingo, one miss tipping of a properties name and you end up in an infinite loop. Thanks Valentin for the nice msn talks ;-)\n","dateCreated":"2006-08-03T16:09:00+00:00","dateModified":"2006-08-03T16:09:00+00:00","datePublished":"2006-08-03T16:09:00+00:00","description":"This morning I had a strange crash of ASP.NET Development Server, it is the first time that it happens and I was really stressed about it.\nWith debugger I got: “An unhandled exception of type ‘System.StackOverflowException’ occurred in Unknown Module.”","headline":"ASP.NET Development Server crash","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2006/08/03/ASPNET-Development-Server-crash/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2006/08/03/ASPNET-Development-Server-crash/","keywords":"ASP.NET 2.0, Visual Studio, .NET"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"This morning I had a strange crash of ASP.NET Development Server, it is the first time that it happens and I was really stressed about it.\nWith debugger I got: “An unhandled exception of type ‘System.StackOverflowException’ occurred in Unknown Module.”\n\n\nI thought of third parties assemblies but that wasn’t it, so I finally thought of infinite loop and pointed out that I was doing the following in my last changes:\n\n\npublic virtual string ChromeTemplateFile\n{\n&lt;span style=&quot;color: blue&quot;&gt;get&lt;/span&gt;\n\n{\n\n    &lt;span style=&quot;color: blue&quot;&gt;if&lt;/span&gt; (&lt;span style=&quot;color: teal&quot;&gt;WebPartManager&lt;/span&gt;.GetCurrentWebPartManager(Page).DisplayMode == &lt;span style=&quot;color: teal&quot;&gt;WebPartManager&lt;/span&gt;.BrowseDisplayMode)\n\n        &lt;span style=&quot;color: blue&quot;&gt;return&lt;/span&gt; BrowseDisplayModeChromeTemplateFile;\n\n    &lt;span style=&quot;color: blue&quot;&gt;else&lt;/span&gt;\n\n        &lt;span style=&quot;color: blue&quot;&gt;return&lt;/span&gt; **ChromeTemplateFile**;\n\n}\n\n&lt;span style=&quot;color: blue&quot;&gt;set&lt;/span&gt; { &lt;span style=&quot;color: blue&quot;&gt;throw&lt;/span&gt; &lt;span style=&quot;color: blue&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color: teal&quot;&gt;ApplicationException&lt;/span&gt;(&lt;span style=&quot;color: maroon&quot;&gt;&quot;Not Implemented&quot;&lt;/span&gt;); }}\n\n\nBingo, one miss tipping of a properties name and you end up in an infinite loop. Thanks Valentin for the nice msn talks ;-)\n","dateCreated":"2006-08-03T16:09:00+00:00","dateModified":"2006-08-03T16:09:00+00:00","datePublished":"2006-08-03T16:09:00+00:00","description":"This morning I had a strange crash of ASP.NET Development Server, it is the first time that it happens and I was really stressed about it.\nWith debugger I got: “An unhandled exception of type ‘System.StackOverflowException’ occurred in Unknown Module.”","headline":"ASP.NET Development Server crash","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2006/08/03/ASPNET-Development-Server-crash/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2006/08/03/ASPNET-Development-Server-crash/","keywords":"ASP.NET 2.0, Visual Studio, .NET"}</script>
     <meta name="description" content="This morning I had a strange crash of ASP.NET Development Server, it is the first time that it happens and I was really stressed about it. With debugger I got: “An unhandled exception of type ‘System.">
 <meta name="keywords" content="ASP.NET 2.0,Visual Studio,.NET">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="ASP.NET Development Server crash">
-<meta property="og:url" content="https://laurentkempe.com/2006/08/03/ASPNET-Development-Server-crash/index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2006&#x2F;08&#x2F;03&#x2F;ASPNET-Development-Server-crash&#x2F;index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="This morning I had a strange crash of ASP.NET Development Server, it is the first time that it happens and I was really stressed about it. With debugger I got: “An unhandled exception of type ‘System.">
 <meta property="og:locale" content="en">
 <meta property="og:updated_time" content="2006-08-03T16:09:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ASP.NET Development Server crash">
-<meta name="twitter:description" content="This morning I had a strange crash of ASP.NET Development Server, it is the first time that it happens and I was really stressed about it. With debugger I got: “An unhandled exception of type ‘System.">
 <meta name="twitter:creator" content="@laurentkempe">
     
     
@@ -38,7 +36,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-mslcllntebz6bnaf9snd8szfnckrp584wuqit7q6whzvju7uxsrud8qspz4k.min.css">
+    <link rel="stylesheet" href="/assets/css/style-b05yginpngfjm2uxkufrlocarhamnyny8crwlumxxdjkx1olyzpkm4z4smqx.min.css">
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -74,7 +72,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/ "
+            href="/%20"
             aria-label=""
         >
             Laurent Kempé
@@ -125,7 +123,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/ "
+                             href="/%20"
                             
                             title="Home"
                         >
@@ -301,7 +299,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/NET/">.NET</a> <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET-2-0/">ASP.NET 2.0</a> <a class="tag tag--primary tag--small t-link" href="/tags/Visual-Studio/">Visual Studio</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/NET/" rel="tag">.NET</a> <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET-2-0/" rel="tag">ASP.NET 2.0</a> <a class="tag tag--primary tag--small t-link" href="/tags/Visual-Studio/" rel="tag">Visual Studio</a>
 
             </div>
         
@@ -635,7 +633,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-7y6uwuqgbcvcyfh91qqqps0hepqhsodkqsffxy8xmvyy1e7fa02w63m4kwm9.min.js"></script>
+<script src="/assets/js/script-81vkfdsd6zncrgoppv4dqukrlu3ekrh5kij6va1fch99q17dfu9iukgoppf8.min.js"></script>
 <!--SCRIPTS END-->
 
 

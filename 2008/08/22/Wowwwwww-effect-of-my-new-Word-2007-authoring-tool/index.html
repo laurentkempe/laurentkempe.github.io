@@ -13,21 +13,19 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I have reached now another step on the new authoring tool for Tech Head Brothers portal by having some authors installing this new version and starting beta testing it. Has you can see, with the following twit, it seems that the tool is on the good way:\nFrom Rédo (french blog)\n\n\n\nJust try the new beta tool of publishing for http://www.techheadbrothers… …. that’s the Wouawwww effect !!! … sorry, it’s NDA ;p about 23 hours ago\n\nFrom Jon Galloway (blog)\n\n@laurentkempe Like I said, I’d pay money for it, and I’m very cheap. Very cool. about 15 hours ago from web in reply to laurentkempe\n\nThis tool let all authors write articles using a customized Word 2007, preview it offline in Internet Explorer as it will be seen on the portal and finally post the article to the portal directly from Word 2007. It is a replacement of THBAuthoring, my old tool found on CodePlex.\nTo achieve this goal I am using quite some technologies. First Word 2007, Ribbon, .NET Framework 3.5 SP1, VSTO 3.0, OpenXML, WordML, XML Schema, XSLT. Than for sure C#, Linq to XML, Linq to Object.\nFor the installation I use ClickOnce. That’s a great improvement! I had so much issues with THBAuthoring.\nFrom an author point of view you are using a almost normal Word 2007 document with different predefined styles, bold, list… There is two exceptions:\n\nSource code\nZip with sample code  \n\nThe usage scenario for the inserting Source Code into the Word document is as following:\n\nCopy the code into the clipboard from Visual Studio 2008/2005\nPosition the cursor into the Word 2007 document where you want to insert the Source Code\nClick on the button Source Code on the custom Ribbon\nThat’s it, easy no?  \n\nThis brings clear text of the source code into the document and colored source code into the HTML preview.\nThe usage scenario for attaching the Zip with the sample code is also easy:\n\nClick on the button Zip in the custom Ribbon\nIn the opening File selector dialog browse to your zip file and select one\nThat’s it, easy no?  \n\nFinally there is another usage scenario; inserting pictures:\n\nFrom Windows Explorer copy a picture file\nPosition the cursor in the Word 2007 document\nPaste\nThat’s it, easy no?  \n\nSo, how does it work technically!\nIt works by doing a projection of the WordML to a well formed Tech Head Brothers XML document defined by an XML Schema. Then it uses a XSLT to produce HTML.\nI hope to find the time to make a little video soon to demonstrate the way it is used!\nHere is a picture of the tool\n\n","dateCreated":"2008-08-22T04:59:58+00:00","dateModified":"2008-08-22T04:59:58+00:00","datePublished":"2008-08-22T04:59:58+00:00","description":"I have reached now another step on the new authoring tool for Tech Head Brothers portal by having some authors installing this new version and starting beta testing it. Has you can see, with the following twit, it seems that the tool is on the good way:\nFrom Rédo (french blog)","headline":"Wowwwwww effect of my new Word 2007 authoring tool","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/08/22/Wowwwwww-effect-of-my-new-Word-2007-authoring-tool/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2008/08/22/Wowwwwww-effect-of-my-new-Word-2007-authoring-tool/","keywords":"Tech Head Brothers, Linq, VSTO, .NET Framework 3.5, Office 2007, Open XML, WordML"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I have reached now another step on the new authoring tool for Tech Head Brothers portal by having some authors installing this new version and starting beta testing it. Has you can see, with the following twit, it seems that the tool is on the good way:\nFrom Rédo (french blog)\n\n\n\nJust try the new beta tool of publishing for http://www.techheadbrothers… …. that’s the Wouawwww effect !!! … sorry, it’s NDA ;p about 23 hours ago\n\nFrom Jon Galloway (blog)\n\n@laurentkempe Like I said, I’d pay money for it, and I’m very cheap. Very cool. about 15 hours ago from web in reply to laurentkempe\n\nThis tool let all authors write articles using a customized Word 2007, preview it offline in Internet Explorer as it will be seen on the portal and finally post the article to the portal directly from Word 2007. It is a replacement of THBAuthoring, my old tool found on CodePlex.\nTo achieve this goal I am using quite some technologies. First Word 2007, Ribbon, .NET Framework 3.5 SP1, VSTO 3.0, OpenXML, WordML, XML Schema, XSLT. Than for sure C#, Linq to XML, Linq to Object.\nFor the installation I use ClickOnce. That’s a great improvement! I had so much issues with THBAuthoring.\nFrom an author point of view you are using a almost normal Word 2007 document with different predefined styles, bold, list… There is two exceptions:\n\nSource code\nZip with sample code  \n\nThe usage scenario for the inserting Source Code into the Word document is as following:\n\nCopy the code into the clipboard from Visual Studio 2008/2005\nPosition the cursor into the Word 2007 document where you want to insert the Source Code\nClick on the button Source Code on the custom Ribbon\nThat’s it, easy no?  \n\nThis brings clear text of the source code into the document and colored source code into the HTML preview.\nThe usage scenario for attaching the Zip with the sample code is also easy:\n\nClick on the button Zip in the custom Ribbon\nIn the opening File selector dialog browse to your zip file and select one\nThat’s it, easy no?  \n\nFinally there is another usage scenario; inserting pictures:\n\nFrom Windows Explorer copy a picture file\nPosition the cursor in the Word 2007 document\nPaste\nThat’s it, easy no?  \n\nSo, how does it work technically!\nIt works by doing a projection of the WordML to a well formed Tech Head Brothers XML document defined by an XML Schema. Then it uses a XSLT to produce HTML.\nI hope to find the time to make a little video soon to demonstrate the way it is used!\nHere is a picture of the tool\n\n","dateCreated":"2008-08-22T04:59:58+00:00","dateModified":"2008-08-22T04:59:58+00:00","datePublished":"2008-08-22T04:59:58+00:00","description":"I have reached now another step on the new authoring tool for Tech Head Brothers portal by having some authors installing this new version and starting beta testing it. Has you can see, with the following twit, it seems that the tool is on the good way:\nFrom Rédo (french blog)","headline":"Wowwwwww effect of my new Word 2007 authoring tool","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2008/08/22/Wowwwwww-effect-of-my-new-Word-2007-authoring-tool/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2008/08/22/Wowwwwww-effect-of-my-new-Word-2007-authoring-tool/","keywords":"Tech Head Brothers, Linq, Open XML, VSTO, .NET Framework 3.5, Office 2007, WordML"}</script>
     <meta name="description" content="I have reached now another step on the new authoring tool for Tech Head Brothers portal by having some authors installing this new version and starting beta testing it. Has you can see, with the follo">
-<meta name="keywords" content="Tech Head Brothers,Linq,VSTO,.NET Framework 3.5,Office 2007,Open XML,WordML">
+<meta name="keywords" content="Tech Head Brothers,Linq,Open XML,VSTO,.NET Framework 3.5,Office 2007,WordML">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Wowwwwww effect of my new Word 2007 authoring tool">
-<meta property="og:url" content="https://laurentkempe.com/2008/08/22/Wowwwwww-effect-of-my-new-Word-2007-authoring-tool/index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2008&#x2F;08&#x2F;22&#x2F;Wowwwwww-effect-of-my-new-Word-2007-authoring-tool&#x2F;index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="I have reached now another step on the new authoring tool for Tech Head Brothers portal by having some authors installing this new version and starting beta testing it. Has you can see, with the follo">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://farm3.static.flickr.com/2086/2327067069_1e37deaa06_o.jpg">
+<meta property="og:image" content="http:&#x2F;&#x2F;farm3.static.flickr.com&#x2F;2086&#x2F;2327067069_1e37deaa06_o.jpg">
 <meta property="og:updated_time" content="2008-08-22T04:59:58.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Wowwwwww effect of my new Word 2007 authoring tool">
-<meta name="twitter:description" content="I have reached now another step on the new authoring tool for Tech Head Brothers portal by having some authors installing this new version and starting beta testing it. Has you can see, with the follo">
-<meta name="twitter:image" content="http://farm3.static.flickr.com/2086/2327067069_1e37deaa06_o.jpg">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;farm3.static.flickr.com&#x2F;2086&#x2F;2327067069_1e37deaa06_o.jpg">
 <meta name="twitter:creator" content="@laurentkempe">
     
     
@@ -40,7 +38,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-mslcllntebz6bnaf9snd8szfnckrp584wuqit7q6whzvju7uxsrud8qspz4k.min.css">
+    <link rel="stylesheet" href="/assets/css/style-b05yginpngfjm2uxkufrlocarhamnyny8crwlumxxdjkx1olyzpkm4z4smqx.min.css">
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -76,7 +74,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/ "
+            href="/%20"
             aria-label=""
         >
             Laurent Kempé
@@ -127,7 +125,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/ "
+                             href="/%20"
                             
                             title="Home"
                         >
@@ -309,7 +307,7 @@
 <p>It works by doing a projection of the WordML to a well formed Tech Head Brothers XML document defined by an XML Schema. Then it uses a XSLT to produce HTML.</p>
 <p>I hope to find the time to make a little video soon to demonstrate the way it is used!</p>
 <p>Here is a picture of the tool</p>
-<p><img src="http://farm3.static.flickr.com/2086/2327067069_1e37deaa06_o.jpg" alt></p>
+<p><img src="http://farm3.static.flickr.com/2086/2327067069_1e37deaa06_o.jpg" alt=""></p>
 
             
 
@@ -321,7 +319,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/NET-Framework-3-5/">.NET Framework 3.5</a> <a class="tag tag--primary tag--small t-link" href="/tags/Linq/">Linq</a> <a class="tag tag--primary tag--small t-link" href="/tags/Office-2007/">Office 2007</a> <a class="tag tag--primary tag--small t-link" href="/tags/Open-XML/">Open XML</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tech-Head-Brothers/">Tech Head Brothers</a> <a class="tag tag--primary tag--small t-link" href="/tags/VSTO/">VSTO</a> <a class="tag tag--primary tag--small t-link" href="/tags/WordML/">WordML</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/NET-Framework-3-5/" rel="tag">.NET Framework 3.5</a> <a class="tag tag--primary tag--small t-link" href="/tags/Linq/" rel="tag">Linq</a> <a class="tag tag--primary tag--small t-link" href="/tags/Office-2007/" rel="tag">Office 2007</a> <a class="tag tag--primary tag--small t-link" href="/tags/Open-XML/" rel="tag">Open XML</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tech-Head-Brothers/" rel="tag">Tech Head Brothers</a> <a class="tag tag--primary tag--small t-link" href="/tags/VSTO/" rel="tag">VSTO</a> <a class="tag tag--primary tag--small t-link" href="/tags/WordML/" rel="tag">WordML</a>
 
             </div>
         
@@ -655,7 +653,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-7y6uwuqgbcvcyfh91qqqps0hepqhsodkqsffxy8xmvyy1e7fa02w63m4kwm9.min.js"></script>
+<script src="/assets/js/script-81vkfdsd6zncrgoppv4dqukrlu3ekrh5kij6va1fch99q17dfu9iukgoppf8.min.js"></script>
 <!--SCRIPTS END-->
 
 

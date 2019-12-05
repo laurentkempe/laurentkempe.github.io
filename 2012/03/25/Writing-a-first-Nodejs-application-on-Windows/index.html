@@ -13,25 +13,23 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"   \n\nI started some weeks ago to play with Github Hubot and hosted one version on Heroku to start learning about all those new technologies.\n\n\nThe next step was to go a bit onto Node.js and write a first small application.\nFirst you need to download Node.js and install it on your machine. I downloaded the Windows version 0.6.14.\nWhen Node.js is installed on your machine you should find it on the folder C:\\Program Files (x86)\\nodejs for 64 bits machines and on C:\\Program Files\\nodejs for the 32 bits.\nThen start a PowerShell window and type “node -v” you should see v0.6.14.\nNow start you preferred text editor and create a new file server.js and copy paste the code from the home page of Node.js\n\nvar http = require(‘http’);http.createServer(function (req, res) {  res.writeHead(200, {‘Content-Type’: ‘text/plain’});  res.end(‘Hello World\\n’);}).listen(1337, ‘127.0.0.1’);console.log(‘Server running at http://127.0.0.1:1337/&#39;);\n\n\n\n\n\n\n\n\n\n\n\n\n.csharpcode, .csharpcode pre\n{\n    font-size: small;\n    color: black;\n    font-family: consolas, \"Courier New\", courier, monospace;\n    background-color: #ffffff;\n    /*white-space: pre;*/\n}\n.csharpcode pre { margin: 0em; }\n.csharpcode .rem { color: #008000; }\n.csharpcode .kwrd { color: #0000ff; }\n.csharpcode .str { color: #006080; }\n.csharpcode .op { color: #0000c0; }\n.csharpcode .preproc { color: #cc6633; }\n.csharpcode .asp { background-color: #ffff00; }\n.csharpcode .html { color: #800000; }\n.csharpcode .attr { color: #ff0000; }\n.csharpcode .alt \n{\n    background-color: #f4f4f4;\n    width: 100%;\n    margin: 0em;\n}\n.csharpcode .lnum { color: #606060; }\n\n\n\nGo back to your PowerShell window and type “node server.js” which should display “Server running at http://127.0.0.1:1337/”\nNow run your preferred browser and enter the url http://127.0.0.1:1337/\n\nI went a little further following the Node Beginner site and created a first module. \nTo do so I used JetBrains WebStorm 3 which you can easily configure to run and debug your Node.js application.\nYou need to configure it this way\n \nThen you can add a Run/Debug configuration for Node.Js\n \nFinally you can run your Node.js application in Debug mode \n \nand for sure hit the breakpoints and watch the values of your variables\n \nWhich will help during my learning of this new technology!\n","dateCreated":"2012-03-25T00:25:39+00:00","dateModified":"2012-03-25T00:53:32+00:00","datePublished":"2012-03-25T00:25:39+00:00","description":"   \n\nI started some weeks ago to play with Github Hubot and hosted one version on Heroku to start learning about all those new technologies.","headline":"Writing a first Node.js application on Windows","image":["https://farm8.staticflickr.com/7184/6972712717_29c1c987ab_q.jpg","https://farm8.staticflickr.com/7184/6972712717_3065764dc8_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2012/03/25/Writing-a-first-Nodejs-application-on-Windows/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2012/03/25/Writing-a-first-Nodejs-application-on-Windows/","keywords":"nodejs","thumbnailUrl":"https://farm8.staticflickr.com/7184/6972712717_29c1c987ab_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"   \n\nI started some weeks ago to play with Github Hubot and hosted one version on Heroku to start learning about all those new technologies.\n\n\nThe next step was to go a bit onto Node.js and write a first small application.\nFirst you need to download Node.js and install it on your machine. I downloaded the Windows version 0.6.14.\nWhen Node.js is installed on your machine you should find it on the folder C:\\Program Files (x86)\\nodejs for 64 bits machines and on C:\\Program Files\\nodejs for the 32 bits.\nThen start a PowerShell window and type “node -v” you should see v0.6.14.\nNow start you preferred text editor and create a new file server.js and copy paste the code from the home page of Node.js\n\nvar http = require(‘http’);http.createServer(function (req, res) {  res.writeHead(200, {‘Content-Type’: ‘text/plain’});  res.end(‘Hello World\\n’);}).listen(1337, ‘127.0.0.1’);console.log(‘Server running at http://127.0.0.1:1337/&#39;);\n\n\n\n\n\n\n\n\n\n\n\n\n.csharpcode, .csharpcode pre\n{\n    font-size: small;\n    color: black;\n    font-family: consolas, \"Courier New\", courier, monospace;\n    background-color: #ffffff;\n    /*white-space: pre;*/\n}\n.csharpcode pre { margin: 0em; }\n.csharpcode .rem { color: #008000; }\n.csharpcode .kwrd { color: #0000ff; }\n.csharpcode .str { color: #006080; }\n.csharpcode .op { color: #0000c0; }\n.csharpcode .preproc { color: #cc6633; }\n.csharpcode .asp { background-color: #ffff00; }\n.csharpcode .html { color: #800000; }\n.csharpcode .attr { color: #ff0000; }\n.csharpcode .alt \n{\n    background-color: #f4f4f4;\n    width: 100%;\n    margin: 0em;\n}\n.csharpcode .lnum { color: #606060; }\n\n\n\nGo back to your PowerShell window and type “node server.js” which should display “Server running at http://127.0.0.1:1337/”\nNow run your preferred browser and enter the url http://127.0.0.1:1337/\n\nI went a little further following the Node Beginner site and created a first module. \nTo do so I used JetBrains WebStorm 3 which you can easily configure to run and debug your Node.js application.\nYou need to configure it this way\n \nThen you can add a Run/Debug configuration for Node.Js\n \nFinally you can run your Node.js application in Debug mode \n \nand for sure hit the breakpoints and watch the values of your variables\n \nWhich will help during my learning of this new technology!\n","dateCreated":"2012-03-25T00:25:39+00:00","dateModified":"2012-03-25T00:53:32+00:00","datePublished":"2012-03-25T00:25:39+00:00","description":"   \n\nI started some weeks ago to play with Github Hubot and hosted one version on Heroku to start learning about all those new technologies.","headline":"Writing a first Node.js application on Windows","image":["https://farm8.staticflickr.com/7184/6972712717_29c1c987ab_q.jpg","https://farm8.staticflickr.com/7184/6972712717_3065764dc8_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2012/03/25/Writing-a-first-Nodejs-application-on-Windows/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2012/03/25/Writing-a-first-Nodejs-application-on-Windows/","keywords":"nodejs","thumbnailUrl":"https://farm8.staticflickr.com/7184/6972712717_29c1c987ab_q.jpg"}</script>
     <meta name="description" content="I started some weeks ago to play with Github Hubot and hosted one version on Heroku to start learning about all those new technologies.">
 <meta name="keywords" content="nodejs">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Writing a first Node.js application on Windows">
-<meta property="og:url" content="https://laurentkempe.com/2012/03/25/Writing-a-first-Nodejs-application-on-Windows/index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2012&#x2F;03&#x2F;25&#x2F;Writing-a-first-Nodejs-application-on-Windows&#x2F;index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="I started some weeks ago to play with Github Hubot and hosted one version on Heroku to start learning about all those new technologies.">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://farm8.staticflickr.com/7055/7011307473_308a566b37_o.png">
-<meta property="og:image" content="http://farm8.staticflickr.com/7253/6865213052_0a80e9a449_o.png">
-<meta property="og:image" content="http://farm8.staticflickr.com/7188/7011334891_f505c3d868_o.png">
-<meta property="og:image" content="http://farm8.staticflickr.com/7226/7011339387_5c4e5b1472_o.png">
-<meta property="og:image" content="http://farm8.staticflickr.com/7072/6865235082_e952e089c2_o.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;farm8.staticflickr.com&#x2F;7055&#x2F;7011307473_308a566b37_o.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;farm8.staticflickr.com&#x2F;7253&#x2F;6865213052_0a80e9a449_o.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;farm8.staticflickr.com&#x2F;7188&#x2F;7011334891_f505c3d868_o.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;farm8.staticflickr.com&#x2F;7226&#x2F;7011339387_5c4e5b1472_o.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;farm8.staticflickr.com&#x2F;7072&#x2F;6865235082_e952e089c2_o.png">
 <meta property="og:updated_time" content="2012-03-25T00:53:32.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Writing a first Node.js application on Windows">
-<meta name="twitter:description" content="I started some weeks ago to play with Github Hubot and hosted one version on Heroku to start learning about all those new technologies.">
-<meta name="twitter:image" content="http://farm8.staticflickr.com/7055/7011307473_308a566b37_o.png">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;farm8.staticflickr.com&#x2F;7055&#x2F;7011307473_308a566b37_o.png">
 <meta name="twitter:creator" content="@laurentkempe">
     
     
@@ -50,7 +48,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-mslcllntebz6bnaf9snd8szfnckrp584wuqit7q6whzvju7uxsrud8qspz4k.min.css">
+    <link rel="stylesheet" href="/assets/css/style-b05yginpngfjm2uxkufrlocarhamnyny8crwlumxxdjkx1olyzpkm4z4smqx.min.css">
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -86,7 +84,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/ "
+            href="/%20"
             aria-label=""
         >
             Laurent Kempé
@@ -137,7 +135,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/ "
+                             href="/%20"
                             
                             title="Home"
                         >
@@ -338,17 +336,17 @@
 
 <p>Go back to your PowerShell window and type “node server.js” which should display “Server running at <a href="http://127.0.0.1:1337/" target="_blank" rel="noopener">http://127.0.0.1:1337/</a>”</p>
 <p>Now run your preferred browser and enter the url <a href="http://127.0.0.1:1337/" target="_blank" rel="noopener">http://127.0.0.1:1337/</a></p>
-<p><a href="http://www.flickr.com/photos/laurentkempe/7011307473/" title="nodejs by Laurent Kempé, on Flickr" target="_blank" rel="noopener"><img src="http://farm8.staticflickr.com/7055/7011307473_308a566b37_o.png" alt="nodejs"></a></p>
+<p><a href="http://www.flickr.com/photos/laurentkempe/7011307473/" target="_blank" rel="noopener" title="nodejs by Laurent Kempé, on Flickr"><img src="http://farm8.staticflickr.com/7055/7011307473_308a566b37_o.png" alt="nodejs"></a></p>
 <p>I went a little further following the <a href="http://www.nodebeginner.org/" target="_blank" rel="noopener">Node Beginner</a> site and created a first module. </p>
 <p>To do so I used <a href="http://www.jetbrains.com/webstorm/" target="_blank" rel="noopener">JetBrains WebStorm 3</a> which you can easily configure to run and debug your Node.js application.</p>
 <p>You need to configure it this way</p>
-<p><a href="http://www.flickr.com/photos/laurentkempe/6865213052/" title="nodejs2 by Laurent Kempé, on Flickr" target="_blank" rel="noopener"><img src="http://farm8.staticflickr.com/7253/6865213052_0a80e9a449_o.png" alt="nodejs2"></a> </p>
+<p><a href="http://www.flickr.com/photos/laurentkempe/6865213052/" target="_blank" rel="noopener" title="nodejs2 by Laurent Kempé, on Flickr"><img src="http://farm8.staticflickr.com/7253/6865213052_0a80e9a449_o.png" alt="nodejs2"></a> </p>
 <p>Then you can add a Run/Debug configuration for Node.Js</p>
-<p><a href="http://www.flickr.com/photos/laurentkempe/7011334891/" title="nodejs3 by Laurent Kempé, on Flickr" target="_blank" rel="noopener"><img src="http://farm8.staticflickr.com/7188/7011334891_f505c3d868_o.png" alt="nodejs3"></a> </p>
+<p><a href="http://www.flickr.com/photos/laurentkempe/7011334891/" target="_blank" rel="noopener" title="nodejs3 by Laurent Kempé, on Flickr"><img src="http://farm8.staticflickr.com/7188/7011334891_f505c3d868_o.png" alt="nodejs3"></a> </p>
 <p>Finally you can run your Node.js application in Debug mode </p>
-<p><a href="http://www.flickr.com/photos/laurentkempe/7011339387/" title="nodejs4 by Laurent Kempé, on Flickr" target="_blank" rel="noopener"><img src="http://farm8.staticflickr.com/7226/7011339387_5c4e5b1472_o.png" alt="nodejs4"></a> </p>
+<p><a href="http://www.flickr.com/photos/laurentkempe/7011339387/" target="_blank" rel="noopener" title="nodejs4 by Laurent Kempé, on Flickr"><img src="http://farm8.staticflickr.com/7226/7011339387_5c4e5b1472_o.png" alt="nodejs4"></a> </p>
 <p>and for sure hit the breakpoints and watch the values of your variables</p>
-<p><a href="http://www.flickr.com/photos/laurentkempe/6865235082/" title="nodejs5 by Laurent Kempé, on Flickr" target="_blank" rel="noopener"><img src="http://farm8.staticflickr.com/7072/6865235082_e952e089c2_o.png" alt="nodejs5"></a> </p>
+<p><a href="http://www.flickr.com/photos/laurentkempe/6865235082/" target="_blank" rel="noopener" title="nodejs5 by Laurent Kempé, on Flickr"><img src="http://farm8.staticflickr.com/7072/6865235082_e952e089c2_o.png" alt="nodejs5"></a> </p>
 <p>Which will help during my learning of this new technology!</p>
 
             
@@ -361,7 +359,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/nodejs/">nodejs</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/nodejs/" rel="tag">nodejs</a>
 
             </div>
         
@@ -695,7 +693,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-7y6uwuqgbcvcyfh91qqqps0hepqhsodkqsffxy8xmvyy1e7fa02w63m4kwm9.min.js"></script>
+<script src="/assets/js/script-81vkfdsd6zncrgoppv4dqukrlu3ekrh5kij6va1fch99q17dfu9iukgoppf8.min.js"></script>
 <!--SCRIPTS END-->
 
 

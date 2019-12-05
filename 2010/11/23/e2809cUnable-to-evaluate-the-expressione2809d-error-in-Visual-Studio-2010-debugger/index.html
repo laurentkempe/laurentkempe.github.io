@@ -13,22 +13,20 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Last week I had an issue in Visual Studio 2010 debugger in some projects only! When I was looking at the value of variables I was getting an error message saying “Unable to evaluate the expression”!\nSearching on Connect I have found that someone else had the same issue! Not really a good sign, “Debuging (Evalutation) stops working at times - Unable to evaluate the expression”. I have the same configuration, same issue and can reproduce what is described:\n\n\n\nI’m on Windows 7 64bit and am using VS.NET 2010 UltimateNever had a problem with VS.NET 2010 until recently. And the problem I am having is that when I create a new console app and am not able to:\n\nEvalutate any variable values\nHover over any variables and see their values\nUse the immidiate window to get any values. I see a message -“Unable to evaluate the expression”The debugger stops and the break points as expected but the above does not work.If I switch the Project Build platofrm target property from x86 to Any CPU, then everything works as expected. Switching it back to x86 gives to the same behavior as explained above.Other project types exhibit the same behavior sometimes. I have a new ASP.NET MVC project that are created and it exhibits the same behaviour. In fact with this project I am unable ot debug no matter what the build settings are.Older console app projects have this problem as well (they used ot work just fine earlier).\n\n\nOn last Friday, I re-installed two times Visual Studio 2010 without any success, uninstalled all tooling… Still the same issue. I tried several other things over the weekend which didn’t helped.\nI finally found that I had installed ASP.NET MVC 3 RC and I remember reading the documentation saying that it had an issue with Async CTP, which cannot be installed together on the same machine.\nSo I un-installed ASP.NET MVC 3 RC and searched Async CTP which wasn’t listed. Something I did already when installing ASP.NET MVC 3 RC.\nThis morning I realized why I didn’t found the Async CTP when I installed ASP.NET MVC 3 RC! It is installed as an update! What’s the hell!\nSo from Control Panel you have to click on “View installed updates” to see it\n\nAnd now you can see it and un-install the Async CTP\n\nThen I followed the instruction of Drew Miller of the ASP.NET Team to uninstall all pieces of ASP.NET MVC 3 RC, “How to Uninstall Microsoft ASP.NET MVC 3 RC”\nNow my Visual Studio 2010 debugger is working like before!\n","dateCreated":"2010-11-23T19:04:46+00:00","dateModified":"2010-11-23T19:04:46+00:00","datePublished":"2010-11-23T19:04:46+00:00","description":"Last week I had an issue in Visual Studio 2010 debugger in some projects only! When I was looking at the value of variables I was getting an error message saying “Unable to evaluate the expression”!\nSearching on Connect I have found that someone else had the same issue! Not really a good sign, “Debuging (Evalutation) stops working at times - Unable to evaluate the expression”. I have the same configuration, same issue and can reproduce what is described:","headline":"“Unable to evaluate the expression” error in Visual Studio 2010 debugger","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/11/23/e2809cUnable-to-evaluate-the-expressione2809d-error-in-Visual-Studio-2010-debugger/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/11/23/e2809cUnable-to-evaluate-the-expressione2809d-error-in-Visual-Studio-2010-debugger/","keywords":"Visual Studio, ASP.NET MVC, Async"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Last week I had an issue in Visual Studio 2010 debugger in some projects only! When I was looking at the value of variables I was getting an error message saying “Unable to evaluate the expression”!\nSearching on Connect I have found that someone else had the same issue! Not really a good sign, “Debuging (Evalutation) stops working at times - Unable to evaluate the expression”. I have the same configuration, same issue and can reproduce what is described:\n\n\n\nI’m on Windows 7 64bit and am using VS.NET 2010 UltimateNever had a problem with VS.NET 2010 until recently. And the problem I am having is that when I create a new console app and am not able to:\n\nEvalutate any variable values\nHover over any variables and see their values\nUse the immidiate window to get any values. I see a message -“Unable to evaluate the expression”The debugger stops and the break points as expected but the above does not work.If I switch the Project Build platofrm target property from x86 to Any CPU, then everything works as expected. Switching it back to x86 gives to the same behavior as explained above.Other project types exhibit the same behavior sometimes. I have a new ASP.NET MVC project that are created and it exhibits the same behaviour. In fact with this project I am unable ot debug no matter what the build settings are.Older console app projects have this problem as well (they used ot work just fine earlier).\n\n\nOn last Friday, I re-installed two times Visual Studio 2010 without any success, uninstalled all tooling… Still the same issue. I tried several other things over the weekend which didn’t helped.\nI finally found that I had installed ASP.NET MVC 3 RC and I remember reading the documentation saying that it had an issue with Async CTP, which cannot be installed together on the same machine.\nSo I un-installed ASP.NET MVC 3 RC and searched Async CTP which wasn’t listed. Something I did already when installing ASP.NET MVC 3 RC.\nThis morning I realized why I didn’t found the Async CTP when I installed ASP.NET MVC 3 RC! It is installed as an update! What’s the hell!\nSo from Control Panel you have to click on “View installed updates” to see it\n\nAnd now you can see it and un-install the Async CTP\n\nThen I followed the instruction of Drew Miller of the ASP.NET Team to uninstall all pieces of ASP.NET MVC 3 RC, “How to Uninstall Microsoft ASP.NET MVC 3 RC”\nNow my Visual Studio 2010 debugger is working like before!\n","dateCreated":"2010-11-23T19:04:46+00:00","dateModified":"2010-11-23T19:04:46+00:00","datePublished":"2010-11-23T19:04:46+00:00","description":"Last week I had an issue in Visual Studio 2010 debugger in some projects only! When I was looking at the value of variables I was getting an error message saying “Unable to evaluate the expression”!\nSearching on Connect I have found that someone else had the same issue! Not really a good sign, “Debuging (Evalutation) stops working at times - Unable to evaluate the expression”. I have the same configuration, same issue and can reproduce what is described:","headline":"“Unable to evaluate the expression” error in Visual Studio 2010 debugger","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2010/11/23/e2809cUnable-to-evaluate-the-expressione2809d-error-in-Visual-Studio-2010-debugger/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2010/11/23/e2809cUnable-to-evaluate-the-expressione2809d-error-in-Visual-Studio-2010-debugger/","keywords":"Visual Studio, ASP.NET MVC, Async"}</script>
     <meta name="description" content="Last week I had an issue in Visual Studio 2010 debugger in some projects only! When I was looking at the value of variables I was getting an error message saying “Unable to evaluate the expression”! S">
 <meta name="keywords" content="Visual Studio,ASP.NET MVC,Async">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="“Unable to evaluate the expression” error in Visual Studio 2010 debugger">
-<meta property="og:url" content="https://laurentkempe.com/2010/11/23/e2809cUnable-to-evaluate-the-expressione2809d-error-in-Visual-Studio-2010-debugger/index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2010&#x2F;11&#x2F;23&#x2F;e2809cUnable-to-evaluate-the-expressione2809d-error-in-Visual-Studio-2010-debugger&#x2F;index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="Last week I had an issue in Visual Studio 2010 debugger in some projects only! When I was looking at the value of variables I was getting an error message saying “Unable to evaluate the expression”! S">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://farm5.static.flickr.com/4092/5201198234_cdc5eca598_o.png">
-<meta property="og:image" content="http://farm5.static.flickr.com/4090/5201200424_f0cd50966e_o.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;farm5.static.flickr.com&#x2F;4092&#x2F;5201198234_cdc5eca598_o.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;farm5.static.flickr.com&#x2F;4090&#x2F;5201200424_f0cd50966e_o.png">
 <meta property="og:updated_time" content="2010-11-23T19:04:46.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="“Unable to evaluate the expression” error in Visual Studio 2010 debugger">
-<meta name="twitter:description" content="Last week I had an issue in Visual Studio 2010 debugger in some projects only! When I was looking at the value of variables I was getting an error message saying “Unable to evaluate the expression”! S">
-<meta name="twitter:image" content="http://farm5.static.flickr.com/4092/5201198234_cdc5eca598_o.png">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;farm5.static.flickr.com&#x2F;4092&#x2F;5201198234_cdc5eca598_o.png">
 <meta name="twitter:creator" content="@laurentkempe">
     
     
@@ -41,7 +39,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-mslcllntebz6bnaf9snd8szfnckrp584wuqit7q6whzvju7uxsrud8qspz4k.min.css">
+    <link rel="stylesheet" href="/assets/css/style-b05yginpngfjm2uxkufrlocarhamnyny8crwlumxxdjkx1olyzpkm4z4smqx.min.css">
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -77,7 +75,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/ "
+            href="/%20"
             aria-label=""
         >
             Laurent Kempé
@@ -128,7 +126,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/ "
+                             href="/%20"
                             
                             title="Home"
                         >
@@ -283,9 +281,9 @@
 <p>So I un-installed ASP.NET MVC 3 RC and searched Async CTP which wasn’t listed. Something I did already when installing ASP.NET MVC 3 RC.</p>
 <p>This morning I realized why I didn’t found the Async CTP when I installed ASP.NET MVC 3 RC! It is installed as an update! What’s the hell!</p>
 <p>So from Control Panel you have to click on “View installed updates” to see it</p>
-<p><img src="http://farm5.static.flickr.com/4092/5201198234_cdc5eca598_o.png" alt></p>
+<p><img src="http://farm5.static.flickr.com/4092/5201198234_cdc5eca598_o.png" alt=""></p>
 <p>And now you can see it and un-install the Async CTP</p>
-<p><img src="http://farm5.static.flickr.com/4090/5201200424_f0cd50966e_o.png" alt></p>
+<p><img src="http://farm5.static.flickr.com/4090/5201200424_f0cd50966e_o.png" alt=""></p>
 <p>Then I followed the instruction of Drew Miller of the ASP.NET Team to uninstall all pieces of ASP.NET MVC 3 RC, “<a href="http://drew-prog.blogspot.com/2010/11/how-to-uninstall-microsoft-aspnet-mvc-3.html" target="_blank" rel="noopener">How to Uninstall Microsoft ASP.NET MVC 3 RC</a>”</p>
 <p>Now my Visual Studio 2010 debugger is working like before!</p>
 
@@ -299,7 +297,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET-MVC/">ASP.NET MVC</a> <a class="tag tag--primary tag--small t-link" href="/tags/Async/">Async</a> <a class="tag tag--primary tag--small t-link" href="/tags/Visual-Studio/">Visual Studio</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET-MVC/" rel="tag">ASP.NET MVC</a> <a class="tag tag--primary tag--small t-link" href="/tags/Async/" rel="tag">Async</a> <a class="tag tag--primary tag--small t-link" href="/tags/Visual-Studio/" rel="tag">Visual Studio</a>
 
             </div>
         
@@ -633,7 +631,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-7y6uwuqgbcvcyfh91qqqps0hepqhsodkqsffxy8xmvyy1e7fa02w63m4kwm9.min.js"></script>
+<script src="/assets/js/script-81vkfdsd6zncrgoppv4dqukrlu3ekrh5kij6va1fch99q17dfu9iukgoppf8.min.js"></script>
 <!--SCRIPTS END-->
 
 

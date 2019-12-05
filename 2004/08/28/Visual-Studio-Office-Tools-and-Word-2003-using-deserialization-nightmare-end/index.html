@@ -13,19 +13,17 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I finally fixed the issue I reported in the post “New milestone reached in the development of the authoring tool for Tech Head Brothers French portal “. I am still waiting some feedback from Peter (he might be in holidays).\nI am getting an exception when I try to deserialize an object. This exception is due to a security problem.\n\n\nWhat I did is to use SGen tool from Daniel Cazzulino described in this post: “Strongly-typed, event-rising, design-time generated custom XmlSerializers (even more than Whidbey sgen!) “. I also used Mike Woodring code described in the post: “The Last Configuration Section Handler I’ll Ever Need“. I mixed all and modified XmlSerializerSectionHandler from Mike so that it doesn’t return a fixed IDictionary but an object. With reflection I can determine which Handler to instantiate, then from this handler I call it method Create and I get something like that to deserialize an object from the configuration file:\nSchemaSettings schemaSettings = (SchemaSettings)AssemblySettings.GetConfig(“SchemaSettings”);\nWith the configuration:\n&lt;configuration&gt;\n\n&lt;configSections&gt;\n\n&lt;section name=”SchemaSettings”\n\ntype=”TechHeadBrothers.Configuration.XmlDynamicSerializerSectionHandler, THBPublisher”/&gt;\n\n&lt;/configSections&gt;\n\n&lt;SchemaSettings type=”THBPublisher.SchemaSettings, THBPublisher” serializer=”THBPublisher.SchemaSettingsSerializer, THBPublisher” reader=”THBPublisher.SchemaSettingsReader, THBPublisher”&gt;\n\n&lt;Name&gt;Laurent&lt;/Name&gt;\n\n&lt;/SchemaSettings&gt;\n\n&lt;/configuration&gt;\nSo the good point at the end is that I have a configuration file looking like a normal one, that I can get configuration settings from even deserialize object from it. Nice.\n","dateCreated":"2004-08-28T15:32:00+00:00","dateModified":"2004-08-28T15:32:00+00:00","datePublished":"2004-08-28T15:32:00+00:00","description":"I finally fixed the issue I reported in the post “New milestone reached in the development of the authoring tool for Tech Head Brothers French portal “. I am still waiting some feedback from Peter (he might be in holidays).\nI am getting an exception when I try to deserialize an object. This exception is due to a security problem.","headline":"Visual Studio Office Tools and Word 2003 using deserialization, nightmare end","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2004/08/28/Visual-Studio-Office-Tools-and-Word-2003-using-deserialization-nightmare-end/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2004/08/28/Visual-Studio-Office-Tools-and-Word-2003-using-deserialization-nightmare-end/","keywords":"Tech Head Brothers, .NET Development"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I finally fixed the issue I reported in the post “New milestone reached in the development of the authoring tool for Tech Head Brothers French portal “. I am still waiting some feedback from Peter (he might be in holidays).\nI am getting an exception when I try to deserialize an object. This exception is due to a security problem.\n\n\nWhat I did is to use SGen tool from Daniel Cazzulino described in this post: “Strongly-typed, event-rising, design-time generated custom XmlSerializers (even more than Whidbey sgen!) “. I also used Mike Woodring code described in the post: “The Last Configuration Section Handler I’ll Ever Need“. I mixed all and modified XmlSerializerSectionHandler from Mike so that it doesn’t return a fixed IDictionary but an object. With reflection I can determine which Handler to instantiate, then from this handler I call it method Create and I get something like that to deserialize an object from the configuration file:\nSchemaSettings schemaSettings = (SchemaSettings)AssemblySettings.GetConfig(“SchemaSettings”);\nWith the configuration:\n&lt;configuration&gt;\n\n&lt;configSections&gt;\n\n&lt;section name=”SchemaSettings”\n\ntype=”TechHeadBrothers.Configuration.XmlDynamicSerializerSectionHandler, THBPublisher”/&gt;\n\n&lt;/configSections&gt;\n\n&lt;SchemaSettings type=”THBPublisher.SchemaSettings, THBPublisher” serializer=”THBPublisher.SchemaSettingsSerializer, THBPublisher” reader=”THBPublisher.SchemaSettingsReader, THBPublisher”&gt;\n\n&lt;Name&gt;Laurent&lt;/Name&gt;\n\n&lt;/SchemaSettings&gt;\n\n&lt;/configuration&gt;\nSo the good point at the end is that I have a configuration file looking like a normal one, that I can get configuration settings from even deserialize object from it. Nice.\n","dateCreated":"2004-08-28T15:32:00+00:00","dateModified":"2004-08-28T15:32:00+00:00","datePublished":"2004-08-28T15:32:00+00:00","description":"I finally fixed the issue I reported in the post “New milestone reached in the development of the authoring tool for Tech Head Brothers French portal “. I am still waiting some feedback from Peter (he might be in holidays).\nI am getting an exception when I try to deserialize an object. This exception is due to a security problem.","headline":"Visual Studio Office Tools and Word 2003 using deserialization, nightmare end","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2004/08/28/Visual-Studio-Office-Tools-and-Word-2003-using-deserialization-nightmare-end/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2004/08/28/Visual-Studio-Office-Tools-and-Word-2003-using-deserialization-nightmare-end/","keywords":"Tech Head Brothers, .NET Development"}</script>
     <meta name="description" content="I finally fixed the issue I reported in the post “New milestone reached in the development of the authoring tool for Tech Head Brothers French portal “. I am still waiting some feedback from Peter (he">
 <meta name="keywords" content="Tech Head Brothers,.NET Development">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Visual Studio Office Tools and Word 2003 using deserialization, nightmare end">
-<meta property="og:url" content="https://laurentkempe.com/2004/08/28/Visual-Studio-Office-Tools-and-Word-2003-using-deserialization-nightmare-end/index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2004&#x2F;08&#x2F;28&#x2F;Visual-Studio-Office-Tools-and-Word-2003-using-deserialization-nightmare-end&#x2F;index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="I finally fixed the issue I reported in the post “New milestone reached in the development of the authoring tool for Tech Head Brothers French portal “. I am still waiting some feedback from Peter (he">
 <meta property="og:locale" content="en">
 <meta property="og:updated_time" content="2004-08-28T15:32:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Visual Studio Office Tools and Word 2003 using deserialization, nightmare end">
-<meta name="twitter:description" content="I finally fixed the issue I reported in the post “New milestone reached in the development of the authoring tool for Tech Head Brothers French portal “. I am still waiting some feedback from Peter (he">
 <meta name="twitter:creator" content="@laurentkempe">
     
     
@@ -38,7 +36,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-mslcllntebz6bnaf9snd8szfnckrp584wuqit7q6whzvju7uxsrud8qspz4k.min.css">
+    <link rel="stylesheet" href="/assets/css/style-b05yginpngfjm2uxkufrlocarhamnyny8crwlumxxdjkx1olyzpkm4z4smqx.min.css">
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -74,7 +72,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/ "
+            href="/%20"
             aria-label=""
         >
             Laurent Kempé
@@ -125,7 +123,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/ "
+                             href="/%20"
                             
                             title="Home"
                         >
@@ -267,27 +265,27 @@
 <p>I am getting an exception when I try to deserialize an object. This exception is due to a security problem.</p>
 <a id="more"></a>
 
-<p>What I did is to use SGen tool from <a href="http://weblogs.asp.net/cazzu/" target="_blank" rel="noopener">Daniel Cazzulino</a> described in this post: “<a href="http://weblogs.asp.net/cazzu/archive/2004/08/02/SGen.aspx" target="_blank" rel="noopener">Strongly-typed, event-rising, design-time generated custom XmlSerializers (even more than Whidbey sgen!)</a> “. I also used Mike Woodring code described in the post: “<a href="http://www.pluralsight.com/craig/articleview.aspx/CLR%20Workings/The%20Last%20Configuration%20Section%20Handler%20I.xml" target="_blank" rel="noopener">The Last Configuration Section Handler I’ll Ever Need</a>“. I mixed all and modified XmlSerializerSectionHandler from Mike so that it doesn’t return a fixed IDictionary but an object. With reflection I can determine which Handler to instantiate, then from this handler I call it method Create and I get something like that to deserialize an object from the configuration file:<br><font size="2"></font></p>
+<p>What I did is to use SGen tool from <a href="http://weblogs.asp.net/cazzu/" target="_blank" rel="noopener">Daniel Cazzulino</a> described in this post: “<a href="http://weblogs.asp.net/cazzu/archive/2004/08/02/SGen.aspx" target="_blank" rel="noopener">Strongly-typed, event-rising, design-time generated custom XmlSerializers (even more than Whidbey sgen!)</a> “. I also used Mike Woodring code described in the post: “<a href="http://www.pluralsight.com/craig/articleview.aspx/CLR%20Workings/The%20Last%20Configuration%20Section%20Handler%20I.xml" target="_blank" rel="noopener">The Last Configuration Section Handler I’ll Ever Need</a>“. I mixed all and modified XmlSerializerSectionHandler from Mike so that it doesn’t return a fixed IDictionary but an object. With reflection I can determine which Handler to instantiate, then from this handler I call it method Create and I get something like that to deserialize an object from the configuration file:<br><font size="2"></p>
 <p>SchemaSettings schemaSettings = (SchemaSettings)AssemblySettings.GetConfig(“SchemaSettings”);</p>
-<p>With the configuration:<br><font color="#0000ff" size="2"></font></p>
-<p>&lt;<font color="#800000" size="2">configuration</font><font color="#0000ff" size="2">&gt;</font></p>
-<p><font size="2"></font></p>
-<p><font color="#0000ff" size="2">&lt;</font><font color="#800000" size="2">configSections</font><font color="#0000ff" size="2">&gt;</font></p>
-<p><font size="2"></font></p>
-<p><font color="#0000ff" size="2">&lt;</font><font color="#800000" size="2">section</font><font color="#ff00ff" size="2"> </font><font color="#ff0000" size="2">name</font><font color="#0000ff" size="2">=”SchemaSettings”</font></p>
-<p><font color="#ff00ff" size="2"></font></p>
-<p><font color="#ff0000" size="2">type</font><font color="#0000ff" size="2">=”TechHeadBrothers.Configuration.XmlDynamicSerializerSectionHandler, THBPublisher”/&gt;</font></p>
-<p><font size="2"></font></p>
-<p><font color="#0000ff" size="2">&lt;/</font><font color="#800000" size="2">configSections</font><font color="#0000ff" size="2">&gt;</font></p>
-<p><font color="#0000ff" size="2"><font size="2"></font></font></p>
-<p><font color="#0000ff" size="2">&lt;</font><font color="#800000" size="2">SchemaSettings</font><font color="#ff00ff" size="2"> </font><font color="#ff0000" size="2">type</font><font color="#0000ff" size="2">=”THBPublisher.SchemaSettings, THBPublisher”</font><font color="#ff00ff" size="2"> </font><font color="#ff0000" size="2">serializer</font><font color="#0000ff" size="2">=”THBPublisher.SchemaSettingsSerializer, THBPublisher”</font><font color="#ff00ff" size="2"> </font><font color="#ff0000" size="2">reader</font><font color="#0000ff" size="2">=”THBPublisher.SchemaSettingsReader, THBPublisher”&gt;</font></p>
-<p><font size="2"></font></p>
-<p><font color="#0000ff" size="2">&lt;</font><font color="#800000" size="2">Name</font><font color="#0000ff" size="2">&gt;</font><font size="2">Laurent</font><font color="#0000ff" size="2">&lt;/</font><font color="#800000" size="2">Name</font><font color="#0000ff" size="2">&gt;</font></p>
-<p><font size="2"></font></p>
-<p><font color="#0000ff" size="2">&lt;/</font><font color="#800000" size="2">SchemaSettings</font><font color="#0000ff" size="2">&gt;</font></p>
-<p><font size="2"></font></p>
-<p><font color="#0000ff" size="2">&lt;/</font><font color="#800000" size="2">configuration</font><font color="#0000ff" size="2">&gt;</font></p>
-<p>So the good point at the end is that I have a configuration file looking like a normal one, that I can get configuration settings from even deserialize object from it. Nice.</p>
+<p>With the configuration:<br><font color="#0000ff" size="2"></p>
+<p>&lt;</font><font color="#800000" size="2">configuration</font><font color="#0000ff" size="2">&gt;</p>
+<p></font><font size="2"></p>
+<p></font><font color="#0000ff" size="2">&lt;</font><font color="#800000" size="2">configSections</font><font color="#0000ff" size="2">&gt;</p>
+<p></font><font size="2"></p>
+<p></font><font color="#0000ff" size="2">&lt;</font><font color="#800000" size="2">section</font><font color="#ff00ff" size="2"> </font><font color="#ff0000" size="2">name</font><font color="#0000ff" size="2">=”SchemaSettings”</p>
+<p></font><font color="#ff00ff" size="2"></p>
+<p></font><font color="#ff0000" size="2">type</font><font color="#0000ff" size="2">=”TechHeadBrothers.Configuration.XmlDynamicSerializerSectionHandler, THBPublisher”/&gt;</p>
+<p></font><font size="2"></p>
+<p></font><font color="#0000ff" size="2">&lt;/</font><font color="#800000" size="2">configSections</font><font color="#0000ff" size="2">&gt;</font></p>
+<p><font color="#0000ff" size="2"><font size="2"></p>
+<p></font><font color="#0000ff" size="2">&lt;</font><font color="#800000" size="2">SchemaSettings</font><font color="#ff00ff" size="2"> </font><font color="#ff0000" size="2">type</font><font color="#0000ff" size="2">=”THBPublisher.SchemaSettings, THBPublisher”</font><font color="#ff00ff" size="2"> </font><font color="#ff0000" size="2">serializer</font><font color="#0000ff" size="2">=”THBPublisher.SchemaSettingsSerializer, THBPublisher”</font><font color="#ff00ff" size="2"> </font><font color="#ff0000" size="2">reader</font><font color="#0000ff" size="2">=”THBPublisher.SchemaSettingsReader, THBPublisher”&gt;</p>
+<p></font><font size="2"></p>
+<p></font><font color="#0000ff" size="2">&lt;</font><font color="#800000" size="2">Name</font><font color="#0000ff" size="2">&gt;</font><font size="2">Laurent</font><font color="#0000ff" size="2">&lt;/</font><font color="#800000" size="2">Name</font><font color="#0000ff" size="2">&gt;</p>
+<p></font><font size="2"></p>
+<p></font><font color="#0000ff" size="2">&lt;/</font><font color="#800000" size="2">SchemaSettings</font><font color="#0000ff" size="2">&gt;</p>
+<p></font><font size="2"></p>
+<p></font><font color="#0000ff" size="2">&lt;/</font><font color="#800000" size="2">configuration</font><font color="#0000ff" size="2">&gt;</font></p>
+<p></font></font>So the good point at the end is that I have a configuration file looking like a normal one, that I can get configuration settings from even deserialize object from it. Nice.</p>
 
             
 
@@ -299,7 +297,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/NET-Development/">.NET Development</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tech-Head-Brothers/">Tech Head Brothers</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/NET-Development/" rel="tag">.NET Development</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tech-Head-Brothers/" rel="tag">Tech Head Brothers</a>
 
             </div>
         
@@ -633,7 +631,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-7y6uwuqgbcvcyfh91qqqps0hepqhsodkqsffxy8xmvyy1e7fa02w63m4kwm9.min.js"></script>
+<script src="/assets/js/script-81vkfdsd6zncrgoppv4dqukrlu3ekrh5kij6va1fch99q17dfu9iukgoppf8.min.js"></script>
 <!--SCRIPTS END-->
 
 

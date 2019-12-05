@@ -13,24 +13,22 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Today I faced a nasty bug, a null pointer exception in a property databound to our WPF application. This had some nasty side effects, and for sure this part of the code didn’t had any unit test, too bad! For sure now it has.\nThe line of code was really simple\n\n\nValues.Where(model =&gt; model.IsSelected).FirstOrDefault().Refresh();\nI guess you see the issue! If not here is the MSDN documentation:\n\npublic static TSource **FirstOrDefault**< TSource >(this [[NotNull](about:blank#)] [IEnumerable](about:blank#) source) *in class [Enumerable](about:blank#)*\n\nSummary:Returns the first element of a sequence, or a default value if the sequence contains no elements.\nParameters:source:The IEnumerable to return the first element of.\nType Parameters:TSource:The type of the elements of source.\nReturns:default(TSource) if source is empty; otherwise, the first element in source.\nExceptions:ArgumentNullException:source is null.\n\nYeah, FirstOrDefault might returns null, so if you chain a call to another method it just crash!\nFor sure we know that! We use this method for that purpose, but an error can happen that fast!\nSo I decided that I wanted to be protected by my tooling. So I went back to read the post “Introducing ReSharper 5.0: Structural Search and Replace”\nAfter several trial and some help from Ilya (Thanks!) I finally found the correct way to express what I wanted. My goal was to find all code which uses *FirstOrDefault() *method followed by a call to another method. Exactly like my issue.\n\n$enumerable$.FirstOrDefault().$method$()\nenumerable is an Expression of type System.Collections.IEnumerable or derived type\nmethod is a identifier placeholder with an empty indentifier name regexp\n\n\nI then verified that this error was found. And also luckily that this was the only error of that kind in our application.\n\nThen I finally added it to the Resharper Pattern Catalog, to show a warning.\n\nNow when ever I will type this stupid thing, I will have my preferred tool Resharper, telling me how stupid I am to even try this!\n\nBY the way you might download a sample Pattern Catalog from this blog post “Sample SSR Pattern Catalog Available for Download”. There are some cool stuff in there and it might help writing your owns.\n","dateCreated":"2010-11-18T23:02:53+00:00","dateModified":"2010-11-18T23:02:53+00:00","datePublished":"2010-11-18T23:02:53+00:00","description":"Today I faced a nasty bug, a null pointer exception in a property databound to our WPF application. This had some nasty side effects, and for sure this part of the code didn’t had any unit test, too bad! For sure now it has.\nThe line of code was really simple","headline":"Using Resharper Search with Pattern to protect you from your code","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/11/18/Using-Resharper-Search-with-Pattern-to-protect-you-from-your-code/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/11/18/Using-Resharper-Search-with-Pattern-to-protect-you-from-your-code/","keywords":"ReSharper, Jetbrains"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Today I faced a nasty bug, a null pointer exception in a property databound to our WPF application. This had some nasty side effects, and for sure this part of the code didn’t had any unit test, too bad! For sure now it has.\nThe line of code was really simple\n\n\nValues.Where(model =&gt; model.IsSelected).FirstOrDefault().Refresh();\nI guess you see the issue! If not here is the MSDN documentation:\n\npublic static TSource **FirstOrDefault**< TSource >(this [[NotNull](about:blank#)] [IEnumerable](about:blank#) source) *in class [Enumerable](about:blank#)*\n\nSummary:Returns the first element of a sequence, or a default value if the sequence contains no elements.\nParameters:source:The IEnumerable to return the first element of.\nType Parameters:TSource:The type of the elements of source.\nReturns:default(TSource) if source is empty; otherwise, the first element in source.\nExceptions:ArgumentNullException:source is null.\n\nYeah, FirstOrDefault might returns null, so if you chain a call to another method it just crash!\nFor sure we know that! We use this method for that purpose, but an error can happen that fast!\nSo I decided that I wanted to be protected by my tooling. So I went back to read the post “Introducing ReSharper 5.0: Structural Search and Replace”\nAfter several trial and some help from Ilya (Thanks!) I finally found the correct way to express what I wanted. My goal was to find all code which uses *FirstOrDefault() *method followed by a call to another method. Exactly like my issue.\n\n$enumerable$.FirstOrDefault().$method$()\nenumerable is an Expression of type System.Collections.IEnumerable or derived type\nmethod is a identifier placeholder with an empty indentifier name regexp\n\n\nI then verified that this error was found. And also luckily that this was the only error of that kind in our application.\n\nThen I finally added it to the Resharper Pattern Catalog, to show a warning.\n\nNow when ever I will type this stupid thing, I will have my preferred tool Resharper, telling me how stupid I am to even try this!\n\nBY the way you might download a sample Pattern Catalog from this blog post “Sample SSR Pattern Catalog Available for Download”. There are some cool stuff in there and it might help writing your owns.\n","dateCreated":"2010-11-18T23:02:53+00:00","dateModified":"2010-11-18T23:02:53+00:00","datePublished":"2010-11-18T23:02:53+00:00","description":"Today I faced a nasty bug, a null pointer exception in a property databound to our WPF application. This had some nasty side effects, and for sure this part of the code didn’t had any unit test, too bad! For sure now it has.\nThe line of code was really simple","headline":"Using Resharper Search with Pattern to protect you from your code","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2010/11/18/Using-Resharper-Search-with-Pattern-to-protect-you-from-your-code/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2010/11/18/Using-Resharper-Search-with-Pattern-to-protect-you-from-your-code/","keywords":"ReSharper, Jetbrains"}</script>
     <meta name="description" content="Today I faced a nasty bug, a null pointer exception in a property databound to our WPF application. This had some nasty side effects, and for sure this part of the code didn’t had any unit test, too b">
 <meta name="keywords" content="ReSharper,Jetbrains">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Using Resharper Search with Pattern to protect you from your code">
-<meta property="og:url" content="https://laurentkempe.com/2010/11/18/Using-Resharper-Search-with-Pattern-to-protect-you-from-your-code/index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2010&#x2F;11&#x2F;18&#x2F;Using-Resharper-Search-with-Pattern-to-protect-you-from-your-code&#x2F;index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="Today I faced a nasty bug, a null pointer exception in a property databound to our WPF application. This had some nasty side effects, and for sure this part of the code didn’t had any unit test, too b">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://farm2.static.flickr.com/1284/5186669137_d9f4f98471_o.png">
-<meta property="og:image" content="http://farm5.static.flickr.com/4151/5187275884_fd57929394_o.png">
-<meta property="og:image" content="http://farm2.static.flickr.com/1036/5187278260_3509a8c317_o.png">
-<meta property="og:image" content="http://farm5.static.flickr.com/4113/5187281640_fc10ec4169_o.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;farm2.static.flickr.com&#x2F;1284&#x2F;5186669137_d9f4f98471_o.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;farm5.static.flickr.com&#x2F;4151&#x2F;5187275884_fd57929394_o.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;farm2.static.flickr.com&#x2F;1036&#x2F;5187278260_3509a8c317_o.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;farm5.static.flickr.com&#x2F;4113&#x2F;5187281640_fc10ec4169_o.png">
 <meta property="og:updated_time" content="2010-11-18T23:02:53.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Using Resharper Search with Pattern to protect you from your code">
-<meta name="twitter:description" content="Today I faced a nasty bug, a null pointer exception in a property databound to our WPF application. This had some nasty side effects, and for sure this part of the code didn’t had any unit test, too b">
-<meta name="twitter:image" content="http://farm2.static.flickr.com/1284/5186669137_d9f4f98471_o.png">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;farm2.static.flickr.com&#x2F;1284&#x2F;5186669137_d9f4f98471_o.png">
 <meta name="twitter:creator" content="@laurentkempe">
     
     
@@ -43,7 +41,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-mslcllntebz6bnaf9snd8szfnckrp584wuqit7q6whzvju7uxsrud8qspz4k.min.css">
+    <link rel="stylesheet" href="/assets/css/style-b05yginpngfjm2uxkufrlocarhamnyny8crwlumxxdjkx1olyzpkm4z4smqx.min.css">
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -79,7 +77,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/ "
+            href="/%20"
             aria-label=""
         >
             Laurent Kempé
@@ -130,7 +128,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/ "
+                             href="/%20"
                             
                             title="Home"
                         >
@@ -275,10 +273,10 @@
 <p>Values.Where(model =&gt; model.IsSelected).FirstOrDefault().Refresh();</p>
 <p>I guess you see the issue! If not here is the MSDN documentation:</p>
 <blockquote>
-<dl><dt>public static TSource **FirstOrDefault**< TSource >(this [[NotNull](about:blank#)] [IEnumerable](about:blank#)<tsource> <var>source</var>) </tsource></dt><dd></dd><dt>*in class [Enumerable](about:blank#)*</dt></dl>
+<dl><dt>public static TSource **FirstOrDefault**< TSource >(this [[NotNull](about:blank#)] [IEnumerable](about:blank#)<TSource> <var>source</var>) </dt><dd></dd><dt>*in class [Enumerable](about:blank#)*</dt></dl>
 
 <h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary:"></a>Summary:</h2><p>Returns the first element of a sequence, or a default value if the sequence contains no elements.</p>
-<h3 id="Parameters"><a href="#Parameters" class="headerlink" title="Parameters:"></a>Parameters:</h3><p><var>source</var>:<br>The <a href="about:blank#" target="_blank" rel="noopener">IEnumerable<out t></out></a> to return the first element of.</p>
+<h3 id="Parameters"><a href="#Parameters" class="headerlink" title="Parameters:"></a>Parameters:</h3><p><var>source</var>:<br>The <a href="about:blank#" target="_blank" rel="noopener">IEnumerable<out T></a> to return the first element of.</p>
 <h2 id="Type-Parameters"><a href="#Type-Parameters" class="headerlink" title="Type Parameters:"></a>Type Parameters:</h2><p><var>TSource</var>:<br>The type of the elements of <var>source</var>.</p>
 <h2 id="Returns"><a href="#Returns" class="headerlink" title="Returns:"></a>Returns:</h2><p>default(<var>TSource</var>) if <var>source</var> is empty; otherwise, the first element in <var>source</var>.</p>
 <h3 id="Exceptions"><a href="#Exceptions" class="headerlink" title="Exceptions:"></a>Exceptions:</h3><p><a href="about:blank#" target="_blank" rel="noopener">ArgumentNullException</a>:<br><var>source</var> is null.</p>
@@ -292,13 +290,13 @@
 <p>enumerable is an Expression of type System.Collections.IEnumerable or derived type</p>
 <p>method is a identifier placeholder with an empty indentifier name regexp</p>
 </blockquote>
-<p><img src="http://farm2.static.flickr.com/1284/5186669137_d9f4f98471_o.png" alt></p>
+<p><img src="http://farm2.static.flickr.com/1284/5186669137_d9f4f98471_o.png" alt=""></p>
 <p>I then verified that this error was found. And also luckily that this was the only error of that kind in our application.</p>
-<p><img src="http://farm5.static.flickr.com/4151/5187275884_fd57929394_o.png" alt></p>
+<p><img src="http://farm5.static.flickr.com/4151/5187275884_fd57929394_o.png" alt=""></p>
 <p>Then I finally added it to the <a href="http://www.jetbrains.com/resharper/webhelp/Reference__Windows__Pattern_Catalogue.html" target="_blank" rel="noopener">Resharper Pattern Catalog</a>, to show a warning.</p>
-<p><img src="http://farm2.static.flickr.com/1036/5187278260_3509a8c317_o.png" alt></p>
+<p><img src="http://farm2.static.flickr.com/1036/5187278260_3509a8c317_o.png" alt=""></p>
 <p>Now when ever I will type this stupid thing, I will have my preferred tool <a href="http://www.jetbrains.com/resharper/" target="_blank" rel="noopener">Resharper</a>, telling me how stupid I am to even try this!</p>
-<p><img src="http://farm5.static.flickr.com/4113/5187281640_fc10ec4169_o.png" alt></p>
+<p><img src="http://farm5.static.flickr.com/4113/5187281640_fc10ec4169_o.png" alt=""></p>
 <p>BY the way you might download a sample Pattern Catalog from this blog post “<a href="http://blogs.jetbrains.com/dotnet/2010/06/sample-ssr-pattern-catalog-available-for-download/" target="_blank" rel="noopener">Sample SSR Pattern Catalog Available for Download</a>”. There are some cool stuff in there and it might help writing your owns.</p>
 
             
@@ -311,7 +309,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/Jetbrains/">Jetbrains</a> <a class="tag tag--primary tag--small t-link" href="/tags/ReSharper/">ReSharper</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/Jetbrains/" rel="tag">Jetbrains</a> <a class="tag tag--primary tag--small t-link" href="/tags/ReSharper/" rel="tag">ReSharper</a>
 
             </div>
         
@@ -645,7 +643,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-7y6uwuqgbcvcyfh91qqqps0hepqhsodkqsffxy8xmvyy1e7fa02w63m4kwm9.min.js"></script>
+<script src="/assets/js/script-81vkfdsd6zncrgoppv4dqukrlu3ekrh5kij6va1fch99q17dfu9iukgoppf8.min.js"></script>
 <!--SCRIPTS END-->
 
 

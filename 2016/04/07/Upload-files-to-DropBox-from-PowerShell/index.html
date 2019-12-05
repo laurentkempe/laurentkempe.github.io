@@ -13,19 +13,17 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"When I migrated our build to Cake (C# Make) we had one requirement which was to upload some of the build output’s artifacts to DropBox at the end of the build.\n\nI searched for that kind of capabilities in Cake reference documentation but couldn’t find anything out of the box.\nI could have gone to write my own add-in but I found the PowerShell one, great!So I decided that I could write a little PowerShell script to achieve that upload to DropBox.\nHere it is\n\n\nThe script is getting one environment variable DropBoxAccessToken, which represents the DropBox access token because I don’t want to see the access token logged into our TeamCity logs.\nOne gotcha from DropBox REST API upload documentation which hit me was how to upload to a business account? In fact, it is really easy, you just need to create an application for your business account with permission full!\nWarning, I do not consider myself as a PowerShell expert, I am more of a kind of PowerShell hacker, so take this script with all precautions.\n","dateCreated":"2016-04-07T19:41:32+00:00","dateModified":"2019-12-05T21:12:51+00:00","datePublished":"2016-04-07T19:41:32+00:00","description":"When I migrated our build to Cake (C# Make) we had one requirement which was to upload some of the build output’s artifacts to DropBox at the end of the build.","headline":"Upload files to DropBox from PowerShell","image":["https://farm2.staticflickr.com/1704/25727719735_baf17e5561_q.jpg","https://farm2.staticflickr.com/1704/25727719735_62100cdbf1_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2016/04/07/Upload-files-to-DropBox-from-PowerShell/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2016/04/07/Upload-files-to-DropBox-from-PowerShell/","keywords":"continuous integration, PowerShell","thumbnailUrl":"https://farm2.staticflickr.com/1704/25727719735_baf17e5561_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"When I migrated our build to Cake (C# Make) we had one requirement which was to upload some of the build output’s artifacts to DropBox at the end of the build.\n\nI searched for that kind of capabilities in Cake reference documentation but couldn’t find anything out of the box.\nI could have gone to write my own add-in but I found the PowerShell one, great!So I decided that I could write a little PowerShell script to achieve that upload to DropBox.\nHere it is\n\n\nThe script is getting one environment variable DropBoxAccessToken, which represents the DropBox access token because I don’t want to see the access token logged into our TeamCity logs.\nOne gotcha from DropBox REST API upload documentation which hit me was how to upload to a business account? In fact, it is really easy, you just need to create an application for your business account with permission full!\nWarning, I do not consider myself as a PowerShell expert, I am more of a kind of PowerShell hacker, so take this script with all precautions.\n","dateCreated":"2016-04-07T19:41:32+00:00","dateModified":"2019-12-05T22:04:24+00:00","datePublished":"2016-04-07T19:41:32+00:00","description":"When I migrated our build to Cake (C# Make) we had one requirement which was to upload some of the build output’s artifacts to DropBox at the end of the build.","headline":"Upload files to DropBox from PowerShell","image":["https://farm2.staticflickr.com/1704/25727719735_baf17e5561_q.jpg","https://farm2.staticflickr.com/1704/25727719735_62100cdbf1_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2016/04/07/Upload-files-to-DropBox-from-PowerShell/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2016/04/07/Upload-files-to-DropBox-from-PowerShell/","keywords":"continuous integration, PowerShell","thumbnailUrl":"https://farm2.staticflickr.com/1704/25727719735_baf17e5561_q.jpg"}</script>
     <meta name="description" content="When I migrated our build to Cake (C# Make) we had one requirement which was to upload some of the build output’s artifacts to DropBox at the end of the build.">
 <meta name="keywords" content="continuous integration,PowerShell">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Upload files to DropBox from PowerShell">
-<meta property="og:url" content="https://laurentkempe.com/2016/04/07/Upload-files-to-DropBox-from-PowerShell/index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2016&#x2F;04&#x2F;07&#x2F;Upload-files-to-DropBox-from-PowerShell&#x2F;index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="When I migrated our build to Cake (C# Make) we had one requirement which was to upload some of the build output’s artifacts to DropBox at the end of the build.">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-12-05T21:12:51.202Z">
+<meta property="og:updated_time" content="2019-12-05T22:04:24.962Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Upload files to DropBox from PowerShell">
-<meta name="twitter:description" content="When I migrated our build to Cake (C# Make) we had one requirement which was to upload some of the build output’s artifacts to DropBox at the end of the build.">
 <meta name="twitter:creator" content="@laurentkempe">
     
     
@@ -44,7 +42,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-mslcllntebz6bnaf9snd8szfnckrp584wuqit7q6whzvju7uxsrud8qspz4k.min.css">
+    <link rel="stylesheet" href="/assets/css/style-b05yginpngfjm2uxkufrlocarhamnyny8crwlumxxdjkx1olyzpkm4z4smqx.min.css">
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -80,7 +78,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/ "
+            href="/%20"
             aria-label=""
         >
             Laurent Kempé
@@ -131,7 +129,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/ "
+                             href="/%20"
                             
                             title="Home"
                         >
@@ -300,7 +298,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/PowerShell/">PowerShell</a> <a class="tag tag--primary tag--small t-link" href="/tags/continuous-integration/">continuous integration</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/PowerShell/" rel="tag">PowerShell</a> <a class="tag tag--primary tag--small t-link" href="/tags/continuous-integration/" rel="tag">continuous integration</a>
 
             </div>
         
@@ -634,7 +632,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-7y6uwuqgbcvcyfh91qqqps0hepqhsodkqsffxy8xmvyy1e7fa02w63m4kwm9.min.js"></script>
+<script src="/assets/js/script-81vkfdsd6zncrgoppv4dqukrlu3ekrh5kij6va1fch99q17dfu9iukgoppf8.min.js"></script>
 <!--SCRIPTS END-->
 
 

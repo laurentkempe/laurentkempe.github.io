@@ -13,23 +13,21 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"\n\nI just migrated my blog to the latest version of BlogEngine.NET 2.5.0.6.\n\n\nI had a shock when I saw the number of spam that I had on the blog! \n\n447883 Spam! Wow. So I started the cleaning by using BlogEngine tools but it was damn slow, and no way to stop it when you started the delete all.\nSo I stopped the web site which was a bad idea because then one XML file was damaged. As I always do a backup before doing something like that I was on the safe side, and just reverted the files.\nThen I used 7zip to zip the posts folder which is located in the App_Data which was 338 MB, again wow.\n\nDownloaded the zip file on my local machine, installed BlogEngine and imported the post.\nI thought it would be faster on my machine because it is a recent one. But still to slow to treat 447833 spam messages.\nSo as a developer I went on and wrote a little application to do it. And after cleanup the spam which took less than 10 seconds I went to this folder size of the posts\n\nQuite a difference ! And BlogEngine showing me the results\n\nAnd here is the code, it is using .NET Framework 4 and the parallelization of queries to treat files:\n\n.csharpcode, .csharpcode pre\n{\n    font-size: small;\n    color: black;\n    font-family: consolas, \"Courier New\", courier, monospace;\n    background-color: #ffffff;\n    /*white-space: pre;*/\n    line-height: 135%;\n}\n.csharpcode pre { margin: 0em; }\n.csharpcode .rem { color: #008000; }\n.csharpcode .kwrd { color: #0000ff; }\n.csharpcode .str { color: #006080; }\n.csharpcode .op { color: #0000c0; }\n.csharpcode .preproc { color: #cc6633; }\n.csharpcode .asp { background-color: #ffff00; }\n.csharpcode .html { color: #800000; }\n.csharpcode .attr { color: #ff0000; }\n.csharpcode .alt \n{\n    background-color: #f4f4f4;\n    width: 100%;\n    margin: 0em;\n}\n.csharpcode .lnum { color: #606060; }\n\n#region using\n\nusing System;\nusing System.IO;\nusing System.Linq;\nusing System.Xml;\nusing System.Xml.Linq;\n\n#endregion\n\nnamespace BlogEngineSpamDelete\n{\n    internal class Program\n    {\n        private static void Main(string[] args)\n        {\n            var files = Directory.GetFiles(@\"C:\\Temp\\blogengine\\posts\", \"*.xml\");\n            foreach (var file in files.AsParallel())\n            {\n                FixPost(file);\n            }\n        }\n\n        private static void FixPost(string file)\n        {\n            XDocument doc;\n            using (var stream = File.OpenRead(file))\n            {\n                doc = XDocument.Load(stream);\n            }\n\n            var comments = from comment in doc.Descendants(XName.Get(\"comment\", String.Empty))\n                           select comment;\n\n            var spamComments = from comment in comments.ToArray()\n                               let data = new CommentState(comment.Attribute(\"spam\").Value,\n                                                           comment.Attribute(\"approved\").Value,\n                                                           comment.Attribute(\"deleted\").Value) \n                               where ShouldDeleteSpamAndUnApproved(data)\n                               select comment;\n\n            foreach (var spamComment in spamComments)\n            {\n                spamComment.Remove();\n            }\n\n            using (var writer = XmlWriter.Create(file, new XmlWriterSettings {Indent = true}))\n            {\n                doc.WriteTo(writer);\n            }\n        }\n\n        private static bool ShouldDeleteSpam(CommentState commentState)\n        {\n            return !commentState.Approved &amp;&amp; \n                   (commentState.Spam || commentState.Deleted);\n        }\n\n        private static bool ShouldDeleteSpamAndUnApproved(CommentState commentState)\n        {\n            return !commentState.Approved || \n                   commentState.Spam ||\n                   commentState.Deleted;\n        }\n\n        private class CommentState\n        {\n            public CommentState(String spam, String approved, String deleted)\n            {\n                Approved = bool.Parse(approved);\n                Spam = bool.Parse(spam);\n                Deleted = bool.Parse(deleted);\n            }\n\n            public bool Approved { get; private set; }\n            public bool Spam { get; private set; }\n            public bool Deleted { get; private set; }\n        }\n    }\n}\n\nUpdate: I also posted the code on bitbucket: https://bitbucket.org/lkempe/blogenginespamdelete\n","dateCreated":"2011-10-30T19:45:39+00:00","dateModified":"2011-11-05T23:28:19+00:00","datePublished":"2011-10-30T19:45:39+00:00","description":"\n\nI just migrated my blog to the latest version of BlogEngine.NET 2.5.0.6.","headline":"Cleaning BlogEngine.NET spam","image":["https://farm6.staticflickr.com/5266/5561291406_3371746e56_q.jpg","https://farm6.staticflickr.com/5266/5561291406_3371746e56_b.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2011/10/30/Cleaning-BlogEngineNET-spam/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2011/10/30/Cleaning-BlogEngineNET-spam/","thumbnailUrl":"https://farm6.staticflickr.com/5266/5561291406_3371746e56_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"\n\nI just migrated my blog to the latest version of BlogEngine.NET 2.5.0.6.\n\n\nI had a shock when I saw the number of spam that I had on the blog! \n\n447883 Spam! Wow. So I started the cleaning by using BlogEngine tools but it was damn slow, and no way to stop it when you started the delete all.\nSo I stopped the web site which was a bad idea because then one XML file was damaged. As I always do a backup before doing something like that I was on the safe side, and just reverted the files.\nThen I used 7zip to zip the posts folder which is located in the App_Data which was 338 MB, again wow.\n\nDownloaded the zip file on my local machine, installed BlogEngine and imported the post.\nI thought it would be faster on my machine because it is a recent one. But still to slow to treat 447833 spam messages.\nSo as a developer I went on and wrote a little application to do it. And after cleanup the spam which took less than 10 seconds I went to this folder size of the posts\n\nQuite a difference ! And BlogEngine showing me the results\n\nAnd here is the code, it is using .NET Framework 4 and the parallelization of queries to treat files:\n\n.csharpcode, .csharpcode pre\n{\n    font-size: small;\n    color: black;\n    font-family: consolas, \"Courier New\", courier, monospace;\n    background-color: #ffffff;\n    /*white-space: pre;*/\n    line-height: 135%;\n}\n.csharpcode pre { margin: 0em; }\n.csharpcode .rem { color: #008000; }\n.csharpcode .kwrd { color: #0000ff; }\n.csharpcode .str { color: #006080; }\n.csharpcode .op { color: #0000c0; }\n.csharpcode .preproc { color: #cc6633; }\n.csharpcode .asp { background-color: #ffff00; }\n.csharpcode .html { color: #800000; }\n.csharpcode .attr { color: #ff0000; }\n.csharpcode .alt \n{\n    background-color: #f4f4f4;\n    width: 100%;\n    margin: 0em;\n}\n.csharpcode .lnum { color: #606060; }\n\n#region using\n\nusing System;\nusing System.IO;\nusing System.Linq;\nusing System.Xml;\nusing System.Xml.Linq;\n\n#endregion\n\nnamespace BlogEngineSpamDelete\n{\n    internal class Program\n    {\n        private static void Main(string[] args)\n        {\n            var files = Directory.GetFiles(@\"C:\\Temp\\blogengine\\posts\", \"*.xml\");\n            foreach (var file in files.AsParallel())\n            {\n                FixPost(file);\n            }\n        }\n\n        private static void FixPost(string file)\n        {\n            XDocument doc;\n            using (var stream = File.OpenRead(file))\n            {\n                doc = XDocument.Load(stream);\n            }\n\n            var comments = from comment in doc.Descendants(XName.Get(\"comment\", String.Empty))\n                           select comment;\n\n            var spamComments = from comment in comments.ToArray()\n                               let data = new CommentState(comment.Attribute(\"spam\").Value,\n                                                           comment.Attribute(\"approved\").Value,\n                                                           comment.Attribute(\"deleted\").Value) \n                               where ShouldDeleteSpamAndUnApproved(data)\n                               select comment;\n\n            foreach (var spamComment in spamComments)\n            {\n                spamComment.Remove();\n            }\n\n            using (var writer = XmlWriter.Create(file, new XmlWriterSettings {Indent = true}))\n            {\n                doc.WriteTo(writer);\n            }\n        }\n\n        private static bool ShouldDeleteSpam(CommentState commentState)\n        {\n            return !commentState.Approved &amp;&amp; \n                   (commentState.Spam || commentState.Deleted);\n        }\n\n        private static bool ShouldDeleteSpamAndUnApproved(CommentState commentState)\n        {\n            return !commentState.Approved || \n                   commentState.Spam ||\n                   commentState.Deleted;\n        }\n\n        private class CommentState\n        {\n            public CommentState(String spam, String approved, String deleted)\n            {\n                Approved = bool.Parse(approved);\n                Spam = bool.Parse(spam);\n                Deleted = bool.Parse(deleted);\n            }\n\n            public bool Approved { get; private set; }\n            public bool Spam { get; private set; }\n            public bool Deleted { get; private set; }\n        }\n    }\n}\n\nUpdate: I also posted the code on bitbucket: https://bitbucket.org/lkempe/blogenginespamdelete\n","dateCreated":"2011-10-30T19:45:39+00:00","dateModified":"2011-11-05T23:28:19+00:00","datePublished":"2011-10-30T19:45:39+00:00","description":"\n\nI just migrated my blog to the latest version of BlogEngine.NET 2.5.0.6.","headline":"Cleaning BlogEngine.NET spam","image":["https://farm6.staticflickr.com/5266/5561291406_3371746e56_q.jpg","https://farm6.staticflickr.com/5266/5561291406_3371746e56_b.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2011/10/30/Cleaning-BlogEngineNET-spam/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2011/10/30/Cleaning-BlogEngineNET-spam/","thumbnailUrl":"https://farm6.staticflickr.com/5266/5561291406_3371746e56_q.jpg"}</script>
     <meta name="description" content="I just migrated my blog to the latest version of BlogEngine.NET 2.5.0.6.">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Cleaning BlogEngine.NET spam">
-<meta property="og:url" content="https://laurentkempe.com/2011/10/30/Cleaning-BlogEngineNET-spam/index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2011&#x2F;10&#x2F;30&#x2F;Cleaning-BlogEngineNET-spam&#x2F;index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="I just migrated my blog to the latest version of BlogEngine.NET 2.5.0.6.">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://farm7.static.flickr.com/6225/6294439936_9e93d8ce72_o.png">
-<meta property="og:image" content="http://farm7.static.flickr.com/6112/6293933845_b413086a55_o.png">
-<meta property="og:image" content="http://farm7.static.flickr.com/6211/6294464822_9a3587d1da_o.png">
-<meta property="og:image" content="http://farm7.static.flickr.com/6104/6294472166_5fcb56ab90_o.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;farm7.static.flickr.com&#x2F;6225&#x2F;6294439936_9e93d8ce72_o.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;farm7.static.flickr.com&#x2F;6112&#x2F;6293933845_b413086a55_o.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;farm7.static.flickr.com&#x2F;6211&#x2F;6294464822_9a3587d1da_o.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;farm7.static.flickr.com&#x2F;6104&#x2F;6294472166_5fcb56ab90_o.png">
 <meta property="og:updated_time" content="2011-11-05T23:28:19.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Cleaning BlogEngine.NET spam">
-<meta name="twitter:description" content="I just migrated my blog to the latest version of BlogEngine.NET 2.5.0.6.">
-<meta name="twitter:image" content="http://farm7.static.flickr.com/6225/6294439936_9e93d8ce72_o.png">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;farm7.static.flickr.com&#x2F;6225&#x2F;6294439936_9e93d8ce72_o.png">
 <meta name="twitter:creator" content="@laurentkempe">
     
     
@@ -48,7 +46,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-mslcllntebz6bnaf9snd8szfnckrp584wuqit7q6whzvju7uxsrud8qspz4k.min.css">
+    <link rel="stylesheet" href="/assets/css/style-b05yginpngfjm2uxkufrlocarhamnyny8crwlumxxdjkx1olyzpkm4z4smqx.min.css">
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -84,7 +82,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/ "
+            href="/%20"
             aria-label=""
         >
             Laurent Kempé
@@ -135,7 +133,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/ "
+                             href="/%20"
                             
                             title="Home"
                         >
@@ -289,17 +287,17 @@
 <a id="more"></a>
 
 <p>I had a shock when I saw the number of spam that I had on the blog! </p>
-<p><img src="http://farm7.static.flickr.com/6225/6294439936_9e93d8ce72_o.png" alt></p>
+<p><img src="http://farm7.static.flickr.com/6225/6294439936_9e93d8ce72_o.png" alt=""></p>
 <p><strong>447883</strong> Spam! Wow. So I started the cleaning by using BlogEngine tools but it was damn slow, and no way to stop it when you started the delete all.</p>
 <p>So I stopped the web site which was a bad idea because then one XML file was damaged. As I always do a backup before doing something like that I was on the safe side, and just reverted the files.</p>
 <p>Then I used 7zip to zip the posts folder which is located in the App_Data which was 338 MB, again wow.</p>
-<p><img src="http://farm7.static.flickr.com/6112/6293933845_b413086a55_o.png" alt></p>
+<p><img src="http://farm7.static.flickr.com/6112/6293933845_b413086a55_o.png" alt=""></p>
 <p>Downloaded the zip file on my local machine, installed BlogEngine and imported the post.</p>
 <p>I thought it would be faster on my machine because it is a recent one. But still to slow to treat 447833 spam messages.</p>
 <p>So as a developer I went on and wrote a little application to do it. And after cleanup the spam which took less than 10 seconds I went to this folder size of the posts</p>
-<p><img src="http://farm7.static.flickr.com/6211/6294464822_9a3587d1da_o.png" alt></p>
+<p><img src="http://farm7.static.flickr.com/6211/6294464822_9a3587d1da_o.png" alt=""></p>
 <p>Quite a difference ! And BlogEngine showing me the results</p>
-<p><img src="http://farm7.static.flickr.com/6104/6294472166_5fcb56ab90_o.png" alt></p>
+<p><img src="http://farm7.static.flickr.com/6104/6294472166_5fcb56ab90_o.png" alt=""></p>
 <p>And here is the code, it is using .NET Framework 4 and the parallelization of queries to treat files:</p>
 <style type="text/css">
 .csharpcode, .csharpcode pre
@@ -748,7 +746,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-7y6uwuqgbcvcyfh91qqqps0hepqhsodkqsffxy8xmvyy1e7fa02w63m4kwm9.min.js"></script>
+<script src="/assets/js/script-81vkfdsd6zncrgoppv4dqukrlu3ekrh5kij6va1fch99q17dfu9iukgoppf8.min.js"></script>
 <!--SCRIPTS END-->
 
 

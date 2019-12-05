@@ -13,19 +13,17 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I refactored quit a lot of code on my site Tech Head Brothers this week and went to bed late (around 1:30 AM each day). But now it is running better and faster. I removed the rendering to Pdf using NFop of the articles because it works locally on my TEST server but not on the PROD one.One of the speed improvement is due to the complete reimplementation of a user control that download a RSS to publishnews on my site. The issue with the previous method was that the cache was buggy. Now what I am doing is to to use two values in cache, one is the RSS document (a XML document as a string) and that one never expire:\n\nCache.Insert(CacheKey, xmlControl.Document.InnerXml, null, System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration);\nThe second cache value is an expiration cache value :\nCache.Insert(ExpiredKey, “”, null, DateTime.Now.AddSeconds(60), TimeSpan.Zero);\nI use that cache value to know if it is time to download again the RSS :\n/// \n\n/// Check if the cache expired\n\n/// \n\n/// true, if it expired otherwise false\n\nprivate bool isCacheStillValid()\n{\n    return ((Cache.Get(ExpiredKey) != null));\n}\nIf it is time to download again then I remove from the cache the XmlDocument after having it downloaded correctly:\n//Remove old version from cache\n\nCache.Remove(CacheKey);\nThis way I always have the RSS in the cache, and remove it only if I have a new one downloaded.\n","dateCreated":"2004-06-05T06:23:00+00:00","dateModified":"2004-06-05T06:23:00+00:00","datePublished":"2004-06-05T06:23:00+00:00","description":"I refactored quit a lot of code on my site Tech Head Brothers this week and went to bed late (around 1:30 AM each day). But now it is running better and faster. I removed the rendering to Pdf using NFop of the articles because it works locally on my TEST server but not on the PROD one.One of the speed improvement is due to the complete reimplementation of a user control that download a RSS to publishnews on my site. The issue with the previous method was that the cache was buggy. Now what I am doing is to to use two values in cache, one is the RSS document (a XML document as a string) and that one never expire:","headline":"Update of Tech Head Brothers site","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2004/06/05/Update-of-Tech-Head-Brothers-site/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2004/06/05/Update-of-Tech-Head-Brothers-site/","keywords":"Tech Head Brothers, .NET Development"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I refactored quit a lot of code on my site Tech Head Brothers this week and went to bed late (around 1:30 AM each day). But now it is running better and faster. I removed the rendering to Pdf using NFop of the articles because it works locally on my TEST server but not on the PROD one.One of the speed improvement is due to the complete reimplementation of a user control that download a RSS to publishnews on my site. The issue with the previous method was that the cache was buggy. Now what I am doing is to to use two values in cache, one is the RSS document (a XML document as a string) and that one never expire:\n\nCache.Insert(CacheKey, xmlControl.Document.InnerXml, null, System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration);\nThe second cache value is an expiration cache value :\nCache.Insert(ExpiredKey, “”, null, DateTime.Now.AddSeconds(60), TimeSpan.Zero);\nI use that cache value to know if it is time to download again the RSS :\n/// \n\n/// Check if the cache expired\n\n/// \n\n/// true, if it expired otherwise false\n\nprivate bool isCacheStillValid()\n{\n    return ((Cache.Get(ExpiredKey) != null));\n}\nIf it is time to download again then I remove from the cache the XmlDocument after having it downloaded correctly:\n//Remove old version from cache\n\nCache.Remove(CacheKey);\nThis way I always have the RSS in the cache, and remove it only if I have a new one downloaded.\n","dateCreated":"2004-06-05T06:23:00+00:00","dateModified":"2004-06-05T06:23:00+00:00","datePublished":"2004-06-05T06:23:00+00:00","description":"I refactored quit a lot of code on my site Tech Head Brothers this week and went to bed late (around 1:30 AM each day). But now it is running better and faster. I removed the rendering to Pdf using NFop of the articles because it works locally on my TEST server but not on the PROD one.One of the speed improvement is due to the complete reimplementation of a user control that download a RSS to publishnews on my site. The issue with the previous method was that the cache was buggy. Now what I am doing is to to use two values in cache, one is the RSS document (a XML document as a string) and that one never expire:","headline":"Update of Tech Head Brothers site","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2004/06/05/Update-of-Tech-Head-Brothers-site/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2004/06/05/Update-of-Tech-Head-Brothers-site/","keywords":"Tech Head Brothers, .NET Development"}</script>
     <meta name="description" content="I refactored quit a lot of code on my site Tech Head Brothers this week and went to bed late (around 1:30 AM each day). But now it is running better and faster. I removed the rendering to Pdf using NF">
 <meta name="keywords" content="Tech Head Brothers,.NET Development">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Update of Tech Head Brothers site">
-<meta property="og:url" content="https://laurentkempe.com/2004/06/05/Update-of-Tech-Head-Brothers-site/index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2004&#x2F;06&#x2F;05&#x2F;Update-of-Tech-Head-Brothers-site&#x2F;index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="I refactored quit a lot of code on my site Tech Head Brothers this week and went to bed late (around 1:30 AM each day). But now it is running better and faster. I removed the rendering to Pdf using NF">
 <meta property="og:locale" content="en">
 <meta property="og:updated_time" content="2004-06-05T06:23:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Update of Tech Head Brothers site">
-<meta name="twitter:description" content="I refactored quit a lot of code on my site Tech Head Brothers this week and went to bed late (around 1:30 AM each day). But now it is running better and faster. I removed the rendering to Pdf using NF">
 <meta name="twitter:creator" content="@laurentkempe">
     
     
@@ -38,7 +36,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-mslcllntebz6bnaf9snd8szfnckrp584wuqit7q6whzvju7uxsrud8qspz4k.min.css">
+    <link rel="stylesheet" href="/assets/css/style-b05yginpngfjm2uxkufrlocarhamnyny8crwlumxxdjkx1olyzpkm4z4smqx.min.css">
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -74,7 +72,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/ "
+            href="/%20"
             aria-label=""
         >
             Laurent Kempé
@@ -125,7 +123,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/ "
+                             href="/%20"
                             
                             title="Home"
                         >
@@ -263,29 +261,29 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>I refactored quit a lot of code on my site <a href="http://www.techheadbrothers.com" title="Tech Head Brothers" target="_blank" rel="noopener">Tech Head Brothers</a> this week and went to bed late (around 1:30 AM each day). But now it is running better and faster. I removed the rendering to Pdf using <a href="http://sourceforge.net/projects/nfop/" target="_blank" rel="noopener">NFop</a> of the articles because it works locally on my TEST server but not on the PROD one.<br><br>One of the speed improvement is due to the complete reimplementation of a user control that download a RSS to publishnews on my site. The issue with the previous method was that the cache was buggy. Now what I am doing is to to use two values in cache, one is the RSS document (a XML document as a string) and that one never expire:<br><font size="2"></font></p>
+            <p>I refactored quit a lot of code on my site <a href="http://www.techheadbrothers.com" target="_blank" rel="noopener" title="Tech Head Brothers">Tech Head Brothers</a> this week and went to bed late (around 1:30 AM each day). But now it is running better and faster. I removed the rendering to Pdf using <a href="http://sourceforge.net/projects/nfop/" target="_blank" rel="noopener">NFop</a> of the articles because it works locally on my TEST server but not on the PROD one.<br><br>One of the speed improvement is due to the complete reimplementation of a user control that download a RSS to publishnews on my site. The issue with the previous method was that the cache was buggy. Now what I am doing is to to use two values in cache, one is the RSS document (a XML document as a string) and that one never expire:<br><font size="2"></p>
 <a id="more"></a>
-<p>Cache.Insert(CacheKey, xmlControl.Document.InnerXml, <font color="#0000ff" size="2">null</font><font size="2">, <strong>System.Web.Caching.Cache.NoAbsoluteExpiration</strong>, <strong>System.Web.Caching.Cache.NoSlidingExpiration</strong>);</font></p>
-<p><font size="2">The second cache value is an expiration cache value :</font><br><font size="2"><font size="2"></font></font></p>
-<p>Cache.Insert(ExpiredKey, “”, <font color="#0000ff" size="2">null</font><font size="2">, DateTime.Now.AddSeconds(60), TimeSpan.Zero);</font></p>
-<p><font size="2">I use that cache value to know if it is time to download again the RSS :</font><br><font size="2"><font size="2"></font></font></p>
-<p><font color="#808080" size="2">///</font><font color="#008000" size="2"> </font><font color="#808080" size="2"><summary></summary></font></p>
-<p><font size="2"></font></p>
-<p><font color="#808080" size="2">///</font><font color="#008000" size="2"> Check if the cache expired</font></p>
-<p><font size="2"></font></p>
-<p><font color="#808080" size="2">///</font><font color="#008000" size="2"> </font><font color="#808080" size="2"></font></p>
-<p><font size="2"></font></p>
-<p><font color="#808080" size="2">///</font><font color="#008000" size="2"> </font><font color="#808080" size="2"><returns></returns></font><font color="#008000" size="2">true, if it expired otherwise false</font><font color="#808080" size="2"></font></p>
-<p><font size="2"></font></p>
-<p><font color="#0000ff" size="2">private</font><font size="2"> </font><font color="#0000ff" size="2">bool</font><font size="2"> isCacheStillValid()</font></p>
+<p>Cache.Insert(CacheKey, xmlControl.Document.InnerXml, </font><font color="#0000ff" size="2">null</font><font size="2">, <strong>System.Web.Caching.Cache.NoAbsoluteExpiration</strong>, <strong>System.Web.Caching.Cache.NoSlidingExpiration</strong>);</font></p>
+<p><font size="2">The second cache value is an expiration cache value :</font><br><font size="2"><font size="2"></p>
+<p>Cache.Insert(ExpiredKey, “”, </font><font color="#0000ff" size="2">null</font><font size="2">, DateTime.Now.AddSeconds(60), TimeSpan.Zero);</font></p>
+<p><font size="2">I use that cache value to know if it is time to download again the RSS :</font><br><font size="2"><font size="2"></p>
+<p></font><font color="#808080" size="2">///</font><font color="#008000" size="2"> </font><font color="#808080" size="2"><summary></p>
+<p></font><font size="2"></p>
+<p></font><font color="#808080" size="2">///</font><font color="#008000" size="2"> Check if the cache expired</p>
+<p></font><font size="2"></p>
+<p></font><font color="#808080" size="2">///</font><font color="#008000" size="2"> </font><font color="#808080" size="2"></summary></p>
+<p></font><font size="2"></p>
+<p></font><font color="#808080" size="2">///</font><font color="#008000" size="2"> </font><font color="#808080" size="2"><returns></font><font color="#008000" size="2">true, if it expired otherwise false</font><font color="#808080" size="2"></returns></p>
+<p></font><font size="2"></p>
+<p></font><font color="#0000ff" size="2">private</font><font size="2"> </font><font color="#0000ff" size="2">bool</font><font size="2"> isCacheStillValid()</p>
 <p>{</p>
-<p><font color="#0000ff" size="2">    return</font><font size="2"> ((Cache.Get(ExpiredKey) != </font><font color="#0000ff" size="2">null</font><font size="2">));</font></p>
+<p></font><font color="#0000ff" size="2">    return</font><font size="2"> ((Cache.Get(ExpiredKey) != </font><font color="#0000ff" size="2">null</font><font size="2">));</p>
 <p>}</p>
-<p>If it is time to download again then I remove from the cache the XmlDocument after having it downloaded correctly:<br><font size="2"></font></p>
-<p><font color="#008000" size="2">//Remove old version from cache</font></p>
-<p><font size="2"></font></p>
+<p>If it is time to download again then I remove from the cache the XmlDocument after having it downloaded correctly:<br><font size="2"></p>
+<p></font><font color="#008000" size="2">//Remove old version from cache</p>
+<p></font><font size="2"></p>
 <p>Cache.Remove(CacheKey);</p>
-<p>This way I always have the RSS in the cache, and remove it only if I have a new one downloaded.<br></p>
+<p>This way I always have the RSS in the cache, and remove it only if I have a new one downloaded.<br></font></font></font></font></p>
 
             
 
@@ -297,7 +295,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/NET-Development/">.NET Development</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tech-Head-Brothers/">Tech Head Brothers</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/NET-Development/" rel="tag">.NET Development</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tech-Head-Brothers/" rel="tag">Tech Head Brothers</a>
 
             </div>
         
@@ -631,7 +629,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-7y6uwuqgbcvcyfh91qqqps0hepqhsodkqsffxy8xmvyy1e7fa02w63m4kwm9.min.js"></script>
+<script src="/assets/js/script-81vkfdsd6zncrgoppv4dqukrlu3ekrh5kij6va1fch99q17dfu9iukgoppf8.min.js"></script>
 <!--SCRIPTS END-->
 
 

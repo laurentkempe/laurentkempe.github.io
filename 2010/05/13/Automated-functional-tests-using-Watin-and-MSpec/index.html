@@ -13,20 +13,18 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I am conducting a spike for a couple of evening on the way we might automate our functional tests at Jobping.  \nI started with Watin and MSpec and the MSpec excellent plugin for ReSharper 5 which gives the following great outputs directly from Visual Studio\n\n\n  \nAfter some discussion with Alexander Groß (Thanks for your help ;) to gain some knowhow about MSpec I finally managed to have some automated functional tests running like this:    [Subject(“Search”)] public class when_user_search_using_keywords : WebBaseSpec {     const string Keywords = “C#”;     static SearchScreenObject searchScreenObject;     static ResultScreenObject resultScreenObject;  \n&lt;span style=&quot;color:#2b91af&quot;&gt;Establish&lt;/span&gt; context = () =&gt;  \n    {  \n        searchScreenObject = &lt;span style=&quot;color:#0000ff&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color:#2b91af&quot;&gt;SearchScreenObject&lt;/span&gt;(Browser);  \n        resultScreenObject = &lt;span style=&quot;color:#0000ff&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color:#2b91af&quot;&gt;ResultScreenObject&lt;/span&gt;(Browser);  \n    };  \n\n&lt;span style=&quot;color:#2b91af&quot;&gt;Because&lt;/span&gt; of = () =&gt; searchScreenObject.Search(Keywords);  \n\n&lt;span style=&quot;color:#2b91af&quot;&gt;It&lt;/span&gt; should_direct_user_to_results_page = () =&gt;   \n    Browser.Uri.Route().ShouldMapTo&lt;&lt;span style=&quot;color:#2b91af&quot;&gt;HomeController&lt;/span&gt;&gt;(x =&gt;   \n        x.Search(&lt;span style=&quot;color:#a31515&quot;&gt;&quot;AU&quot;&lt;/span&gt;, &lt;span style=&quot;color:#0000ff&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color:#2b91af&quot;&gt;SearchRequest&lt;/span&gt; { Keywords = Keywords}));  \n\n&lt;span style=&quot;color:#2b91af&quot;&gt;It&lt;/span&gt; should_fill_search_textbox_with_keywords_entered_by_user = () =&gt;   \n    resultScreenObject.SearchText.Text.ShouldEqual(Keywords);   }    \nI think it talks for itself!\nRemarks to note:\n\nSearchScreenObject and ResultScreenObject represents an isolation layer between my tests and objects that are present on the web pages. This helps in the case you decide to change an id of an element\nI use MvcContrib ShouldMap to ensure that the browser navigates to the correct destination page which add another isolation layer and let me change my URL without impacting my tests  \n\nIt is really funny to see the browser opening and clicking automatically, typing texts… \nHopefully, at the end this will replace our smoke test document and quite some time of manual testing.\n","dateCreated":"2010-05-13T07:54:12+00:00","dateModified":"2010-05-14T08:02:06+00:00","datePublished":"2010-05-13T07:54:12+00:00","description":"I am conducting a spike for a couple of evening on the way we might automate our functional tests at Jobping.  \nI started with Watin and MSpec and the MSpec excellent plugin for ReSharper 5 which gives the following great outputs directly from Visual Studio","headline":"Automated functional tests using Watin and MSpec","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/05/13/Automated-functional-tests-using-Watin-and-MSpec/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/05/13/Automated-functional-tests-using-Watin-and-MSpec/"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I am conducting a spike for a couple of evening on the way we might automate our functional tests at Jobping.  \nI started with Watin and MSpec and the MSpec excellent plugin for ReSharper 5 which gives the following great outputs directly from Visual Studio\n\n\n  \nAfter some discussion with Alexander Groß (Thanks for your help ;) to gain some knowhow about MSpec I finally managed to have some automated functional tests running like this:    [Subject(“Search”)] public class when_user_search_using_keywords : WebBaseSpec {     const string Keywords = “C#”;     static SearchScreenObject searchScreenObject;     static ResultScreenObject resultScreenObject;  \n&lt;span style=&quot;color:#2b91af&quot;&gt;Establish&lt;/span&gt; context = () =&gt;  \n    {  \n        searchScreenObject = &lt;span style=&quot;color:#0000ff&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color:#2b91af&quot;&gt;SearchScreenObject&lt;/span&gt;(Browser);  \n        resultScreenObject = &lt;span style=&quot;color:#0000ff&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color:#2b91af&quot;&gt;ResultScreenObject&lt;/span&gt;(Browser);  \n    };  \n\n&lt;span style=&quot;color:#2b91af&quot;&gt;Because&lt;/span&gt; of = () =&gt; searchScreenObject.Search(Keywords);  \n\n&lt;span style=&quot;color:#2b91af&quot;&gt;It&lt;/span&gt; should_direct_user_to_results_page = () =&gt;   \n    Browser.Uri.Route().ShouldMapTo&lt;&lt;span style=&quot;color:#2b91af&quot;&gt;HomeController&lt;/span&gt;&gt;(x =&gt;   \n        x.Search(&lt;span style=&quot;color:#a31515&quot;&gt;&quot;AU&quot;&lt;/span&gt;, &lt;span style=&quot;color:#0000ff&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color:#2b91af&quot;&gt;SearchRequest&lt;/span&gt; { Keywords = Keywords}));  \n\n&lt;span style=&quot;color:#2b91af&quot;&gt;It&lt;/span&gt; should_fill_search_textbox_with_keywords_entered_by_user = () =&gt;   \n    resultScreenObject.SearchText.Text.ShouldEqual(Keywords);   }    \nI think it talks for itself!\nRemarks to note:\n\nSearchScreenObject and ResultScreenObject represents an isolation layer between my tests and objects that are present on the web pages. This helps in the case you decide to change an id of an element\nI use MvcContrib ShouldMap to ensure that the browser navigates to the correct destination page which add another isolation layer and let me change my URL without impacting my tests  \n\nIt is really funny to see the browser opening and clicking automatically, typing texts… \nHopefully, at the end this will replace our smoke test document and quite some time of manual testing.\n","dateCreated":"2010-05-13T07:54:12+00:00","dateModified":"2010-05-14T08:02:06+00:00","datePublished":"2010-05-13T07:54:12+00:00","description":"I am conducting a spike for a couple of evening on the way we might automate our functional tests at Jobping.  \nI started with Watin and MSpec and the MSpec excellent plugin for ReSharper 5 which gives the following great outputs directly from Visual Studio","headline":"Automated functional tests using Watin and MSpec","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2010/05/13/Automated-functional-tests-using-Watin-and-MSpec/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2010/05/13/Automated-functional-tests-using-Watin-and-MSpec/"}</script>
     <meta name="description" content="I am conducting a spike for a couple of evening on the way we might automate our functional tests at Jobping.   I started with Watin and MSpec and the MSpec excellent plugin for ReSharper 5 which give">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Automated functional tests using Watin and MSpec">
-<meta property="og:url" content="https://laurentkempe.com/2010/05/13/Automated-functional-tests-using-Watin-and-MSpec/index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2010&#x2F;05&#x2F;13&#x2F;Automated-functional-tests-using-Watin-and-MSpec&#x2F;index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="I am conducting a spike for a couple of evening on the way we might automate our functional tests at Jobping.   I started with Watin and MSpec and the MSpec excellent plugin for ReSharper 5 which give">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https://laurentkempe.com/images/4602612162_a3a0e50945_o%5B1%5D.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;images&#x2F;4602612162_a3a0e50945_o%5B1%5D.png">
 <meta property="og:updated_time" content="2010-05-14T08:02:06.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Automated functional tests using Watin and MSpec">
-<meta name="twitter:description" content="I am conducting a spike for a couple of evening on the way we might automate our functional tests at Jobping.   I started with Watin and MSpec and the MSpec excellent plugin for ReSharper 5 which give">
-<meta name="twitter:image" content="https://laurentkempe.com/images/4602612162_a3a0e50945_o%5B1%5D.png">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;images&#x2F;4602612162_a3a0e50945_o%5B1%5D.png">
 <meta name="twitter:creator" content="@laurentkempe">
     
     
@@ -39,7 +37,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-mslcllntebz6bnaf9snd8szfnckrp584wuqit7q6whzvju7uxsrud8qspz4k.min.css">
+    <link rel="stylesheet" href="/assets/css/style-b05yginpngfjm2uxkufrlocarhamnyny8crwlumxxdjkx1olyzpkm4z4smqx.min.css">
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -75,7 +73,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/ "
+            href="/%20"
             aria-label=""
         >
             Laurent Kempé
@@ -126,7 +124,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/ "
+                             href="/%20"
                             
                             title="Home"
                         >
@@ -269,7 +267,7 @@
 <a id="more"></a>
 
 <p> <img src="/images/4602612162_a3a0e50945_o%5B1%5D.png" alt="4602612162_a3a0e50945_o[1]" title="4602612162_a3a0e50945_o[1]"> </p>
-<p>After some discussion with <a href="http://therightstuff.de/" target="_blank" rel="noopener">Alexander Groß</a> (Thanks for your help ;) to gain some knowhow about MSpec I finally managed to have some automated functional tests running like this:<br>  <div style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:f10ae5ad-86e6-4131-91ed-763bab0f53d4" class="wlWriterEditableSmartContent"> <div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt"> <div style="background-color: #ffffff; overflow: auto; padding: 2px 5px; white-space: nowrap">[<span style="color:#2b91af">Subject</span>(<span style="color:#a31515">“Search”</span>)]<br> <span style="color:#0000ff">public</span> <span style="color:#0000ff">class</span> <span style="color:#2b91af">when_user_search_using_keywords</span> : <span style="color:#2b91af">WebBaseSpec</span><br> {<br>     <span style="color:#0000ff">const</span> <span style="color:#0000ff">string</span> Keywords = <span style="color:#a31515">“C#”</span>;<br>     <span style="color:#0000ff">static</span> <span style="color:#2b91af">SearchScreenObject</span> searchScreenObject;<br>     <span style="color:#0000ff">static</span> <span style="color:#2b91af">ResultScreenObject</span> resultScreenObject;  </div></div></div></p>
+<p>After some discussion with <a href="http://therightstuff.de/" target="_blank" rel="noopener">Alexander Groß</a> (Thanks for your help ;) to gain some knowhow about MSpec I finally managed to have some automated functional tests running like this:<br>  <div style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:f10ae5ad-86e6-4131-91ed-763bab0f53d4" class="wlWriterEditableSmartContent"> <div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt"> <div style="background-color: #ffffff; overflow: auto; padding: 2px 5px; white-space: nowrap">[<span style="color:#2b91af">Subject</span>(<span style="color:#a31515">“Search”</span>)]<br> <span style="color:#0000ff">public</span> <span style="color:#0000ff">class</span> <span style="color:#2b91af">when_user_search_using_keywords</span> : <span style="color:#2b91af">WebBaseSpec</span><br> {<br>     <span style="color:#0000ff">const</span> <span style="color:#0000ff">string</span> Keywords = <span style="color:#a31515">“C#”</span>;<br>     <span style="color:#0000ff">static</span> <span style="color:#2b91af">SearchScreenObject</span> searchScreenObject;<br>     <span style="color:#0000ff">static</span> <span style="color:#2b91af">ResultScreenObject</span> resultScreenObject;  </p>
 <pre><code>&lt;span style=&quot;color:#2b91af&quot;&gt;Establish&lt;/span&gt; context = () =&gt;  
     {  
         searchScreenObject = &lt;span style=&quot;color:#0000ff&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color:#2b91af&quot;&gt;SearchScreenObject&lt;/span&gt;(Browser);  
@@ -283,7 +281,7 @@
         x.Search(&lt;span style=&quot;color:#a31515&quot;&gt;&quot;AU&quot;&lt;/span&gt;, &lt;span style=&quot;color:#0000ff&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color:#2b91af&quot;&gt;SearchRequest&lt;/span&gt; { Keywords = Keywords}));  
 
 &lt;span style=&quot;color:#2b91af&quot;&gt;It&lt;/span&gt; should_fill_search_textbox_with_keywords_entered_by_user = () =&gt;   
-    resultScreenObject.SearchText.Text.ShouldEqual(Keywords);  </code></pre><p> }    </p>
+    resultScreenObject.SearchText.Text.ShouldEqual(Keywords);  </code></pre><p> }</div> </div> </div>  </p>
 <p>I think it talks for itself!</p>
 <p>Remarks to note:</p>
 <ol>
@@ -630,7 +628,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-7y6uwuqgbcvcyfh91qqqps0hepqhsodkqsffxy8xmvyy1e7fa02w63m4kwm9.min.js"></script>
+<script src="/assets/js/script-81vkfdsd6zncrgoppv4dqukrlu3ekrh5kij6va1fch99q17dfu9iukgoppf8.min.js"></script>
 <!--SCRIPTS END-->
 
 

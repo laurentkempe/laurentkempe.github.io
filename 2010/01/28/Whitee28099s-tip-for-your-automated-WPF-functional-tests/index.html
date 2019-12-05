@@ -13,22 +13,20 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"When you build automated WPF functional test using White in which you need to open a file through a Windows open file dialog, you will be confronted with the following issue. Windows open file dialog remember the last path with which you opened a file.\nSo you might have some unit tests that are green for a while which starts to be red for no apparent reasons. \n\n\nThe solution I came to is as this. \nFirst I use Visual Studio, Copy to Output Directory, to copy the needed file to the output directoy in which your software will be started by the unit tests, e.g. for notValidVersionZip.zip\n \nSo now I am sure that the needed file is in the same path than the application. I then also need to be sure that when the application start the Windows open file dialog it points to this path. In the past implementation I was just using a filename and was lucky enough the path used by the Windows open file dialog was the correct one.\nTo get to the correct path is easy. We just navigate to the correct path using the Windows open file dialog in an automated way. The correct path is the path in which the application as been started, so you can get it like that:\n    /// &lt;summary&gt; /// Gets the current path. /// &lt;/summary&gt; /// &lt;returns&gt;&lt;/returns&gt; private static string GetCurrentPath() { &nbsp;&nbsp;&nbsp;&nbsp;return Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase); }    \n\nWe have the correct path and we still need to automate the Windows open file dialog to navigate to that path. We can do this like that:\n    protected void Open(string filename) { &nbsp;&nbsp;&nbsp;&nbsp;OpenButton.Click(); &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;var openModalWindow =  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MainWindow.ModalWindow(\"Please choose a Zip file\", InitializeOption.NoCache); &nbsp;&nbsp;&nbsp;&nbsp;Assert.IsNotNull(openModalWindow); &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;var splittedPath = GetCurrentPath().Split(new[] { '\\\\' }); &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;foreach (var pathPart in splittedPath) &nbsp;&nbsp;&nbsp;&nbsp;{ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;openModalWindow.Enter(pathPart); &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;openModalWindow.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN); &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;openModalWindow.WaitWhileBusy(); &nbsp;&nbsp;&nbsp;&nbsp;} &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;openModalWindow.Enter(filename); &nbsp;&nbsp;&nbsp;&nbsp;openModalWindow.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN); }    \n\nBasically we split the path into it different path parts that White will enter into the dialog followed by a enter. Don’t forget to use the method WaitWhileBusy() after each enter, otherwise it will be too fast and sometime your test will not go to the correct path and then will not find the file.\nFinally White enter the filename followed by enter and the file is opened.\nNice!\nIf you are using like me ReSharper to run your unit tests don’t forget to set it up to run tests from Project output folder.\n","dateCreated":"2010-01-28T04:24:03+00:00","dateModified":"2010-01-28T04:24:03+00:00","datePublished":"2010-01-28T04:24:03+00:00","description":"When you build automated WPF functional test using White in which you need to open a file through a Windows open file dialog, you will be confronted with the following issue. Windows open file dialog remember the last path with which you opened a file.\nSo you might have some unit tests that are green for a while which starts to be red for no apparent reasons. ","headline":"White’s tip for your automated WPF functional tests","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/01/28/Whitee28099s-tip-for-your-automated-WPF-functional-tests/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/01/28/Whitee28099s-tip-for-your-automated-WPF-functional-tests/","keywords":"WPF, unit test, white"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"When you build automated WPF functional test using White in which you need to open a file through a Windows open file dialog, you will be confronted with the following issue. Windows open file dialog remember the last path with which you opened a file.\nSo you might have some unit tests that are green for a while which starts to be red for no apparent reasons. \n\n\nThe solution I came to is as this. \nFirst I use Visual Studio, Copy to Output Directory, to copy the needed file to the output directoy in which your software will be started by the unit tests, e.g. for notValidVersionZip.zip\n \nSo now I am sure that the needed file is in the same path than the application. I then also need to be sure that when the application start the Windows open file dialog it points to this path. In the past implementation I was just using a filename and was lucky enough the path used by the Windows open file dialog was the correct one.\nTo get to the correct path is easy. We just navigate to the correct path using the Windows open file dialog in an automated way. The correct path is the path in which the application as been started, so you can get it like that:\n    /// &lt;summary&gt; /// Gets the current path. /// &lt;/summary&gt; /// &lt;returns&gt;&lt;/returns&gt; private static string GetCurrentPath() { &nbsp;&nbsp;&nbsp;&nbsp;return Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase); }    \n\nWe have the correct path and we still need to automate the Windows open file dialog to navigate to that path. We can do this like that:\n    protected void Open(string filename) { &nbsp;&nbsp;&nbsp;&nbsp;OpenButton.Click(); &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;var openModalWindow =  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MainWindow.ModalWindow(\"Please choose a Zip file\", InitializeOption.NoCache); &nbsp;&nbsp;&nbsp;&nbsp;Assert.IsNotNull(openModalWindow); &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;var splittedPath = GetCurrentPath().Split(new[] { '\\\\' }); &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;foreach (var pathPart in splittedPath) &nbsp;&nbsp;&nbsp;&nbsp;{ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;openModalWindow.Enter(pathPart); &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;openModalWindow.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN); &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;openModalWindow.WaitWhileBusy(); &nbsp;&nbsp;&nbsp;&nbsp;} &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;openModalWindow.Enter(filename); &nbsp;&nbsp;&nbsp;&nbsp;openModalWindow.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN); }    \n\nBasically we split the path into it different path parts that White will enter into the dialog followed by a enter. Don’t forget to use the method WaitWhileBusy() after each enter, otherwise it will be too fast and sometime your test will not go to the correct path and then will not find the file.\nFinally White enter the filename followed by enter and the file is opened.\nNice!\nIf you are using like me ReSharper to run your unit tests don’t forget to set it up to run tests from Project output folder.\n","dateCreated":"2010-01-28T04:24:03+00:00","dateModified":"2010-01-28T04:24:03+00:00","datePublished":"2010-01-28T04:24:03+00:00","description":"When you build automated WPF functional test using White in which you need to open a file through a Windows open file dialog, you will be confronted with the following issue. Windows open file dialog remember the last path with which you opened a file.\nSo you might have some unit tests that are green for a while which starts to be red for no apparent reasons. ","headline":"White’s tip for your automated WPF functional tests","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2010/01/28/Whitee28099s-tip-for-your-automated-WPF-functional-tests/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2010/01/28/Whitee28099s-tip-for-your-automated-WPF-functional-tests/","keywords":"WPF, unit test, white"}</script>
     <meta name="description" content="When you build automated WPF functional test using White in which you need to open a file through a Windows open file dialog, you will be confronted with the following issue. Windows open file dialog">
 <meta name="keywords" content="WPF,unit test,white">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="White’s tip for your automated WPF functional tests">
-<meta property="og:url" content="https://laurentkempe.com/2010/01/28/Whitee28099s-tip-for-your-automated-WPF-functional-tests/index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2010&#x2F;01&#x2F;28&#x2F;Whitee28099s-tip-for-your-automated-WPF-functional-tests&#x2F;index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="When you build automated WPF functional test using White in which you need to open a file through a Windows open file dialog, you will be confronted with the following issue. Windows open file dialog">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https://laurentkempe.com/images/4309956698_b62daf51f5_o1_50F26E1E.png">
-<meta property="og:image" content="https://laurentkempe.com/images/4309993844_8d9e828f8c_o1_46056709.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;images&#x2F;4309956698_b62daf51f5_o1_50F26E1E.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;images&#x2F;4309993844_8d9e828f8c_o1_46056709.png">
 <meta property="og:updated_time" content="2010-01-28T04:24:03.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="White’s tip for your automated WPF functional tests">
-<meta name="twitter:description" content="When you build automated WPF functional test using White in which you need to open a file through a Windows open file dialog, you will be confronted with the following issue. Windows open file dialog">
-<meta name="twitter:image" content="https://laurentkempe.com/images/4309956698_b62daf51f5_o1_50F26E1E.png">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;images&#x2F;4309956698_b62daf51f5_o1_50F26E1E.png">
 <meta name="twitter:creator" content="@laurentkempe">
     
     
@@ -41,7 +39,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-mslcllntebz6bnaf9snd8szfnckrp584wuqit7q6whzvju7uxsrud8qspz4k.min.css">
+    <link rel="stylesheet" href="/assets/css/style-b05yginpngfjm2uxkufrlocarhamnyny8crwlumxxdjkx1olyzpkm4z4smqx.min.css">
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -77,7 +75,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/ "
+            href="/%20"
             aria-label=""
         >
             Laurent Kempé
@@ -128,7 +126,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/ "
+                             href="/%20"
                             
                             title="Home"
                         >
@@ -272,7 +270,7 @@
 
 <p>The solution I came to is as this. </p>
 <p>First I use Visual Studio, Copy to Output Directory, to copy the needed file to the output directoy in which your software will be started by the unit tests, e.g. for notValidVersionZip.zip</p>
-<p><img src="/images/4309956698_b62daf51f5_o1_50F26E1E.png" alt> </p>
+<p><img src="/images/4309956698_b62daf51f5_o1_50F26E1E.png" alt=""> </p>
 <p>So now I am sure that the needed file is in the same path than the application. I then also need to be sure that when the application start the Windows open file dialog it points to this path. In the past implementation I was just using a filename and was lucky enough the path used by the Windows open file dialog was the correct one.</p>
 <p>To get to the correct path is easy. We just navigate to the correct path using the Windows open file dialog in an automated way. The correct path is the path in which the application as been started, so you can get it like that:</p>
 <div style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:55e8cf34-3def-431e-90fb-9299e1c955a7" class="wlWriterEditableSmartContent"> <div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt"> <div style="background: #fff; overflow: auto"> <ol style="background: #ffffff; margin: 0; padding: 0 0 0 5px;"> <li><span style="color:#808080">///</span><span style="color:#008000"> </span><span style="color:#808080">&lt;summary&gt;</span></li> <li style="background: #f3f3f3"><span style="color:#808080">///</span><span style="color:#008000"> Gets the current path.</span></li> <li><span style="color:#808080">///</span><span style="color:#008000"> </span><span style="color:#808080">&lt;/summary&gt;</span></li> <li style="background: #f3f3f3"><span style="color:#808080">///</span><span style="color:#008000"> </span><span style="color:#808080">&lt;returns&gt;&lt;/returns&gt;</span></li> <li><span style="color:#0000ff">private</span> <span style="color:#0000ff">static</span> <span style="color:#0000ff">string</span> GetCurrentPath()</li> <li style="background: #f3f3f3">{</li> <li>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000ff">return</span> <span style="color:#2b91af">Path</span>.GetDirectoryName(<span style="color:#2b91af">Assembly</span>.GetExecutingAssembly().CodeBase);</li> <li style="background: #f3f3f3">}</li> </ol> </div> </div> </div>
@@ -283,7 +281,7 @@
 <p>Basically we split the path into it different path parts that White will enter into the dialog followed by a enter. Don’t forget to use the method <strong>WaitWhileBusy()</strong> after each enter, otherwise it will be too fast and sometime your test will not go to the correct path and then will not find the file.</p>
 <p>Finally White enter the filename followed by enter and the file is opened.</p>
 <p>Nice!</p>
-<p>If you are using like me <a href="http://www.jetbrains.com/resharper/index.html" target="_blank" rel="noopener">ReSharper</a> to run your unit tests don’t forget to set it up to run tests from Project output folder.<br><img src="/images/4309993844_8d9e828f8c_o1_46056709.png" alt></p>
+<p>If you are using like me <a href="http://www.jetbrains.com/resharper/index.html" target="_blank" rel="noopener">ReSharper</a> to run your unit tests don’t forget to set it up to run tests from Project output folder.<br><img src="/images/4309993844_8d9e828f8c_o1_46056709.png" alt=""></p>
 
             
 
@@ -295,7 +293,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/WPF/">WPF</a> <a class="tag tag--primary tag--small t-link" href="/tags/unit-test/">unit test</a> <a class="tag tag--primary tag--small t-link" href="/tags/white/">white</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/WPF/" rel="tag">WPF</a> <a class="tag tag--primary tag--small t-link" href="/tags/unit-test/" rel="tag">unit test</a> <a class="tag tag--primary tag--small t-link" href="/tags/white/" rel="tag">white</a>
 
             </div>
         
@@ -629,7 +627,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-7y6uwuqgbcvcyfh91qqqps0hepqhsodkqsffxy8xmvyy1e7fa02w63m4kwm9.min.js"></script>
+<script src="/assets/js/script-81vkfdsd6zncrgoppv4dqukrlu3ekrh5kij6va1fch99q17dfu9iukgoppf8.min.js"></script>
 <!--SCRIPTS END-->
 
 
