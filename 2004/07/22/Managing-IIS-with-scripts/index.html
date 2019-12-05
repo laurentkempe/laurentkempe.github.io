@@ -1,0 +1,683 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Managing IIS with scripts - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I needed to create a virtual directory in IIS 6 during the deployment of one of our backend application on a Windows 2003 server. This application is a COM component written in C++ that I developed wrapping a very old VB6 COM component. The whole exposed as a Web Service using the SOAP Toolkit 3. I already discussed about it here.\nSo I created a script that will register both COM component, by the way regsvr32 is really bad cause it doesn’t return different value if it fails. Right now I have no verification in the script that let me know if the registration went well. I plan to add it in a second step by reading the content of the registry using the reg command. The script is using the SOAPVDIR.CMD packaged with the SOAP Toolkit 3 to create the Virtual Directory with the soap ISAPI of the SOAP Toolkit 3:\n\n\n\n“c:\\Program Files\\MSSOAP\\Binaries&lt;strong&gt;SOAPVDIR.CMD“ CREATE $VDIR_NAME path\n\nThen I needed to change the user name used for the anonymous access:\n\ncscript c:\\Inetpub\\AdminScripts\\adsutil.vbs SET /W3SVC/1/ROOT/$VDIR_NAME/AnonymousUserName myusername\n\nand his password:\n\ncscript c:\\Inetpub\\AdminScripts\\adsutil.vbs SET /W3SVC/1/ROOT/$VDIR_NAME/AnonymousUserPass mypassword\n\nAt this point I am not that happy about this method cause I have to specify in clear text a password in a script. I have two options. Either the user has to pass the password when running the script, but as it is a script calling this new script and I don’t want to change it, I find that I could implement my own command using .NET and the namespace: System.DirectoryServices with such code:\nusing System;using System.DirectoryServices;using System.Reflection;\nnamespace ADSI1{  class ConfigIIS  {    [STAThread]    static void Main(string[] args)    {      string serverName = “localhost”;      string password = ““;      string serverID = “1234”;\n  CreateNewWebSite(serverName, password, serverID);\n  CreateVDir(serverName, password, serverID);\n}\n\nstatic void CreateNewWebSite(string serverName, string password, string serverID)\n{\n  DirectoryEntry w3svc = new DirectoryEntry (&quot;IIS://&quot; + serverName + &quot;/w3svc&quot;,serverName + &quot;\\\\administrator&quot;, password,AuthenticationTypes.Secure);\n  DirectoryEntries sites = w3svc.Children;\n  DirectoryEntry newSite = sites.Add(serverID,&quot;IIsWebServer&quot;); //create a new site\n  newSite.CommitChanges();\n}\n\nstatic DirectoryEntry CreateVDir (string vdirname, string serverID)\n{\n  DirectoryEntry newvdir;\n  DirectoryEntry root=new DirectoryEntry(&quot;IIS://localhost/W3SVC/&quot; + serverID + &quot;/Root&quot;);\n  newvdir=root.Children.Add(vdirname, &quot;IIsWebVirtualDir&quot;);\n  newvdir.Properties[&quot;Path&quot;][0]= &quot;c:\\\\inetpub\\\\wwwroot&quot;;\n  newvdir.Properties[&quot;AccessScript&quot;][0] = true;\n  newvdir.CommitChanges();\n  return newvdir;\n}  }}\nAnd then I could save the encrypted password in the config file of the tool.\nUpdate: I found some articles about the namespace System.DirectoryServices here:\n\n[Introduction to System.DirectoryServices, Part 1](http://www.ondotnet.com/lpt/a/4026)\n[Introduction to System.DirectoryServices, Part 2](http://www.ondotnet.com/lpt/a/4027)\n","dateCreated":"2004-07-22T22:14:00+00:00","dateModified":"2004-07-22T22:14:00+00:00","datePublished":"2004-07-22T22:14:00+00:00","description":"I needed to create a virtual directory in IIS 6 during the deployment of one of our backend application on a Windows 2003 server. This application is a COM component written in C++ that I developed wrapping a very old VB6 COM component. The whole exposed as a Web Service using the SOAP Toolkit 3. I already discussed about it here.\nSo I created a script that will register both COM component, by the way regsvr32 is really bad cause it doesn’t return different value if it fails. Right now I have no verification in the script that let me know if the registration went well. I plan to add it in a second step by reading the content of the registry using the reg command. The script is using the SOAPVDIR.CMD packaged with the SOAP Toolkit 3 to create the Virtual Directory with the soap ISAPI of the SOAP Toolkit 3:","headline":"Managing IIS with scripts","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2004/07/22/Managing-IIS-with-scripts/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2004/07/22/Managing-IIS-with-scripts/","keywords":"Infrastructure, Work"}</script>
+    <meta name="description" content="I needed to create a virtual directory in IIS 6 during the deployment of one of our backend application on a Windows 2003 server. This application is a COM component written in C++ that I developed wr">
+<meta name="keywords" content="Infrastructure,Work">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Managing IIS with scripts">
+<meta property="og:url" content="https://laurentkempe.com/2004/07/22/Managing-IIS-with-scripts/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="I needed to create a virtual directory in IIS 6 during the deployment of one of our backend application on a Windows 2003 server. This application is a COM component written in C++ that I developed wr">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2004-07-22T22:14:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Managing IIS with scripts">
+<meta name="twitter:description" content="I needed to create a virtual directory in IIS 6 during the deployment of one of our backend application on a Windows 2003 server. This application is a COM component written in C++ that I developed wr">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-mslcllntebz6bnaf9snd8szfnckrp584wuqit7q6whzvju7uxsrud8qspz4k.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-64298-8');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            Laurent Kempé
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="global.open_link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="global.read_more_about_author"
+                >
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://flickr.com/photos/laurentkempe/" target="_blank" rel="noopener" title="Flickr">
+                    
+                        <i class="sidebar-button-icon fab fa-flickr" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Flickr</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Managing IIS with scripts
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2004-07-22T22:14:00+00:00">
+	
+		    Jul 22, 2004
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>I needed to create a virtual directory in IIS 6 during the deployment of one of our backend application on a Windows 2003 server. This application is a COM component written in C++ that I developed wrapping a very old VB6 COM component. The whole exposed as a Web Service using the <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=C943C0DD-CEEC-4088-9753-86F052EC8450&displaylang=en" target="_blank" rel="noopener">SOAP Toolkit 3</a>. I already discussed about it <a href="http://weblogs.asp.net/lkempe/archive/2003/11/06/36233.aspx" target="_blank" rel="noopener">here</a>.</p>
+<p>So I created a script that will register both COM component, by the way regsvr32 is really bad cause it doesn’t return different value if it fails. Right now I have no verification in the script that let me know if the registration went well. I plan to add it in a second step by reading the content of the registry using the <a href="http://www.microsoft.com/resources/documentation/windows/xp/all/proddocs/en-us/reg.mspx" target="_blank" rel="noopener">reg command</a>. The script is using the <em>SOAPVDIR.CMD</em> packaged with the <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=C943C0DD-CEEC-4088-9753-86F052EC8450&displaylang=en" target="_blank" rel="noopener">SOAP Toolkit 3</a> to create the Virtual Directory with the soap ISAPI of the <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=C943C0DD-CEEC-4088-9753-86F052EC8450&displaylang=en" target="_blank" rel="noopener">SOAP Toolkit 3</a>:</p>
+<a id="more"></a>
+
+<blockquote>
+<p>“c:\Program Files\MSSOAP\Binaries&lt;strong&gt;SOAPVDIR.CMD“ <strong>CREATE</strong> $VDIR_NAME <em><strong>path</strong></em></p>
+</blockquote>
+<p>Then I needed to change the user name used for the anonymous access:</p>
+<blockquote>
+<p>cscript c:\Inetpub\AdminScripts\adsutil.vbs <strong>SET</strong> /W3SVC/1/ROOT/$VDIR_NAME/<strong>AnonymousUserName</strong> <em><strong>myusername</strong></em></p>
+</blockquote>
+<p>and his password:</p>
+<blockquote>
+<p>cscript c:\Inetpub\AdminScripts\adsutil.vbs <strong>SET</strong> /W3SVC/1/ROOT/$VDIR_NAME/<strong>AnonymousUserPass</strong> <em><strong>mypassword</strong></em></p>
+</blockquote>
+<p>At this point I am not that happy about this method cause I have to specify in clear text a password in a script. I have two options. Either the user has to pass the password when running the script, but as it is a script calling this new script and I don’t want to change it, I find that I could implement my own command using .NET and the namespace: <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/iissdk/iis/using_system_directoryservices_to_configure_iis.asp" target="_blank" rel="noopener">System.DirectoryServices</a> with such code:</p>
+<p>using System;<br>using System.DirectoryServices;<br>using System.Reflection;</p>
+<p>namespace ADSI1<br>{<br>  class ConfigIIS<br>  {<br>    [STAThread]<br>    static void Main(string[] args)<br>    {<br>      string serverName = “localhost”;<br>      string password = “<administrative_password>“;<br>      string serverID = “1234”;</administrative_password></p>
+<pre><code>  CreateNewWebSite(serverName, password, serverID);
+  CreateVDir(serverName, password, serverID);
+}
+
+static void CreateNewWebSite(string serverName, string password, string serverID)
+{
+  DirectoryEntry w3svc = new DirectoryEntry (&quot;IIS://&quot; + serverName + &quot;/w3svc&quot;,serverName + &quot;\\administrator&quot;, password,AuthenticationTypes.Secure);
+  DirectoryEntries sites = w3svc.Children;
+  DirectoryEntry newSite = sites.Add(serverID,&quot;IIsWebServer&quot;); //create a new site
+  newSite.CommitChanges();
+}
+
+static DirectoryEntry CreateVDir (string vdirname, string serverID)
+{
+  DirectoryEntry newvdir;
+  DirectoryEntry root=new DirectoryEntry(&quot;IIS://localhost/W3SVC/&quot; + serverID + &quot;/Root&quot;);
+  newvdir=root.Children.Add(vdirname, &quot;IIsWebVirtualDir&quot;);
+  newvdir.Properties[&quot;Path&quot;][0]= &quot;c:\\inetpub\\wwwroot&quot;;
+  newvdir.Properties[&quot;AccessScript&quot;][0] = true;
+  newvdir.CommitChanges();
+  return newvdir;
+}</code></pre><p>  }<br>}<br></p>
+<p>And then I could save the encrypted password in the config file of the tool.</p>
+<p><u>Update</u>: I found some articles about the namespace <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/iissdk/iis/using_system_directoryservices_to_configure_iis.asp" target="_blank" rel="noopener">System.DirectoryServices</a> here:</p>
+<ul>
+<li>[Introduction to System.DirectoryServices, Part 1](http://www.ondotnet.com/lpt/a/4026)</li>
+<li>[Introduction to System.DirectoryServices, Part 2](http://www.ondotnet.com/lpt/a/4027)</li></ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/Infrastructure/">Infrastructure</a> <a class="tag tag--primary tag--small t-link" href="/tags/Work/">Work</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2004/07/23/Resharper-10-released/"
+                    data-tooltip="Resharper 1.0 released"
+                    aria-label="PREVIOUS: Resharper 1.0 released"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2004/07/22/Rewards-)/"
+                    data-tooltip="Rewards :-)"
+                    aria-label="NEXT: Rewards :-)"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2004/07/22/Managing-IIS-with-scripts/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2004/07/22/Managing-IIS-with-scripts/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2004/07/22/Managing-IIS-with-scripts/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2004/07/23/Resharper-10-released/"
+                    data-tooltip="Resharper 1.0 released"
+                    aria-label="PREVIOUS: Resharper 1.0 released"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2004/07/22/Rewards-)/"
+                    data-tooltip="Rewards :-)"
+                    aria-label="NEXT: Rewards :-)"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2004/07/22/Managing-IIS-with-scripts/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2004/07/22/Managing-IIS-with-scripts/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2004/07/22/Managing-IIS-with-scripts/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2004/07/22/Managing-IIS-with-scripts/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2004/07/22/Managing-IIS-with-scripts/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://laurentkempe.com/2004/07/22/Managing-IIS-with-scripts/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-7y6uwuqgbcvcyfh91qqqps0hepqhsodkqsffxy8xmvyy1e7fa02w63m4kwm9.min.js"></script>
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://laurentkempe.com/2004/07/22/Managing-IIS-with-scripts/';
+              
+            this.page.identifier = '20040723121400';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'laurentkempe';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

@@ -1,0 +1,692 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Unit Test using test doubles, aka Mock, Stub, Fake, Dummy - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Following my post about Application Acceptance Testing, we went, beginning of that week, in some very interesting discussions during a meeting at Innoveo in which I presented the differences between Mock and Stub in Unit Test. After the meeting as I often do I gather up from the web some posts which expressed in more details what I was talking about and made some extract of the posts.\nThis time I found some interesting content follow-up on my explanations on the site of Rhino.Mock framework website and a post from Martin Fowler; Mock’s aren’t Stubs\n\n\nUnderstanding the difference between a Stub and a Mock is an important distinction to do, because they have each one purpose which isn’t the same.\nSome framework like the excellent mockito decided not to make the distinction in the way you create the two, some other framework like the also excellent Rhino.Mock does this distinction. At the end what is important is that the developer understand the difference.\nExtract from **[Rhino.Mock website**](http://ayende.com/Wiki/Rhino+Mocks+3.5.ashx) \n\n“In short term, mock are for behavior verification, and stub are for state verification.\nIn longer term, a mock is an object that we can set expectations on, and which will verify that the expected actions have indeed occurred. A stub is an object that you use in order to pass to the code under test. You can setup expectations on it, so it would act in certain ways, but those expectations will never be verified.\nIn general, it is recommended to follow the principle of “Test only one thing per test“. So each unit test should validate no more than one significant interaction with another object. This generally implies that a given test should have no more than one mock object, but it may have several stubs, as needed. (An exception to this would be if the “one thing” tested inherently requires expectations on two dependent objects, for example, verifying that a method on one object is only called after a method on another object has been called.)\nIf you want to verify the behavior of the code under test, you will use a mock with the appropriate expectation, and verify that. If you want just to pass a value that may need to act in a certain way, but isn’t the focus of this test, you will use a stub.\nIMPORTANT: A stub will never cause a test to fail.”\n\nExtract from Martin Fowler post\n\n“This difference is actually two separate differences. On the one hand there is a difference in how test results are verified: a distinction between state verification and behavior verification. On the other hand is a whole different philosophy to the way testing and design play together, which I term here as the classical and mockist styles of Test Driven Development.”\n\nFowler in his post use an older way (post from 2007) of expressing Arrange-Act-Assert, mixed with Fixture terms: setup, exercise, verify, teardown.\nToday’s the expressions Arrange-Act-Assert or Record-Replay (which he is talking later on in the post) are common.\nStub\n\n“This style of testing uses state verification: which means that we determine whether the exercised method worked correctly by examining the state of the SUT and its collaborators after the method was exercised. As we’ll see, mock objects enable a different approach to verification.”\n\nMock\n\n“The SUT is the same - an order. However the collaborator isn’t a warehouse object, instead it’s a mock warehouse - technically an instance of the class Mock.\nThe second part of the setup creates expectations on the mock object.The expectations indicate which methods should be called on the mocks when the SUT is exercised.\nOnce all the expectations are in place I exercise the SUT. After the exercise I then do verification, which has two aspects. I run asserts against the SUT - much as before. However I also verify the mocks - checking that they were called according to their expectations.\nThe key difference here is how we verify that the order did the right thing in its interaction with the warehouse. With state verification we do this by asserts against the warehouse’s state. Mocks use behavior verification, where we instead check to see if the order made the correct calls on the warehouse. We do this check by telling the mock what to expect during setup and asking the mock to verify itself during verification. Only the order is checked using asserts, and if the method doesn’t change the state of the order there’s no asserts at all.”\n\n\n“When you’re doing testing like this, you’re focusing on one element of the software at a time -hence the common term unit testing. The problem is that to make a single unit work, you often need other units - hence the need for some kind of warehouse in our example.”\n\nMock/Stub are also called test doubles inspired from stunt double in movies! I think the analogy is quite good.\n\n“Meszaros then defined four particular kinds of double:\n\nDummy objects are passed around but never actually used. Usually they are just used to fill parameter lists.\nFake objects actually have working implementations, but usually take some shortcut which makes them not suitable for production (an in memory database is a good example).\nStubs provide canned answers to calls made during the test, usually not responding at all to anything outside what’s programmed in for the test. Stubs may also record information about calls, such as an email gateway stub that remembers the messages it ‘sent’, or maybe only how many messages it ‘sent’.\nMocks are what we are talking about here: objects pre-programmed with expectations which form a specification of the calls they are expected to receive.\n\nOf these kinds of doubles, only mocks insist upon behavior verification. The other doubles can, and usually do, use state verification. Mocks actually do behave like other doubles during the exercise phase, as they need to make the SUT believe it’s talking with its real collaborators - but mocks differ in the setup and the verification phases.”\n\n\n“Mock objects always use behavior verification, a stub can go either way. Meszaros refers to stubs that use behavior verification as a Test Spy. The difference is in how exactly the double runs and verifies and I’ll leave that for you to explore on your own.”\n\nTest Driven Development\n\n“The classical TDD style is to use real objects if possible and a double if it’s awkward to use the real thing. So a classical TDDer would use a real warehouse and a double for the mail service. The kind of double doesn’t really matter that much.\nA mockist TDD practitioner, however, will always use a mock for any object with interesting behavior. In this case for both the warehouse and the mail service.\n\n\n”An important offshoot of the mockist style is that of Behavior Driven Development (BDD). BDD was originally developed by my colleague Dan North as a technique to better help people learn Test Driven Development by focusing on how TDD operates as a design technique. This led to renaming tests as behaviors to better explore where TDD helps with thinking about what an object needs to do. BDD takes a mockist approach, but it expands on this, both with its naming styles, and with its desire to integrate analysis within its technique. I won’t go into this more here, as the only relevance to this article is that *BDD is another variation on TDD that tends *to use mockist testing. I’ll leave it to you to follow the link for more information.”\n\n\n“Occasionally you do run into things that are really hard to use state verification on, even if they aren’t awkward collaborations. A great example of this is a cache. The whole point of a cache is that you can’t tell from its state whether the cache hit or missed - this is a case where behavior verification would be the wise choice for even a hard core classical TDDer. I’m sure there are other exceptions in both directions.”\n“It’s at this point that I should stress that whichever style of test you use, you must combine it with coarser grained acceptance tests that operate across the system as a whole. I’ve often come across projects which were late in using acceptance tests and regretted it.”\n“TDD’s origins were a desire to get strong automatic regression testing that supported evolutionary design. Along the way its practitioners discovered that writing tests first made a significant improvement to the design process.”\n“As I’ve learned from Test Driven Development itself, it’s often hard to judge a technique without trying it seriously.”\n\n","dateCreated":"2010-07-16T22:31:53+00:00","dateModified":"2010-07-16T22:31:53+00:00","datePublished":"2010-07-16T22:31:53+00:00","description":"Following my post about Application Acceptance Testing, we went, beginning of that week, in some very interesting discussions during a meeting at Innoveo in which I presented the differences between Mock and Stub in Unit Test. After the meeting as I often do I gather up from the web some posts which expressed in more details what I was talking about and made some extract of the posts.\nThis time I found some interesting content follow-up on my explanations on the site of Rhino.Mock framework website and a post from Martin Fowler; Mock’s aren’t Stubs","headline":"Unit Test using test doubles, aka Mock, Stub, Fake, Dummy","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/07/16/Unit-Test-using-test-doubles-aka-Mock-Stub-Fake-Dummy/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/07/16/Unit-Test-using-test-doubles-aka-Mock-Stub-Fake-Dummy/"}</script>
+    <meta name="description" content="Following my post about Application Acceptance Testing, we went, beginning of that week, in some very interesting discussions during a meeting at Innoveo in which I presented the differences between M">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Unit Test using test doubles, aka Mock, Stub, Fake, Dummy">
+<meta property="og:url" content="https://laurentkempe.com/2010/07/16/Unit-Test-using-test-doubles-aka-Mock-Stub-Fake-Dummy/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="Following my post about Application Acceptance Testing, we went, beginning of that week, in some very interesting discussions during a meeting at Innoveo in which I presented the differences between M">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2010-07-16T22:31:53.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unit Test using test doubles, aka Mock, Stub, Fake, Dummy">
+<meta name="twitter:description" content="Following my post about Application Acceptance Testing, we went, beginning of that week, in some very interesting discussions during a meeting at Innoveo in which I presented the differences between M">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-mslcllntebz6bnaf9snd8szfnckrp584wuqit7q6whzvju7uxsrud8qspz4k.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-64298-8');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            Laurent Kempé
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="global.open_link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="global.read_more_about_author"
+                >
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://flickr.com/photos/laurentkempe/" target="_blank" rel="noopener" title="Flickr">
+                    
+                        <i class="sidebar-button-icon fab fa-flickr" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Flickr</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Unit Test using test doubles, aka Mock, Stub, Fake, Dummy
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2010-07-16T22:31:53+00:00">
+	
+		    Jul 16, 2010
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>Following my post about <a href="http://www.laurentkempe.com/post/Application-Acceptance-Testing.aspx" target="_blank" rel="noopener">Application Acceptance Testing</a>, we went, beginning of that week, in some very interesting discussions during a meeting at <a href="http://www.innoveo.com/" target="_blank" rel="noopener">Innoveo</a> in which I presented the differences between Mock and Stub in Unit Test. After the meeting as I often do I gather up from the web some posts which expressed in more details what I was talking about and made some extract of the posts.</p>
+<p>This time I found some interesting content follow-up on my explanations on the site of <a href="http://ayende.com/Wiki/Rhino+Mocks+3.5.ashx" target="_blank" rel="noopener">Rhino.Mock</a> framework website and a post from Martin Fowler; <a href="http://martinfowler.com/articles/mocksArentStubs.html" target="_blank" rel="noopener">Mock’s aren’t Stubs</a></p>
+<a id="more"></a>
+
+<p>Understanding the difference between a Stub and a Mock is an important distinction to do, because they have each one purpose which isn’t the same.</p>
+<p>Some framework like the excellent <a href="http://mockito.googlecode.com/" target="_blank" rel="noopener">mockito</a> decided not to make the distinction in the way you create the two, some other framework like the also excellent <a href="http://ayende.com/Wiki/Rhino+Mocks.ashx" target="_blank" rel="noopener">Rhino.Mock</a> does this distinction. At the end what is important is that the developer understand the difference.</p>
+<p><strong>Extract from **[</strong>Rhino.Mock website**](<a href="http://ayende.com/Wiki/Rhino+Mocks+3.5.ashx" target="_blank" rel="noopener">http://ayende.com/Wiki/Rhino+Mocks+3.5.ashx</a>) </p>
+<blockquote>
+<p>“In short term, <strong>mock are for behavior verification</strong>, <strong>and stub are for state verification</strong>.</p>
+<p>In longer term, <strong>a mock is an object that we can set expectations on, and which will verify that the expected actions have indeed occurred</strong>. <strong>A stub is an object that you use in order to pass to the code under test</strong>. You can setup expectations on it, so it would act in certain ways, but those expectations will never be verified.</p>
+<p>In general, it is recommended to follow the principle of “<strong>Test only one thing per test</strong>“. So each unit test should validate no more than one significant interaction with another object. This generally implies that <strong>a given test should have no more than one mock object, but it may have several stubs</strong>, as needed. (An exception to this would be if the “one thing” tested inherently requires expectations on two dependent objects, for example, verifying that a method on one object is only called after a method on another object has been called.)</p>
+<p>If you want <strong>to verify the behavior of the code under test, you will use a mock</strong> with the appropriate expectation, and verify that. If you want <strong>just to pass a value that may need to act in a certain way, but isn’t the focus of this test, you will use a stub</strong>.</p>
+<p><strong>IMPORTANT: A stub will never cause a test to fail.”</strong></p>
+</blockquote>
+<p><strong>Extract from <a href="http://martinfowler.com/articles/mocksArentStubs.html" target="_blank" rel="noopener">Martin Fowler post</a></strong></p>
+<blockquote>
+<p>“This difference is actually two separate differences. On the one hand there is a difference in how test results are verified: a <strong>distinction between state verification and behavior verification</strong>. On the other hand is <strong>a whole different philosophy to the way testing and design play together</strong>, which I term here as the classical and mockist styles of Test Driven Development.”</p>
+</blockquote>
+<p>Fowler in his post use an older way (post from 2007) of expressing Arrange-Act-Assert, mixed with Fixture terms: setup, exercise, verify, teardown.</p>
+<p>Today’s the expressions Arrange-Act-Assert or Record-Replay (which he is talking later on in the post) are common.</p>
+<p><em>Stub</em></p>
+<blockquote>
+<p>“This style of testing uses <strong>state verification</strong>: which means that we <strong>determine whether the exercised method worked correctly by examining the state of the SUT and its collaborators</strong> after the method was exercised. As we’ll see, mock objects enable a different approach to verification.”</p>
+</blockquote>
+<p><em>Mock</em></p>
+<blockquote>
+<p>“The SUT is the same - an order. However <strong>the collaborator isn’t a warehouse object, instead it’s a mock warehouse</strong> - technically an instance of the class Mock.</p>
+<p>The second part of the <strong>setup creates expectations on the mock object</strong>.<strong>The expectations indicate which methods should be called on the mocks when the SUT is exercised.</strong></p>
+<p>Once all the expectations are in place I exercise the SUT. After the exercise I then <strong>do verification, which has two aspec</strong>ts. I run <strong>asserts against the SUT - much as before</strong>. However I also <strong>verify the mocks - checking that they were called according to their expectations</strong>.</p>
+<p>The <strong>key difference</strong> here is <strong>how we verify that the order did the right thing in its interaction with the warehouse.</strong> With <strong>state verification</strong> we do this by <strong>asserts against the warehouse’s state</strong>. <strong>Mocks</strong> use behavior verification, where we instead <strong>check to see if the order made the correct calls on the warehouse</strong>. We do this check by telling the mock what to expect during setup and asking the mock to verify itself during verification. Only the order is checked using asserts, and if the method doesn’t change the state of the order there’s no asserts at all.”</p>
+</blockquote>
+<blockquote>
+<p>“When you’re doing testing like this, you’re <strong>focusing on one element of the software at a time</strong> -hence the common term <strong>unit testing</strong>. The problem is that <strong>to make a single unit work, you often need other units</strong> - hence the need for some kind of warehouse in our example.”</p>
+</blockquote>
+<p>Mock/Stub are also called test doubles inspired from stunt double in movies! I think the analogy is quite good.</p>
+<blockquote>
+<p>“Meszaros then defined four particular kinds of double:</p>
+<ul>
+<li><strong>Dummy</strong> objects are passed around but never actually used. Usually they are just <strong>used to fill parameter lists</strong>.</li>
+<li><strong>Fake</strong> objects actually <strong>have working implementations, but usually take some shortcut which makes them not suitable for production</strong> (<strong>an in memory database is a good example</strong>).</li>
+<li><strong>Stubs</strong> provide canned <strong>answers to calls made during the test</strong>, usually not responding at all to anything outside what’s programmed in for the test. Stubs <strong>may also record information about calls</strong>, such as an email gateway stub that remembers the messages it ‘sent’, or maybe only how many messages it ‘sent’.</li>
+<li><strong>Mocks</strong> are what we are talking about here: <strong>objects pre-programmed with expectations which form a specification of the calls they are expected to receive</strong>.</li>
+</ul>
+<p>Of these kinds of doubles, <strong>only mocks insist upon behavior verification</strong>. The other doubles can, and usually do, use state verification. Mocks actually do behave like other doubles during the exercise phase, as they need to make the SUT believe it’s talking with its real collaborators - but <strong>mocks differ in the setup and the verification phases</strong>.”</p>
+</blockquote>
+<blockquote>
+<p>“<strong>Mock objects always use behavior verification, a stub can go either way</strong>. <strong>Meszaros refers to stubs that use behavior verification as a Test Spy</strong>. The difference is in how exactly the double runs and verifies and I’ll leave that for you to explore on your own.”</p>
+</blockquote>
+<p><em>Test Driven Development</em></p>
+<blockquote>
+<p>“<strong>The classical TDD style is to use real objects if possible and a double if it’s awkward to use the real thing</strong>. So a classical TDDer would use a real warehouse and a double for the mail service. The kind of double doesn’t really matter that much.</p>
+<p><strong>A mockist TDD practitioner, however, will always use a mock for any object with interesting behavior</strong>. In this case for both the warehouse and the mail service.</p>
+</blockquote>
+<blockquote>
+<p>”An important offshoot of the mockist style is that of Behavior Driven Development (BDD). BDD was originally developed by my colleague Dan North as a technique to better help people learn Test Driven Development by focusing <strong><font color="#ff0000">on how TDD operates as a design technique</font></strong>. This led to <strong>renaming tests as behaviors</strong> to better explore where TDD helps with thinking about what an object needs to do. BDD takes a mockist approach, but it expands on this, both with its naming styles, and with its desire to integrate analysis within its technique. I won’t go into this more here, as the only relevance to this article is that *<em>BDD is another variation on TDD that tends *</em>to use mockist testing. I’ll leave it to you to follow the link for more information.”</p>
+</blockquote>
+<blockquote>
+<p>“Occasionally you do <strong>run into things that are really hard to use state verification</strong> on, even if they aren’t awkward collaborations. A great <strong>example of this is a cache</strong>. The whole point of a cache is that <strong>you can’t tell from its state whether the cache hit or missed</strong> - <strong>this is a case where behavior verification would be the wise choice</strong> for even a hard core classical TDDer. I’m sure there are other exceptions in both directions.”</p>
+<p>“It’s at this point that I should stress that<font color="#ff0000"> <strong>whichever style of test you use, you must combine it with coarser grained acceptance tests that operate across the system as a whole</strong></font>. I’ve often come across projects which were late in using acceptance tests and regretted it.”</p>
+<p>“<strong>TDD’s origins were a desire to get strong automatic regression testing that supported evolutionary design</strong>. Along the way its practitioners discovered that<font color="#ff0000"> <strong>writing tests first made a significant improvement to the design process</strong>.</font>”</p>
+<p>“As I’ve learned from Test Driven Development itself, <strong>it’s often hard to judge a technique without trying it seriously</strong>.”</p>
+</blockquote>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2010/07/29/Corporate-Culture-disruptive-thinking-and-implementation/"
+                    data-tooltip="Corporate Culture, disruptive thinking and implementation"
+                    aria-label="PREVIOUS: Corporate Culture, disruptive thinking and implementation"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2010/07/16/File-dialog-automation-using-White-framework/"
+                    data-tooltip="File dialog automation using White framework"
+                    aria-label="NEXT: File dialog automation using White framework"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2010/07/16/Unit-Test-using-test-doubles-aka-Mock-Stub-Fake-Dummy/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2010/07/16/Unit-Test-using-test-doubles-aka-Mock-Stub-Fake-Dummy/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2010/07/16/Unit-Test-using-test-doubles-aka-Mock-Stub-Fake-Dummy/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2010/07/29/Corporate-Culture-disruptive-thinking-and-implementation/"
+                    data-tooltip="Corporate Culture, disruptive thinking and implementation"
+                    aria-label="PREVIOUS: Corporate Culture, disruptive thinking and implementation"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2010/07/16/File-dialog-automation-using-White-framework/"
+                    data-tooltip="File dialog automation using White framework"
+                    aria-label="NEXT: File dialog automation using White framework"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2010/07/16/Unit-Test-using-test-doubles-aka-Mock-Stub-Fake-Dummy/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2010/07/16/Unit-Test-using-test-doubles-aka-Mock-Stub-Fake-Dummy/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2010/07/16/Unit-Test-using-test-doubles-aka-Mock-Stub-Fake-Dummy/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2010/07/16/Unit-Test-using-test-doubles-aka-Mock-Stub-Fake-Dummy/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2010/07/16/Unit-Test-using-test-doubles-aka-Mock-Stub-Fake-Dummy/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://laurentkempe.com/2010/07/16/Unit-Test-using-test-doubles-aka-Mock-Stub-Fake-Dummy/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-7y6uwuqgbcvcyfh91qqqps0hepqhsodkqsffxy8xmvyy1e7fa02w63m4kwm9.min.js"></script>
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://laurentkempe.com/2010/07/16/Unit-Test-using-test-doubles-aka-Mock-Stub-Fake-Dummy/';
+              
+            this.page.identifier = '20100717123153';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'laurentkempe';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

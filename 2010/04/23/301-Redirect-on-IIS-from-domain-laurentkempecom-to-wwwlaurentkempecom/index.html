@@ -13,7 +13,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I got an email the other day from Didier, than a message on my facebook page from Antoine about an issue with my blog www.laurentkempe.com and my .NET portal www.techheadbrothers.com which were not redirecting correctly from laurentkempe.com and techheadbrothers.com to the ones with www in front.\nSo I fired up IIS manager and fixed this using the following easy way:\n\n\n\nCreate a web site for the one without the www; e.g. laurentkempe.com, configure the web site content directory to the path of the one you have in www.laurentkempe.com \nConfigure the web site to listen on laurentkempe.com, if needed         \nThen on the Home directory you will have to set the redirection url using ‘When connecting to this resource the content should come from’ set to ‘A redirection to a URL”’.  And check ‘A permanent redirection for this resource’.   \n\nYou are done! And you can control that using a tool like HttpWatch Professional and for sure from your browser!\n\n","dateCreated":"2010-04-23T17:46:08+02:00","dateModified":"2010-04-23T17:48:09+02:00","datePublished":"2010-04-23T17:46:08+02:00","description":"I got an email the other day from Didier, than a message on my facebook page from Antoine about an issue with my blog www.laurentkempe.com and my .NET portal www.techheadbrothers.com which were not redirecting correctly from laurentkempe.com and techheadbrothers.com to the ones with www in front.\nSo I fired up IIS manager and fixed this using the following easy way:","headline":"301 Redirect on IIS, from domain laurentkempe.com to www.laurentkempe.com","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/04/23/301-Redirect-on-IIS-from-domain-laurentkempecom-to-wwwlaurentkempecom/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/04/23/301-Redirect-on-IIS-from-domain-laurentkempecom-to-wwwlaurentkempecom/","keywords":"IIS"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I got an email the other day from Didier, than a message on my facebook page from Antoine about an issue with my blog www.laurentkempe.com and my .NET portal www.techheadbrothers.com which were not redirecting correctly from laurentkempe.com and techheadbrothers.com to the ones with www in front.\nSo I fired up IIS manager and fixed this using the following easy way:\n\n\n\nCreate a web site for the one without the www; e.g. laurentkempe.com, configure the web site content directory to the path of the one you have in www.laurentkempe.com \nConfigure the web site to listen on laurentkempe.com, if needed         \nThen on the Home directory you will have to set the redirection url using ‘When connecting to this resource the content should come from’ set to ‘A redirection to a URL”’.  And check ‘A permanent redirection for this resource’.   \n\nYou are done! And you can control that using a tool like HttpWatch Professional and for sure from your browser!\n\n","dateCreated":"2010-04-23T15:46:08+00:00","dateModified":"2010-04-23T15:48:09+00:00","datePublished":"2010-04-23T15:46:08+00:00","description":"I got an email the other day from Didier, than a message on my facebook page from Antoine about an issue with my blog www.laurentkempe.com and my .NET portal www.techheadbrothers.com which were not redirecting correctly from laurentkempe.com and techheadbrothers.com to the ones with www in front.\nSo I fired up IIS manager and fixed this using the following easy way:","headline":"301 Redirect on IIS, from domain laurentkempe.com to www.laurentkempe.com","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/04/23/301-Redirect-on-IIS-from-domain-laurentkempecom-to-wwwlaurentkempecom/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/04/23/301-Redirect-on-IIS-from-domain-laurentkempecom-to-wwwlaurentkempecom/","keywords":"IIS"}</script>
     <meta name="description" content="I got an email the other day from Didier, than a message on my facebook page from Antoine about an issue with my blog www.laurentkempe.com and my .NET portal www.techheadbrothers.com which were not re">
 <meta name="keywords" content="IIS">
 <meta property="og:type" content="blog">
@@ -42,7 +42,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-0moe8p72dc4amreapzqzg09tozn0eyvw8znubfdgfqz68k5ahhs2zop4w8ck.min.css">
+    <link rel="stylesheet" href="/assets/css/style-mslcllntebz6bnaf9snd8szfnckrp584wuqit7q6whzvju7uxsrud8qspz4k.min.css">
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -253,7 +253,7 @@
     
     
         <div class="post-meta">
-    <time datetime="2010-04-23T17:46:08+02:00">
+    <time datetime="2010-04-23T15:46:08+00:00">
 	
 		    Apr 23, 2010
     	
@@ -623,7 +623,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-8ckp9gohpxnig2ma73t5i5irxwpgam7ut1wjb1jhgfu2lhiv01sbxav3hfxr.min.js"></script>
+<script src="/assets/js/script-7y6uwuqgbcvcyfh91qqqps0hepqhsodkqsffxy8xmvyy1e7fa02w63m4kwm9.min.js"></script>
 <!--SCRIPTS END-->
 
 

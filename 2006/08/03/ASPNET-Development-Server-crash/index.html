@@ -13,7 +13,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"This morning I had a strange crash of ASP.NET Development Server, it is the first time that it happens and I was really stressed about it.\nWith debugger I got: “An unhandled exception of type ‘System.StackOverflowException’ occurred in Unknown Module.”\n\n\nI thought of third parties assemblies but that wasn’t it, so I finally thought of infinite loop and pointed out that I was doing the following in my last changes:\n\n\npublic virtual string ChromeTemplateFile\n{\n&lt;span style=&quot;color: blue&quot;&gt;get&lt;/span&gt;\n\n{\n\n    &lt;span style=&quot;color: blue&quot;&gt;if&lt;/span&gt; (&lt;span style=&quot;color: teal&quot;&gt;WebPartManager&lt;/span&gt;.GetCurrentWebPartManager(Page).DisplayMode == &lt;span style=&quot;color: teal&quot;&gt;WebPartManager&lt;/span&gt;.BrowseDisplayMode)\n\n        &lt;span style=&quot;color: blue&quot;&gt;return&lt;/span&gt; BrowseDisplayModeChromeTemplateFile;\n\n    &lt;span style=&quot;color: blue&quot;&gt;else&lt;/span&gt;\n\n        &lt;span style=&quot;color: blue&quot;&gt;return&lt;/span&gt; **ChromeTemplateFile**;\n\n}\n\n&lt;span style=&quot;color: blue&quot;&gt;set&lt;/span&gt; { &lt;span style=&quot;color: blue&quot;&gt;throw&lt;/span&gt; &lt;span style=&quot;color: blue&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color: teal&quot;&gt;ApplicationException&lt;/span&gt;(&lt;span style=&quot;color: maroon&quot;&gt;&quot;Not Implemented&quot;&lt;/span&gt;); }}\n\n\nBingo, one miss tipping of a properties name and you end up in an infinite loop. Thanks Valentin for the nice msn talks ;-)\n","dateCreated":"2006-08-03T18:09:00+02:00","dateModified":"2006-08-03T18:09:00+02:00","datePublished":"2006-08-03T18:09:00+02:00","description":"This morning I had a strange crash of ASP.NET Development Server, it is the first time that it happens and I was really stressed about it.\nWith debugger I got: “An unhandled exception of type ‘System.StackOverflowException’ occurred in Unknown Module.”","headline":"ASP.NET Development Server crash","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2006/08/03/ASPNET-Development-Server-crash/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2006/08/03/ASPNET-Development-Server-crash/","keywords":"ASP.NET 2.0, Visual Studio, .NET"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"This morning I had a strange crash of ASP.NET Development Server, it is the first time that it happens and I was really stressed about it.\nWith debugger I got: “An unhandled exception of type ‘System.StackOverflowException’ occurred in Unknown Module.”\n\n\nI thought of third parties assemblies but that wasn’t it, so I finally thought of infinite loop and pointed out that I was doing the following in my last changes:\n\n\npublic virtual string ChromeTemplateFile\n{\n&lt;span style=&quot;color: blue&quot;&gt;get&lt;/span&gt;\n\n{\n\n    &lt;span style=&quot;color: blue&quot;&gt;if&lt;/span&gt; (&lt;span style=&quot;color: teal&quot;&gt;WebPartManager&lt;/span&gt;.GetCurrentWebPartManager(Page).DisplayMode == &lt;span style=&quot;color: teal&quot;&gt;WebPartManager&lt;/span&gt;.BrowseDisplayMode)\n\n        &lt;span style=&quot;color: blue&quot;&gt;return&lt;/span&gt; BrowseDisplayModeChromeTemplateFile;\n\n    &lt;span style=&quot;color: blue&quot;&gt;else&lt;/span&gt;\n\n        &lt;span style=&quot;color: blue&quot;&gt;return&lt;/span&gt; **ChromeTemplateFile**;\n\n}\n\n&lt;span style=&quot;color: blue&quot;&gt;set&lt;/span&gt; { &lt;span style=&quot;color: blue&quot;&gt;throw&lt;/span&gt; &lt;span style=&quot;color: blue&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color: teal&quot;&gt;ApplicationException&lt;/span&gt;(&lt;span style=&quot;color: maroon&quot;&gt;&quot;Not Implemented&quot;&lt;/span&gt;); }}\n\n\nBingo, one miss tipping of a properties name and you end up in an infinite loop. Thanks Valentin for the nice msn talks ;-)\n","dateCreated":"2006-08-03T16:09:00+00:00","dateModified":"2006-08-03T16:09:00+00:00","datePublished":"2006-08-03T16:09:00+00:00","description":"This morning I had a strange crash of ASP.NET Development Server, it is the first time that it happens and I was really stressed about it.\nWith debugger I got: “An unhandled exception of type ‘System.StackOverflowException’ occurred in Unknown Module.”","headline":"ASP.NET Development Server crash","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2006/08/03/ASPNET-Development-Server-crash/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2006/08/03/ASPNET-Development-Server-crash/","keywords":"ASP.NET 2.0, Visual Studio, .NET"}</script>
     <meta name="description" content="This morning I had a strange crash of ASP.NET Development Server, it is the first time that it happens and I was really stressed about it. With debugger I got: “An unhandled exception of type ‘System.">
 <meta name="keywords" content="ASP.NET 2.0,Visual Studio,.NET">
 <meta property="og:type" content="blog">
@@ -38,7 +38,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-0moe8p72dc4amreapzqzg09tozn0eyvw8znubfdgfqz68k5ahhs2zop4w8ck.min.css">
+    <link rel="stylesheet" href="/assets/css/style-mslcllntebz6bnaf9snd8szfnckrp584wuqit7q6whzvju7uxsrud8qspz4k.min.css">
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -249,7 +249,7 @@
     
     
         <div class="post-meta">
-    <time datetime="2006-08-03T18:09:00+02:00">
+    <time datetime="2006-08-03T16:09:00+00:00">
 	
 		    Aug 03, 2006
     	
@@ -314,7 +314,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2006/08/13/Making-VSTO-2005-and-WSE-30-playing-together-again/"
+                    href="/2006/08/12/Making-VSTO-2005-and-WSE-30-playing-together-again/"
                     data-tooltip="Making VSTO 2005 and WSE 3.0 playing together again"
                     aria-label="PREVIOUS: Making VSTO 2005 and WSE 3.0 playing together again"
                 >
@@ -443,7 +443,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2006/08/13/Making-VSTO-2005-and-WSE-30-playing-together-again/"
+                    href="/2006/08/12/Making-VSTO-2005-and-WSE-30-playing-together-again/"
                     data-tooltip="Making VSTO 2005 and WSE 3.0 playing together again"
                     aria-label="PREVIOUS: Making VSTO 2005 and WSE 3.0 playing together again"
                 >
@@ -635,7 +635,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-8ckp9gohpxnig2ma73t5i5irxwpgam7ut1wjb1jhgfu2lhiv01sbxav3hfxr.min.js"></script>
+<script src="/assets/js/script-7y6uwuqgbcvcyfh91qqqps0hepqhsodkqsffxy8xmvyy1e7fa02w63m4kwm9.min.js"></script>
 <!--SCRIPTS END-->
 
 

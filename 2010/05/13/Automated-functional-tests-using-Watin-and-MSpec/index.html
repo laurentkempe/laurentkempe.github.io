@@ -13,7 +13,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I am conducting a spike for a couple of evening on the way we might automate our functional tests at Jobping.  \nI started with Watin and MSpec and the MSpec excellent plugin for ReSharper 5 which gives the following great outputs directly from Visual Studio\n\n\n  \nAfter some discussion with Alexander Groß (Thanks for your help ;) to gain some knowhow about MSpec I finally managed to have some automated functional tests running like this:    [Subject(“Search”)] public class when_user_search_using_keywords : WebBaseSpec {     const string Keywords = “C#”;     static SearchScreenObject searchScreenObject;     static ResultScreenObject resultScreenObject;  \n&lt;span style=&quot;color:#2b91af&quot;&gt;Establish&lt;/span&gt; context = () =&gt;  \n    {  \n        searchScreenObject = &lt;span style=&quot;color:#0000ff&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color:#2b91af&quot;&gt;SearchScreenObject&lt;/span&gt;(Browser);  \n        resultScreenObject = &lt;span style=&quot;color:#0000ff&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color:#2b91af&quot;&gt;ResultScreenObject&lt;/span&gt;(Browser);  \n    };  \n\n&lt;span style=&quot;color:#2b91af&quot;&gt;Because&lt;/span&gt; of = () =&gt; searchScreenObject.Search(Keywords);  \n\n&lt;span style=&quot;color:#2b91af&quot;&gt;It&lt;/span&gt; should_direct_user_to_results_page = () =&gt;   \n    Browser.Uri.Route().ShouldMapTo&lt;&lt;span style=&quot;color:#2b91af&quot;&gt;HomeController&lt;/span&gt;&gt;(x =&gt;   \n        x.Search(&lt;span style=&quot;color:#a31515&quot;&gt;&quot;AU&quot;&lt;/span&gt;, &lt;span style=&quot;color:#0000ff&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color:#2b91af&quot;&gt;SearchRequest&lt;/span&gt; { Keywords = Keywords}));  \n\n&lt;span style=&quot;color:#2b91af&quot;&gt;It&lt;/span&gt; should_fill_search_textbox_with_keywords_entered_by_user = () =&gt;   \n    resultScreenObject.SearchText.Text.ShouldEqual(Keywords);   }    \nI think it talks for itself!\nRemarks to note:\n\nSearchScreenObject and ResultScreenObject represents an isolation layer between my tests and objects that are present on the web pages. This helps in the case you decide to change an id of an element\nI use MvcContrib ShouldMap to ensure that the browser navigates to the correct destination page which add another isolation layer and let me change my URL without impacting my tests  \n\nIt is really funny to see the browser opening and clicking automatically, typing texts… \nHopefully, at the end this will replace our smoke test document and quite some time of manual testing.\n","dateCreated":"2010-05-13T09:54:12+02:00","dateModified":"2010-05-14T10:02:06+02:00","datePublished":"2010-05-13T09:54:12+02:00","description":"I am conducting a spike for a couple of evening on the way we might automate our functional tests at Jobping.  \nI started with Watin and MSpec and the MSpec excellent plugin for ReSharper 5 which gives the following great outputs directly from Visual Studio","headline":"Automated functional tests using Watin and MSpec","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/05/13/Automated-functional-tests-using-Watin-and-MSpec/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/05/13/Automated-functional-tests-using-Watin-and-MSpec/"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I am conducting a spike for a couple of evening on the way we might automate our functional tests at Jobping.  \nI started with Watin and MSpec and the MSpec excellent plugin for ReSharper 5 which gives the following great outputs directly from Visual Studio\n\n\n  \nAfter some discussion with Alexander Groß (Thanks for your help ;) to gain some knowhow about MSpec I finally managed to have some automated functional tests running like this:    [Subject(“Search”)] public class when_user_search_using_keywords : WebBaseSpec {     const string Keywords = “C#”;     static SearchScreenObject searchScreenObject;     static ResultScreenObject resultScreenObject;  \n&lt;span style=&quot;color:#2b91af&quot;&gt;Establish&lt;/span&gt; context = () =&gt;  \n    {  \n        searchScreenObject = &lt;span style=&quot;color:#0000ff&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color:#2b91af&quot;&gt;SearchScreenObject&lt;/span&gt;(Browser);  \n        resultScreenObject = &lt;span style=&quot;color:#0000ff&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color:#2b91af&quot;&gt;ResultScreenObject&lt;/span&gt;(Browser);  \n    };  \n\n&lt;span style=&quot;color:#2b91af&quot;&gt;Because&lt;/span&gt; of = () =&gt; searchScreenObject.Search(Keywords);  \n\n&lt;span style=&quot;color:#2b91af&quot;&gt;It&lt;/span&gt; should_direct_user_to_results_page = () =&gt;   \n    Browser.Uri.Route().ShouldMapTo&lt;&lt;span style=&quot;color:#2b91af&quot;&gt;HomeController&lt;/span&gt;&gt;(x =&gt;   \n        x.Search(&lt;span style=&quot;color:#a31515&quot;&gt;&quot;AU&quot;&lt;/span&gt;, &lt;span style=&quot;color:#0000ff&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color:#2b91af&quot;&gt;SearchRequest&lt;/span&gt; { Keywords = Keywords}));  \n\n&lt;span style=&quot;color:#2b91af&quot;&gt;It&lt;/span&gt; should_fill_search_textbox_with_keywords_entered_by_user = () =&gt;   \n    resultScreenObject.SearchText.Text.ShouldEqual(Keywords);   }    \nI think it talks for itself!\nRemarks to note:\n\nSearchScreenObject and ResultScreenObject represents an isolation layer between my tests and objects that are present on the web pages. This helps in the case you decide to change an id of an element\nI use MvcContrib ShouldMap to ensure that the browser navigates to the correct destination page which add another isolation layer and let me change my URL without impacting my tests  \n\nIt is really funny to see the browser opening and clicking automatically, typing texts… \nHopefully, at the end this will replace our smoke test document and quite some time of manual testing.\n","dateCreated":"2010-05-13T07:54:12+00:00","dateModified":"2010-05-14T08:02:06+00:00","datePublished":"2010-05-13T07:54:12+00:00","description":"I am conducting a spike for a couple of evening on the way we might automate our functional tests at Jobping.  \nI started with Watin and MSpec and the MSpec excellent plugin for ReSharper 5 which gives the following great outputs directly from Visual Studio","headline":"Automated functional tests using Watin and MSpec","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/05/13/Automated-functional-tests-using-Watin-and-MSpec/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/05/13/Automated-functional-tests-using-Watin-and-MSpec/"}</script>
     <meta name="description" content="I am conducting a spike for a couple of evening on the way we might automate our functional tests at Jobping.   I started with Watin and MSpec and the MSpec excellent plugin for ReSharper 5 which give">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Automated functional tests using Watin and MSpec">
@@ -39,7 +39,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-0moe8p72dc4amreapzqzg09tozn0eyvw8znubfdgfqz68k5ahhs2zop4w8ck.min.css">
+    <link rel="stylesheet" href="/assets/css/style-mslcllntebz6bnaf9snd8szfnckrp584wuqit7q6whzvju7uxsrud8qspz4k.min.css">
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -250,7 +250,7 @@
     
     
         <div class="post-meta">
-    <time datetime="2010-05-13T09:54:12+02:00">
+    <time datetime="2010-05-13T07:54:12+00:00">
 	
 		    May 13, 2010
     	
@@ -309,7 +309,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2010/05/14/Jobping-Open-Source-URL-Shortener-Goes-to-Version-05/"
+                    href="/2010/05/13/Jobping-Open-Source-URL-Shortener-Goes-to-Version-05/"
                     data-tooltip="Jobping Open Source URL Shortener. Goes to Version 0.5"
                     aria-label="PREVIOUS: Jobping Open Source URL Shortener. Goes to Version 0.5"
                 >
@@ -438,7 +438,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2010/05/14/Jobping-Open-Source-URL-Shortener-Goes-to-Version-05/"
+                    href="/2010/05/13/Jobping-Open-Source-URL-Shortener-Goes-to-Version-05/"
                     data-tooltip="Jobping Open Source URL Shortener. Goes to Version 0.5"
                     aria-label="PREVIOUS: Jobping Open Source URL Shortener. Goes to Version 0.5"
                 >
@@ -630,7 +630,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-8ckp9gohpxnig2ma73t5i5irxwpgam7ut1wjb1jhgfu2lhiv01sbxav3hfxr.min.js"></script>
+<script src="/assets/js/script-7y6uwuqgbcvcyfh91qqqps0hepqhsodkqsffxy8xmvyy1e7fa02w63m4kwm9.min.js"></script>
 <!--SCRIPTS END-->
 
 

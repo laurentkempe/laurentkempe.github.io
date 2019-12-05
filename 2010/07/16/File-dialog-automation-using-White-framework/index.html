@@ -13,9 +13,9 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Today TeamCity was showing me one functional test failure on my WPF application.\nI already discussed about this problem here: White’s tip for your automated WPF functional tests       \n\nThe solution I presented at that time was working on my local development environment but not on my Continuous Integration system; aka TeamCity. So I went for another solution which was searching for the filename ComboBox and was setting the value. \nThis was working for some time but today not anymore. The issue I discovered is that using the ComboBox needed that the path was already used in the past otherwise setting the value was failing. So I was stuck and had to find another solution.\nI fired spy++ and searched for a solution and after some debugging I came to the following one:\n  var openModalWindow =  &nbsp;&nbsp;&nbsp;&nbsp;MainWindow.ModalWindow(\"Please choose a Zip file\", InitializeOption.NoCache);  MainWindow.WaitWhileBusy(); Assert.IsNotNull(openModalWindow);  var filePath = Path.Combine(GetCurrentPath(), filename);  var filenameTextBox =  &nbsp;&nbsp;&nbsp;&nbsp;openModalWindow.Get&lt;TextBox&gt;(SearchCriteria.ByAutomationId(\"1148\")); filenameTextBox.SetValue(filePath);  openModalWindow.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);  \n\nThis is working on my local environment but also on TeamCity!\nThe key point was to find the TextBox with the AutomationId of 1148.\n","dateCreated":"2010-07-16T03:22:07+02:00","dateModified":"2012-05-02T00:53:45+02:00","datePublished":"2010-07-16T03:22:07+02:00","description":"Today TeamCity was showing me one functional test failure on my WPF application.\nI already discussed about this problem here: White’s tip for your automated WPF functional tests       ","headline":"File dialog automation using White framework","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/07/16/File-dialog-automation-using-White-framework/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/07/16/File-dialog-automation-using-White-framework/","keywords":"acceptance test, white"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Today TeamCity was showing me one functional test failure on my WPF application.\nI already discussed about this problem here: White’s tip for your automated WPF functional tests       \n\nThe solution I presented at that time was working on my local development environment but not on my Continuous Integration system; aka TeamCity. So I went for another solution which was searching for the filename ComboBox and was setting the value. \nThis was working for some time but today not anymore. The issue I discovered is that using the ComboBox needed that the path was already used in the past otherwise setting the value was failing. So I was stuck and had to find another solution.\nI fired spy++ and searched for a solution and after some debugging I came to the following one:\n  var openModalWindow =  &nbsp;&nbsp;&nbsp;&nbsp;MainWindow.ModalWindow(\"Please choose a Zip file\", InitializeOption.NoCache);  MainWindow.WaitWhileBusy(); Assert.IsNotNull(openModalWindow);  var filePath = Path.Combine(GetCurrentPath(), filename);  var filenameTextBox =  &nbsp;&nbsp;&nbsp;&nbsp;openModalWindow.Get&lt;TextBox&gt;(SearchCriteria.ByAutomationId(\"1148\")); filenameTextBox.SetValue(filePath);  openModalWindow.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);  \n\nThis is working on my local environment but also on TeamCity!\nThe key point was to find the TextBox with the AutomationId of 1148.\n","dateCreated":"2010-07-16T01:22:07+00:00","dateModified":"2012-05-01T22:53:45+00:00","datePublished":"2010-07-16T01:22:07+00:00","description":"Today TeamCity was showing me one functional test failure on my WPF application.\nI already discussed about this problem here: White’s tip for your automated WPF functional tests       ","headline":"File dialog automation using White framework","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/07/16/File-dialog-automation-using-White-framework/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/07/16/File-dialog-automation-using-White-framework/","keywords":"white, acceptance test"}</script>
     <meta name="description" content="Today TeamCity was showing me one functional test failure on my WPF application. I already discussed about this problem here: White’s tip for your automated WPF functional tests">
-<meta name="keywords" content="acceptance test,white">
+<meta name="keywords" content="white,acceptance test">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="File dialog automation using White framework">
 <meta property="og:url" content="https://laurentkempe.com/2010/07/16/File-dialog-automation-using-White-framework/index.html">
@@ -38,7 +38,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-0moe8p72dc4amreapzqzg09tozn0eyvw8znubfdgfqz68k5ahhs2zop4w8ck.min.css">
+    <link rel="stylesheet" href="/assets/css/style-mslcllntebz6bnaf9snd8szfnckrp584wuqit7q6whzvju7uxsrud8qspz4k.min.css">
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -249,7 +249,7 @@
     
     
         <div class="post-meta">
-    <time datetime="2010-07-16T03:22:07+02:00">
+    <time datetime="2010-07-16T01:22:07+00:00">
 	
 		    Jul 16, 2010
     	
@@ -297,7 +297,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2010/07/17/Unit-Test-using-test-doubles-aka-Mock-Stub-Fake-Dummy/"
+                    href="/2010/07/16/Unit-Test-using-test-doubles-aka-Mock-Stub-Fake-Dummy/"
                     data-tooltip="Unit Test using test doubles, aka Mock, Stub, Fake, Dummy"
                     aria-label="PREVIOUS: Unit Test using test doubles, aka Mock, Stub, Fake, Dummy"
                 >
@@ -311,7 +311,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2010/07/15/Application-Acceptance-Testing/"
+                    href="/2010/07/14/Application-Acceptance-Testing/"
                     data-tooltip="Application Acceptance Testing"
                     aria-label="NEXT: Application Acceptance Testing"
                 >
@@ -426,7 +426,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2010/07/17/Unit-Test-using-test-doubles-aka-Mock-Stub-Fake-Dummy/"
+                    href="/2010/07/16/Unit-Test-using-test-doubles-aka-Mock-Stub-Fake-Dummy/"
                     data-tooltip="Unit Test using test doubles, aka Mock, Stub, Fake, Dummy"
                     aria-label="PREVIOUS: Unit Test using test doubles, aka Mock, Stub, Fake, Dummy"
                 >
@@ -440,7 +440,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2010/07/15/Application-Acceptance-Testing/"
+                    href="/2010/07/14/Application-Acceptance-Testing/"
                     data-tooltip="Application Acceptance Testing"
                     aria-label="NEXT: Application Acceptance Testing"
                 >
@@ -618,7 +618,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-8ckp9gohpxnig2ma73t5i5irxwpgam7ut1wjb1jhgfu2lhiv01sbxav3hfxr.min.js"></script>
+<script src="/assets/js/script-7y6uwuqgbcvcyfh91qqqps0hepqhsodkqsffxy8xmvyy1e7fa02w63m4kwm9.min.js"></script>
 <!--SCRIPTS END-->
 
 

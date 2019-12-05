@@ -13,7 +13,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Migrating our TeamCity server today I got the following error on the new server:\nerror MSB3147: Could not find required file ‘setup.bin’ in …\n\n\nI for sure fixed that on the older server, and the fix was to have the SDK on the build server. The issue is that I don’t want to install Visual Studio to do that, so here is how I achieved it\n\nCopy my whole c:\\Program Files\\Microsoft SDKs\\Windows\\v6.0a folder to the server\nCreated a registry keyKey: HKEY_LOCAL_MACHINE\\Software\\Microsoft\\GenericBootstrapper\\3.5\\Value: PathType: REG_SZData: C:\\Program Files\\Microsoft SDKs\\Windows\\v6.0a\\Bootstrapper\\  \n\nThen the error was gone and I had my build server ready again to build ClickOnce setup.\n","dateCreated":"2009-11-03T07:52:25+01:00","dateModified":"2009-11-03T07:52:25+01:00","datePublished":"2009-11-03T07:52:25+01:00","description":"Migrating our TeamCity server today I got the following error on the new server:\nerror MSB3147: Could not find required file ‘setup.bin’ in …","headline":"Building ClickOnce with TeamCity","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2009/11/03/Building-ClickOnce-with-TeamCity/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2009/11/03/Building-ClickOnce-with-TeamCity/","keywords":"continuous integration, Team City, ClickOnce"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Migrating our TeamCity server today I got the following error on the new server:\nerror MSB3147: Could not find required file ‘setup.bin’ in …\n\n\nI for sure fixed that on the older server, and the fix was to have the SDK on the build server. The issue is that I don’t want to install Visual Studio to do that, so here is how I achieved it\n\nCopy my whole c:\\Program Files\\Microsoft SDKs\\Windows\\v6.0a folder to the server\nCreated a registry keyKey: HKEY_LOCAL_MACHINE\\Software\\Microsoft\\GenericBootstrapper\\3.5\\Value: PathType: REG_SZData: C:\\Program Files\\Microsoft SDKs\\Windows\\v6.0a\\Bootstrapper\\  \n\nThen the error was gone and I had my build server ready again to build ClickOnce setup.\n","dateCreated":"2009-11-03T06:52:25+00:00","dateModified":"2009-11-03T06:52:25+00:00","datePublished":"2009-11-03T06:52:25+00:00","description":"Migrating our TeamCity server today I got the following error on the new server:\nerror MSB3147: Could not find required file ‘setup.bin’ in …","headline":"Building ClickOnce with TeamCity","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2009/11/03/Building-ClickOnce-with-TeamCity/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2009/11/03/Building-ClickOnce-with-TeamCity/","keywords":"continuous integration, Team City, ClickOnce"}</script>
     <meta name="description" content="Migrating our TeamCity server today I got the following error on the new server: error MSB3147: Could not find required file ‘setup.bin’ in …">
 <meta name="keywords" content="continuous integration,Team City,ClickOnce">
 <meta property="og:type" content="blog">
@@ -38,7 +38,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-0moe8p72dc4amreapzqzg09tozn0eyvw8znubfdgfqz68k5ahhs2zop4w8ck.min.css">
+    <link rel="stylesheet" href="/assets/css/style-mslcllntebz6bnaf9snd8szfnckrp584wuqit7q6whzvju7uxsrud8qspz4k.min.css">
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -249,7 +249,7 @@
     
     
         <div class="post-meta">
-    <time datetime="2009-11-03T07:52:25+01:00">
+    <time datetime="2009-11-03T06:52:25+00:00">
 	
 		    Nov 03, 2009
     	
@@ -311,7 +311,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2009/11/03/TeamCity-migration-tip/"
+                    href="/2009/11/02/TeamCity-migration-tip/"
                     data-tooltip="TeamCity migration tip"
                     aria-label="NEXT: TeamCity migration tip"
                 >
@@ -440,7 +440,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2009/11/03/TeamCity-migration-tip/"
+                    href="/2009/11/02/TeamCity-migration-tip/"
                     data-tooltip="TeamCity migration tip"
                     aria-label="NEXT: TeamCity migration tip"
                 >
@@ -618,7 +618,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-8ckp9gohpxnig2ma73t5i5irxwpgam7ut1wjb1jhgfu2lhiv01sbxav3hfxr.min.js"></script>
+<script src="/assets/js/script-7y6uwuqgbcvcyfh91qqqps0hepqhsodkqsffxy8xmvyy1e7fa02w63m4kwm9.min.js"></script>
 <!--SCRIPTS END-->
 
 
