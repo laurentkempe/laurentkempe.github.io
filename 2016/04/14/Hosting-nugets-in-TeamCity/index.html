@@ -13,7 +13,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"In the past in my team, we were storing the Telerik assemblies into our SVN repository then in Git! I wasn’t happy about that for a really long time. Each releases our repository was growing much more than it was needed for nothing!\n\nOne day Telerik shipped their great WPF controls as nugets which solved half of our problem! Now the next problem was where do we store those nugets so that we can get those back. Searching a bit we found some solutions like myget but we wanted one which we could host on our infrastructure. After some more research, we found ou that TeamCity, could work as a Nuget server.\nThat was just perfect because we have been using TeamCity from day 1 of the project. We finally go the  second half of our solution.\nYou first need to activate the Nuget server on TeamCity:\n\nWe have activated the guest account so that the Nuget feed URL is accessible without any credentials. We use it on our LAN so that’s not really an issue for us. But it also works with credentials if you want.\nThe way TeamCity works with Nuget server is quite easy: any artifacts resolved after a build are then available through the Nuget server.\nSo next step was to define how to we bring a new version of the Telerik nugets when they ship a new version.\n\nAgain easy, just configure a build which takes the .nupkg from one folder and then bundle those as a build artifact.\n\nSo when Telerik release a new version we just need to upload all the .nupkg files to the folder C:\\Telerik\\ and run the build!\nOne more step in the good direction of automation!\n","dateCreated":"2016-04-14T20:04:11+00:00","dateModified":"2019-12-11T21:45:20+00:00","datePublished":"2016-04-14T20:04:11+00:00","description":"In the past in my team, we were storing the Telerik assemblies into our SVN repository then in Git! I wasn’t happy about that for a really long time. Each releases our repository was growing much more than it was needed for nothing!","headline":"Hosting nugets in TeamCity","image":["https://farm2.staticflickr.com/1604/25521348035_20fa6744ce_q.jpg","https://farm2.staticflickr.com/1604/25521348035_047dad2235_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2016/04/14/Hosting-nugets-in-TeamCity/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2016/04/14/Hosting-nugets-in-TeamCity/","keywords":".NET Development, continuous integration","thumbnailUrl":"https://farm2.staticflickr.com/1604/25521348035_20fa6744ce_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"In the past in my team, we were storing the Telerik assemblies into our SVN repository then in Git! I wasn’t happy about that for a really long time. Each releases our repository was growing much more than it was needed for nothing!\n\nOne day Telerik shipped their great WPF controls as nugets which solved half of our problem! Now the next problem was where do we store those nugets so that we can get those back. Searching a bit we found some solutions like myget but we wanted one which we could host on our infrastructure. After some more research, we found ou that TeamCity, could work as a Nuget server.\nThat was just perfect because we have been using TeamCity from day 1 of the project. We finally go the  second half of our solution.\nYou first need to activate the Nuget server on TeamCity:\n\nWe have activated the guest account so that the Nuget feed URL is accessible without any credentials. We use it on our LAN so that’s not really an issue for us. But it also works with credentials if you want.\nThe way TeamCity works with Nuget server is quite easy: any artifacts resolved after a build are then available through the Nuget server.\nSo next step was to define how to we bring a new version of the Telerik nugets when they ship a new version.\n\nAgain easy, just configure a build which takes the .nupkg from one folder and then bundle those as a build artifact.\n\nSo when Telerik release a new version we just need to upload all the .nupkg files to the folder C:\\Telerik\\ and run the build!\nOne more step in the good direction of automation!\n","dateCreated":"2016-04-14T20:04:11+00:00","dateModified":"2020-02-08T07:54:54+00:00","datePublished":"2016-04-14T20:04:11+00:00","description":"In the past in my team, we were storing the Telerik assemblies into our SVN repository then in Git! I wasn’t happy about that for a really long time. Each releases our repository was growing much more than it was needed for nothing!","headline":"Hosting nugets in TeamCity","image":["https://farm2.staticflickr.com/1604/25521348035_20fa6744ce_q.jpg","https://farm2.staticflickr.com/1604/25521348035_047dad2235_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2016/04/14/Hosting-nugets-in-TeamCity/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2016/04/14/Hosting-nugets-in-TeamCity/","keywords":".NET Development, continuous integration","thumbnailUrl":"https://farm2.staticflickr.com/1604/25521348035_20fa6744ce_q.jpg"}</script>
     <meta name="description" content="In the past in my team, we were storing the Telerik assemblies into our SVN repository then in Git! I wasn’t happy about that for a really long time. Each releases our repository was growing much more">
 <meta name="keywords" content=".NET Development,continuous integration">
 <meta property="og:type" content="blog">
@@ -25,7 +25,7 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;farm2.staticflickr.com&#x2F;1674&#x2F;26338964882_405d486347_o.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;farm2.staticflickr.com&#x2F;1441&#x2F;26365113121_7f3047a0da_o.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;farm2.staticflickr.com&#x2F;1671&#x2F;25828490813_5a089e7001_o.png">
-<meta property="og:updated_time" content="2019-12-11T21:45:20.462Z">
+<meta property="og:updated_time" content="2020-02-08T07:54:54.159Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;farm2.staticflickr.com&#x2F;1674&#x2F;26338964882_405d486347_o.png">
 <meta name="twitter:creator" content="@laurentkempe">
@@ -46,7 +46,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-z4mlunnrfzomik0csnrvpwkk1rvxhzbvbdamawks19aaxqqaaerql48n3hhc.min.css">
+    <link rel="stylesheet" href="/assets/css/style-j3yoohlgvwnotz9neg9dlvcztmbfpv9hxknwvnghfma3vicy1y59wdajklxf.min.css">
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -82,7 +82,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/%20"
+            href="/"
             aria-label=""
         >
             Laurent Kempé
@@ -433,7 +433,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Laurent Kempé. All Rights Reserved.
+        Copyrights &copy; 2020 Laurent Kempé. All Rights Reserved.
     </span>
 </footer>
 
@@ -640,7 +640,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-9hrhiyoennybac55qsacow1nrbvgf6fepedbmgsuedy0vz8nwvj5gvzfwwhp.min.js"></script>
+<script src="/assets/js/script-7fmjox1dyzcxogi0fphierc1vl2aa6i8jxdxvtvqir8cq0z3sfneyb5gc32q.min.js"></script>
 <!--SCRIPTS END-->
 
 
