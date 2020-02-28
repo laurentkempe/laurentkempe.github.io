@@ -1,0 +1,759 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Automate developer work using Git Aliases - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I am using Git for many, many years. I am a big fan of it. How could that be different when you had to use versioning systems like CVS, SVN… I even took influence so that the whole company I work for migrates to it.\nOver the years, I have used different Git clients, tried to work only from my IDE without much liking it.\n\n\nThen, I started to use more the Console through a tool that I love cmder ❤. It is bundling other awesome tools like ConEmu…\nOn top of those two, I added posh-git, a PowerShell module integrating Git and PowerShell by providing Git status summary information that can be displayed in the PowerShell prompt. To which, I added, oh-my-posh a prompt theming engine for PowersShell. \n\nThat’s a working environment that suites me. I have even cmder pinned on the first position of the Windows taskbar so that I can press Win + 1 shortcut and either run it or get back to it as fast as possible.\nI felt great about it, but as a developer, I want more! Why? Cause I want to automate repetitive tasks, so that my life is easier.\nThe natural next step is to identify daily repetitive tasks. As we are talking about Git, the thing that comes to mind is creating a branch, checking out branches, review code in a branch. Then committing changes, rebasing your work…\nConventionsTo be able to automate you need conventions. In our case, the naming of a branch is quite important, maybe also the commit message format.\nIt is interesting to be able to navigate from your code, through the branch name to the specifications on the work you are doing. Using the ticket number in the branch name makes sense to help with that. Having the ticker number as the first part of any commit message will help also.\nFor example, naming a branch “feature/PRJ-123-my-feature-branch” will follow a convention that would let us see that it is a feature branch linked to the requirement ticket PRJ-123. The rest is just something that will help you to remember what the ticket is about.\nWith such a simple convention, you can start to automate things! 👍\nTo check out the branch and be able to work on it, from the command line we need to type the Git command:\n\ngit checkout feature/PRJ-123-my-feature-branch\n\nSimple Git AliasWith the following simple Git alias, located in your .gitconfig\n.gitconfig1[alias]2co &#x3D; checkout\n\nyou now type\n\ngit co feature/PRJ-123-my-feature-branch\n\nThat’s six chars less to type. But. that’s still too much to type. You will tell me, you can use autocompletion provided by the tool you installed and you will be right. Nevertheless, we want more!\nWe want to type\n\ngit cfb 123\n\ncfb for check out feature branch.\nComposing Git AliasesThe great folk who created Git thought of that problem and they provide us a very nice and powerful way to extend on simple Git aliases by being able to compose them.\nFrom getting the feature branch name, we want to extract the ticket number and use those new capabilities to have a very nice new git feature.\nTo get the current branch name, we use the following alias:\n.gitconfig1# Get current branch name2currentbranch &#x3D; rev-parse --abbrev-ref HEAD\n\nTo get the ticket number, we compose the previous alias we the following one\n.gitconfig1# Get Jira ticket number from current branch name2jiran &#x3D; &quot;!f() &#123; git currentbranch |3                sed &quot;s&#x2F;feature.&#x2F;&#x2F;&quot; |4                grep -o -E &quot;PRJ+-[0-9]+&quot;;5              &#125;; f&quot;\n\nThis one looks a bit more complex and we will get back to it to explain it in more detail. Finally, we can create our interesting and time saver new alias.\n.gitconfig1# Open Browser on Jira ticket2j &#x3D; &quot;!explorer https:&#x2F;&#x2F;company.atlassian.net&#x2F;browse&#x2F;$(git jiran)&quot;\n\nNow, using simple branch naming convention and little script code we are able to open the web browser and navigate to the web page describing the ticket requirements. And this by only typing “git j” ❤.\nWe are using Jira in that example but you could use a Github issue or whatever you prefer.\nBash function Git AliasesThe alias which gets the ticket number out of the branch name seems quite complex at first sight, but it is really easy when you know about bash functions. !f() { } defines a bash function “f“.\nIt gives you access to command line variables like:\n\n$1 is the 1st parameter passed to the command.\n$2 is the 2nd parameter passed to the command…\n$@ means all command line parameters passed.\n\nIt also allows to chain git commands with &amp;&amp; and uses the entire Unix toolkit.\nNow, back to our goal of typing a minimum to check out a feature branch: “git cfb 123”.We can leverage lots of power of Unix combined to Git aliases to achieve our goal.\nFirst, we need to find the feature branch from the ticket number\n.gitconfig1# Find feature branch from ticket number2fb &#x3D; &quot;!f() &#123; git branch -a |3             grep &quot;feature&#x2F;.*$1.*&quot; |4             sed &quot;s&#x2F;remotes.&#x2F;&#x2F;&quot; |5             sed &quot;s&#x2F;origin.&#x2F;&#x2F;&quot; |6             sort -u;7           &#125;; f&quot;\n\n\nThen we combine this new alias in the final cfb alias, which checks out the branch and pull so that you are up to date and can continue to work\n.gitconfig1# Checkout feature branch from ticket number2cfb &#x3D; &quot;!f() &#123; featureBranch&#x3D;$(git fb $1);3              git checkout $featureBranch;4              git pull;5            &#125;; f&quot;\n\nPresentation\n  \n\n\n\nPress f key to see the presentation full screen, or navigate to it.\nMoreYou can access all the aliases I use and created and the others which I borrowed from different people like Phil Haack and Nicola Paolucci, on my Github repository laurentkempe/dotfiles.\n\n\n  \n\n\n\n","dateCreated":"2020-02-28T15:26:27+00:00","dateModified":"2020-02-28T15:31:26+00:00","datePublished":"2020-02-28T15:26:27+00:00","description":"I am using Git for many, many years. I am a big fan of it. How could that be different when you had to use versioning systems like CVS, SVN… I even took influence so that the whole company I work for migrates to it.\nOver the years, I have used different Git clients, tried to work only from my IDE without much liking it.","headline":"Automate developer work using Git Aliases","image":["https://live.staticflickr.com/4359/35813310943_375167de07_q.jpg","https://live.staticflickr.com/4359/35813310943_479293da80_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2020/02/28/Automate-developer-work-using-Git-Aliases/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2020/02/28/Automate-developer-work-using-Git-Aliases/","keywords":"Git, PowerShell, Windows","thumbnailUrl":"https://live.staticflickr.com/4359/35813310943_375167de07_q.jpg"}</script>
+    <meta name="description" content="I am using Git for many, many years. I am a big fan of it. How could that be different when you had to use versioning systems like CVS, SVN… I even took influence so that the whole company I work for">
+<meta name="keywords" content="Git,PowerShell,Windows">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Automate developer work using Git Aliases">
+<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2020&#x2F;02&#x2F;28&#x2F;Automate-developer-work-using-Git-Aliases&#x2F;index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="I am using Git for many, many years. I am a big fan of it. How could that be different when you had to use versioning systems like CVS, SVN… I even took influence so that the whole company I work for">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https:&#x2F;&#x2F;live.staticflickr.com&#x2F;65535&#x2F;49566323082_e1817988c2_c.jpg">
+<meta property="og:updated_time" content="2020-02-28T15:31:26.933Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;live.staticflickr.com&#x2F;65535&#x2F;49566323082_e1817988c2_c.jpg">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/4359/35813310943_375167de07_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/4359/35813310943_375167de07_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/4359/35813310943_479293da80_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/4359/35813310943_479293da80_h.jpg"/>
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-p3w31dixvalu3s9dp6jrtnqkfibtgttlhvpbts9sgomo46tok8ugmvpe5mzb.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-64298-8');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Laurent Kempé
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="global.open_link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="global.read_more_about_author"
+                >
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/"
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/presentations.html"
+                            
+                            title="Presentations"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-file-powerpoint" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Presentations</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about-laurent-kempe.html"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://flickr.com/photos/laurentkempe/" target="_blank" rel="noopener" title="Flickr">
+                    
+                        <i class="sidebar-button-icon fab fa-flickr" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Flickr</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial"
+             style="background-image:url('https://live.staticflickr.com/4359/35813310943_479293da80_h.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Automate developer work using Git Aliases
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2020-02-28T15:26:27+00:00">
+	
+		    Feb 28, 2020
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Fleur de Tiaré, Moorea, Polynésie française</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>I am using Git for many, many years. I am a big fan of it. How could that be different when you had to use versioning systems like CVS, SVN… I even took influence so that the whole company I work for migrates to it.</p>
+<p>Over the years, I have used different Git clients, tried to work only from my IDE without much liking it.</p>
+<a id="more"></a>
+
+<p>Then, I started to use more the Console through a tool that I love <a href="https://cmder.net/" target="_blank" rel="noopener">cmder</a> ❤. It is bundling other awesome tools like <a href="https://conemu.github.io/" target="_blank" rel="noopener">ConEmu</a>…</p>
+<p>On top of those two, I added <a href="https://github.com/dahlbyk/posh-git" target="_blank" rel="noopener">posh-git</a>, a PowerShell module integrating Git and PowerShell by providing Git status summary information that can be displayed in the PowerShell prompt. To which, I added, <a href="https://github.com/JanDeDobbeleer/oh-my-posh" target="_blank" rel="noopener">oh-my-posh</a> a prompt theming engine for PowersShell. </p>
+<p><img src="https://live.staticflickr.com/65535/49566323082_e1817988c2_c.jpg" alt="cmder ConEmu posh-git oh-my-posh"></p>
+<p>That’s a working environment that suites me. I have even cmder pinned on the first position of the Windows taskbar so that I can press <strong>Win + 1 shortcut</strong> and either run it or get back to it as fast as possible.</p>
+<p>I felt great about it, but as a developer, I want more! Why? Cause <strong>I want to automate repetitive tasks, so that my life is easier</strong>.</p>
+<p>The natural next step is to identify daily repetitive tasks. As we are talking about Git, the thing that comes to mind is creating a branch, checking out branches, review code in a branch. Then committing changes, rebasing your work…</p>
+<h1 id="Conventions"><a href="#Conventions" class="headerlink" title="Conventions"></a>Conventions</h1><p><strong>To be able to automate you need conventions</strong>. In our case, the naming of a branch is quite important, maybe also the commit message format.</p>
+<p>It is interesting to be able to navigate from your code, through the branch name to the specifications on the work you are doing. Using the ticket number in the branch name makes sense to help with that. Having the ticker number as the first part of any commit message will help also.</p>
+<p>For example, naming a branch “feature/PRJ-123-my-feature-branch” will follow a convention that would let us see that it is a feature branch linked to the requirement ticket PRJ-123. The rest is just something that will help you to remember what the ticket is about.</p>
+<p>With such a simple convention, you can start to automate things! 👍</p>
+<p>To check out the branch and be able to work on it, from the command line we need to type the Git command:</p>
+<blockquote>
+<p>git checkout feature/PRJ-123-my-feature-branch</p>
+</blockquote>
+<h1 id="Simple-Git-Alias"><a href="#Simple-Git-Alias" class="headerlink" title="Simple Git Alias"></a>Simple Git Alias</h1><p>With the following simple Git alias, located in your <a href="https://git-scm.com/docs/git-config" target="_blank" rel="noopener">.gitconfig</a></p>
+<figure class="highlight plain"><figcaption><span>.gitconfig</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">[alias]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">co &#x3D; checkout</span></pre></td></tr></table></figure>
+
+<p>you now type</p>
+<blockquote>
+<p>git co feature/PRJ-123-my-feature-branch</p>
+</blockquote>
+<p>That’s six chars less to type. But. that’s still too much to type. You will tell me, you can use autocompletion provided by the tool you installed and you will be right. Nevertheless, we want more!</p>
+<p>We want to type</p>
+<blockquote>
+<p>git cfb 123</p>
+</blockquote>
+<p>cfb for check out feature branch.</p>
+<h1 id="Composing-Git-Aliases"><a href="#Composing-Git-Aliases" class="headerlink" title="Composing Git Aliases"></a>Composing Git Aliases</h1><p>The great folk who created Git thought of that problem and they provide us a very nice and powerful way to extend on simple Git aliases by being able to compose them.</p>
+<p>From getting the feature branch name, we want to extract the ticket number and use those new capabilities to have a very nice new git feature.</p>
+<p>To get the current branch name, we use the following alias:</p>
+<figure class="highlight plain"><figcaption><span>.gitconfig</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"># Get current branch name</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">currentbranch &#x3D; rev-parse --abbrev-ref HEAD</span></pre></td></tr></table></figure>
+
+<p>To get the ticket number, we compose the previous alias we the following one</p>
+<figure class="highlight plain"><figcaption><span>.gitconfig</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"># Get Jira ticket number from current branch name</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">jiran &#x3D; &quot;!f() &#123; git currentbranch |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">                sed &quot;s&#x2F;feature.&#x2F;&#x2F;&quot; |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">                grep -o -E &quot;PRJ+-[0-9]+&quot;;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">              &#125;; f&quot;</span></pre></td></tr></table></figure>
+
+<p>This one looks a bit more complex and we will get back to it to explain it in more detail. Finally, we can create our interesting and time saver new alias.</p>
+<figure class="highlight plain"><figcaption><span>.gitconfig</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"># Open Browser on Jira ticket</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">j &#x3D; &quot;!explorer https:&#x2F;&#x2F;company.atlassian.net&#x2F;browse&#x2F;$(git jiran)&quot;</span></pre></td></tr></table></figure>
+
+<p>Now, using simple branch naming convention and little script code we are able to open the web browser and navigate to the web page describing the ticket requirements. And this by only typing “git j” ❤.</p>
+<p>We are using Jira in that example but you could use a Github issue or whatever you prefer.</p>
+<h1 id="Bash-function-Git-Aliases"><a href="#Bash-function-Git-Aliases" class="headerlink" title="Bash function Git Aliases"></a>Bash function Git Aliases</h1><p>The alias which gets the ticket number out of the branch name seems quite complex at first sight, but it is really easy when you know about bash functions. !f() { } defines a bash function “f“.</p>
+<p>It gives you access to command line variables like:</p>
+<ul>
+<li><strong>$1</strong> is the 1st parameter passed to the command.</li>
+<li><strong>$2</strong> is the 2nd parameter passed to the command…</li>
+<li><strong>$@</strong> means all command line parameters passed.</li>
+</ul>
+<p>It also allows to chain git commands with &amp;&amp; and uses the entire Unix toolkit.</p>
+<p>Now, back to our goal of typing a minimum to check out a feature branch: “git cfb 123”.<br>We can leverage lots of power of Unix combined to Git aliases to achieve our goal.</p>
+<p>First, we need to find the feature branch from the ticket number</p>
+<figure class="highlight plain"><figcaption><span>.gitconfig</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"># Find feature branch from ticket number</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">fb &#x3D; &quot;!f() &#123; git branch -a |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">             grep &quot;feature&#x2F;.*$1.*&quot; |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">             sed &quot;s&#x2F;remotes.&#x2F;&#x2F;&quot; |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">             sed &quot;s&#x2F;origin.&#x2F;&#x2F;&quot; |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">             sort -u;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">           &#125;; f&quot;</span></pre></td></tr></table></figure>
+
+
+<p>Then we combine this new alias in the final cfb alias, which checks out the branch and pull so that you are up to date and can continue to work</p>
+<figure class="highlight plain"><figcaption><span>.gitconfig</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"># Checkout feature branch from ticket number</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">cfb &#x3D; &quot;!f() &#123; featureBranch&#x3D;$(git fb $1);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">              git checkout $featureBranch;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">              git pull;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">            &#125;; f&quot;</span></pre></td></tr></table></figure>
+
+<h1 id="Presentation"><a href="#Presentation" class="headerlink" title="Presentation"></a>Presentation</h1><div class="slides" style="
+  position: relative;
+  padding-bottom: 56.25%;
+  padding-top: 35px;
+  height: 0;
+  overflow: hidden;
+">
+  <iframe src="https://laurentkempe.com/presentations/Automate%20Dev%20work%20using%20Git%20aliases/index.html#/" width="800" height="600" frameborder="0" allowfullscreen="" style="
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  "></iframe>
+</div>
+
+
+<p>Press f key to see the presentation full screen, or <a href="https://laurentkempe.com/presentations/Automate%20Dev%20work%20using%20Git%20aliases/index.html#/">navigate to it</a>.</p>
+<h1 id="More"><a href="#More" class="headerlink" title="More"></a>More</h1><p>You can access all the aliases I use and created and the others which I borrowed from different people like <a href="https://haacked.com/archive/2014/07/28/github-flow-aliases/" target="_blank" rel="noopener">Phil Haack</a> and <a href="https://www.atlassian.com/blog/git/advanced-git-aliases" target="_blank" rel="noopener">Nicola Paolucci</a>, on my Github repository <a href="https://github.com/laurentkempe/dotfiles/blob/master/git/.gitconfig.aliases#L13" target="_blank" rel="noopener">laurentkempe/dotfiles</a>.</p>
+<p></p>
+<div style="text-align: left">
+  <div class="github-card"
+    data-user="laurentkempe"
+    data-repo="dotfiles"
+    data-height="200"
+    data-width="400"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/Git/" rel="tag">Git</a> <a class="tag tag--primary tag--small t-link" href="/tags/PowerShell/" rel="tag">PowerShell</a> <a class="tag tag--primary tag--small t-link" href="/tags/Windows/" rel="tag">Windows</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/"
+                    data-tooltip="gRPC and C# 8 Async stream cancellation"
+                    aria-label="NEXT: gRPC and C# 8 Async stream cancellation"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2020/02/28/Automate-developer-work-using-Git-Aliases/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2020/02/28/Automate-developer-work-using-Git-Aliases/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2020/02/28/Automate-developer-work-using-Git-Aliases/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2020 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/"
+                    data-tooltip="gRPC and C# 8 Async stream cancellation"
+                    aria-label="NEXT: gRPC and C# 8 Async stream cancellation"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2020/02/28/Automate-developer-work-using-Git-Aliases/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2020/02/28/Automate-developer-work-using-Git-Aliases/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2020/02/28/Automate-developer-work-using-Git-Aliases/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2020/02/28/Automate-developer-work-using-Git-Aliases/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2020/02/28/Automate-developer-work-using-Git-Aliases/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://laurentkempe.com/2020/02/28/Automate-developer-work-using-Git-Aliases/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Senior Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-30mdogdndrx3omsq3f47lnhmmkn00knjdjxayho7b2mpz5iooqguhbg3oify.min.js"></script>
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://laurentkempe.com/2020/02/28/Automate-developer-work-using-Git-Aliases/';
+              
+            this.page.identifier = '20200228162627';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'laurentkempe';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>
