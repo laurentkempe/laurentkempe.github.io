@@ -13,7 +13,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"When I migrated our build to Cake (C# Make) we had one requirement which was to upload some of the build output’s artifacts to DropBox at the end of the build.\n\nI searched for that kind of capabilities in Cake reference documentation but couldn’t find anything out of the box.\nI could have gone to write my own add-in but I found the PowerShell one, great!So I decided that I could write a little PowerShell script to achieve that upload to DropBox.\nHere it is\n\n\nThe script is getting one environment variable DropBoxAccessToken, which represents the DropBox access token because I don’t want to see the access token logged into our TeamCity logs.\nOne gotcha from DropBox REST API upload documentation which hit me was how to upload to a business account? In fact, it is really easy, you just need to create an application for your business account with permission full!\nWarning, I do not consider myself as a PowerShell expert, I am more of a kind of PowerShell hacker, so take this script with all precautions.\n","dateCreated":"2016-04-07T19:41:32+00:00","dateModified":"2020-04-23T06:42:15+00:00","datePublished":"2016-04-07T19:41:32+00:00","description":"When I migrated our build to Cake (C# Make) we had one requirement which was to upload some of the build output’s artifacts to DropBox at the end of the build.","headline":"Upload files to DropBox from PowerShell","image":["https://farm2.staticflickr.com/1704/25727719735_baf17e5561_q.jpg","https://farm2.staticflickr.com/1704/25727719735_62100cdbf1_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2016/04/07/Upload-files-to-DropBox-from-PowerShell/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2016/04/07/Upload-files-to-DropBox-from-PowerShell/","keywords":"PowerShell, continuous integration","thumbnailUrl":"https://farm2.staticflickr.com/1704/25727719735_baf17e5561_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"When I migrated our build to Cake (C# Make) we had one requirement which was to upload some of the build output’s artifacts to DropBox at the end of the build.\n\nI searched for that kind of capabilities in Cake reference documentation but couldn’t find anything out of the box.\nI could have gone to write my own add-in but I found the PowerShell one, great!So I decided that I could write a little PowerShell script to achieve that upload to DropBox.\nHere it is\n\n\nThe script is getting one environment variable DropBoxAccessToken, which represents the DropBox access token because I don’t want to see the access token logged into our TeamCity logs.\nOne gotcha from DropBox REST API upload documentation which hit me was how to upload to a business account? In fact, it is really easy, you just need to create an application for your business account with permission full!\nWarning, I do not consider myself as a PowerShell expert, I am more of a kind of PowerShell hacker, so take this script with all precautions.\n","dateCreated":"2016-04-07T19:41:32+00:00","dateModified":"2020-04-23T06:51:48+00:00","datePublished":"2016-04-07T19:41:32+00:00","description":"When I migrated our build to Cake (C# Make) we had one requirement which was to upload some of the build output’s artifacts to DropBox at the end of the build.","headline":"Upload files to DropBox from PowerShell","image":["https://farm2.staticflickr.com/1704/25727719735_baf17e5561_q.jpg","https://farm2.staticflickr.com/1704/25727719735_62100cdbf1_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2016/04/07/Upload-files-to-DropBox-from-PowerShell/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2016/04/07/Upload-files-to-DropBox-from-PowerShell/","keywords":"PowerShell, continuous integration","thumbnailUrl":"https://farm2.staticflickr.com/1704/25727719735_baf17e5561_q.jpg"}</script>
     <meta name="description" content="When I migrated our build to Cake (C# Make) we had one requirement which was to upload some of the build output’s artifacts to DropBox at the end of the build.">
 <meta name="keywords" content="PowerShell,continuous integration">
 <meta property="og:type" content="blog">
@@ -22,7 +22,7 @@
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="When I migrated our build to Cake (C# Make) we had one requirement which was to upload some of the build output’s artifacts to DropBox at the end of the build.">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-04-23T06:42:15.381Z">
+<meta property="og:updated_time" content="2020-04-23T06:51:48.893Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:creator" content="@laurentkempe">
     
@@ -42,7 +42,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-ntj7mgt3iinduprr9o7hsjlwwzhympaybswme78hbuuhpoo3w8vsmz9z3zxd.min.css">
+    <link rel="stylesheet" href="/assets/css/style-ahfcgplulxhwihp7ybdrlpfzmtcuv5usuiznhzd13sjc6k1knsubtvbii9mt.min.css">
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -649,7 +649,7 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-dqmwcnb5gite4uhoonz1buloza5z0fesqti9dqdxnmyaqwic55sf3cmk5hbn.min.js"></script>
+<script src="/assets/js/script-xhqnndlm0s5upk9avljwateqcrdqmczbtinjqltitd4z76n8o8e97h3hewe9.min.js"></script>
 <!--SCRIPTS END-->
 
 
