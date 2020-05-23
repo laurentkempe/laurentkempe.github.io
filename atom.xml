@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://laurentkempe.com/"/>
-  <updated>2020-05-23T09:56:57.705Z</updated>
+  <updated>2020-05-23T13:59:53.205Z</updated>
   <id>https://laurentkempe.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://laurentkempe.com/2020/02/28/Automate-developer-work-using-Git-Aliases/"/>
     <id>https://laurentkempe.com/2020/02/28/Automate-developer-work-using-Git-Aliases/</id>
     <published>2020-02-28T15:26:27.000Z</published>
-    <updated>2020-05-23T09:56:57.705Z</updated>
+    <updated>2020-05-23T13:59:53.205Z</updated>
     
     <summary type="html">
     
@@ -45,7 +45,7 @@
     <link href="https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/"/>
     <id>https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/</id>
     <published>2019-09-25T20:06:12.000Z</published>
-    <updated>2020-05-23T09:56:57.725Z</updated>
+    <updated>2020-05-23T13:59:53.225Z</updated>
     
     <summary type="html">
     
@@ -68,7 +68,7 @@
     <link href="https://laurentkempe.com/2019/09/18/gRPC-and-csharp-8-Async-stream/"/>
     <id>https://laurentkempe.com/2019/09/18/gRPC-and-csharp-8-Async-stream/</id>
     <published>2019-09-18T17:23:00.000Z</published>
-    <updated>2020-05-23T09:56:57.725Z</updated>
+    <updated>2020-05-23T13:59:53.225Z</updated>
     
     <summary type="html">
     
@@ -91,7 +91,7 @@
     <link href="https://laurentkempe.com/2019/09/03/WPF-and-dotnet-Generic-Host-with-dotnet-Core-3-0/"/>
     <id>https://laurentkempe.com/2019/09/03/WPF-and-dotnet-Generic-Host-with-dotnet-Core-3-0/</id>
     <published>2019-09-03T20:21:08.000Z</published>
-    <updated>2020-05-23T09:56:57.725Z</updated>
+    <updated>2020-05-23T13:59:53.221Z</updated>
     
     <summary type="html">
     
@@ -121,7 +121,7 @@
     <link href="https://laurentkempe.com/2019/04/18/WPF-and-IOC-on-NET-Core-3-0/"/>
     <id>https://laurentkempe.com/2019/04/18/WPF-and-IOC-on-NET-Core-3-0/</id>
     <published>2019-04-18T08:57:56.000Z</published>
-    <updated>2020-05-23T09:56:57.725Z</updated>
+    <updated>2020-05-23T13:59:53.221Z</updated>
     
     <summary type="html">
     
@@ -142,7 +142,7 @@
     <link href="https://laurentkempe.com/2019/03/05/Azure-DevOps-for-Visual-Studio-Extensions/"/>
     <id>https://laurentkempe.com/2019/03/05/Azure-DevOps-for-Visual-Studio-Extensions/</id>
     <published>2019-03-05T21:14:42.000Z</published>
-    <updated>2020-05-23T09:56:57.705Z</updated>
+    <updated>2020-05-23T13:59:53.205Z</updated>
     
     <summary type="html">
     
@@ -167,7 +167,7 @@
     <link href="https://laurentkempe.com/2019/02/18/dynamically-compile-and-run-code-using-dotNET-Core-3.0/"/>
     <id>https://laurentkempe.com/2019/02/18/dynamically-compile-and-run-code-using-dotNET-Core-3.0/</id>
     <published>2019-02-18T19:30:12.000Z</published>
-    <updated>2020-05-23T09:56:57.709Z</updated>
+    <updated>2020-05-23T13:59:53.205Z</updated>
     
     <summary type="html">
     
@@ -188,7 +188,7 @@
     <link href="https://laurentkempe.com/2018/06/06/dotnet-core-community-online-hackathon/"/>
     <id>https://laurentkempe.com/2018/06/06/dotnet-core-community-online-hackathon/</id>
     <published>2018-06-06T06:20:54.000Z</published>
-    <updated>2020-05-23T09:56:57.709Z</updated>
+    <updated>2020-05-23T13:59:53.205Z</updated>
     
     <summary type="html">
     
@@ -208,7 +208,7 @@
     <link href="https://laurentkempe.com/2018/06/01/Automating-development-machine-installation/"/>
     <id>https://laurentkempe.com/2018/06/01/Automating-development-machine-installation/</id>
     <published>2018-06-01T16:15:12.000Z</published>
-    <updated>2020-05-23T09:56:57.725Z</updated>
+    <updated>2020-05-23T13:59:53.225Z</updated>
     
     <summary type="html">
     
@@ -230,7 +230,7 @@
     <link href="https://laurentkempe.com/2017/09/26/Debugging-into-ASP.NET-Core-2.0-source-code/"/>
     <id>https://laurentkempe.com/2017/09/26/Debugging-into-ASP.NET-Core-2.0-source-code/</id>
     <published>2017-09-26T18:44:11.000Z</published>
-    <updated>2020-05-23T09:56:57.709Z</updated>
+    <updated>2020-05-23T13:59:53.205Z</updated>
     
     <summary type="html">
     
@@ -251,7 +251,7 @@
     <link href="https://laurentkempe.com/2017/04/14/ASPNET-Core-MVC-app-running-on-raspberry-pi/"/>
     <id>https://laurentkempe.com/2017/04/14/ASPNET-Core-MVC-app-running-on-raspberry-pi/</id>
     <published>2017-04-14T15:26:06.000Z</published>
-    <updated>2020-05-23T09:56:57.705Z</updated>
+    <updated>2020-05-23T13:59:53.201Z</updated>
     
     <summary type="html">
     
@@ -274,7 +274,7 @@
     <link href="https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/"/>
     <id>https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/</id>
     <published>2017-04-03T19:40:07.000Z</published>
-    <updated>2020-05-23T09:56:57.709Z</updated>
+    <updated>2020-05-23T13:59:53.205Z</updated>
     
     <summary type="html">
     
@@ -298,7 +298,7 @@
     <link href="https://laurentkempe.com/2016/07/18/Build-ship-and-run-ASP-NET-Core-on-Microsoft-Azure-using-Docker-Cloud/"/>
     <id>https://laurentkempe.com/2016/07/18/Build-ship-and-run-ASP-NET-Core-on-Microsoft-Azure-using-Docker-Cloud/</id>
     <published>2016-07-18T17:04:21.000Z</published>
-    <updated>2020-05-23T09:56:57.705Z</updated>
+    <updated>2020-05-23T13:59:53.205Z</updated>
     
     <summary type="html">
     
@@ -323,7 +323,7 @@
     <link href="https://laurentkempe.com/2016/06/20/Free-HTTPS-certificates-for-Docker-containers-running-ASPNET-Core-RC2-on-Microsoft-Azure/"/>
     <id>https://laurentkempe.com/2016/06/20/Free-HTTPS-certificates-for-Docker-containers-running-ASPNET-Core-RC2-on-Microsoft-Azure/</id>
     <published>2016-06-20T17:51:30.000Z</published>
-    <updated>2020-05-23T09:56:57.709Z</updated>
+    <updated>2020-05-23T13:59:53.209Z</updated>
     
     <summary type="html">
     
@@ -348,7 +348,7 @@
     <link href="https://laurentkempe.com/2016/06/08/Deploying-Docker-containers-running-ASPNET-Core-RC2-to-Microsoft-Azure-Cloud/"/>
     <id>https://laurentkempe.com/2016/06/08/Deploying-Docker-containers-running-ASPNET-Core-RC2-to-Microsoft-Azure-Cloud/</id>
     <published>2016-06-08T11:45:01.000Z</published>
-    <updated>2020-05-23T09:56:57.709Z</updated>
+    <updated>2020-05-23T13:59:53.205Z</updated>
     
     <summary type="html">
     
@@ -373,7 +373,7 @@
     <link href="https://laurentkempe.com/2016/05/16/ASP-NET-Core-RC2-Docker-and-HipChat-Connect-add-on/"/>
     <id>https://laurentkempe.com/2016/05/16/ASP-NET-Core-RC2-Docker-and-HipChat-Connect-add-on/</id>
     <published>2016-05-16T18:37:03.000Z</published>
-    <updated>2020-05-23T09:56:57.705Z</updated>
+    <updated>2020-05-23T13:59:53.201Z</updated>
     
     <summary type="html">
     
@@ -396,7 +396,7 @@
     <link href="https://laurentkempe.com/2016/04/30/Docker-for-Windows-Beta-review/"/>
     <id>https://laurentkempe.com/2016/04/30/Docker-for-Windows-Beta-review/</id>
     <published>2016-04-30T09:27:50.000Z</published>
-    <updated>2020-05-23T09:56:57.709Z</updated>
+    <updated>2020-05-23T13:59:53.205Z</updated>
     
     <summary type="html">
     
@@ -419,7 +419,7 @@
     <link href="https://laurentkempe.com/2016/04/18/Ease-Github-Pull-Request-code-review/"/>
     <id>https://laurentkempe.com/2016/04/18/Ease-Github-Pull-Request-code-review/</id>
     <published>2016-04-18T13:21:47.000Z</published>
-    <updated>2020-05-23T09:56:57.709Z</updated>
+    <updated>2020-05-23T13:59:53.205Z</updated>
     
     <summary type="html">
     
@@ -442,7 +442,7 @@
     <link href="https://laurentkempe.com/2016/04/14/Hosting-nugets-in-TeamCity/"/>
     <id>https://laurentkempe.com/2016/04/14/Hosting-nugets-in-TeamCity/</id>
     <published>2016-04-14T20:04:11.000Z</published>
-    <updated>2020-05-23T09:56:57.709Z</updated>
+    <updated>2020-05-23T13:59:53.209Z</updated>
     
     <summary type="html">
     
@@ -463,7 +463,7 @@
     <link href="https://laurentkempe.com/2016/04/07/Upload-files-to-DropBox-from-PowerShell/"/>
     <id>https://laurentkempe.com/2016/04/07/Upload-files-to-DropBox-from-PowerShell/</id>
     <published>2016-04-07T19:41:32.000Z</published>
-    <updated>2020-05-23T09:56:57.725Z</updated>
+    <updated>2020-05-23T13:59:53.221Z</updated>
     
     <summary type="html">
     

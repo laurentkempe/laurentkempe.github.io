@@ -13,7 +13,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I am just back from 2.5 months unpaid leave which I used to spend time with my family. So, I almost did not spend time with software development. One exception is that I wanted to be able to configure Visual Studio 2017 to be able to debug into ASP.NET Core 2.0 source code.\n\nSomething which should have been simple didn’t work for long because Microsoft wasn’t publishing the PDBs. There were other ways to achieve that goal but it was fairly complex, so I decided to wait. Now, this has changed with the release of ASP.NET Core 2.0.\nBut first, why would you want to step into the source code of ASP.NET Core 2.0?In my case, I find it very helpful to understand how the framework is working. So it is a great way to learn the internals of the framework and I am most particularly interested about the compilation of Razor pages.\nFinally, the team uploaded the PDBs of ASP.NET Core 2.0 on the Microsoft Symbol Servers. And it is coming with a bonus feature of Visual Studio 2017 15.3; Source Link Support for Windows PDB File Format, which makes everything easy again.\nSource Link is now supported for Windows PDB file format (in addition to Portable PDBs). Compilers that support it can put the necessary information in the Windows PDB file format and the debugger can retrieve source files based on that information.MicrosoftVisual Studio 2017 version 15.3 Release Notes\n\nIn this post, I will show you the fastest way to setup Visual Studio 2017 15.3 so that you can debug into ASP.NET Core 2.0 source code!\nTo start you can either use your current application or create a new ASP.NET Core 2.0 Web application.I have Visual Studio 2017.3 default collection settings set to Web Development.\nOpen you Startup class, and set a breakpoint on the ConfigureServices method, then if you start a debugging session with F5 you will end up in this situation\n\nIn the Call Stack window, we see only our code and [External Code]\nOpen Visual Studio options dialog, even without stopping your debugging session, using menu Tools / Options and choose Debugging, then untick Enable Just My Code. Click OK. Now the Call Stack Window show you much more like this\n\nWe see now, our code is called from Microsoft.AspNetCore.Hosting.dll\nRight click on Microsoft.AspNetCore.Hosting.dll and choose Load Symbols\n\nThen the following dialog will be shown, give it some time to download the symbols from Microsoft Symbol Servers\n\nNow you should see the Microsoft.AspNetCore.Hosting.dll in white in the Call Stack window and right-clicking it, you can now choose Go To Source Code\n\nFinally the new Source Link dialog popup and let you download the source automatically \n\nYou finally end up in the ASP.NET Core 2 source code, can set breakpoints and inspect some of the variables!\n\n","dateCreated":"2017-09-26T18:44:11+00:00","dateModified":"2020-05-23T09:56:57+00:00","datePublished":"2017-09-26T18:44:11+00:00","description":"I am just back from 2.5 months unpaid leave which I used to spend time with my family. So, I almost did not spend time with software development. One exception is that I wanted to be able to configure Visual Studio 2017 to be able to debug into ASP.NET Core 2.0 source code.","headline":"Debugging into ASP.NET Core 2.0 source code","image":["https://farm5.staticflickr.com/4385/36202322654_09850a5c86_q.jpg","https://farm5.staticflickr.com/4385/36202322654_cd05ca5740_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2017/09/26/Debugging-into-ASP.NET-Core-2.0-source-code/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2017/09/26/Debugging-into-ASP.NET-Core-2.0-source-code/","keywords":"ASP.NET Core, Visual Studio 2017","thumbnailUrl":"https://farm5.staticflickr.com/4385/36202322654_09850a5c86_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I am just back from 2.5 months unpaid leave which I used to spend time with my family. So, I almost did not spend time with software development. One exception is that I wanted to be able to configure Visual Studio 2017 to be able to debug into ASP.NET Core 2.0 source code.\n\nSomething which should have been simple didn’t work for long because Microsoft wasn’t publishing the PDBs. There were other ways to achieve that goal but it was fairly complex, so I decided to wait. Now, this has changed with the release of ASP.NET Core 2.0.\nBut first, why would you want to step into the source code of ASP.NET Core 2.0?In my case, I find it very helpful to understand how the framework is working. So it is a great way to learn the internals of the framework and I am most particularly interested about the compilation of Razor pages.\nFinally, the team uploaded the PDBs of ASP.NET Core 2.0 on the Microsoft Symbol Servers. And it is coming with a bonus feature of Visual Studio 2017 15.3; Source Link Support for Windows PDB File Format, which makes everything easy again.\nSource Link is now supported for Windows PDB file format (in addition to Portable PDBs). Compilers that support it can put the necessary information in the Windows PDB file format and the debugger can retrieve source files based on that information.MicrosoftVisual Studio 2017 version 15.3 Release Notes\n\nIn this post, I will show you the fastest way to setup Visual Studio 2017 15.3 so that you can debug into ASP.NET Core 2.0 source code!\nTo start you can either use your current application or create a new ASP.NET Core 2.0 Web application.I have Visual Studio 2017.3 default collection settings set to Web Development.\nOpen you Startup class, and set a breakpoint on the ConfigureServices method, then if you start a debugging session with F5 you will end up in this situation\n\nIn the Call Stack window, we see only our code and [External Code]\nOpen Visual Studio options dialog, even without stopping your debugging session, using menu Tools / Options and choose Debugging, then untick Enable Just My Code. Click OK. Now the Call Stack Window show you much more like this\n\nWe see now, our code is called from Microsoft.AspNetCore.Hosting.dll\nRight click on Microsoft.AspNetCore.Hosting.dll and choose Load Symbols\n\nThen the following dialog will be shown, give it some time to download the symbols from Microsoft Symbol Servers\n\nNow you should see the Microsoft.AspNetCore.Hosting.dll in white in the Call Stack window and right-clicking it, you can now choose Go To Source Code\n\nFinally the new Source Link dialog popup and let you download the source automatically \n\nYou finally end up in the ASP.NET Core 2 source code, can set breakpoints and inspect some of the variables!\n\n","dateCreated":"2017-09-26T18:44:11+00:00","dateModified":"2020-05-23T13:59:53+00:00","datePublished":"2017-09-26T18:44:11+00:00","description":"I am just back from 2.5 months unpaid leave which I used to spend time with my family. So, I almost did not spend time with software development. One exception is that I wanted to be able to configure Visual Studio 2017 to be able to debug into ASP.NET Core 2.0 source code.","headline":"Debugging into ASP.NET Core 2.0 source code","image":["https://farm5.staticflickr.com/4385/36202322654_09850a5c86_q.jpg","https://farm5.staticflickr.com/4385/36202322654_cd05ca5740_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2017/09/26/Debugging-into-ASP.NET-Core-2.0-source-code/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2017/09/26/Debugging-into-ASP.NET-Core-2.0-source-code/","keywords":"ASP.NET Core, Visual Studio 2017","thumbnailUrl":"https://farm5.staticflickr.com/4385/36202322654_09850a5c86_q.jpg"}</script>
     <meta name="description" content="I am just back from 2.5 months unpaid leave which I used to spend time with my family. So, I almost did not spend time with software development. One exception is that I wanted to be able to configure">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Debugging into ASP.NET Core 2.0 source code">
@@ -29,7 +29,7 @@
 <meta property="og:image" content="https://farm5.staticflickr.com/4470/23483589828_59452c0da4_z.jpg">
 <meta property="og:image" content="https://farm5.staticflickr.com/4502/23483591168_c99dd6953f_c.jpg">
 <meta property="article:published_time" content="2017-09-26T18:44:11.000Z">
-<meta property="article:modified_time" content="2020-05-23T09:56:57.709Z">
+<meta property="article:modified_time" content="2020-05-23T13:59:53.205Z">
 <meta property="article:author" content="Laurent Kempé">
 <meta property="article:tag" content="ASP.NET Core">
 <meta property="article:tag" content="Visual Studio 2017">
@@ -54,7 +54,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-o6ynm2einupf0xcrhcfoydcyxt3e1oowmmpqqhx0ko410jupv30ilwayk2qa.min.css">
+<link rel="stylesheet" href="/assets/css/style-ys1rhebtnjszb4i0vnrhfhsvointaymk47l3dgtz1iy0iswmesgxyc7ckxcs.min.css">
 
     <!--STYLES END-->
     
@@ -102,7 +102,7 @@
             <a
                 class="header-right-picture "
                 href="#about"
-                aria-label="global.open_link: /#about"
+                aria-label="Open the link: /#about"
             >
         
         
@@ -125,7 +125,7 @@
             <div class="sidebar-profile">
                 <a
                     href="/#about"
-                    aria-label="global.read_more_about_author"
+                    aria-label="Read more about the author"
                 >
                     <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
                 </a>
@@ -141,12 +141,13 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/"
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
                             
+                            rel="noopener"
                             title="Home"
                         >
-                    
                         <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Home</span>
                     </a>
@@ -154,12 +155,13 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/all-archives"
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
                             
+                            rel="noopener"
                             title="Archives"
                         >
-                    
                         <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Archives</span>
                     </a>
@@ -167,12 +169,13 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/presentations.html"
+                        <a
+                            class="sidebar-button-link "
+                            href="/presentations.html"
                             
+                            rel="noopener"
                             title="Presentations"
                         >
-                    
                         <i class="sidebar-button-icon fa fa-file-powerpoint" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Presentations</span>
                     </a>
@@ -180,12 +183,13 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/about-laurent-kempe.html"
+                        <a
+                            class="sidebar-button-link "
+                            href="/about-laurent-kempe.html"
                             
+                            rel="noopener"
                             title="About"
                         >
-                    
                         <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">About</span>
                     </a>
@@ -197,8 +201,15 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="https://github.com/laurentkempe" target="_blank" rel="noopener" title="GitHub">
-                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
                         <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
                     </a>
@@ -206,8 +217,15 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="https://twitter.com/laurentkempe" target="_blank" rel="noopener" title="Twitter">
-                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://twitter.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
                         <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
                     </a>
@@ -215,8 +233,15 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/laurentkempe" target="_blank" rel="noopener" title="LinkedIn">
-                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/in/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
                         <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">LinkedIn</span>
                     </a>
@@ -224,8 +249,15 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="https://flickr.com/photos/laurentkempe/" target="_blank" rel="noopener" title="Flickr">
-                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://flickr.com/photos/laurentkempe/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Flickr"
+                        >
                         <i class="sidebar-button-icon fab fa-flickr" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Flickr</span>
                     </a>
@@ -237,12 +269,13 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/all-tags"
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
                             
+                            rel="noopener"
                             title="Tags"
                         >
-                    
                         <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Tags</span>
                     </a>
@@ -254,8 +287,15 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="http://feeds.feedburner.com/laurentkempe" target="_blank" rel="noopener" title="RSS">
-                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://feeds.feedburner.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
                         <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">RSS</span>
                     </a>
@@ -423,11 +463,11 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2017/09/26/Debugging-into-ASP.NET-Core-2.0-source-code/"
-                    title="Share on Google+"
-                    aria-label="Share on Google+"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2017/09/26/Debugging-into-ASP.NET-Core-2.0-source-code/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
                 >
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -552,11 +592,11 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://laurentkempe.com/2017/09/26/Debugging-into-ASP.NET-Core-2.0-source-code/"
-                    title="Share on Google+"
-                    aria-label="Share on Google+"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2017/09/26/Debugging-into-ASP.NET-Core-2.0-source-code/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
                 >
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -622,10 +662,10 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=https://laurentkempe.com/2017/09/26/Debugging-into-ASP.NET-Core-2.0-source-code/"
-                        aria-label="Share on Google+"
+                        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2017/09/26/Debugging-into-ASP.NET-Core-2.0-source-code/"
+                        aria-label="global.share_on_linkedin"
                     >
-                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                        <i class="fab fa-linkedin" aria-hidden="true"></i><span>global.share_on_linkedin</span>
                     </a>
                 </li>
             
@@ -678,7 +718,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-p1jlqupigbft0ueoxb0bimbxwkmi65eyojc4widib7jfqpvnkwre3wld2pj2.min.js"></script>
+<script src="/assets/js/script-7ftd8prpmqnb3xtxwletpix7hpyrxou3uqr37emafsobziluf4sek0ppbceh.min.js"></script>
 
 <!--SCRIPTS END-->
 
