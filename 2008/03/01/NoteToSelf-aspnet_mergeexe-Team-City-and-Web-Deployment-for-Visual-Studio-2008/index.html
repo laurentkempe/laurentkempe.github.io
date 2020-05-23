@@ -13,16 +13,18 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I had to modify the Microsoft.WebDeployment.targets file to be able to compile through Team City the Web Deployment 2008 project !\n\n** **\n\n\n\n&lt;Target Name=&quot;AspNetMerge&quot; Condition=&quot;&apos;$(UseMerge)&apos; == &apos;true&apos;&quot; DependsOnTargets=&quot;$(MergeDependsOn)&quot;&gt;\n    &lt;AspNetMerge**          ExePath=”C:\\Program Files\\Microsoft SDKs\\Windows\\v6.0A\\Bin”**          ApplicationPath=”$(TempBuildDir)”          KeyFile=”$(_FullKeyFile)”          DelaySign=”$(DelaySign)”          Prefix=”$(AssemblyPrefixName)”          SingleAssemblyName=”$(SingleAssemblyName)”          Debug=”$(DebugSymbols)”          Nologo=”$(NoLogo)”          ContentAssemblyName=”$(ContentAssemblyName)”          ErrorStack=”$(ErrorStack)”          RemoveCompiledFiles=”$(DeleteAppCodeCompiledFiles)”          CopyAttributes=”$(CopyAssemblyAttributes)”          AssemblyInfo=”$(AssemblyInfoDll)”          MergeXmlDocs=”$(MergeXmlDocs)”          ErrorLogFile=”$(MergeErrorLogFile)”          /&gt;\n    &lt;CreateItem Include=&quot;$(TempBuildDir)**\\*.*&quot;&gt;\n        &lt;Output ItemName=&quot;PrecompiledOutput&quot; TaskParameter=&quot;Include&quot; /&gt;\n    &lt;/CreateItem&gt;\n&lt;/Target&gt;\n","dateCreated":"2008-03-01T01:50:20+00:00","dateModified":"2010-05-10T17:50:39+00:00","datePublished":"2008-03-01T01:50:20+00:00","description":"I had to modify the Microsoft.WebDeployment.targets file to be able to compile through Team City the Web Deployment 2008 project !\n\n** **\n","headline":"NoteToSelf: aspnet_merge.exe, Team City and Web Deployment for Visual Studio 2008","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2008/03/01/NoteToSelf-aspnet_mergeexe-Team-City-and-Web-Deployment-for-Visual-Studio-2008/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2008/03/01/NoteToSelf-aspnet_mergeexe-Team-City-and-Web-Deployment-for-Visual-Studio-2008/","keywords":"Note to self"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I had to modify the Microsoft.WebDeployment.targets file to be able to compile through Team City the Web Deployment 2008 project !\n\n** **\n\n\n\n&lt;Target Name=&quot;AspNetMerge&quot; Condition=&quot;&apos;$(UseMerge)&apos; == &apos;true&apos;&quot; DependsOnTargets=&quot;$(MergeDependsOn)&quot;&gt;\n    &lt;AspNetMerge**          ExePath=”C:\\Program Files\\Microsoft SDKs\\Windows\\v6.0A\\Bin”**          ApplicationPath=”$(TempBuildDir)”          KeyFile=”$(_FullKeyFile)”          DelaySign=”$(DelaySign)”          Prefix=”$(AssemblyPrefixName)”          SingleAssemblyName=”$(SingleAssemblyName)”          Debug=”$(DebugSymbols)”          Nologo=”$(NoLogo)”          ContentAssemblyName=”$(ContentAssemblyName)”          ErrorStack=”$(ErrorStack)”          RemoveCompiledFiles=”$(DeleteAppCodeCompiledFiles)”          CopyAttributes=”$(CopyAssemblyAttributes)”          AssemblyInfo=”$(AssemblyInfoDll)”          MergeXmlDocs=”$(MergeXmlDocs)”          ErrorLogFile=”$(MergeErrorLogFile)”          /&gt;\n    &lt;CreateItem Include=&quot;$(TempBuildDir)**\\*.*&quot;&gt;\n        &lt;Output ItemName=&quot;PrecompiledOutput&quot; TaskParameter=&quot;Include&quot; /&gt;\n    &lt;/CreateItem&gt;\n&lt;/Target&gt;\n","dateCreated":"2008-03-01T01:50:20+00:00","dateModified":"2010-05-10T17:50:39+00:00","datePublished":"2008-03-01T01:50:20+00:00","description":"I had to modify the Microsoft.WebDeployment.targets file to be able to compile through Team City the Web Deployment 2008 project !\n\n** **\n","headline":"NoteToSelf: aspnet_merge.exe, Team City and Web Deployment for Visual Studio 2008","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/03/01/NoteToSelf-aspnet_mergeexe-Team-City-and-Web-Deployment-for-Visual-Studio-2008/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2008/03/01/NoteToSelf-aspnet_mergeexe-Team-City-and-Web-Deployment-for-Visual-Studio-2008/","keywords":"Note to self"}</script>
     <meta name="description" content="I had to modify the Microsoft.WebDeployment.targets file to be able to compile through Team City the Web Deployment 2008 project !  ** **">
-<meta name="keywords" content="Note to self">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="NoteToSelf: aspnet_merge.exe, Team City and Web Deployment for Visual Studio 2008">
-<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2008&#x2F;03&#x2F;01&#x2F;NoteToSelf-aspnet_mergeexe-Team-City-and-Web-Deployment-for-Visual-Studio-2008&#x2F;index.html">
+<meta property="og:url" content="https://laurentkempe.com/2008/03/01/NoteToSelf-aspnet_mergeexe-Team-City-and-Web-Deployment-for-Visual-Studio-2008/index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="I had to modify the Microsoft.WebDeployment.targets file to be able to compile through Team City the Web Deployment 2008 project !  ** **">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2010-05-10T17:50:39.000Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2008-03-01T01:50:20.000Z">
+<meta property="article:modified_time" content="2010-05-10T17:50:39.000Z">
+<meta property="article:author" content="Laurent Kempé">
+<meta property="article:tag" content="Note to self">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:creator" content="@laurentkempe">
     
@@ -36,7 +38,9 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-ktblzmmvy1z9gcfhed5xjwxffd2l7w0mqt0n8w5mnfurae7qfghxjpuvkojc.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-o6ynm2einupf0xcrhcfoydcyxt3e1oowmmpqqhx0ko410jupv30ilwayk2qa.min.css">
+
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -417,7 +421,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -635,7 +639,9 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-3rnwmtv7ewwzr0tfomfhlvzttfo9skaqodt1rsz0perteesjz8kp9882c7wm.min.js"></script>
+
+<script src="/assets/js/script-p1jlqupigbft0ueoxb0bimbxwkmi65eyojc4widib7jfqpvnkwre3wld2pj2.min.js"></script>
+
 <!--SCRIPTS END-->
 
 

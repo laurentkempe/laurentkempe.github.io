@@ -13,16 +13,19 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"What? How can you link those two!!!???\nI am working on Tech Head Brothers Authoring tool and it means that I need to provide a setup to all the authors. I did it following a real long tutorial in two parts:\n\n\n\nDeploying Visual Studio 2005 Tools for Office Solutions Using Windows Installer (Part 1 of 2)\nDeploying Visual Studio 2005 Tools for Office Solutions Using Windows Installer: Walkthroughs (Part 2 of 2) \n\nAnd finally I had a setup that works on my machine. But as you know if it works on yours it doesn’t mean that it works on all. Hey developers, an application doesn’t need to run just on your machine ;-)\nWhat was the issue on author machines?\nThe interesting part of the exception was:\n\nSystem.IO.FileNotFoundException: Impossible de charger le fichier ou l’assembly ‘office, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c’ ou une de ses dépendances. Le fichier spécifié est introuvable.\n\nOffice Version 12??? What the hell is this I use Office 2003 and VSTO 2005!!!\nSo I tried to add a reference to version 11 of office without any success because the version 12 was in the GAC. After some research I found that Web Expression was the one that installed the version 12 of the office DLL, and was causing the issue. Quick uninstall to find that VSTO was not able to create new VSTO projects in Visual Studio, so I tried uninstall/reinstall of VSTO for the same result. Will check that later.\nConclusion: NEVER INSTALL BETA SOFTWARE OUTSIDE A VPC.\n","dateCreated":"2006-10-05T04:17:08+00:00","dateModified":"2006-10-05T04:17:08+00:00","datePublished":"2006-10-05T04:17:08+00:00","description":"What? How can you link those two!!!???\nI am working on Tech Head Brothers Authoring tool and it means that I need to provide a setup to all the authors. I did it following a real long tutorial in two parts:","headline":"VSTO 2005 and Web Expression CTP","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2006/10/05/VSTO-2005-and-Web-Expression-CTP/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2006/10/05/VSTO-2005-and-Web-Expression-CTP/","keywords":"Visual Studio, VSTO"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"What? How can you link those two!!!???\nI am working on Tech Head Brothers Authoring tool and it means that I need to provide a setup to all the authors. I did it following a real long tutorial in two parts:\n\n\n\nDeploying Visual Studio 2005 Tools for Office Solutions Using Windows Installer (Part 1 of 2)\nDeploying Visual Studio 2005 Tools for Office Solutions Using Windows Installer: Walkthroughs (Part 2 of 2) \n\nAnd finally I had a setup that works on my machine. But as you know if it works on yours it doesn’t mean that it works on all. Hey developers, an application doesn’t need to run just on your machine ;-)\nWhat was the issue on author machines?\nThe interesting part of the exception was:\n\nSystem.IO.FileNotFoundException: Impossible de charger le fichier ou l’assembly ‘office, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c’ ou une de ses dépendances. Le fichier spécifié est introuvable.\n\nOffice Version 12??? What the hell is this I use Office 2003 and VSTO 2005!!!\nSo I tried to add a reference to version 11 of office without any success because the version 12 was in the GAC. After some research I found that Web Expression was the one that installed the version 12 of the office DLL, and was causing the issue. Quick uninstall to find that VSTO was not able to create new VSTO projects in Visual Studio, so I tried uninstall/reinstall of VSTO for the same result. Will check that later.\nConclusion: NEVER INSTALL BETA SOFTWARE OUTSIDE A VPC.\n","dateCreated":"2006-10-05T04:17:08+00:00","dateModified":"2006-10-05T04:17:08+00:00","datePublished":"2006-10-05T04:17:08+00:00","description":"What? How can you link those two!!!???\nI am working on Tech Head Brothers Authoring tool and it means that I need to provide a setup to all the authors. I did it following a real long tutorial in two parts:","headline":"VSTO 2005 and Web Expression CTP","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2006/10/05/VSTO-2005-and-Web-Expression-CTP/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2006/10/05/VSTO-2005-and-Web-Expression-CTP/","keywords":"Visual Studio, VSTO"}</script>
     <meta name="description" content="What? How can you link those two!!!??? I am working on Tech Head Brothers Authoring tool and it means that I need to provide a setup to all the authors. I did it following a real long tutorial in two">
-<meta name="keywords" content="Visual Studio,VSTO">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="VSTO 2005 and Web Expression CTP">
-<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2006&#x2F;10&#x2F;05&#x2F;VSTO-2005-and-Web-Expression-CTP&#x2F;index.html">
+<meta property="og:url" content="https://laurentkempe.com/2006/10/05/VSTO-2005-and-Web-Expression-CTP/index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="What? How can you link those two!!!??? I am working on Tech Head Brothers Authoring tool and it means that I need to provide a setup to all the authors. I did it following a real long tutorial in two">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2006-10-05T04:17:08.000Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2006-10-05T04:17:08.000Z">
+<meta property="article:modified_time" content="2006-10-05T04:17:08.000Z">
+<meta property="article:author" content="Laurent Kempé">
+<meta property="article:tag" content="Visual Studio">
+<meta property="article:tag" content="VSTO">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:creator" content="@laurentkempe">
     
@@ -36,7 +39,9 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-ktblzmmvy1z9gcfhed5xjwxffd2l7w0mqt0n8w5mnfurae7qfghxjpuvkojc.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-o6ynm2einupf0xcrhcfoydcyxt3e1oowmmpqqhx0ko410jupv30ilwayk2qa.min.css">
+
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -422,7 +427,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -640,7 +645,9 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-3rnwmtv7ewwzr0tfomfhlvzttfo9skaqodt1rsz0perteesjz8kp9882c7wm.min.js"></script>
+
+<script src="/assets/js/script-p1jlqupigbft0ueoxb0bimbxwkmi65eyojc4widib7jfqpvnkwre3wld2pj2.min.js"></script>
+
 <!--SCRIPTS END-->
 
 

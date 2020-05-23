@@ -13,20 +13,23 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"OK I fixed my main issue. I wasn’t able to have my plugin loaded by Jetbrains Omea, and it seems that it is linked with the .NET Framework 2.0 that I use in my plugin, even if Omea Reader is running using .NET Framework 2.0 somehow it can’t verify the plugin.\nI had to install MSBee so I don’t need to install VS 03 again. And now back to the old days of command line I have to compile using such a command:\n\n\nmsbuild BlogThisUsingWriterPlugin.csproj /t:Rebuild /p:TargetFX1_1=true\nAfter modifying my csproj MSBuild file to use MSBee\nSo this is how it look likes in Omea Reader\n \nAnd the result in Windows Live Writer:\n\nNot bad.\nThat will be my second plugin for Live Writer and it will be also on Codeplex in Windows Live Writer Plugins project.\nThanks to Christopher Frazier for the kind help compiling my project on VS 03.\nOk it is 2:01 AM, time to go to bed.\n","dateCreated":"2006-08-17T07:03:31+00:00","dateModified":"2006-08-17T07:03:31+00:00","datePublished":"2006-08-17T07:03:31+00:00","description":"OK I fixed my main issue. I wasn’t able to have my plugin loaded by Jetbrains Omea, and it seems that it is linked with the .NET Framework 2.0 that I use in my plugin, even if Omea Reader is running using .NET Framework 2.0 somehow it can’t verify the plugin.\nI had to install MSBee so I don’t need to install VS 03 again. And now back to the old days of command line I have to compile using such a command:","headline":"BlogThisUsingWriterPlugin coming soon","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2006/08/17/BlogThisUsingWriterPlugin-coming-soon/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2006/08/17/BlogThisUsingWriterPlugin-coming-soon/","keywords":"ASP.NET, Tools"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"OK I fixed my main issue. I wasn’t able to have my plugin loaded by Jetbrains Omea, and it seems that it is linked with the .NET Framework 2.0 that I use in my plugin, even if Omea Reader is running using .NET Framework 2.0 somehow it can’t verify the plugin.\nI had to install MSBee so I don’t need to install VS 03 again. And now back to the old days of command line I have to compile using such a command:\n\n\nmsbuild BlogThisUsingWriterPlugin.csproj /t:Rebuild /p:TargetFX1_1=true\nAfter modifying my csproj MSBuild file to use MSBee\nSo this is how it look likes in Omea Reader\n \nAnd the result in Windows Live Writer:\n\nNot bad.\nThat will be my second plugin for Live Writer and it will be also on Codeplex in Windows Live Writer Plugins project.\nThanks to Christopher Frazier for the kind help compiling my project on VS 03.\nOk it is 2:01 AM, time to go to bed.\n","dateCreated":"2006-08-17T07:03:31+00:00","dateModified":"2006-08-17T07:03:31+00:00","datePublished":"2006-08-17T07:03:31+00:00","description":"OK I fixed my main issue. I wasn’t able to have my plugin loaded by Jetbrains Omea, and it seems that it is linked with the .NET Framework 2.0 that I use in my plugin, even if Omea Reader is running using .NET Framework 2.0 somehow it can’t verify the plugin.\nI had to install MSBee so I don’t need to install VS 03 again. And now back to the old days of command line I have to compile using such a command:","headline":"BlogThisUsingWriterPlugin coming soon","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2006/08/17/BlogThisUsingWriterPlugin-coming-soon/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2006/08/17/BlogThisUsingWriterPlugin-coming-soon/","keywords":"ASP.NET, Tools"}</script>
     <meta name="description" content="OK I fixed my main issue. I wasn’t able to have my plugin loaded by Jetbrains Omea, and it seems that it is linked with the .NET Framework 2.0 that I use in my plugin, even if Omea Reader is running u">
-<meta name="keywords" content="ASP.NET,Tools">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="BlogThisUsingWriterPlugin coming soon">
-<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2006&#x2F;08&#x2F;17&#x2F;BlogThisUsingWriterPlugin-coming-soon&#x2F;index.html">
+<meta property="og:url" content="https://laurentkempe.com/2006/08/17/BlogThisUsingWriterPlugin-coming-soon/index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="OK I fixed my main issue. I wasn’t able to have my plugin loaded by Jetbrains Omea, and it seems that it is linked with the .NET Framework 2.0 that I use in my plugin, even if Omea Reader is running u">
-<meta property="og:locale" content="en">
-<meta property="og:image" content="http:&#x2F;&#x2F;www.techheadbrothers.com&#x2F;images&#x2F;blog&#x2F;c09af96e7bd2_18F4&#x2F;image0_thumb1.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;www.techheadbrothers.com&#x2F;images&#x2F;blog&#x2F;c09af96e7bd2_18F4&#x2F;image0_thumb2.png">
-<meta property="og:updated_time" content="2006-08-17T07:03:31.000Z">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://www.techheadbrothers.com/images/blog/c09af96e7bd2_18F4/image0_thumb1.png">
+<meta property="og:image" content="http://www.techheadbrothers.com/images/blog/c09af96e7bd2_18F4/image0_thumb2.png">
+<meta property="article:published_time" content="2006-08-17T07:03:31.000Z">
+<meta property="article:modified_time" content="2006-08-17T07:03:31.000Z">
+<meta property="article:author" content="Laurent Kempé">
+<meta property="article:tag" content="ASP.NET">
+<meta property="article:tag" content="Tools">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http:&#x2F;&#x2F;www.techheadbrothers.com&#x2F;images&#x2F;blog&#x2F;c09af96e7bd2_18F4&#x2F;image0_thumb1.png">
+<meta name="twitter:image" content="http://www.techheadbrothers.com/images/blog/c09af96e7bd2_18F4/image0_thumb1.png">
 <meta name="twitter:creator" content="@laurentkempe">
     
     
@@ -39,7 +42,9 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-ktblzmmvy1z9gcfhed5xjwxffd2l7w0mqt0n8w5mnfurae7qfghxjpuvkojc.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-o6ynm2einupf0xcrhcfoydcyxt3e1oowmmpqqhx0ko410jupv30ilwayk2qa.min.css">
+
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -422,7 +427,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -640,7 +645,9 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-3rnwmtv7ewwzr0tfomfhlvzttfo9skaqodt1rsz0perteesjz8kp9882c7wm.min.js"></script>
+
+<script src="/assets/js/script-p1jlqupigbft0ueoxb0bimbxwkmi65eyojc4widib7jfqpvnkwre3wld2pj2.min.js"></script>
+
 <!--SCRIPTS END-->
 
 

@@ -13,16 +13,25 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Conception using generics and reflection of a search engine to index and search content in your business entities without being intrusive.  \nIntroduction\n\nToday, one of the functionality that almost all web sites implements is a method to index content and give it users the possibility to search that content spread into its web pages. It is one of the simplest ways to improve the user experience on your web site.  \nBlogs brought categories/tags giving the possibility to label the information. However this advantageous method isn’t always sufficient. It is advisable to then use a real content indexing method.  \nIn this set of posts I propose to take a look at the indexing and searching method I implemented on the web site of innoveo solutions, my new company. I hope also to bring soon this system to my web site Tech Head Brothers.  \nBoth web sites, innoveo solutions and Tech Head Brothers, were developed using Domain Driven Design. So, we started by defining a domain model with our business entities. In this layer we do not concentrate on technical aspects for example like persistence. On the other hand we do concentrate on the domain we want to address.  \nOne of the main ideas is to avoid being intrusive in the domain model with any inheritance of technical classes or to link this layer with any technical frameworks.  \nTo achieve this goal we will use an O/R mapping tool (Euss) for the business entities persistence as well as the Lucene.Net framework for the indexing part.  \nFollowing quite some discussions (Thanks Didier ;) in which we asked us if we would better use a service offered by one of the searching big players on the Internet, we finally decided to keep the control of our searching tool.  \nWanting to be independent of any database and services like Full-Text indexing, or from services like Indexing Services, we decided to use Lucene.Net to avoid having to re-implement everything from scratch.  \nIn the following posts, I will present an introduction of Lucene.Net; we will see the architecture I have chosen for the indexing and searching framework; the implementation details of that framework and finally an example of integration into a data access layer.\nThis post is cross-posted on innoveo blog *and in French on my .NET community portal *[Tech Head Brothers*](http://www.techheadbrothers.com/Articles.aspx/indexer-rechercher-entites-metier-aide-framework-lucene-net).*\n","dateCreated":"2007-11-16T16:59:02+00:00","dateModified":"2010-05-07T05:46:50+00:00","datePublished":"2007-11-16T16:59:02+00:00","description":"Conception using generics and reflection of a search engine to index and search content in your business entities without being intrusive.  \nIntroduction","headline":"Indexing and searching business entities using Lucene.Net Framework, part 1","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2007/11/16/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-1/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2007/11/16/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-1/","keywords":"innoveo solutions, ASP.NET 2.0, Tools, Interoperability, C#, Architecture, Generics, Reflection"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Conception using generics and reflection of a search engine to index and search content in your business entities without being intrusive.  \nIntroduction\n\nToday, one of the functionality that almost all web sites implements is a method to index content and give it users the possibility to search that content spread into its web pages. It is one of the simplest ways to improve the user experience on your web site.  \nBlogs brought categories/tags giving the possibility to label the information. However this advantageous method isn’t always sufficient. It is advisable to then use a real content indexing method.  \nIn this set of posts I propose to take a look at the indexing and searching method I implemented on the web site of innoveo solutions, my new company. I hope also to bring soon this system to my web site Tech Head Brothers.  \nBoth web sites, innoveo solutions and Tech Head Brothers, were developed using Domain Driven Design. So, we started by defining a domain model with our business entities. In this layer we do not concentrate on technical aspects for example like persistence. On the other hand we do concentrate on the domain we want to address.  \nOne of the main ideas is to avoid being intrusive in the domain model with any inheritance of technical classes or to link this layer with any technical frameworks.  \nTo achieve this goal we will use an O/R mapping tool (Euss) for the business entities persistence as well as the Lucene.Net framework for the indexing part.  \nFollowing quite some discussions (Thanks Didier ;) in which we asked us if we would better use a service offered by one of the searching big players on the Internet, we finally decided to keep the control of our searching tool.  \nWanting to be independent of any database and services like Full-Text indexing, or from services like Indexing Services, we decided to use Lucene.Net to avoid having to re-implement everything from scratch.  \nIn the following posts, I will present an introduction of Lucene.Net; we will see the architecture I have chosen for the indexing and searching framework; the implementation details of that framework and finally an example of integration into a data access layer.\nThis post is cross-posted on innoveo blog *and in French on my .NET community portal *[Tech Head Brothers*](http://www.techheadbrothers.com/Articles.aspx/indexer-rechercher-entites-metier-aide-framework-lucene-net).*\n","dateCreated":"2007-11-16T16:59:02+00:00","dateModified":"2010-05-07T05:46:50+00:00","datePublished":"2007-11-16T16:59:02+00:00","description":"Conception using generics and reflection of a search engine to index and search content in your business entities without being intrusive.  \nIntroduction","headline":"Indexing and searching business entities using Lucene.Net Framework, part 1","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/11/16/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-1/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2007/11/16/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-1/","keywords":"innoveo solutions, ASP.NET 2.0, Tools, Interoperability, C#, Architecture, Generics, Reflection"}</script>
     <meta name="description" content="Conception using generics and reflection of a search engine to index and search content in your business entities without being intrusive.   Introduction">
-<meta name="keywords" content="innoveo solutions,ASP.NET 2.0,Tools,Interoperability,C#,Architecture,Generics,Reflection">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Indexing and searching business entities using Lucene.Net Framework, part 1">
-<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2007&#x2F;11&#x2F;16&#x2F;Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-1&#x2F;index.html">
+<meta property="og:url" content="https://laurentkempe.com/2007/11/16/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-1/index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="Conception using generics and reflection of a search engine to index and search content in your business entities without being intrusive.   Introduction">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2010-05-07T05:46:50.000Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2007-11-16T16:59:02.000Z">
+<meta property="article:modified_time" content="2010-05-07T05:46:50.000Z">
+<meta property="article:author" content="Laurent Kempé">
+<meta property="article:tag" content="innoveo solutions">
+<meta property="article:tag" content="ASP.NET 2.0">
+<meta property="article:tag" content="Tools">
+<meta property="article:tag" content="Interoperability">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Architecture">
+<meta property="article:tag" content="Generics">
+<meta property="article:tag" content="Reflection">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:creator" content="@laurentkempe">
     
@@ -36,7 +45,9 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-ktblzmmvy1z9gcfhed5xjwxffd2l7w0mqt0n8w5mnfurae7qfghxjpuvkojc.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-o6ynm2einupf0xcrhcfoydcyxt3e1oowmmpqqhx0ko410jupv30ilwayk2qa.min.css">
+
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -418,7 +429,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -636,7 +647,9 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-3rnwmtv7ewwzr0tfomfhlvzttfo9skaqodt1rsz0perteesjz8kp9882c7wm.min.js"></script>
+
+<script src="/assets/js/script-p1jlqupigbft0ueoxb0bimbxwkmi65eyojc4widib7jfqpvnkwre3wld2pj2.min.js"></script>
+
 <!--SCRIPTS END-->
 
 

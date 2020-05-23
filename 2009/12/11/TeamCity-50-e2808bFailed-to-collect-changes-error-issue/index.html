@@ -13,16 +13,19 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Tonight I was facing an issue with TeamCity 5.0 plugin in Visual Studio 2008. \nI was getting the error message ‘​Failed to collect changes error’ in the new Local changes window.\n\n\nSearching on the bug tracking tool of JetBrains for TeamCity I found this issue “TW-10474 I can not make VS addin recollect changes after recieveing ‘​Failed to collect changes error’”\nHas this issue breaks my way to work with pre-tested build I decided to search for a solution because I cannot work without this now!\nSo following the instruction “Logging in TeamCity Visual Studio plugin” : Reporting Issues\nLooking at the produced logs I found this: \n9:28:24 PM.987: Thread:31: svn.exe info “xml” “non-interactive” “p:@projects_handsup\\portal”9:28:24 PM.987: Thread:31: Failed to execute svn. code 1, error svn: Try ‘svn help’ for more info svn: Syntax error parsing revision ‘projects_handsup\\portal’ , output  9:28:24 PM.991: Thread:31: EXCEPTION: svn: Try ‘svn help’ for more infosvn: Syntax error parsing revision ‘projects_handsup\\portal’.Svn has exited with code ‘1’.SvnInfoUuidCommand failed\nI tried then the svn command from the command prompt and got the same error!\nI finally renamed the path to my project from p:@projects_handsup\\portal to p:\\projects_handsup\\portal \nAnd now it works again! So forget strange characters in your path!\n","dateCreated":"2009-12-11T04:49:21+00:00","dateModified":"2009-12-11T04:49:21+00:00","datePublished":"2009-12-11T04:49:21+00:00","description":"Tonight I was facing an issue with TeamCity 5.0 plugin in Visual Studio 2008. \nI was getting the error message ‘​Failed to collect changes error’ in the new Local changes window.","headline":"TeamCity 5.0 '​Failed to collect changes error' issue","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2009/12/11/TeamCity-50-e2808bFailed-to-collect-changes-error-issue/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2009/12/11/TeamCity-50-e2808bFailed-to-collect-changes-error-issue/","keywords":"continuous integration, Team City"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Tonight I was facing an issue with TeamCity 5.0 plugin in Visual Studio 2008. \nI was getting the error message ‘​Failed to collect changes error’ in the new Local changes window.\n\n\nSearching on the bug tracking tool of JetBrains for TeamCity I found this issue “TW-10474 I can not make VS addin recollect changes after recieveing ‘​Failed to collect changes error’”\nHas this issue breaks my way to work with pre-tested build I decided to search for a solution because I cannot work without this now!\nSo following the instruction “Logging in TeamCity Visual Studio plugin” : Reporting Issues\nLooking at the produced logs I found this: \n9:28:24 PM.987: Thread:31: svn.exe info “xml” “non-interactive” “p:@projects_handsup\\portal”9:28:24 PM.987: Thread:31: Failed to execute svn. code 1, error svn: Try ‘svn help’ for more info svn: Syntax error parsing revision ‘projects_handsup\\portal’ , output  9:28:24 PM.991: Thread:31: EXCEPTION: svn: Try ‘svn help’ for more infosvn: Syntax error parsing revision ‘projects_handsup\\portal’.Svn has exited with code ‘1’.SvnInfoUuidCommand failed\nI tried then the svn command from the command prompt and got the same error!\nI finally renamed the path to my project from p:@projects_handsup\\portal to p:\\projects_handsup\\portal \nAnd now it works again! So forget strange characters in your path!\n","dateCreated":"2009-12-11T04:49:21+00:00","dateModified":"2009-12-11T04:49:21+00:00","datePublished":"2009-12-11T04:49:21+00:00","description":"Tonight I was facing an issue with TeamCity 5.0 plugin in Visual Studio 2008. \nI was getting the error message ‘​Failed to collect changes error’ in the new Local changes window.","headline":"TeamCity 5.0 '​Failed to collect changes error' issue","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2009/12/11/TeamCity-50-e2808bFailed-to-collect-changes-error-issue/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2009/12/11/TeamCity-50-e2808bFailed-to-collect-changes-error-issue/","keywords":"continuous integration, Team City"}</script>
     <meta name="description" content="Tonight I was facing an issue with TeamCity 5.0 plugin in Visual Studio 2008.  I was getting the error message ‘​Failed to collect changes error’ in the new Local changes window.">
-<meta name="keywords" content="continuous integration,Team City">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="TeamCity 5.0 &#39;​Failed to collect changes error&#39; issue">
-<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2009&#x2F;12&#x2F;11&#x2F;TeamCity-50-e2808bFailed-to-collect-changes-error-issue&#x2F;index.html">
+<meta property="og:url" content="https://laurentkempe.com/2009/12/11/TeamCity-50-e2808bFailed-to-collect-changes-error-issue/index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="Tonight I was facing an issue with TeamCity 5.0 plugin in Visual Studio 2008.  I was getting the error message ‘​Failed to collect changes error’ in the new Local changes window.">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2009-12-11T04:49:21.000Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2009-12-11T04:49:21.000Z">
+<meta property="article:modified_time" content="2009-12-11T04:49:21.000Z">
+<meta property="article:author" content="Laurent Kempé">
+<meta property="article:tag" content="continuous integration">
+<meta property="article:tag" content="Team City">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:creator" content="@laurentkempe">
     
@@ -36,7 +39,9 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-ktblzmmvy1z9gcfhed5xjwxffd2l7w0mqt0n8w5mnfurae7qfghxjpuvkojc.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-o6ynm2einupf0xcrhcfoydcyxt3e1oowmmpqqhx0ko410jupv30ilwayk2qa.min.css">
+
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -417,7 +422,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -635,7 +640,9 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-3rnwmtv7ewwzr0tfomfhlvzttfo9skaqodt1rsz0perteesjz8kp9882c7wm.min.js"></script>
+
+<script src="/assets/js/script-p1jlqupigbft0ueoxb0bimbxwkmi65eyojc4widib7jfqpvnkwre3wld2pj2.min.js"></script>
+
 <!--SCRIPTS END-->
 
 

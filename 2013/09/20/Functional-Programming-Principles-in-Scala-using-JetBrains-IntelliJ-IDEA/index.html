@@ -13,29 +13,34 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"\n\nThis week I started the Coursera course Functional Programming Principles in Scala with Martin Odersky as instructor.\nOne of my first step was to have JetBrains IntelliJ IDEA working with the Scala programming language so that I can work on the course assignments using my preferred IDE.\n\n\nI have seen that The Guardian published a blog post Functional Programming Principles in Scala: Setting up IntelliJ but it focus on the Unix-like operating systems (OSX and Linux). As I work on Windows I for sure installed it on my machine running Windows 8.1! I also use a different set of tools so here is the way I did it!\nFirst of all I am assuming that you have JetBrains IntelliJ IDEA 12 and JDK installed.\nFrom IntelliJ you need to install the Scala plugin so go to File / Settings then on the dialog search for plugins, click on Browse Repositories button and search for Scala then select Scala v.0.19.299 from JetBrains\n\nThen you also need to install the SBT plugin also from JetBrains which is still in development and get nightly builds.\nAdd the following URL to the list of custom plugin repositories in Settings / Plugins / Browse Repositories / Manage Repositories:\n\nhttp://download.jetbrains.com/scala/sbt-nightly-leda.xml\n\nAfter that, you may install the plugin via Settings | Plugins | Browse Repositories. IDEA will check for the latest plugin builds automatically.\n\nNow extract the assignment zip that the coursera course is providing; e.g. for the example assignment, unpack the example.zip to a folder then in IntelliJ use File / Import Project. IntelliJ already recognize the folder as project:\n\n\nClick Next\n\nTick Use auto-import and click Finish. IntelliJ will then import your project:\n\nNow you need to edit your project structure using File / Project Structure and choose Modules, then progfun-example\n\nYou will see on the dialog for the Source and Test Source Folders some folder in red, just click on the X to delete all the one in red to get to the following state, then finally click OK\n\nNow navigate to the test file ListsSuite and press ALT – SHIFT – F10 to start the tests\n\nAnd if you implemented the assignment you should see this results:\n\nThere is still two tests to fix in the first assignment, this is why there are red!\nBut as you can see now you have a full Scala development environment based on the great JetBrains IntelliJ IDEA IDE! Now you can code with pleasure!\nI really enjoy the first week assignments and implemented the first two as coding Kata! And I even involved France-Anne for the second one; first time that she is coding something  . Very nice!\n","dateCreated":"2013-09-20T18:43:00+00:00","dateModified":"2013-10-04T02:53:57+00:00","datePublished":"2013-09-20T18:43:00+00:00","description":"\n\nThis week I started the Coursera course Functional Programming Principles in Scala with Martin Odersky as instructor.\nOne of my first step was to have JetBrains IntelliJ IDEA working with the Scala programming language so that I can work on the course assignments using my preferred IDE.","headline":"Functional Programming Principles in Scala using JetBrains IntelliJ IDEA","image":["https://farm4.staticflickr.com/3798/9553182109_bcac5e189d_q.jpg","https://farm4.staticflickr.com/3798/9553182109_8db2fd62d4_o.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2013/09/20/Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2013/09/20/Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA/","keywords":"Coursera, IntelliJ, Jetbrains, Scala","thumbnailUrl":"https://farm4.staticflickr.com/3798/9553182109_bcac5e189d_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"\n\nThis week I started the Coursera course Functional Programming Principles in Scala with Martin Odersky as instructor.\nOne of my first step was to have JetBrains IntelliJ IDEA working with the Scala programming language so that I can work on the course assignments using my preferred IDE.\n\n\nI have seen that The Guardian published a blog post Functional Programming Principles in Scala: Setting up IntelliJ but it focus on the Unix-like operating systems (OSX and Linux). As I work on Windows I for sure installed it on my machine running Windows 8.1! I also use a different set of tools so here is the way I did it!\nFirst of all I am assuming that you have JetBrains IntelliJ IDEA 12 and JDK installed.\nFrom IntelliJ you need to install the Scala plugin so go to File / Settings then on the dialog search for plugins, click on Browse Repositories button and search for Scala then select Scala v.0.19.299 from JetBrains\n\nThen you also need to install the SBT plugin also from JetBrains which is still in development and get nightly builds.\nAdd the following URL to the list of custom plugin repositories in Settings / Plugins / Browse Repositories / Manage Repositories:\n\nhttp://download.jetbrains.com/scala/sbt-nightly-leda.xml\n\nAfter that, you may install the plugin via Settings | Plugins | Browse Repositories. IDEA will check for the latest plugin builds automatically.\n\nNow extract the assignment zip that the coursera course is providing; e.g. for the example assignment, unpack the example.zip to a folder then in IntelliJ use File / Import Project. IntelliJ already recognize the folder as project:\n\n\nClick Next\n\nTick Use auto-import and click Finish. IntelliJ will then import your project:\n\nNow you need to edit your project structure using File / Project Structure and choose Modules, then progfun-example\n\nYou will see on the dialog for the Source and Test Source Folders some folder in red, just click on the X to delete all the one in red to get to the following state, then finally click OK\n\nNow navigate to the test file ListsSuite and press ALT – SHIFT – F10 to start the tests\n\nAnd if you implemented the assignment you should see this results:\n\nThere is still two tests to fix in the first assignment, this is why there are red!\nBut as you can see now you have a full Scala development environment based on the great JetBrains IntelliJ IDEA IDE! Now you can code with pleasure!\nI really enjoy the first week assignments and implemented the first two as coding Kata! And I even involved France-Anne for the second one; first time that she is coding something  . Very nice!\n","dateCreated":"2013-09-20T18:43:00+00:00","dateModified":"2013-10-04T02:53:57+00:00","datePublished":"2013-09-20T18:43:00+00:00","description":"\n\nThis week I started the Coursera course Functional Programming Principles in Scala with Martin Odersky as instructor.\nOne of my first step was to have JetBrains IntelliJ IDEA working with the Scala programming language so that I can work on the course assignments using my preferred IDE.","headline":"Functional Programming Principles in Scala using JetBrains IntelliJ IDEA","image":["https://farm4.staticflickr.com/3798/9553182109_bcac5e189d_q.jpg","https://farm4.staticflickr.com/3798/9553182109_8db2fd62d4_o.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2013/09/20/Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2013/09/20/Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA/","keywords":"Coursera, IntelliJ, Jetbrains, Scala","thumbnailUrl":"https://farm4.staticflickr.com/3798/9553182109_bcac5e189d_q.jpg"}</script>
     <meta name="description" content="This week I started the Coursera course Functional Programming Principles in Scala with Martin Odersky as instructor. One of my first step was to have JetBrains IntelliJ IDEA working with the Scala">
-<meta name="keywords" content="Coursera,IntelliJ,Jetbrains,Scala">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Functional Programming Principles in Scala using JetBrains IntelliJ IDEA">
-<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2013&#x2F;09&#x2F;20&#x2F;Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA&#x2F;index.html">
+<meta property="og:url" content="https://laurentkempe.com/2013/09/20/Functional-Programming-Principles-in-Scala-using-JetBrains-IntelliJ-IDEA/index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="This week I started the Coursera course Functional Programming Principles in Scala with Martin Odersky as instructor. One of my first step was to have JetBrains IntelliJ IDEA working with the Scala">
-<meta property="og:locale" content="en">
-<meta property="og:image" content="http:&#x2F;&#x2F;farm8.staticflickr.com&#x2F;7341&#x2F;9834166825_2867bcc1ba_o.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;farm8.staticflickr.com&#x2F;7363&#x2F;9834729745_f23a4eed10_o.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;farm3.staticflickr.com&#x2F;2818&#x2F;9834957283_3cff547c6e_o.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;farm3.staticflickr.com&#x2F;2893&#x2F;9835093913_02feeb2bce_o.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;farm8.staticflickr.com&#x2F;7366&#x2F;9835020965_200917fb2a_o.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;farm4.staticflickr.com&#x2F;3818&#x2F;9835074955_5eca26b99e_o.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;farm6.staticflickr.com&#x2F;5450&#x2F;9835157816_aa231ca57e_o.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;farm3.staticflickr.com&#x2F;2832&#x2F;9835244223_2f54a33cd8_o.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;farm8.staticflickr.com&#x2F;7419&#x2F;9835291836_9c3aba2a3f_o.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;farm8.staticflickr.com&#x2F;7409&#x2F;9835313066_82e5e31067_o.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;images&#x2F;wlEmoticon-smile.png">
-<meta property="og:updated_time" content="2013-10-04T02:53:57.000Z">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://farm8.staticflickr.com/7341/9834166825_2867bcc1ba_o.png">
+<meta property="og:image" content="http://farm8.staticflickr.com/7363/9834729745_f23a4eed10_o.png">
+<meta property="og:image" content="http://farm3.staticflickr.com/2818/9834957283_3cff547c6e_o.png">
+<meta property="og:image" content="http://farm3.staticflickr.com/2893/9835093913_02feeb2bce_o.png">
+<meta property="og:image" content="http://farm8.staticflickr.com/7366/9835020965_200917fb2a_o.png">
+<meta property="og:image" content="http://farm4.staticflickr.com/3818/9835074955_5eca26b99e_o.png">
+<meta property="og:image" content="http://farm6.staticflickr.com/5450/9835157816_aa231ca57e_o.png">
+<meta property="og:image" content="http://farm3.staticflickr.com/2832/9835244223_2f54a33cd8_o.png">
+<meta property="og:image" content="http://farm8.staticflickr.com/7419/9835291836_9c3aba2a3f_o.png">
+<meta property="og:image" content="http://farm8.staticflickr.com/7409/9835313066_82e5e31067_o.png">
+<meta property="og:image" content="https://laurentkempe.com/images/wlEmoticon-smile.png">
+<meta property="article:published_time" content="2013-09-20T18:43:00.000Z">
+<meta property="article:modified_time" content="2013-10-04T02:53:57.000Z">
+<meta property="article:author" content="Laurent Kempé">
+<meta property="article:tag" content="Coursera">
+<meta property="article:tag" content="IntelliJ">
+<meta property="article:tag" content="Jetbrains">
+<meta property="article:tag" content="Scala">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http:&#x2F;&#x2F;farm8.staticflickr.com&#x2F;7341&#x2F;9834166825_2867bcc1ba_o.png">
+<meta name="twitter:image" content="http://farm8.staticflickr.com/7341/9834166825_2867bcc1ba_o.png">
 <meta name="twitter:creator" content="@laurentkempe">
     
     
@@ -54,7 +59,9 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-ktblzmmvy1z9gcfhed5xjwxffd2l7w0mqt0n8w5mnfurae7qfghxjpuvkojc.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-o6ynm2einupf0xcrhcfoydcyxt3e1oowmmpqqhx0ko410jupv30ilwayk2qa.min.css">
+
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -468,7 +475,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -686,7 +693,9 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-3rnwmtv7ewwzr0tfomfhlvzttfo9skaqodt1rsz0perteesjz8kp9882c7wm.min.js"></script>
+
+<script src="/assets/js/script-p1jlqupigbft0ueoxb0bimbxwkmi65eyojc4widib7jfqpvnkwre3wld2pj2.min.js"></script>
+
 <!--SCRIPTS END-->
 
 

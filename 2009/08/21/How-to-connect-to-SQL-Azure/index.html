@@ -13,20 +13,23 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"From Microsoft SQL Server Management Studio (tips from the SQL Azure — Getting Started forum, this post) :\n\nPlease be aware that SSMS is not supported with SQL Azure yet. However, you can use the following workaround for the time being:\n\n\n\n\nClick Cancel in Connect to Server Dialog\nClick New Query which will bring up the new connection dialog.\nEnter your credentials. By default, you will connect to Master database. If you want to connect to specific database, click options and enter the database name. Please be aware that USE  is not supported.\nNow click Connect and you will get an error “Unable to apply connection settings. The detailed error message is: ‘ANSI_NULLS’ is not a recognized SET option. “\nClick Ok.\n\nAfter this step, you should be connected to the desired database and you can start running queries.Thanks,Abi\n\nHere are the information you need to enter into Microsoft SQL Server Management Studio. You will get those from \n[](http://weblogs.asp.net/blogs/lkempe/3842366844_c64803c044_o1_2FFCE27C.png) \nYou will get this error message, just click OK\n[](http://weblogs.asp.net/blogs/lkempe/3842373284_54932c057f_o1_6CB118B4.png) \nAccording to Stan Kitsis – MSFT (MSFT, Moderator) (link): \n\nI’m not aware of a way to get around this message.  We are planning to enable support for SET ANSI_NULLS in the next service update so hopefully the experience will be better.Stan\n\nProgram Manager, SQL Azure\n\nI also tried to run aspnet_regsql.exe without any success, there are still lots of features which seems to be not supported at the moment.\n","dateCreated":"2009-08-21T16:49:16+00:00","dateModified":"2009-08-21T16:49:16+00:00","datePublished":"2009-08-21T16:49:16+00:00","description":"From Microsoft SQL Server Management Studio (tips from the SQL Azure — Getting Started forum, this post) :\n\nPlease be aware that SSMS is not supported with SQL Azure yet. However, you can use the following workaround for the time being:\n","headline":"How to connect to SQL Azure","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2009/08/21/How-to-connect-to-SQL-Azure/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2009/08/21/How-to-connect-to-SQL-Azure/","keywords":"Azure, SQL Azure"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"From Microsoft SQL Server Management Studio (tips from the SQL Azure — Getting Started forum, this post) :\n\nPlease be aware that SSMS is not supported with SQL Azure yet. However, you can use the following workaround for the time being:\n\n\n\n\nClick Cancel in Connect to Server Dialog\nClick New Query which will bring up the new connection dialog.\nEnter your credentials. By default, you will connect to Master database. If you want to connect to specific database, click options and enter the database name. Please be aware that USE  is not supported.\nNow click Connect and you will get an error “Unable to apply connection settings. The detailed error message is: ‘ANSI_NULLS’ is not a recognized SET option. “\nClick Ok.\n\nAfter this step, you should be connected to the desired database and you can start running queries.Thanks,Abi\n\nHere are the information you need to enter into Microsoft SQL Server Management Studio. You will get those from \n[](http://weblogs.asp.net/blogs/lkempe/3842366844_c64803c044_o1_2FFCE27C.png) \nYou will get this error message, just click OK\n[](http://weblogs.asp.net/blogs/lkempe/3842373284_54932c057f_o1_6CB118B4.png) \nAccording to Stan Kitsis – MSFT (MSFT, Moderator) (link): \n\nI’m not aware of a way to get around this message.  We are planning to enable support for SET ANSI_NULLS in the next service update so hopefully the experience will be better.Stan\n\nProgram Manager, SQL Azure\n\nI also tried to run aspnet_regsql.exe without any success, there are still lots of features which seems to be not supported at the moment.\n","dateCreated":"2009-08-21T16:49:16+00:00","dateModified":"2009-08-21T16:49:16+00:00","datePublished":"2009-08-21T16:49:16+00:00","description":"From Microsoft SQL Server Management Studio (tips from the SQL Azure — Getting Started forum, this post) :\n\nPlease be aware that SSMS is not supported with SQL Azure yet. However, you can use the following workaround for the time being:\n","headline":"How to connect to SQL Azure","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2009/08/21/How-to-connect-to-SQL-Azure/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2009/08/21/How-to-connect-to-SQL-Azure/","keywords":"Azure, SQL Azure"}</script>
     <meta name="description" content="From Microsoft SQL Server Management Studio (tips from the SQL Azure — Getting Started forum, this post) :  Please be aware that SSMS is not supported with SQL Azure yet. However, you can use the foll">
-<meta name="keywords" content="Azure,SQL Azure">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="How to connect to SQL Azure">
-<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2009&#x2F;08&#x2F;21&#x2F;How-to-connect-to-SQL-Azure&#x2F;index.html">
+<meta property="og:url" content="https://laurentkempe.com/2009/08/21/How-to-connect-to-SQL-Azure/index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="From Microsoft SQL Server Management Studio (tips from the SQL Azure — Getting Started forum, this post) :  Please be aware that SSMS is not supported with SQL Azure yet. However, you can use the foll">
-<meta property="og:locale" content="en">
-<meta property="og:image" content="http:&#x2F;&#x2F;weblogs.asp.net&#x2F;blogs&#x2F;lkempe&#x2F;3842366844_c64803c044_o1_thumb_4C39FECF.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;weblogs.asp.net&#x2F;blogs&#x2F;lkempe&#x2F;3842373284_54932c057f_o1_thumb_317D3CE9.png">
-<meta property="og:updated_time" content="2009-08-21T16:49:16.000Z">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://weblogs.asp.net/blogs/lkempe/3842366844_c64803c044_o1_thumb_4C39FECF.png">
+<meta property="og:image" content="http://weblogs.asp.net/blogs/lkempe/3842373284_54932c057f_o1_thumb_317D3CE9.png">
+<meta property="article:published_time" content="2009-08-21T16:49:16.000Z">
+<meta property="article:modified_time" content="2009-08-21T16:49:16.000Z">
+<meta property="article:author" content="Laurent Kempé">
+<meta property="article:tag" content="Azure">
+<meta property="article:tag" content="SQL Azure">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http:&#x2F;&#x2F;weblogs.asp.net&#x2F;blogs&#x2F;lkempe&#x2F;3842366844_c64803c044_o1_thumb_4C39FECF.png">
+<meta name="twitter:image" content="http://weblogs.asp.net/blogs/lkempe/3842366844_c64803c044_o1_thumb_4C39FECF.png">
 <meta name="twitter:creator" content="@laurentkempe">
     
     
@@ -39,7 +42,9 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-ktblzmmvy1z9gcfhed5xjwxffd2l7w0mqt0n8w5mnfurae7qfghxjpuvkojc.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-o6ynm2einupf0xcrhcfoydcyxt3e1oowmmpqqhx0ko410jupv30ilwayk2qa.min.css">
+
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -434,7 +439,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -652,7 +657,9 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-3rnwmtv7ewwzr0tfomfhlvzttfo9skaqodt1rsz0perteesjz8kp9882c7wm.min.js"></script>
+
+<script src="/assets/js/script-p1jlqupigbft0ueoxb0bimbxwkmi65eyojc4widib7jfqpvnkwre3wld2pj2.min.js"></script>
+
 <!--SCRIPTS END-->
 
 

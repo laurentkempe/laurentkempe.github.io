@@ -13,16 +13,18 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I am starting to use Mercurialfor my personal projects. At the moment I use it only locally to be able to experience it but also to be able to try thing and revert easily to previous state.\nTo get started I downloaded\n\n\n\nMercurial for Windows\nTortoiseHG for Windows 64bits\nVisualHG  \n\nThis let me work directly from a PowerShell window, Windows Explorer or Visual Studio. \nTo add a project to Mercurial from the PowerShell I used the following commands:\n\nPS E:\\Personal\\Projects_Spikes\\DynApplication&gt; hg init\n\nThen I created in the same folder a file named .hgignore, excluding file or folder which I don’t want to version in my C# project:\n\nsyntax: glob\n.csproj.userobj/bin/*.ncb*.suo_ReSharper.*.ReSharper.user*.TeamCity.user\n\nYou are ready then to add files of your project to Mercurial with\n\nPS E:\\Personal\\Projects_Spikes\\DynApplication&gt; hg add\n\nThen you need to commit the files\n\nPS E:\\Personal\\Projects_Spikes\\DynApplication&gt; hg commit –m “Initital commit”\n\nThat’s it your files are under Mercurial source control.\nTo get started with Mercurial I recommend you to read Hg Init: a Mercurial tutorial!\nIf you need some hosting there is bitbucket, which has been bought by Atlassian recently. And it is free for 5 users. For more user you will have to pay, but it is a reasonable price.You might also use Codeplex for your open source project which supports Mercurial !\n","dateCreated":"2010-11-06T21:24:47+00:00","dateModified":"2010-11-06T21:24:47+00:00","datePublished":"2010-11-06T21:24:47+00:00","description":"I am starting to use Mercurialfor my personal projects. At the moment I use it only locally to be able to experience it but also to be able to try thing and revert easily to previous state.\nTo get started I downloaded","headline":"Starting with Mercurial distributed source control management tool on Windows","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2010/11/06/Starting-with-Mercurial-distributed-source-control-management-tool-on-Windows/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2010/11/06/Starting-with-Mercurial-distributed-source-control-management-tool-on-Windows/","keywords":"Mercurial"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I am starting to use Mercurialfor my personal projects. At the moment I use it only locally to be able to experience it but also to be able to try thing and revert easily to previous state.\nTo get started I downloaded\n\n\n\nMercurial for Windows\nTortoiseHG for Windows 64bits\nVisualHG  \n\nThis let me work directly from a PowerShell window, Windows Explorer or Visual Studio. \nTo add a project to Mercurial from the PowerShell I used the following commands:\n\nPS E:\\Personal\\Projects_Spikes\\DynApplication&gt; hg init\n\nThen I created in the same folder a file named .hgignore, excluding file or folder which I don’t want to version in my C# project:\n\nsyntax: glob\n.csproj.userobj/bin/*.ncb*.suo_ReSharper.*.ReSharper.user*.TeamCity.user\n\nYou are ready then to add files of your project to Mercurial with\n\nPS E:\\Personal\\Projects_Spikes\\DynApplication&gt; hg add\n\nThen you need to commit the files\n\nPS E:\\Personal\\Projects_Spikes\\DynApplication&gt; hg commit –m “Initital commit”\n\nThat’s it your files are under Mercurial source control.\nTo get started with Mercurial I recommend you to read Hg Init: a Mercurial tutorial!\nIf you need some hosting there is bitbucket, which has been bought by Atlassian recently. And it is free for 5 users. For more user you will have to pay, but it is a reasonable price.You might also use Codeplex for your open source project which supports Mercurial !\n","dateCreated":"2010-11-06T21:24:47+00:00","dateModified":"2010-11-06T21:24:47+00:00","datePublished":"2010-11-06T21:24:47+00:00","description":"I am starting to use Mercurialfor my personal projects. At the moment I use it only locally to be able to experience it but also to be able to try thing and revert easily to previous state.\nTo get started I downloaded","headline":"Starting with Mercurial distributed source control management tool on Windows","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/11/06/Starting-with-Mercurial-distributed-source-control-management-tool-on-Windows/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/11/06/Starting-with-Mercurial-distributed-source-control-management-tool-on-Windows/","keywords":"Mercurial"}</script>
     <meta name="description" content="I am starting to use Mercurialfor my personal projects. At the moment I use it only locally to be able to experience it but also to be able to try thing and revert easily to previous state. To get sta">
-<meta name="keywords" content="Mercurial">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Starting with Mercurial distributed source control management tool on Windows">
-<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2010&#x2F;11&#x2F;06&#x2F;Starting-with-Mercurial-distributed-source-control-management-tool-on-Windows&#x2F;index.html">
+<meta property="og:url" content="https://laurentkempe.com/2010/11/06/Starting-with-Mercurial-distributed-source-control-management-tool-on-Windows/index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="I am starting to use Mercurialfor my personal projects. At the moment I use it only locally to be able to experience it but also to be able to try thing and revert easily to previous state. To get sta">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2010-11-06T21:24:47.000Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2010-11-06T21:24:47.000Z">
+<meta property="article:modified_time" content="2010-11-06T21:24:47.000Z">
+<meta property="article:author" content="Laurent Kempé">
+<meta property="article:tag" content="Mercurial">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:creator" content="@laurentkempe">
     
@@ -36,7 +38,9 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-ktblzmmvy1z9gcfhed5xjwxffd2l7w0mqt0n8w5mnfurae7qfghxjpuvkojc.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-o6ynm2einupf0xcrhcfoydcyxt3e1oowmmpqqhx0ko410jupv30ilwayk2qa.min.css">
+
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -435,7 +439,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -653,7 +657,9 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-3rnwmtv7ewwzr0tfomfhlvzttfo9skaqodt1rsz0perteesjz8kp9882c7wm.min.js"></script>
+
+<script src="/assets/js/script-p1jlqupigbft0ueoxb0bimbxwkmi65eyojc4widib7jfqpvnkwre3wld2pj2.min.js"></script>
+
 <!--SCRIPTS END-->
 
 

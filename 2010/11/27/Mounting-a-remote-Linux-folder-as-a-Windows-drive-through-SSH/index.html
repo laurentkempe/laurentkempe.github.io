@@ -13,16 +13,18 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"There are some times in which you need to come to some extreme solutions. Having two days of trials without success to have a portlet running in a local Tomcat with Day portal I came to the following solution.\nShortly why I came to such a solution? I needed to work on some CSS on a portal solution, and the development cycle was taking too long. I had to commit to svn, run a teamcity build which deployed a war to weblogic to finally be able to test my CSS changes. Far too long.\n\n\nSo first idea was to have our portlet working locally in Day portal deployed on Tomcat. After many attempt to have this running, I have stopped with this idea.\nNext idea was to work directly on the Linux file system, and modifying the CSS files which would be reloaded automatically by weblogic. Good idea, it was working but I needed more, I needed my development environment.\nSo I searched a solution to be able to mount a remote Linux folder as Windows drive through SSH. And I quickly found a solution! Thanks to Dokan SSHFS\nI finally could fire JetBrains WebStorm on my Windows notebook, edit CSS files which are located on a remote Linux server, save the file and refresh my page on the browser. Straight solution, certainly not the best but at least I could work.\nDokan SSHFS is a great tool! It took me 10 minutes to install it and configure it.\nYou must take care of:\n\nDokan SSHFS supports only OpenSSH key format. So I used puttygen to convert my key.\nDokan SSHFS doesn’t work with Dokan 0.5, you have to use the updated files found on the web page  \n\nThe rest was just easy! Well done.\n","dateCreated":"2010-11-27T02:39:41+00:00","dateModified":"2010-11-27T02:39:41+00:00","datePublished":"2010-11-27T02:39:41+00:00","description":"There are some times in which you need to come to some extreme solutions. Having two days of trials without success to have a portlet running in a local Tomcat with Day portal I came to the following solution.\nShortly why I came to such a solution? I needed to work on some CSS on a portal solution, and the development cycle was taking too long. I had to commit to svn, run a teamcity build which deployed a war to weblogic to finally be able to test my CSS changes. Far too long.","headline":"Mounting a remote Linux folder as a Windows drive through SSH","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2010/11/27/Mounting-a-remote-Linux-folder-as-a-Windows-drive-through-SSH/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2010/11/27/Mounting-a-remote-Linux-folder-as-a-Windows-drive-through-SSH/","keywords":"Tools"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"There are some times in which you need to come to some extreme solutions. Having two days of trials without success to have a portlet running in a local Tomcat with Day portal I came to the following solution.\nShortly why I came to such a solution? I needed to work on some CSS on a portal solution, and the development cycle was taking too long. I had to commit to svn, run a teamcity build which deployed a war to weblogic to finally be able to test my CSS changes. Far too long.\n\n\nSo first idea was to have our portlet working locally in Day portal deployed on Tomcat. After many attempt to have this running, I have stopped with this idea.\nNext idea was to work directly on the Linux file system, and modifying the CSS files which would be reloaded automatically by weblogic. Good idea, it was working but I needed more, I needed my development environment.\nSo I searched a solution to be able to mount a remote Linux folder as Windows drive through SSH. And I quickly found a solution! Thanks to Dokan SSHFS\nI finally could fire JetBrains WebStorm on my Windows notebook, edit CSS files which are located on a remote Linux server, save the file and refresh my page on the browser. Straight solution, certainly not the best but at least I could work.\nDokan SSHFS is a great tool! It took me 10 minutes to install it and configure it.\nYou must take care of:\n\nDokan SSHFS supports only OpenSSH key format. So I used puttygen to convert my key.\nDokan SSHFS doesn’t work with Dokan 0.5, you have to use the updated files found on the web page  \n\nThe rest was just easy! Well done.\n","dateCreated":"2010-11-27T02:39:41+00:00","dateModified":"2010-11-27T02:39:41+00:00","datePublished":"2010-11-27T02:39:41+00:00","description":"There are some times in which you need to come to some extreme solutions. Having two days of trials without success to have a portlet running in a local Tomcat with Day portal I came to the following solution.\nShortly why I came to such a solution? I needed to work on some CSS on a portal solution, and the development cycle was taking too long. I had to commit to svn, run a teamcity build which deployed a war to weblogic to finally be able to test my CSS changes. Far too long.","headline":"Mounting a remote Linux folder as a Windows drive through SSH","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/11/27/Mounting-a-remote-Linux-folder-as-a-Windows-drive-through-SSH/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/11/27/Mounting-a-remote-Linux-folder-as-a-Windows-drive-through-SSH/","keywords":"Tools"}</script>
     <meta name="description" content="There are some times in which you need to come to some extreme solutions. Having two days of trials without success to have a portlet running in a local Tomcat with Day portal I came to the following">
-<meta name="keywords" content="Tools">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Mounting a remote Linux folder as a Windows drive through SSH">
-<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2010&#x2F;11&#x2F;27&#x2F;Mounting-a-remote-Linux-folder-as-a-Windows-drive-through-SSH&#x2F;index.html">
+<meta property="og:url" content="https://laurentkempe.com/2010/11/27/Mounting-a-remote-Linux-folder-as-a-Windows-drive-through-SSH/index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="There are some times in which you need to come to some extreme solutions. Having two days of trials without success to have a portlet running in a local Tomcat with Day portal I came to the following">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2010-11-27T02:39:41.000Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2010-11-27T02:39:41.000Z">
+<meta property="article:modified_time" content="2010-11-27T02:39:41.000Z">
+<meta property="article:author" content="Laurent Kempé">
+<meta property="article:tag" content="Tools">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:creator" content="@laurentkempe">
     
@@ -36,7 +38,9 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-ktblzmmvy1z9gcfhed5xjwxffd2l7w0mqt0n8w5mnfurae7qfghxjpuvkojc.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-o6ynm2einupf0xcrhcfoydcyxt3e1oowmmpqqhx0ko410jupv30ilwayk2qa.min.css">
+
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -420,7 +424,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -638,7 +642,9 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-3rnwmtv7ewwzr0tfomfhlvzttfo9skaqodt1rsz0perteesjz8kp9882c7wm.min.js"></script>
+
+<script src="/assets/js/script-p1jlqupigbft0ueoxb0bimbxwkmi65eyojc4widib7jfqpvnkwre3wld2pj2.min.js"></script>
+
 <!--SCRIPTS END-->
 
 

@@ -13,15 +13,17 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I had the chance to realize that CSS friendly control adapters beta from theASP.NET Team was online for a short time and downloaded it, so I had thepleasure to experience it a bit this evening.\nBy the way I recommend the reading of the White Paper, that is wellwritten.\n\n\nSo my first idea was to integrate the Menu on Tech Head Brothers. IMHO this newmenu is far better than the one delivered with ASP.NET because it uses a pureCSS approach.\nAfter copying the set of needed files to my project, I was able to startchanging all the CSS to meet my needs. I did not faced any real issue to changethe whole thing, but then I realized that I missed the possibility to know theselected item of my menu. I started to look at the code and in 2 minutes it waschanged. Nice.\nSo I render this:\n  \n   \n    \n     \n      \n     Accueil  \n      \n     \n     \n      \n     Articles  \n      \n     \n     \n      \n     Astuces  \n      \n   \n\nTo achieve this I modified the method BuildItem in the file MenuAdapter.cslike this:\nif (item != Control.SelectedItem)    writer.WriteAttribute(“class”, “AspNet-Menu-Link”);else    writer.WriteAttribute(“class”, “AspNet-Menu-Link-Selected”);\nAnd then I added the new thing in the CSS, MenuExample.css: \n.THBMenu ul.AspNet-Menu li.AspNet-Menu-Leaf a.AspNet-Menu-Link-Selected{    color: #1A2633;    background: url(../../PersistantImage.ashx?theme=Default&amp;file=Rounded.gif) no-repeat bottom center;}\nFor such a result:\n![](http://www.techheadbrothers.com/images/blog/CSS friendly control adapters 01.jpg)\n[ Currently Playing : Because I Want You - Placebo - Meds (03:22)]\n","dateCreated":"2006-04-29T06:41:00+00:00","dateModified":"2006-04-29T06:41:00+00:00","datePublished":"2006-04-29T06:41:00+00:00","description":"I had the chance to realize that CSS friendly control adapters beta from theASP.NET Team was online for a short time and downloaded it, so I had thepleasure to experience it a bit this evening.\nBy the way I recommend the reading of the White Paper, that is wellwritten.","headline":"First experience with CSS friendly control adapters beta","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2006/04/29/First-experience-with-CSS-friendly-control-adapters-beta/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2006/04/29/First-experience-with-CSS-friendly-control-adapters-beta/"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I had the chance to realize that CSS friendly control adapters beta from theASP.NET Team was online for a short time and downloaded it, so I had thepleasure to experience it a bit this evening.\nBy the way I recommend the reading of the White Paper, that is wellwritten.\n\n\nSo my first idea was to integrate the Menu on Tech Head Brothers. IMHO this newmenu is far better than the one delivered with ASP.NET because it uses a pureCSS approach.\nAfter copying the set of needed files to my project, I was able to startchanging all the CSS to meet my needs. I did not faced any real issue to changethe whole thing, but then I realized that I missed the possibility to know theselected item of my menu. I started to look at the code and in 2 minutes it waschanged. Nice.\nSo I render this:\n  \n   \n    \n     \n      \n     Accueil  \n      \n     \n     \n      \n     Articles  \n      \n     \n     \n      \n     Astuces  \n      \n   \n\nTo achieve this I modified the method BuildItem in the file MenuAdapter.cslike this:\nif (item != Control.SelectedItem)    writer.WriteAttribute(“class”, “AspNet-Menu-Link”);else    writer.WriteAttribute(“class”, “AspNet-Menu-Link-Selected”);\nAnd then I added the new thing in the CSS, MenuExample.css: \n.THBMenu ul.AspNet-Menu li.AspNet-Menu-Leaf a.AspNet-Menu-Link-Selected{    color: #1A2633;    background: url(../../PersistantImage.ashx?theme=Default&amp;file=Rounded.gif) no-repeat bottom center;}\nFor such a result:\n![](http://www.techheadbrothers.com/images/blog/CSS friendly control adapters 01.jpg)\n[ Currently Playing : Because I Want You - Placebo - Meds (03:22)]\n","dateCreated":"2006-04-29T06:41:00+00:00","dateModified":"2006-04-29T06:41:00+00:00","datePublished":"2006-04-29T06:41:00+00:00","description":"I had the chance to realize that CSS friendly control adapters beta from theASP.NET Team was online for a short time and downloaded it, so I had thepleasure to experience it a bit this evening.\nBy the way I recommend the reading of the White Paper, that is wellwritten.","headline":"First experience with CSS friendly control adapters beta","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2006/04/29/First-experience-with-CSS-friendly-control-adapters-beta/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2006/04/29/First-experience-with-CSS-friendly-control-adapters-beta/"}</script>
     <meta name="description" content="I had the chance to realize that CSS friendly control adapters beta from theASP.NET Team was online for a short time and downloaded it, so I had thepleasure to experience it a bit this evening. By the">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="First experience with CSS friendly control adapters beta">
-<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2006&#x2F;04&#x2F;29&#x2F;First-experience-with-CSS-friendly-control-adapters-beta&#x2F;index.html">
+<meta property="og:url" content="https://laurentkempe.com/2006/04/29/First-experience-with-CSS-friendly-control-adapters-beta/index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="I had the chance to realize that CSS friendly control adapters beta from theASP.NET Team was online for a short time and downloaded it, so I had thepleasure to experience it a bit this evening. By the">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2006-04-29T06:41:00.000Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2006-04-29T06:41:00.000Z">
+<meta property="article:modified_time" content="2006-04-29T06:41:00.000Z">
+<meta property="article:author" content="Laurent Kempé">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:creator" content="@laurentkempe">
     
@@ -35,7 +37,9 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-ktblzmmvy1z9gcfhed5xjwxffd2l7w0mqt0n8w5mnfurae7qfghxjpuvkojc.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-o6ynm2einupf0xcrhcfoydcyxt3e1oowmmpqqhx0ko410jupv30ilwayk2qa.min.css">
+
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -441,7 +445,7 @@ class="**AspNet-Menu-Link-Selected**">
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -659,7 +663,9 @@ class="**AspNet-Menu-Link-Selected**">
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-3rnwmtv7ewwzr0tfomfhlvzttfo9skaqodt1rsz0perteesjz8kp9882c7wm.min.js"></script>
+
+<script src="/assets/js/script-p1jlqupigbft0ueoxb0bimbxwkmi65eyojc4widib7jfqpvnkwre3wld2pj2.min.js"></script>
+
 <!--SCRIPTS END-->
 
 

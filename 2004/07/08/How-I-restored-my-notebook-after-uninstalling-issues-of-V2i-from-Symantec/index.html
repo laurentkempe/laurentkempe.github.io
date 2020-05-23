@@ -13,16 +13,18 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"After uninstalling V2i from Symantec I was asked to reboot my notebook. The reboot took for ever so I decide after 30 minutes to switch it off. Problems started when I rebooted, lots of drivers where missing and it seems that I lost the plug and play features. One of the first driver I decided to recover was the Sound driver. This is the way I recover from that sound driver issue.\n\nIn services, check that WinAudio service is enabled, set to automatic, and running.\nIn Device Manager, System Devices check that Plug and Play Software Device Enumerator is installed and running\nIf not , then you need to reinstall it:\n\nCopy machine.inf from %windir%\\inf to your desktop\nRemove line ExcludeFromSelect=*\nUse Add new hardware wizard using the Have Disk option\nSelect the machine.inf you saved on the desktop\nInstall Plug and Play Software Device\nIf the sound card is listed in the device manager, then uninstall it and start a scan for hardware changes. Afer installing it again I got the sound back live.\nI did the same for several other drivers that were missing on my notebook. And now it seems to be ok.\n","dateCreated":"2004-07-08T04:43:00+00:00","dateModified":"2004-07-08T04:43:00+00:00","datePublished":"2004-07-08T04:43:00+00:00","description":"","headline":"How I restored my notebook after uninstalling issues of V2i from Symantec","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2004/07/08/How-I-restored-my-notebook-after-uninstalling-issues-of-V2i-from-Symantec/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2004/07/08/How-I-restored-my-notebook-after-uninstalling-issues-of-V2i-from-Symantec/","keywords":"Infrastructure"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"After uninstalling V2i from Symantec I was asked to reboot my notebook. The reboot took for ever so I decide after 30 minutes to switch it off. Problems started when I rebooted, lots of drivers where missing and it seems that I lost the plug and play features. One of the first driver I decided to recover was the Sound driver. This is the way I recover from that sound driver issue.\n\nIn services, check that WinAudio service is enabled, set to automatic, and running.\nIn Device Manager, System Devices check that Plug and Play Software Device Enumerator is installed and running\nIf not , then you need to reinstall it:\n\nCopy machine.inf from %windir%\\inf to your desktop\nRemove line ExcludeFromSelect=*\nUse Add new hardware wizard using the Have Disk option\nSelect the machine.inf you saved on the desktop\nInstall Plug and Play Software Device\nIf the sound card is listed in the device manager, then uninstall it and start a scan for hardware changes. Afer installing it again I got the sound back live.\nI did the same for several other drivers that were missing on my notebook. And now it seems to be ok.\n","dateCreated":"2004-07-08T04:43:00+00:00","dateModified":"2004-07-08T04:43:00+00:00","datePublished":"2004-07-08T04:43:00+00:00","description":"","headline":"How I restored my notebook after uninstalling issues of V2i from Symantec","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2004/07/08/How-I-restored-my-notebook-after-uninstalling-issues-of-V2i-from-Symantec/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2004/07/08/How-I-restored-my-notebook-after-uninstalling-issues-of-V2i-from-Symantec/","keywords":"Infrastructure"}</script>
     <meta name="description" content="After uninstalling V2i from Symantec I was asked to reboot my notebook. The reboot took for ever so I decide after 30 minutes to switch it off. Problems started when I rebooted, lots of drivers where">
-<meta name="keywords" content="Infrastructure">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="How I restored my notebook after uninstalling issues of V2i from Symantec">
-<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2004&#x2F;07&#x2F;08&#x2F;How-I-restored-my-notebook-after-uninstalling-issues-of-V2i-from-Symantec&#x2F;index.html">
+<meta property="og:url" content="https://laurentkempe.com/2004/07/08/How-I-restored-my-notebook-after-uninstalling-issues-of-V2i-from-Symantec/index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="After uninstalling V2i from Symantec I was asked to reboot my notebook. The reboot took for ever so I decide after 30 minutes to switch it off. Problems started when I rebooted, lots of drivers where">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2004-07-08T04:43:00.000Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2004-07-08T04:43:00.000Z">
+<meta property="article:modified_time" content="2004-07-08T04:43:00.000Z">
+<meta property="article:author" content="Laurent Kempé">
+<meta property="article:tag" content="Infrastructure">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:creator" content="@laurentkempe">
     
@@ -36,7 +38,9 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-ktblzmmvy1z9gcfhed5xjwxffd2l7w0mqt0n8w5mnfurae7qfghxjpuvkojc.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-o6ynm2einupf0xcrhcfoydcyxt3e1oowmmpqqhx0ko410jupv30ilwayk2qa.min.css">
+
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -418,7 +422,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -636,7 +640,9 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-3rnwmtv7ewwzr0tfomfhlvzttfo9skaqodt1rsz0perteesjz8kp9882c7wm.min.js"></script>
+
+<script src="/assets/js/script-p1jlqupigbft0ueoxb0bimbxwkmi65eyojc4widib7jfqpvnkwre3wld2pj2.min.js"></script>
+
 <!--SCRIPTS END-->
 
 

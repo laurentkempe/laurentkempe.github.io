@@ -13,21 +13,27 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"\nFinishing this week sprint I decided to inspect some code using ReSharper 6.1 EAP and I started to give ReSharper a chance to help me find some of broken code.\nWhen I started I had some of the following inspection results. It is clearly showing that some properties wasn’t identified as used in a WPF binding.\n\n\n\nSo ReSharper proposed to make the property private which for sure was not ok for me has I knew it was used.\nSome time ago I started to assign some design DataContext to be able to navigate from View to my ViewModel just by pressing Go to Declaration (CTRL-B in IDEA scheme) in ReSharper.\n\n.csharpcode, .csharpcode pre\n{\n    font-size: small;\n    color: black;\n    font-family: consolas, \"Courier New\", courier, monospace;\n    background-color: #ffffff;\n    /*white-space: pre;*/\n}\n.csharpcode pre { margin: 0em; }\n.csharpcode .rem { color: #008000; }\n.csharpcode .kwrd { color: #0000ff; }\n.csharpcode .str { color: #006080; }\n.csharpcode .op { color: #0000c0; }\n.csharpcode .preproc { color: #cc6633; }\n.csharpcode .asp { background-color: #ffff00; }\n.csharpcode .html { color: #800000; }\n.csharpcode .attr { color: #ff0000; }\n.csharpcode .alt \n{\n    background-color: #f4f4f4;\n    width: 100%;\n    margin: 0em;\n}\n.csharpcode .lnum { color: #606060; }\n.code { font-size: 12px; color: #000; font-family: Consolas, \"Courier New\", Courier, Monospace; background-color: #F1F1F1; line-height: normal; }\n.code p        { padding: 5px; }\n.code .rem    { color: #008000; }\n.code .kwrd    { color: #0000ff; }\n.code .str    { color: #006080; }\n.code .op    { color: #0000c0; }\n.code .preproc { color: #0000ff; }\n.code .asp    { background-color: #ffff00; }\n.code .html { color: #800000; }\n.code .attr { color: #ff0000; }\n.code .alt    { background-color: #f4f4f4; }\n.code .lnum    { color: #606060; }\n\n\n&lt;UserControl x:Class=\"skyeEditor.View.StatusBarView\"\n             xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"\n             xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"\n             xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\"\n             xmlns:d=\"http://schemas.microsoft.com/expression/blend/2008\"\n             xmlns:ViewModel=\"clr-namespace:skyeEditor.ViewModel\"\n             mc:Ignorable=\"d\"\n             d:DataContext=\"{d:DesignInstance Type=ViewModel:StatusBarViewModel}\"&gt;\n\n\nThis for sure helps ReSharper code inspection as you can see on the following screenshot\n\nNow I can navigate from View to ViewModel, can avoid to have developer deleting properties that are sued in XAML bindings, but I can also get an idea of where a ViewModel property is used by using ReSharper Find Usage (Alt-F7). I see right away that the StatusBarView.xaml is using the property ShowActivityProgress.\n\nSo don’t forget to add the d:DataContext into your XAML !\n","dateCreated":"2011-11-12T00:45:52+00:00","dateModified":"2011-11-12T01:52:24+00:00","datePublished":"2011-11-12T00:45:52+00:00","description":"\nFinishing this week sprint I decided to inspect some code using ReSharper 6.1 EAP and I started to give ReSharper a chance to help me find some of broken code.\nWhen I started I had some of the following inspection results. It is clearly showing that some properties wasn’t identified as used in a WPF binding.","headline":"Fixing ReSharper inspection Results used from XAML","image":["https://farm6.staticflickr.com/5297/5515390031_ee3ab01e4a_q.jpg","https://farm6.staticflickr.com/5297/5515390031_ee3ab01e4a_b.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"/https:/laurentkempe.com/2011/11/12/Fixing-ReSharper-inspection-Results-used-from-XAML/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"/https:/laurentkempe.com/2011/11/12/Fixing-ReSharper-inspection-Results-used-from-XAML/","keywords":"ReSharper, Silverlight, WPF, XAML, WP7","thumbnailUrl":"https://farm6.staticflickr.com/5297/5515390031_ee3ab01e4a_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"\nFinishing this week sprint I decided to inspect some code using ReSharper 6.1 EAP and I started to give ReSharper a chance to help me find some of broken code.\nWhen I started I had some of the following inspection results. It is clearly showing that some properties wasn’t identified as used in a WPF binding.\n\n\n\nSo ReSharper proposed to make the property private which for sure was not ok for me has I knew it was used.\nSome time ago I started to assign some design DataContext to be able to navigate from View to my ViewModel just by pressing Go to Declaration (CTRL-B in IDEA scheme) in ReSharper.\n\n.csharpcode, .csharpcode pre\n{\n    font-size: small;\n    color: black;\n    font-family: consolas, \"Courier New\", courier, monospace;\n    background-color: #ffffff;\n    /*white-space: pre;*/\n}\n.csharpcode pre { margin: 0em; }\n.csharpcode .rem { color: #008000; }\n.csharpcode .kwrd { color: #0000ff; }\n.csharpcode .str { color: #006080; }\n.csharpcode .op { color: #0000c0; }\n.csharpcode .preproc { color: #cc6633; }\n.csharpcode .asp { background-color: #ffff00; }\n.csharpcode .html { color: #800000; }\n.csharpcode .attr { color: #ff0000; }\n.csharpcode .alt \n{\n    background-color: #f4f4f4;\n    width: 100%;\n    margin: 0em;\n}\n.csharpcode .lnum { color: #606060; }\n.code { font-size: 12px; color: #000; font-family: Consolas, \"Courier New\", Courier, Monospace; background-color: #F1F1F1; line-height: normal; }\n.code p        { padding: 5px; }\n.code .rem    { color: #008000; }\n.code .kwrd    { color: #0000ff; }\n.code .str    { color: #006080; }\n.code .op    { color: #0000c0; }\n.code .preproc { color: #0000ff; }\n.code .asp    { background-color: #ffff00; }\n.code .html { color: #800000; }\n.code .attr { color: #ff0000; }\n.code .alt    { background-color: #f4f4f4; }\n.code .lnum    { color: #606060; }\n\n\n&lt;UserControl x:Class=\"skyeEditor.View.StatusBarView\"\n             xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"\n             xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"\n             xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\"\n             xmlns:d=\"http://schemas.microsoft.com/expression/blend/2008\"\n             xmlns:ViewModel=\"clr-namespace:skyeEditor.ViewModel\"\n             mc:Ignorable=\"d\"\n             d:DataContext=\"{d:DesignInstance Type=ViewModel:StatusBarViewModel}\"&gt;\n\n\nThis for sure helps ReSharper code inspection as you can see on the following screenshot\n\nNow I can navigate from View to ViewModel, can avoid to have developer deleting properties that are sued in XAML bindings, but I can also get an idea of where a ViewModel property is used by using ReSharper Find Usage (Alt-F7). I see right away that the StatusBarView.xaml is using the property ShowActivityProgress.\n\nSo don’t forget to add the d:DataContext into your XAML !\n","dateCreated":"2011-11-12T00:45:52+00:00","dateModified":"2011-11-12T01:52:24+00:00","datePublished":"2011-11-12T00:45:52+00:00","description":"\nFinishing this week sprint I decided to inspect some code using ReSharper 6.1 EAP and I started to give ReSharper a chance to help me find some of broken code.\nWhen I started I had some of the following inspection results. It is clearly showing that some properties wasn’t identified as used in a WPF binding.","headline":"Fixing ReSharper inspection Results used from XAML","image":["https://farm6.staticflickr.com/5297/5515390031_ee3ab01e4a_q.jpg","https://farm6.staticflickr.com/5297/5515390031_ee3ab01e4a_b.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2011/11/12/Fixing-ReSharper-inspection-Results-used-from-XAML/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2011/11/12/Fixing-ReSharper-inspection-Results-used-from-XAML/","keywords":"ReSharper, Silverlight, WPF, XAML, WP7","thumbnailUrl":"https://farm6.staticflickr.com/5297/5515390031_ee3ab01e4a_q.jpg"}</script>
     <meta name="description" content="Finishing this week sprint I decided to inspect some code using ReSharper 6.1 EAP and I started to give ReSharper a chance to help me find some of broken code. When I started I had some of the follow">
-<meta name="keywords" content="ReSharper,Silverlight,WPF,XAML,WP7">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Fixing ReSharper inspection Results used from XAML">
-<meta property="og:url" content="https:&#x2F;&#x2F;laurentkempe.com&#x2F;2011&#x2F;11&#x2F;12&#x2F;Fixing-ReSharper-inspection-Results-used-from-XAML&#x2F;index.html">
+<meta property="og:url" content="https://laurentkempe.com/2011/11/12/Fixing-ReSharper-inspection-Results-used-from-XAML/index.html">
 <meta property="og:site_name" content="Laurent Kempé">
 <meta property="og:description" content="Finishing this week sprint I decided to inspect some code using ReSharper 6.1 EAP and I started to give ReSharper a chance to help me find some of broken code. When I started I had some of the follow">
-<meta property="og:locale" content="en">
-<meta property="og:image" content="http:&#x2F;&#x2F;farm7.static.flickr.com&#x2F;6096&#x2F;6334117277_7e0d090b13_o.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;farm7.static.flickr.com&#x2F;6056&#x2F;6334138827_993d3fea14_o.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;farm7.static.flickr.com&#x2F;6230&#x2F;6334152313_b13b7a1394_o.png">
-<meta property="og:updated_time" content="2011-11-12T01:52:24.000Z">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://farm7.static.flickr.com/6096/6334117277_7e0d090b13_o.png">
+<meta property="og:image" content="http://farm7.static.flickr.com/6056/6334138827_993d3fea14_o.png">
+<meta property="og:image" content="http://farm7.static.flickr.com/6230/6334152313_b13b7a1394_o.png">
+<meta property="article:published_time" content="2011-11-12T00:45:52.000Z">
+<meta property="article:modified_time" content="2011-11-12T01:52:24.000Z">
+<meta property="article:author" content="Laurent Kempé">
+<meta property="article:tag" content="ReSharper">
+<meta property="article:tag" content="Silverlight">
+<meta property="article:tag" content="WPF">
+<meta property="article:tag" content="XAML">
+<meta property="article:tag" content="WP7">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http:&#x2F;&#x2F;farm7.static.flickr.com&#x2F;6096&#x2F;6334117277_7e0d090b13_o.png">
+<meta name="twitter:image" content="http://farm7.static.flickr.com/6096/6334117277_7e0d090b13_o.png">
 <meta name="twitter:creator" content="@laurentkempe">
     
     
@@ -46,7 +52,9 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-ktblzmmvy1z9gcfhed5xjwxffd2l7w0mqt0n8w5mnfurae7qfghxjpuvkojc.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-o6ynm2einupf0xcrhcfoydcyxt3e1oowmmpqqhx0ko410jupv30ilwayk2qa.min.css">
+
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
@@ -487,7 +495,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -705,7 +713,9 @@
         
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-3rnwmtv7ewwzr0tfomfhlvzttfo9skaqodt1rsz0perteesjz8kp9882c7wm.min.js"></script>
+
+<script src="/assets/js/script-p1jlqupigbft0ueoxb0bimbxwkmi65eyojc4widib7jfqpvnkwre3wld2pj2.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
