@@ -13,7 +13,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"In the past in my team, we were storing the Telerik assemblies into our SVN repository then in Git! I wasn’t happy about that for a really long time. Each releases our repository was growing much more than it was needed for nothing!\n\nOne day Telerik shipped their great WPF controls as nugets which solved half of our problem! Now the next problem was where do we store those nugets so that we can get those back. Searching a bit we found some solutions like myget but we wanted one which we could host on our infrastructure. After some more research, we found ou that TeamCity, could work as a Nuget server.\nThat was just perfect because we have been using TeamCity from day 1 of the project. We finally go the  second half of our solution.\nYou first need to activate the Nuget server on TeamCity:\n\nWe have activated the guest account so that the Nuget feed URL is accessible without any credentials. We use it on our LAN so that’s not really an issue for us. But it also works with credentials if you want.\nThe way TeamCity works with Nuget server is quite easy: any artifacts resolved after a build are then available through the Nuget server.\nSo next step was to define how to we bring a new version of the Telerik nugets when they ship a new version.\n\nAgain easy, just configure a build which takes the .nupkg from one folder and then bundle those as a build artifact.\n\nSo when Telerik release a new version we just need to upload all the .nupkg files to the folder C:\\Telerik\\ and run the build!\nOne more step in the good direction of automation!\n","dateCreated":"2016-04-14T20:04:11+00:00","dateModified":"2020-09-26T12:10:42+00:00","datePublished":"2016-04-14T20:04:11+00:00","description":"In the past in my team, we were storing the Telerik assemblies into our SVN repository then in Git! I wasn’t happy about that for a really long time. Each releases our repository was growing much more than it was needed for nothing!","headline":"Hosting nugets in TeamCity","image":["https://farm2.staticflickr.com/1604/25521348035_20fa6744ce_q.jpg","https://farm2.staticflickr.com/1604/25521348035_047dad2235_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2016/04/14/Hosting-nugets-in-TeamCity/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2016/04/14/Hosting-nugets-in-TeamCity/","keywords":".NET Development, continuous integration","thumbnailUrl":"https://farm2.staticflickr.com/1604/25521348035_20fa6744ce_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"In the past in my team, we were storing the Telerik assemblies into our SVN repository then in Git! I wasn’t happy about that for a really long time. Each releases our repository was growing much more than it was needed for nothing!\n\nOne day Telerik shipped their great WPF controls as nugets which solved half of our problem! Now the next problem was where do we store those nugets so that we can get those back. Searching a bit we found some solutions like myget but we wanted one which we could host on our infrastructure. After some more research, we found ou that TeamCity, could work as a Nuget server.\nThat was just perfect because we have been using TeamCity from day 1 of the project. We finally go the  second half of our solution.\nYou first need to activate the Nuget server on TeamCity:\n\nWe have activated the guest account so that the Nuget feed URL is accessible without any credentials. We use it on our LAN so that’s not really an issue for us. But it also works with credentials if you want.\nThe way TeamCity works with Nuget server is quite easy: any artifacts resolved after a build are then available through the Nuget server.\nSo next step was to define how to we bring a new version of the Telerik nugets when they ship a new version.\n\nAgain easy, just configure a build which takes the .nupkg from one folder and then bundle those as a build artifact.\n\nSo when Telerik release a new version we just need to upload all the .nupkg files to the folder C:\\Telerik\\ and run the build!\nOne more step in the good direction of automation!\n","dateCreated":"2016-04-14T20:04:11+00:00","dateModified":"2020-09-26T12:14:09+00:00","datePublished":"2016-04-14T20:04:11+00:00","description":"In the past in my team, we were storing the Telerik assemblies into our SVN repository then in Git! I wasn’t happy about that for a really long time. Each releases our repository was growing much more than it was needed for nothing!","headline":"Hosting nugets in TeamCity","image":["https://farm2.staticflickr.com/1604/25521348035_20fa6744ce_q.jpg","https://farm2.staticflickr.com/1604/25521348035_047dad2235_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2016/04/14/Hosting-nugets-in-TeamCity/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2016/04/14/Hosting-nugets-in-TeamCity/","keywords":".NET Development, continuous integration","thumbnailUrl":"https://farm2.staticflickr.com/1604/25521348035_20fa6744ce_q.jpg"}</script>
     <meta name="description" content="In the past in my team, we were storing the Telerik assemblies into our SVN repository then in Git! I wasn’t happy about that for a really long time. Each releases our repository was growing much more">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Hosting nugets in TeamCity">
@@ -25,7 +25,7 @@
 <meta property="og:image" content="https://farm2.staticflickr.com/1441/26365113121_7f3047a0da_o.png">
 <meta property="og:image" content="https://farm2.staticflickr.com/1671/25828490813_5a089e7001_o.png">
 <meta property="article:published_time" content="2016-04-14T20:04:11.000Z">
-<meta property="article:modified_time" content="2020-09-26T12:10:42.298Z">
+<meta property="article:modified_time" content="2020-09-26T12:14:09.783Z">
 <meta property="article:author" content="Laurent Kempé">
 <meta property="article:tag" content=".NET Development">
 <meta property="article:tag" content="continuous integration">
@@ -50,7 +50,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-3bf0qsank9fdnbxzayqnlxemgyzspqh2c4uufdfgbuljcukwrjrtskfe1riu.min.css">
+<link rel="stylesheet" href="/assets/css/style-xv6yb9q0kzjqdpbbuyyndulin2aimwuhuwspddlmjumgewvue2mphb2asxfl.min.css">
 
     <!--STYLES END-->
     
@@ -127,7 +127,7 @@
                 </a>
                 <h4 class="sidebar-profile-name">Laurent Kempé</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
 </h5>
                 
             </div>
@@ -677,7 +677,7 @@
         
             <h4 id="about-card-name">Laurent Kempé</h4>
         
-            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Senior Solutions Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
 </div>
         
         
@@ -703,7 +703,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-lpgxqyn9qnjvyniars9jwi6w3d1t9sqbld7stcjko5h3qbo6tjhtimnptmza.min.js"></script>
+<script src="/assets/js/script-cbsf2qbmnb6tiv7kh68pusq35rvacw51gtlamdxube1ljelsynwaw5hgshew.min.js"></script>
 
 <!--SCRIPTS END-->
 
