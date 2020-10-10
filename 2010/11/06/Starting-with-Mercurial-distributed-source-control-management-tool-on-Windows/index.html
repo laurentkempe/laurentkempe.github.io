@@ -11,7 +11,9 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I am starting to use Mercurialfor my personal projects. At the moment I use it only locally to be able to experience it but also to be able to try thing and revert easily to previous state.\nTo get started I downloaded\n\n\n\nMercurial for Windows\nTortoiseHG for Windows 64bits\nVisualHG  \n\nThis let me work directly from a PowerShell window, Windows Explorer or Visual Studio. \nTo add a project to Mercurial from the PowerShell I used the following commands:\n\nPS E:\\Personal\\Projects_Spikes\\DynApplication&gt; hg init\n\nThen I created in the same folder a file named .hgignore, excluding file or folder which I don’t want to version in my C# project:\n\nsyntax: glob\n.csproj.userobj/bin/*.ncb*.suo_ReSharper.*.ReSharper.user*.TeamCity.user\n\nYou are ready then to add files of your project to Mercurial with\n\nPS E:\\Personal\\Projects_Spikes\\DynApplication&gt; hg add\n\nThen you need to commit the files\n\nPS E:\\Personal\\Projects_Spikes\\DynApplication&gt; hg commit –m “Initital commit”\n\nThat’s it your files are under Mercurial source control.\nTo get started with Mercurial I recommend you to read Hg Init: a Mercurial tutorial!\nIf you need some hosting there is bitbucket, which has been bought by Atlassian recently. And it is free for 5 users. For more user you will have to pay, but it is a reasonable price.You might also use Codeplex for your open source project which supports Mercurial !\n","dateCreated":"2010-11-06T21:24:47+00:00","dateModified":"2010-11-06T21:24:47+00:00","datePublished":"2010-11-06T21:24:47+00:00","description":"I am starting to use Mercurialfor my personal projects. At the moment I use it only locally to be able to experience it but also to be able to try thing and revert easily to previous state.\nTo get started I downloaded","headline":"Starting with Mercurial distributed source control management tool on Windows","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/11/06/Starting-with-Mercurial-distributed-source-control-management-tool-on-Windows/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/11/06/Starting-with-Mercurial-distributed-source-control-management-tool-on-Windows/","keywords":"Mercurial"}</script>
     <meta name="description" content="I am starting to use Mercurialfor my personal projects. At the moment I use it only locally to be able to experience it but also to be able to try thing and revert easily to previous state. To get sta">
@@ -39,7 +41,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -322,14 +324,14 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>I am starting to use <a href="http://mercurial.selenic.com/" target="_blank" rel="noopener">Mercurial</a>for my personal projects. At the moment I use it only locally to be able to experience it but also to be able to try thing and revert easily to previous state.</p>
+            <p>I am starting to use <a target="_blank" rel="noopener" href="http://mercurial.selenic.com/">Mercurial</a>for my personal projects. At the moment I use it only locally to be able to experience it but also to be able to try thing and revert easily to previous state.</p>
 <p>To get started I downloaded</p>
 <a id="more"></a>
 
 <ul>
-<li><a href="http://mercurial.selenic.com/downloads/" target="_blank" rel="noopener">Mercurial for Windows</a></li>
-<li><a href="http://mercurial.selenic.com/downloads/" target="_blank" rel="noopener">TortoiseHG for Windows 64bits</a></li>
-<li><a href="http://visualhg.codeplex.com/" target="_blank" rel="noopener">VisualHG</a>  </li>
+<li><a target="_blank" rel="noopener" href="http://mercurial.selenic.com/downloads/">Mercurial for Windows</a></li>
+<li><a target="_blank" rel="noopener" href="http://mercurial.selenic.com/downloads/">TortoiseHG for Windows 64bits</a></li>
+<li><a target="_blank" rel="noopener" href="http://visualhg.codeplex.com/">VisualHG</a>  </li>
 </ul>
 <p>This let me work directly from a PowerShell window, Windows Explorer or Visual Studio. </p>
 <p>To add a project to Mercurial from the PowerShell I used the following commands:</p>
@@ -350,8 +352,8 @@
 <p>PS E:\Personal\Projects_Spikes\DynApplication&gt; <strong>hg commit –m “Initital commit”</strong></p>
 </blockquote>
 <p>That’s it your files are under Mercurial source control.</p>
-<p>To get started with Mercurial I recommend you to read <a href="http://hginit.com/index.html" target="_blank" rel="noopener">Hg Init: a Mercurial tutorial</a>!</p>
-<p>If you need some hosting there is <a href="http://bitbucket.org/" target="_blank" rel="noopener">bitbucket</a>, which has been bought by <a href="http://www.atlassian.com/" target="_blank" rel="noopener">Atlassian</a> recently. And it is free for 5 users. For more user you will have to pay, but it is a reasonable price.<br>You might also use <a href="http://www.codeplex.com/" target="_blank" rel="noopener">Codeplex</a> for your open source project <a href="http://codeplex.codeplex.com/wikipage?title=Source%20Control&referringTitle=Documentation" target="_blank" rel="noopener">which supports Mercurial</a> !</p>
+<p>To get started with Mercurial I recommend you to read <a target="_blank" rel="noopener" href="http://hginit.com/index.html">Hg Init: a Mercurial tutorial</a>!</p>
+<p>If you need some hosting there is <a target="_blank" rel="noopener" href="http://bitbucket.org/">bitbucket</a>, which has been bought by <a target="_blank" rel="noopener" href="http://www.atlassian.com/">Atlassian</a> recently. And it is free for 5 users. For more user you will have to pay, but it is a reasonable price.<br>You might also use <a target="_blank" rel="noopener" href="http://www.codeplex.com/">Codeplex</a> for your open source project <a target="_blank" rel="noopener" href="http://codeplex.codeplex.com/wikipage?title=Source%20Control&referringTitle=Documentation">which supports Mercurial</a> !</p>
 
             
 
@@ -363,7 +365,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/Mercurial/" rel="tag">Mercurial</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Mercurial/" rel="tag">Mercurial</a>
 
             </div>
         
@@ -479,7 +481,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -698,7 +700,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

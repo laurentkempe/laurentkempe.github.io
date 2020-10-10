@@ -11,9 +11,11 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Now that there is a distribution of .NET Core on a Linux distro running on my Raspberry Pi 3, I had to try it.\nIn this post, I will explain all the steps I had to execute to be able to run my first Hello World application.\n\nFirst, you will need to install on your Pi the Ubuntu MATE distribution. Currently, the RASPBIAN distribution, which is the mostly used, is not supported but it seems that it will be soon the case according to this Github issue on dotnet / core.\nDownload Ubuntu MATE 16.04.2 LTS for Raspberry Pi, then extract the image out of the archive.\nTo install it on your microSDHC, the best is to use Win32 Disk Imager which you can install using Chocolatey with the command ‘choco install win32diskimager‘.\nThen just write the image you extracted on your microSDHC using Win32 Disk Imager, like this:\n\nWait a couple of minutes then plug the microSDHC in your Pi and boot it, then follow the installation instruction and create your user.\nCurrently, there is no .NET Core SDK running on ARM processor, the CPU architecture of the Pi. So you will have to write and compile your program from another machine, in my case I run on Windows.\nNow to simplify all the operations I installed a SSH server on the Pi to make it easy to access it remotely and copy files from my Surface.\nTo install the SSH server, run a shell, and run the following commands\n\n\nThen we will need to install some .NET Core native prerequisites for Ubuntu as explained on the Github dotnet / core documentation.\n\n\nYou will need the IP of your Pi, so use the command ‘ifconfig‘ which will output something like that\n\nThen back to your PC, install Putty using ‘choco install putty‘ and WinSCP using ‘choco install winscp‘.\nConfigure both Putty and WinSCP to connect to your Pi using the IP address you’ve got from the ifconfig command\nNow that we have the Pi running the right Linux distribution on it and we can connect to it easily from our computer, it is time to create a first .NET Core project. For sure, we will start with the famous Hello World.\nInstall .NET Core 2.0 SDK, I used the Windows x64 version 2.0.0-preview1-005685 which I downloaded as a zip. Unpack it on your hard drive in a folder named dotnet, then create another folder at the same level called hello and create a new console application:\n\n\nEdit the file hello.csproj created in the folder. I use Visual Studio Code for that, which again can be installed using Chocolatey ‘choco install visualstudiocode‘. You will need to update the RuntimeFrameworkVersion with the version that you can find on the page .NET Core Runtime &amp; Host Setup Repo / Daily Builds then find Ubuntu 16.04 (arm32) and get the version, in my case 2.0.0-preview1-005685.\n\n\nThen run, and publish\n\n\nFinally, you will get the publish results in the folder .\\hello\\bin\\Debug\\netcoreapp2.0\\ubuntu.16.04-arm which you can easily upload to your Pi using WinSCP previously installed.\nYou need then to set the hello executable to have the execution rights on the Pi, which you can also do easily from WinSCP\n\nThe final step is to run you hello executable on the Pi, which you can do using Putty over SSH then, or by having your Pi connected to a monitor, mouse, and keyboard!\nHere is the result\n\n","dateCreated":"2017-04-03T19:40:07+00:00","dateModified":"2020-10-02T19:54:36+00:00","datePublished":"2017-04-03T19:40:07+00:00","description":"Now that there is a distribution of .NET Core on a Linux distro running on my Raspberry Pi 3, I had to try it.\nIn this post, I will explain all the steps I had to execute to be able to run my first Hello World application.","headline":".NET Core console app running on Raspberry Pi","image":["https://c1.staticflickr.com/4/3808/33008049230_89efeeb73d_q.jpg","https://c1.staticflickr.com/4/3808/33008049230_fcb508209e_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/","keywords":".NET Core, Raspberry Pi, Linux","thumbnailUrl":"https://c1.staticflickr.com/4/3808/33008049230_89efeeb73d_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Now that there is a distribution of .NET Core on a Linux distro running on my Raspberry Pi 3, I had to try it.\nIn this post, I will explain all the steps I had to execute to be able to run my first Hello World application.\n\nFirst, you will need to install on your Pi the Ubuntu MATE distribution. Currently, the RASPBIAN distribution, which is the mostly used, is not supported but it seems that it will be soon the case according to this Github issue on dotnet / core.\nDownload Ubuntu MATE 16.04.2 LTS for Raspberry Pi, then extract the image out of the archive.\nTo install it on your microSDHC, the best is to use Win32 Disk Imager which you can install using Chocolatey with the command ‘choco install win32diskimager‘.\nThen just write the image you extracted on your microSDHC using Win32 Disk Imager, like this:\n\nWait a couple of minutes then plug the microSDHC in your Pi and boot it, then follow the installation instruction and create your user.\nCurrently, there is no .NET Core SDK running on ARM processor, the CPU architecture of the Pi. So you will have to write and compile your program from another machine, in my case I run on Windows.\nNow to simplify all the operations I installed a SSH server on the Pi to make it easy to access it remotely and copy files from my Surface.\nTo install the SSH server, run a shell, and run the following commands\n\n\nThen we will need to install some .NET Core native prerequisites for Ubuntu as explained on the Github dotnet / core documentation.\n\n\nYou will need the IP of your Pi, so use the command ‘ifconfig‘ which will output something like that\n\nThen back to your PC, install Putty using ‘choco install putty‘ and WinSCP using ‘choco install winscp‘.\nConfigure both Putty and WinSCP to connect to your Pi using the IP address you’ve got from the ifconfig command\nNow that we have the Pi running the right Linux distribution on it and we can connect to it easily from our computer, it is time to create a first .NET Core project. For sure, we will start with the famous Hello World.\nInstall .NET Core 2.0 SDK, I used the Windows x64 version 2.0.0-preview1-005685 which I downloaded as a zip. Unpack it on your hard drive in a folder named dotnet, then create another folder at the same level called hello and create a new console application:\n\n\nEdit the file hello.csproj created in the folder. I use Visual Studio Code for that, which again can be installed using Chocolatey ‘choco install visualstudiocode‘. You will need to update the RuntimeFrameworkVersion with the version that you can find on the page .NET Core Runtime &amp; Host Setup Repo / Daily Builds then find Ubuntu 16.04 (arm32) and get the version, in my case 2.0.0-preview1-005685.\n\n\nThen run, and publish\n\n\nFinally, you will get the publish results in the folder .\\hello\\bin\\Debug\\netcoreapp2.0\\ubuntu.16.04-arm which you can easily upload to your Pi using WinSCP previously installed.\nYou need then to set the hello executable to have the execution rights on the Pi, which you can also do easily from WinSCP\n\nThe final step is to run you hello executable on the Pi, which you can do using Putty over SSH then, or by having your Pi connected to a monitor, mouse, and keyboard!\nHere is the result\n\n","dateCreated":"2017-04-03T19:40:07+00:00","dateModified":"2020-10-10T12:29:47+00:00","datePublished":"2017-04-03T19:40:07+00:00","description":"Now that there is a distribution of .NET Core on a Linux distro running on my Raspberry Pi 3, I had to try it.\nIn this post, I will explain all the steps I had to execute to be able to run my first Hello World application.","headline":".NET Core console app running on Raspberry Pi","image":["https://c1.staticflickr.com/4/3808/33008049230_89efeeb73d_q.jpg","https://c1.staticflickr.com/4/3808/33008049230_fcb508209e_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/","keywords":".NET Core, Raspberry Pi, Linux","thumbnailUrl":"https://c1.staticflickr.com/4/3808/33008049230_89efeeb73d_q.jpg"}</script>
     <meta name="description" content="Now that there is a distribution of .NET Core on a Linux distro running on my Raspberry Pi 3, I had to try it. In this post, I will explain all the steps I had to execute to be able to run my first He">
 <meta property="og:type" content="blog">
 <meta property="og:title" content=".NET Core console app running on Raspberry Pi">
@@ -26,7 +28,7 @@
 <meta property="og:image" content="https://c1.staticflickr.com/3/2806/33821762845_f3033ff9db_o.png">
 <meta property="og:image" content="https://c2.staticflickr.com/4/3856/32957716323_e196bc13f0_o.png">
 <meta property="article:published_time" content="2017-04-03T19:40:07.000Z">
-<meta property="article:modified_time" content="2020-10-02T19:54:36.551Z">
+<meta property="article:modified_time" content="2020-10-10T12:29:47.140Z">
 <meta property="article:author" content="Laurent Kempé">
 <meta property="article:tag" content=".NET Core">
 <meta property="article:tag" content="Raspberry Pi">
@@ -52,7 +54,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -345,32 +347,32 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>Now that there is a distribution of .NET Core on a Linux distro running on my <a href="https://www.raspberrypi.org/products/raspberry-pi-3-model-b/" target="_blank" rel="noopener">Raspberry Pi 3</a>, I had to try it.</p>
+            <p>Now that there is a distribution of .NET Core on a Linux distro running on my <a target="_blank" rel="noopener" href="https://www.raspberrypi.org/products/raspberry-pi-3-model-b/">Raspberry Pi 3</a>, I had to try it.</p>
 <p>In this post, I will explain all the steps I had to execute to be able to run my first Hello World application.</p>
 <a id="more"></a>
-<p>First, you will need to install on your Pi the <a href="https://ubuntu-mate.org/raspberry-pi/" target="_blank" rel="noopener">Ubuntu MATE distribution</a>. Currently, the RASPBIAN distribution, which is the mostly used, is not supported but it seems that it will be soon the case according to this <a href="https://github.com/dotnet/core/issues/447" target="_blank" rel="noopener">Github issue on dotnet / core</a>.</p>
-<p>Download <a href="https://ubuntu-mate.org/download/" target="_blank" rel="noopener">Ubuntu MATE 16.04.2 LTS for Raspberry Pi</a>, then extract the image out of the archive.</p>
-<p>To install it on your microSDHC, the best is to use <a href="https://chocolatey.org/packages/win32diskimager" target="_blank" rel="noopener">Win32 Disk Imager</a> which you can install using Chocolatey with the command ‘<em>choco install win32diskimager</em>‘.</p>
+<p>First, you will need to install on your Pi the <a target="_blank" rel="noopener" href="https://ubuntu-mate.org/raspberry-pi/">Ubuntu MATE distribution</a>. Currently, the RASPBIAN distribution, which is the mostly used, is not supported but it seems that it will be soon the case according to this <a target="_blank" rel="noopener" href="https://github.com/dotnet/core/issues/447">Github issue on dotnet / core</a>.</p>
+<p>Download <a target="_blank" rel="noopener" href="https://ubuntu-mate.org/download/">Ubuntu MATE 16.04.2 LTS for Raspberry Pi</a>, then extract the image out of the archive.</p>
+<p>To install it on your microSDHC, the best is to use <a target="_blank" rel="noopener" href="https://chocolatey.org/packages/win32diskimager">Win32 Disk Imager</a> which you can install using Chocolatey with the command ‘<em>choco install win32diskimager</em>‘.</p>
 <p>Then just write the image you extracted on your microSDHC using Win32 Disk Imager, like this:</p>
-<p><img src="https://c1.staticflickr.com/3/2822/32957708953_4ff95b973b_o.png" alt=""></p>
+<p><img src="https://c1.staticflickr.com/3/2822/32957708953_4ff95b973b_o.png"></p>
 <p>Wait a couple of minutes then plug the microSDHC in your Pi and boot it, then follow the installation instruction and create your user.</p>
 <p>Currently, there is no .NET Core SDK running on ARM processor, the CPU architecture of the Pi. So you will have to write and compile your program from another machine, in my case I run on Windows.</p>
 <p>Now to simplify all the operations I installed a SSH server on the Pi to make it easy to access it remotely and copy files from my Surface.</p>
 <p>To install the SSH server, run a shell, and run the following commands</p>
 <div style="clear:both;"></div><script src="//gist.github.com/75b6b70d1bcdc3b4caa030160dbcb018.js?file=installSSSHServer"></script>
 
-<p>Then we will need to install some .NET Core native prerequisites for Ubuntu as explained on the <a href="https://github.com/dotnet/core/blob/master/Documentation/prereqs.md" target="_blank" rel="noopener">Github dotnet / core documentation</a>.</p>
+<p>Then we will need to install some .NET Core native prerequisites for Ubuntu as explained on the <a target="_blank" rel="noopener" href="https://github.com/dotnet/core/blob/master/Documentation/prereqs.md">Github dotnet / core documentation</a>.</p>
 <div style="clear:both;"></div><script src="//gist.github.com/cf534c59a094654491e28b0d1701738a.js?file=prerequisites"></script>
 
 <p>You will need the IP of your Pi, so use the command ‘<em>ifconfig</em>‘ which will output something like that</p>
-<p><img src="https://c2.staticflickr.com/4/3816/32957721773_5f33093414_o.png" alt=""></p>
-<p>Then back to your PC, install <a href="https://chocolatey.org/packages/putty" target="_blank" rel="noopener">Putty</a> using ‘<em>choco install putty</em>‘ and <a href="https://chocolatey.org/packages/winscp" target="_blank" rel="noopener">WinSCP</a> using ‘<em>choco install winscp</em>‘.</p>
+<p><img src="https://c2.staticflickr.com/4/3816/32957721773_5f33093414_o.png"></p>
+<p>Then back to your PC, install <a target="_blank" rel="noopener" href="https://chocolatey.org/packages/putty">Putty</a> using ‘<em>choco install putty</em>‘ and <a target="_blank" rel="noopener" href="https://chocolatey.org/packages/winscp">WinSCP</a> using ‘<em>choco install winscp</em>‘.</p>
 <p>Configure both Putty and WinSCP to connect to your Pi using the IP address you’ve got from the ifconfig command</p>
 <p>Now that we have the Pi running the right Linux distribution on it and we can connect to it easily from our computer, it is time to create a first .NET Core project. For sure, we will start with the famous Hello World.</p>
-<p><a href="https://github.com/dotnet/cli/tree/master" target="_blank" rel="noopener">Install .NET Core 2.0 SDK</a>, I used the Windows x64 version 2.0.0-preview1-005685 which I downloaded as a zip. Unpack it on your hard drive in a folder named dotnet, then create another folder at the same level called hello and create a new console application:</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/dotnet/cli/tree/master">Install .NET Core 2.0 SDK</a>, I used the Windows x64 version 2.0.0-preview1-005685 which I downloaded as a zip. Unpack it on your hard drive in a folder named dotnet, then create another folder at the same level called hello and create a new console application:</p>
 <div style="clear:both;"></div><script src="//gist.github.com/0b60cae1c6c10ccab6ed3f167e766cb5.js?file=create_project"></script>
 
-<p>Edit the file hello.csproj created in the folder. I use <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">Visual Studio Code</a> for that, which again can be installed using <a href="https://chocolatey.org/packages/VisualStudioCode" target="_blank" rel="noopener">Chocolatey</a> ‘<em>choco install visualstudiocode</em>‘. You will need to update the RuntimeFrameworkVersion with the version that you can find on the page .NET Core Runtime &amp; Host Setup Repo / <a href="https://github.com/dotnet/core-setup#daily-builds" target="_blank" rel="noopener">Daily Builds</a> then <strong>find Ubuntu 16.04 (arm32)</strong> and get the version, in my <strong>case 2.0.0-preview1-005685</strong>.</p>
+<p>Edit the file hello.csproj created in the folder. I use <a target="_blank" rel="noopener" href="https://code.visualstudio.com/">Visual Studio Code</a> for that, which again can be installed using <a target="_blank" rel="noopener" href="https://chocolatey.org/packages/VisualStudioCode">Chocolatey</a> ‘<em>choco install visualstudiocode</em>‘. You will need to update the RuntimeFrameworkVersion with the version that you can find on the page .NET Core Runtime &amp; Host Setup Repo / <a target="_blank" rel="noopener" href="https://github.com/dotnet/core-setup#daily-builds">Daily Builds</a> then <strong>find Ubuntu 16.04 (arm32)</strong> and get the version, in my <strong>case 2.0.0-preview1-005685</strong>.</p>
 <div style="clear:both;"></div><script src="//gist.github.com/809deab02a08a52ee17f3cb03a7b39c1.js?file=hello.csproj"></script>
 
 <p>Then run, and publish</p>
@@ -378,7 +380,7 @@
 
 <p>Finally, you will get the publish results in the folder <strong>.\hello\bin\Debug\netcoreapp2.0\ubuntu.16.04-arm</strong> which you can easily upload to your Pi using WinSCP previously installed.</p>
 <p>You need then to set the hello executable to have the execution rights on the Pi, which you can also do easily from WinSCP</p>
-<p><img src="https://c1.staticflickr.com/3/2806/33821762845_f3033ff9db_o.png" alt=""></p>
+<p><img src="https://c1.staticflickr.com/3/2806/33821762845_f3033ff9db_o.png"></p>
 <p>The final step is to run you hello executable on the Pi, which you can do using Putty over SSH then, or by having your Pi connected to a monitor, mouse, and keyboard!</p>
 <p>Here is the result</p>
 <p><img src="https://c2.staticflickr.com/4/3856/32957716323_e196bc13f0_o.png" alt="Result"></p>
@@ -393,7 +395,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/NET-Core/" rel="tag">.NET Core</a> <a class="tag tag--primary tag--small t-link" href="/tags/Linux/" rel="tag">Linux</a> <a class="tag tag--primary tag--small t-link" href="/tags/Raspberry-Pi/" rel="tag">Raspberry Pi</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/NET-Core/" rel="tag">.NET Core</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Linux/" rel="tag">Linux</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Raspberry-Pi/" rel="tag">Raspberry Pi</a>
 
             </div>
         
@@ -509,7 +511,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -728,7 +730,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

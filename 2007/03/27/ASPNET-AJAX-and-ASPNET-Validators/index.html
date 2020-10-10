@@ -11,15 +11,17 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"If you are using ASP.NET Validators in UpdatePanel consider the post of Matt Gibbs : “ASP.NET AJAX Validators“.\n\nASP.NET AJAX provides new APIs for registering script with the ScriptManager.  Using these APIs allows controls to work well with partial rendering.  Without them, controls placed inside an UpdatePanel won’t work as expected. In previous CTP releases of ASP.NET AJAX, we had a set of validator controls that derived from the v2.0 controls and used the new APIs. This made them work well with ASP.NET AJAX. WindowsUpdate will soon include a version of System.Web that can take advantage of the new APIs.  So the new controls which would have been redundant have been removed.  However, the update isn’t available yet and ASP.NET AJAX has been released.  So, in the short-term, the source code for a set of custom validator controls that work with partial rendering is available here.\n\n\n\nThe .zip file includes a solution and .csproj file as well as the compiled DLL.  Just put the DLL in the /bin directory of your application and include the following &lt;tagMapping section in the pages section of the web.config.\n&lt;tagMapping&gt;\n  &lt;add tagType=&quot;System.Web.UI.WebControls.CompareValidator&quot;           mappedTagType=&quot;Sample.Web.UI.Compatibility.CompareValidator, Validators, Version=1.0.0.0&quot;/&gt;\n  &lt;add tagType=&quot;System.Web.UI.WebControls.CustomValidator&quot;            mappedTagType=&quot;Sample.Web.UI.Compatibility.CustomValidator, Validators, Version=1.0.0.0&quot;/&gt;\n  &lt;add tagType=&quot;System.Web.UI.WebControls.RangeValidator&quot;             mappedTagType=&quot;Sample.Web.UI.Compatibility.RangeValidator, Validators, Version=1.0.0.0&quot;/&gt;\n  &lt;add tagType=&quot;System.Web.UI.WebControls.RegularExpressionValidator&quot; mappedTagType=&quot;Sample.Web.UI.Compatibility.RegularExpressionValidator, Validators, Version=1.0.0.0&quot;/&gt;\n  &lt;add tagType=&quot;System.Web.UI.WebControls.RequiredFieldValidator&quot;     mappedTagType=&quot;Sample.Web.UI.Compatibility.RequiredFieldValidator, Validators, Version=1.0.0.0&quot;/&gt;\n  &lt;add tagType=&quot;System.Web.UI.WebControls.ValidationSummary&quot;          mappedTagType=&quot;Sample.Web.UI.Compatibility.ValidationSummary, Validators, Version=1.0.0.0&quot;/&gt;\n&lt;/tagMapping&gt;\n","dateCreated":"2007-03-27T04:30:01+00:00","dateModified":"2007-03-27T04:30:01+00:00","datePublished":"2007-03-27T04:30:01+00:00","description":"If you are using ASP.NET Validators in UpdatePanel consider the post of Matt Gibbs : “ASP.NET AJAX Validators“.\n\nASP.NET AJAX provides new APIs for registering script with the ScriptManager.  Using these APIs allows controls to work well with partial rendering.  Without them, controls placed inside an UpdatePanel won’t work as expected. In previous CTP releases of ASP.NET AJAX, we had a set of validator controls that derived from the v2.0 controls and used the new APIs. This made them work well with ASP.NET AJAX. WindowsUpdate will soon include a version of System.Web that can take advantage of the new APIs.  So the new controls which would have been redundant have been removed.  However, the update isn’t available yet and ASP.NET AJAX has been released.  So, in the short-term, the source code for a set of custom validator controls that work with partial rendering is available here.\n","headline":"ASP.NET AJAX and ASP.NET Validators","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/03/27/ASPNET-AJAX-and-ASPNET-Validators/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2007/03/27/ASPNET-AJAX-and-ASPNET-Validators/","keywords":"ASP.NET AJAX, ASP.NET 2.0, ASP.NET"}</script>
-    <meta name="description" content="If you are using ASP.NET Validators in UpdatePanel consider the post of Matt Gibbs : “ASP.NET AJAX Validators“.  ASP.NET AJAX provides new APIs for registering script with the ScriptManager.  Using th">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"If you are using ASP.NET Validators in UpdatePanel consider the post of Matt Gibbs : “ASP.NET AJAX Validators“.\n\nASP.NET AJAX provides new APIs for registering script with the ScriptManager.  Using these APIs allows controls to work well with partial rendering.  Without them, controls placed inside an UpdatePanel won’t work as expected. In previous CTP releases of ASP.NET AJAX, we had a set of validator controls that derived from the v2.0 controls and used the new APIs. This made them work well with ASP.NET AJAX. WindowsUpdate will soon include a version of System.Web that can take advantage of the new APIs.  So the new controls which would have been redundant have been removed.  However, the update isn’t available yet and ASP.NET AJAX has been released.  So, in the short-term, the source code for a set of custom validator controls that work with partial rendering is available here.\n\n\n\nThe .zip file includes a solution and .csproj file as well as the compiled DLL.  Just put the DLL in the /bin directory of your application and include the following &lt;tagMapping section in the pages section of the web.config.\n                                                            \n\n","dateCreated":"2007-03-27T04:30:01+00:00","dateModified":"2007-03-27T04:30:01+00:00","datePublished":"2007-03-27T04:30:01+00:00","description":"If you are using ASP.NET Validators in UpdatePanel consider the post of Matt Gibbs : “ASP.NET AJAX Validators“.\n\nASP.NET AJAX provides new APIs for registering script with the ScriptManager.  Using these APIs allows controls to work well with partial rendering.  Without them, controls placed inside an UpdatePanel won’t work as expected. In previous CTP releases of ASP.NET AJAX, we had a set of validator controls that derived from the v2.0 controls and used the new APIs. This made them work well with ASP.NET AJAX. WindowsUpdate will soon include a version of System.Web that can take advantage of the new APIs.  So the new controls which would have been redundant have been removed.  However, the update isn’t available yet and ASP.NET AJAX has been released.  So, in the short-term, the source code for a set of custom validator controls that work with partial rendering is available here.\n","headline":"ASP.NET AJAX and ASP.NET Validators","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/03/27/ASPNET-AJAX-and-ASPNET-Validators/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2007/03/27/ASPNET-AJAX-and-ASPNET-Validators/","keywords":"ASP.NET AJAX, ASP.NET 2.0, ASP.NET"}</script>
+    <meta name="description" content="If you are using ASP.NET Validators in UpdatePanel consider the post of Matt Gibbs : “ASP.NET AJAX Validators“.  ASP.NET AJAX provides new APIs for registering script with the ScriptManager.  Using th">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="ASP.NET AJAX and ASP.NET Validators">
 <meta property="og:url" content="https://laurentkempe.com/2007/03/27/ASPNET-AJAX-and-ASPNET-Validators/index.html">
 <meta property="og:site_name" content="Laurent Kempé">
-<meta property="og:description" content="If you are using ASP.NET Validators in UpdatePanel consider the post of Matt Gibbs : “ASP.NET AJAX Validators“.  ASP.NET AJAX provides new APIs for registering script with the ScriptManager.  Using th">
+<meta property="og:description" content="If you are using ASP.NET Validators in UpdatePanel consider the post of Matt Gibbs : “ASP.NET AJAX Validators“.  ASP.NET AJAX provides new APIs for registering script with the ScriptManager.  Using th">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2007-03-27T04:30:01.000Z">
 <meta property="article:modified_time" content="2007-03-27T04:30:01.000Z">
@@ -41,7 +43,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -324,21 +326,15 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>If you are using ASP.NET Validators in UpdatePanel consider the post of <a href="http://blogs.msdn.com/mattgi/" target="_blank" rel="noopener">Matt Gibbs</a> : “<a href="http://blogs.msdn.com/mattgi/archive/2007/01/23/asp-net-ajax-validators.aspx" target="_blank" rel="noopener">ASP.NET AJAX Validators</a>“.</p>
+            <p>If you are using ASP.NET Validators in UpdatePanel consider the post of <a target="_blank" rel="noopener" href="http://blogs.msdn.com/mattgi/">Matt Gibbs</a> : “<a target="_blank" rel="noopener" href="http://blogs.msdn.com/mattgi/archive/2007/01/23/asp-net-ajax-validators.aspx">ASP.NET AJAX Validators</a>“.</p>
 <blockquote>
-<p>ASP.NET AJAX provides new APIs for registering script with the ScriptManager.  Using these APIs allows controls to work well with partial rendering.  Without them, controls placed inside an UpdatePanel won’t work as expected. In previous CTP releases of ASP.NET AJAX, we had a set of validator controls that derived from the v2.0 controls and used the new APIs. This made them work well with ASP.NET AJAX. WindowsUpdate will soon include a version of System.Web that can take advantage of the new APIs.  So the new controls which would have been redundant have been removed.  However, the update isn’t available yet and ASP.NET AJAX has been released.  So, in the short-term, the source code for a set of custom validator controls that work with partial rendering is available <a href="http://blogs.msdn.com/mattgi/attachment/1516974.ashx" target="_blank" rel="noopener">here</a>.</p>
+<p>ASP.NET AJAX provides new APIs for registering script with the ScriptManager.  Using these APIs allows controls to work well with partial rendering.  Without them, controls placed inside an UpdatePanel won’t work as expected. In previous CTP releases of ASP.NET AJAX, we had a set of validator controls that derived from the v2.0 controls and used the new APIs. This made them work well with ASP.NET AJAX. WindowsUpdate will soon include a version of System.Web that can take advantage of the new APIs.  So the new controls which would have been redundant have been removed.  However, the update isn’t available yet and ASP.NET AJAX has been released.  So, in the short-term, the source code for a set of custom validator controls that work with partial rendering is available <a target="_blank" rel="noopener" href="http://blogs.msdn.com/mattgi/attachment/1516974.ashx">here</a>.</p>
 </blockquote>
 <a id="more"></a>
 <blockquote>
-<p>The .zip file includes a solution and .csproj file as well as the compiled DLL.  Just put the DLL in the /bin directory of your application and include the following &lt;tagMapping section in the pages section of the web.config.</p>
-<pre><code>&lt;tagMapping&gt;
-  &lt;add tagType=&quot;System.Web.UI.WebControls.CompareValidator&quot;           mappedTagType=&quot;Sample.Web.UI.Compatibility.CompareValidator, Validators, Version=1.0.0.0&quot;/&gt;
-  &lt;add tagType=&quot;System.Web.UI.WebControls.CustomValidator&quot;            mappedTagType=&quot;Sample.Web.UI.Compatibility.CustomValidator, Validators, Version=1.0.0.0&quot;/&gt;
-  &lt;add tagType=&quot;System.Web.UI.WebControls.RangeValidator&quot;             mappedTagType=&quot;Sample.Web.UI.Compatibility.RangeValidator, Validators, Version=1.0.0.0&quot;/&gt;
-  &lt;add tagType=&quot;System.Web.UI.WebControls.RegularExpressionValidator&quot; mappedTagType=&quot;Sample.Web.UI.Compatibility.RegularExpressionValidator, Validators, Version=1.0.0.0&quot;/&gt;
-  &lt;add tagType=&quot;System.Web.UI.WebControls.RequiredFieldValidator&quot;     mappedTagType=&quot;Sample.Web.UI.Compatibility.RequiredFieldValidator, Validators, Version=1.0.0.0&quot;/&gt;
-  &lt;add tagType=&quot;System.Web.UI.WebControls.ValidationSummary&quot;          mappedTagType=&quot;Sample.Web.UI.Compatibility.ValidationSummary, Validators, Version=1.0.0.0&quot;/&gt;
-&lt;/tagMapping&gt;</code></pre></blockquote>
+<p>The .zip file includes a solution and .csproj file as well as the compiled DLL.  Just put the DLL in the /bin directory of your application and include the following &lt;tagMapping section in the pages section of the web.config.</p>
+<p>      <tagMapping><br>        <add tagType="System.Web.UI.WebControls.CompareValidator"           mappedTagType="Sample.Web.UI.Compatibility.CompareValidator, Validators, Version=1.0.0.0"/><br>        <add tagType="System.Web.UI.WebControls.CustomValidator"            mappedTagType="Sample.Web.UI.Compatibility.CustomValidator, Validators, Version=1.0.0.0"/><br>        <add tagType="System.Web.UI.WebControls.RangeValidator"             mappedTagType="Sample.Web.UI.Compatibility.RangeValidator, Validators, Version=1.0.0.0"/><br>        <add tagType="System.Web.UI.WebControls.RegularExpressionValidator" mappedTagType="Sample.Web.UI.Compatibility.RegularExpressionValidator, Validators, Version=1.0.0.0"/><br>        <add tagType="System.Web.UI.WebControls.RequiredFieldValidator"     mappedTagType="Sample.Web.UI.Compatibility.RequiredFieldValidator, Validators, Version=1.0.0.0"/><br>        <add tagType="System.Web.UI.WebControls.ValidationSummary"          mappedTagType="Sample.Web.UI.Compatibility.ValidationSummary, Validators, Version=1.0.0.0"/><br>      </tagMapping></p>
+</blockquote>
 
             
 
@@ -350,7 +346,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET/" rel="tag">ASP.NET</a> <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET-2-0/" rel="tag">ASP.NET 2.0</a> <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET-AJAX/" rel="tag">ASP.NET AJAX</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/ASP-NET/" rel="tag">ASP.NET</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/ASP-NET-2-0/" rel="tag">ASP.NET 2.0</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/ASP-NET-AJAX/" rel="tag">ASP.NET AJAX</a>
 
             </div>
         
@@ -466,7 +462,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -685,7 +681,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

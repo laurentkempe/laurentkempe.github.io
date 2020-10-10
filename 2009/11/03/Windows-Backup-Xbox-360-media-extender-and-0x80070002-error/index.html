@@ -11,7 +11,9 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Yesterday I bought a new Western Digital external hard drive of 1TB for 109CHF, incredible how cheap it is now.\nThen I configured my Windows 7 backup to use this new hard drive, very easy and the backup in less than 2 minutes.\n\n\nAt the end the backup failed because of drive having errors, then after a Error-checking everything was fine.\nSo I restarted the backup and got again an error:\nBackup encountered a problem while backing up file C:\\Users\\Mcx1-xx-PC\\Contacts. Error:(The system cannot find the file specified. (0x80070002))Backup encountered a problem while backing up file C:\\Users\\Mcx1-xx-PC\\Searches. Error:(The system cannot find the file specified. (0x80070002))Backup encountered a problem while backing up file C:\\Users\\Mcx2-xx-PC\\Contacts. Error:(The system cannot find the file specified. (0x80070002))Backup encountered a problem while backing up file C:\\Users\\Mcx2-xx-PC\\Searches. Error:(The system cannot find the file specified. (0x80070002))\nSearching on the Internet I found a forum post with the following solution:\n\nThis is a known issue with Media center users. For such users, Windows does not create “Contacts” and “Searches” directories which Windows backup expect to be present. As a workaround, please do the following:\n\nLaunch Change backup settings.\nChoose the same backup target and proceed to next page.\nSelect “Let me choose”.\nExpand the user Mcx1-NEO node in the treeview. Expand “Additional locations”.\nExclude the Contacts and Searches directories for the user.\nProceed with configuration and save settings.\n\n\n[](http://weblogs.asp.net/blogs/lkempe/4071003833_d19380d9ab_o1_0EDC1E31.png) \nRestarted backup and now it works!\n","dateCreated":"2009-11-03T17:57:20+00:00","dateModified":"2009-11-03T17:57:20+00:00","datePublished":"2009-11-03T17:57:20+00:00","description":"Yesterday I bought a new Western Digital external hard drive of 1TB for 109CHF, incredible how cheap it is now.\nThen I configured my Windows 7 backup to use this new hard drive, very easy and the backup in less than 2 minutes.","headline":"Windows Backup, Xbox 360 media extender and 0x80070002 error","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2009/11/03/Windows-Backup-Xbox-360-media-extender-and-0x80070002-error/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2009/11/03/Windows-Backup-Xbox-360-media-extender-and-0x80070002-error/","keywords":"Windows 7, media extender, xbox 360"}</script>
     <meta name="description" content="Yesterday I bought a new Western Digital external hard drive of 1TB for 109CHF, incredible how cheap it is now. Then I configured my Windows 7 backup to use this new hard drive, very easy and the back">
@@ -43,7 +45,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -333,7 +335,7 @@
 <p>At the end the backup failed because of drive having errors, then after a Error-checking everything was fine.</p>
 <p>So I restarted the backup and got again an error:</p>
 <p>Backup encountered a problem while backing up file C:\Users\Mcx1-xx-PC\Contacts. Error:(The system cannot find the file specified. (0x80070002))<br>Backup encountered a problem while backing up file C:\Users\Mcx1-xx-PC\Searches. Error:(The system cannot find the file specified. (0x80070002))<br>Backup encountered a problem while backing up file C:\Users\Mcx2-xx-PC\Contacts. Error:(The system cannot find the file specified. (0x80070002))<br>Backup encountered a problem while backing up file C:\Users\Mcx2-xx-PC\Searches. Error:(The system cannot find the file specified. (0x80070002))</p>
-<p>Searching on the Internet I found a <a href="http://social.technet.microsoft.com/Forums/en-US/w7itprogeneral/thread/bff71aac-c78e-42bd-a959-116019c93478/" target="_blank" rel="noopener">forum post</a> with the following solution:</p>
+<p>Searching on the Internet I found a <a target="_blank" rel="noopener" href="http://social.technet.microsoft.com/Forums/en-US/w7itprogeneral/thread/bff71aac-c78e-42bd-a959-116019c93478/">forum post</a> with the following solution:</p>
 <blockquote>
 <p>This is a known issue with Media center users. For such users, Windows does not create “Contacts” and “Searches” directories which Windows backup expect to be present. As a workaround, please do the following:</p>
 <ol>
@@ -345,7 +347,7 @@
 <li>Proceed with configuration and save settings.</li>
 </ol>
 </blockquote>
-<p>[<img src="http://weblogs.asp.net/blogs/lkempe/4071003833_d19380d9ab_o1_thumb_762C3546.png" alt="4071003833_d19380d9ab_o[1]" title="4071003833_d19380d9ab_o[1]">](<a href="http://weblogs.asp.net/blogs/lkempe/4071003833_d19380d9ab_o1_0EDC1E31.png" target="_blank" rel="noopener">http://weblogs.asp.net/blogs/lkempe/4071003833_d19380d9ab_o1_0EDC1E31.png</a>) </p>
+<p>[<img src="http://weblogs.asp.net/blogs/lkempe/4071003833_d19380d9ab_o1_thumb_762C3546.png" alt="4071003833_d19380d9ab_o[1]" title="4071003833_d19380d9ab_o[1]">](<a target="_blank" rel="noopener" href="http://weblogs.asp.net/blogs/lkempe/4071003833_d19380d9ab_o1_0EDC1E31.png">http://weblogs.asp.net/blogs/lkempe/4071003833_d19380d9ab_o1_0EDC1E31.png</a>) </p>
 <p>Restarted backup and now it works!</p>
 
             
@@ -358,7 +360,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/Windows-7/" rel="tag">Windows 7</a> <a class="tag tag--primary tag--small t-link" href="/tags/media-extender/" rel="tag">media extender</a> <a class="tag tag--primary tag--small t-link" href="/tags/xbox-360/" rel="tag">xbox 360</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Windows-7/" rel="tag">Windows 7</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/media-extender/" rel="tag">media extender</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/xbox-360/" rel="tag">xbox 360</a>
 
             </div>
         
@@ -474,7 +476,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -693,7 +695,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

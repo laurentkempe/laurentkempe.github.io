@@ -11,7 +11,9 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Today I was facing the following issue. I have an indexing system (read more here, here and here) using Lucene.Net that is working quite good. The drawback of the current implementation was that I couldn’t filter any to be indexed property decorated with the attribute. For example if I had a string property of my domain holding HTML, I wasn’t able to remove the HTML out of the string before indexing it. \nI scratch my head some time, and finally came to a pragmatic solution. \n\n\nFor this pragmatic solution I used meta information in the name of the attribute. So the attribute decorate my code with a meta information and the name of the attribute contains by itself also meta information. This means that I enforce some rules in the naming of the attribute.\nFor example the first rule is the following, if the name of the attribute contains Html in whatever form, uppercase, lowercase, etc. the framework will realize that the property contains Html and that it needs to remove the Html tags out of the string on decode it.\nIf none of the naming rules match then it will use the content of the property directly.\nSo as a user of the indexing framework, I write one attribute named HTMLSearchableAttribute and decorate my properties and then the framework will clean automatically this string property before indexing the cleaned content with Lucene.Net.\ndigg_url = \"http://weblogs.asp.net/lkempe/archive/2008/06/18/empowering-your-attribute-s-names.aspx\";digg_title = \"Empowering your Attribute’s Names\";digg_bgcolor = \"#FFFFFF\";digg_skin = \"compact\";digg_url = undefined;digg_title = undefined;digg_bgcolor = undefined;digg_skin = undefined;\n","dateCreated":"2008-06-18T18:54:06+00:00","dateModified":"2008-06-18T18:54:06+00:00","datePublished":"2008-06-18T18:54:06+00:00","description":"Today I was facing the following issue. I have an indexing system (read more here, here and here) using Lucene.Net that is working quite good. The drawback of the current implementation was that I couldn’t filter any to be indexed property decorated with the attribute. For example if I had a string property of my domain holding HTML, I wasn’t able to remove the HTML out of the string before indexing it. \nI scratch my head some time, and finally came to a pragmatic solution. ","headline":"Empowering your Attribute’s Names","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/06/18/Empowering-your-Attributee28099s-Names/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2008/06/18/Empowering-your-Attributee28099s-Names/","keywords":"Lucene.Net"}</script>
     <meta name="description" content="Today I was facing the following issue. I have an indexing system (read more here, here and here) using Lucene.Net that is working quite good. The drawback of the current implementation was that I cou">
@@ -39,7 +41,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -322,14 +324,14 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>Today I was facing the following issue. I have an indexing system (read more <a href="http://weblogs.asp.net/lkempe/archive/2007/11/16/indexing-and-searching-business-entities-using-lucene-net-framework-part-1.aspx" target="_blank" rel="noopener">here</a>, <a href="http://weblogs.asp.net/lkempe/archive/2008/03/07/indexing-and-searching-business-entities-using-lucene-net-framework-part-2.aspx" target="_blank" rel="noopener">here</a> and <a href="http://weblogs.asp.net/lkempe/archive/2008/03/07/indexing-and-searching-business-entities-using-lucene-net-framework-part-3.aspx" target="_blank" rel="noopener">here</a>) using <a href="http://incubator.apache.org/lucene.net/" target="_blank" rel="noopener">Lucene.Net</a> that is working quite good. The drawback of the current implementation was that I couldn’t filter any to be indexed property decorated with the attribute. For example if I had a string property of my domain holding HTML, I wasn’t able to remove the HTML out of the string before indexing it. </p>
+            <p>Today I was facing the following issue. I have an indexing system (read more <a target="_blank" rel="noopener" href="http://weblogs.asp.net/lkempe/archive/2007/11/16/indexing-and-searching-business-entities-using-lucene-net-framework-part-1.aspx">here</a>, <a target="_blank" rel="noopener" href="http://weblogs.asp.net/lkempe/archive/2008/03/07/indexing-and-searching-business-entities-using-lucene-net-framework-part-2.aspx">here</a> and <a target="_blank" rel="noopener" href="http://weblogs.asp.net/lkempe/archive/2008/03/07/indexing-and-searching-business-entities-using-lucene-net-framework-part-3.aspx">here</a>) using <a target="_blank" rel="noopener" href="http://incubator.apache.org/lucene.net/">Lucene.Net</a> that is working quite good. The drawback of the current implementation was that I couldn’t filter any to be indexed property decorated with the attribute. For example if I had a string property of my domain holding HTML, I wasn’t able to remove the HTML out of the string before indexing it. </p>
 <p>I scratch my head some time, and finally came to a pragmatic solution. </p>
 <a id="more"></a>
 
 <p>For this pragmatic solution I used meta information in the name of the attribute. So the attribute decorate my code with a meta information and the name of the attribute contains by itself also meta information. This means that I enforce some rules in the naming of the attribute.</p>
 <p>For example the first rule is the following, if the name of the attribute contains Html in whatever form, uppercase, lowercase, etc. the framework will realize that the property contains Html and that it needs to remove the Html tags out of the string on decode it.</p>
 <p>If none of the naming rules match then it will use the content of the property directly.</p>
-<p>So as a user of the indexing framework, I write one attribute named HTMLSearchableAttribute and decorate my properties and then the framework will clean automatically this string property before indexing the cleaned content with <a href="http://incubator.apache.org/lucene.net/" target="_blank" rel="noopener">Lucene.Net</a>.</p>
+<p>So as a user of the indexing framework, I write one attribute named HTMLSearchableAttribute and decorate my properties and then the framework will clean automatically this string property before indexing the cleaned content with <a target="_blank" rel="noopener" href="http://incubator.apache.org/lucene.net/">Lucene.Net</a>.</p>
 <div class="wlWriterHeaderFooter" style="text-align:left; margin:0px; padding:4px 0px 4px 0px;"><script type="text/javascript">digg_url = "http://weblogs.asp.net/lkempe/archive/2008/06/18/empowering-your-attribute-s-names.aspx";digg_title = "Empowering your Attribute’s Names";digg_bgcolor = "#FFFFFF";digg_skin = "compact";</script><script src="http://digg.com/tools/diggthis.js" type="text/javascript"></script><script type="text/javascript">digg_url = undefined;digg_title = undefined;digg_bgcolor = undefined;digg_skin = undefined;</script></div>
 
             
@@ -342,7 +344,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/Lucene-Net/" rel="tag">Lucene.Net</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Lucene-Net/" rel="tag">Lucene.Net</a>
 
             </div>
         
@@ -458,7 +460,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -677,7 +679,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

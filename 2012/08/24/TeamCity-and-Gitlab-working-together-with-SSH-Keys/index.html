@@ -11,7 +11,9 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"\nOn February I posted about “Running your TeamCity builds from PowerShell for any Git branch” and now I have to configure a new ssh key so that TeamCity can connect to Gitlab.\nI struggled a bit getting continuous error message from TeamCity that the connection failed because it was enable to load identity file. File rights were all ok on the key file and everything looked fine. But still the error message.\n\n\nThen I remembered that I had the same issue in February while using PuTTYgen to generate my SSH key pair. \nI forgot a minor details that I had to generate the key pair like this:\n\nClick Generate button and move your mouse \nClick Save public key \nClick Save private key (if you need it in this format) \nClick on the menu Conversions / Export OpenSSH key and save that key   \n\n\nThen upload the exported OpenSSH key on the TeamCity server. The one in the putty format isn’t working, and that was my problem!\nFinally copy the public key generated to your clipboard\n\nand use it in Gitlab\n\nNow when you test the Git connection from TeamCity you should see the following\n\n","dateCreated":"2012-08-24T21:44:59+00:00","dateModified":"2012-08-24T21:59:24+00:00","datePublished":"2012-08-24T21:44:59+00:00","description":"\nOn February I posted about “Running your TeamCity builds from PowerShell for any Git branch” and now I have to configure a new ssh key so that TeamCity can connect to Gitlab.\nI struggled a bit getting continuous error message from TeamCity that the connection failed because it was enable to load identity file. File rights were all ok on the key file and everything looked fine. But still the error message.","headline":"TeamCity and Gitlab working together with SSH Keys","image":["https://farm9.staticflickr.com/8299/7764455174_84625faf34_q.jpg","https://farm9.staticflickr.com/8299/7764455174_207330f8d0_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2012/08/24/TeamCity-and-Gitlab-working-together-with-SSH-Keys/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2012/08/24/TeamCity-and-Gitlab-working-together-with-SSH-Keys/","keywords":"Git, Team City, Gitlab","thumbnailUrl":"https://farm9.staticflickr.com/8299/7764455174_84625faf34_q.jpg"}</script>
     <meta name="description" content="On February I posted about “Running your TeamCity builds from PowerShell for any Git branch” and now I have to configure a new ssh key so that TeamCity can connect to Gitlab. I struggled a bit gettin">
@@ -52,7 +54,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -346,11 +348,11 @@
     <div class="post-content markdown">
         <div class="main-content-wrap">
             <!-- [![Calzarellu](http://farm9.staticflickr.com/8299/7764455174_84625faf34_m.jpg)](http://www.flickr.com/photos/laurentkempe/7764455174/ "Calzarellu by Laurent Kempé, on Flickr") -->
-<p>On February I posted about “<a href="http://www.laurentkempe.com/post/Running-your-TeamCity-builds-from-a-command-line.aspx" target="_blank" rel="noopener">Running your TeamCity builds from PowerShell for any Git branch</a>” and now I have to configure a new ssh key so that <a href="http://www.jetbrains.com/teamcity/" target="_blank" rel="noopener">TeamCity</a> can connect to <a href="http://www.gitlabhq.com/" target="_blank" rel="noopener">Gitlab</a>.</p>
+<p>On February I posted about “<a target="_blank" rel="noopener" href="http://www.laurentkempe.com/post/Running-your-TeamCity-builds-from-a-command-line.aspx">Running your TeamCity builds from PowerShell for any Git branch</a>” and now I have to configure a new ssh key so that <a target="_blank" rel="noopener" href="http://www.jetbrains.com/teamcity/">TeamCity</a> can connect to <a target="_blank" rel="noopener" href="http://www.gitlabhq.com/">Gitlab</a>.</p>
 <p>I struggled a bit getting continuous error message from TeamCity that the connection failed because it was enable to load identity file. File rights were all ok on the key file and everything looked fine. But still the error message.</p>
 <a id="more"></a>
 
-<p>Then I remembered that I had the same issue in February while using <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html" target="_blank" rel="noopener">PuTTYgen</a> to generate my SSH key pair. </p>
+<p>Then I remembered that I had the same issue in February while using <a target="_blank" rel="noopener" href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">PuTTYgen</a> to generate my SSH key pair. </p>
 <p>I forgot a minor details that I had to generate the key pair like this:</p>
 <ol>
 <li>Click Generate button and move your mouse </li>
@@ -358,14 +360,14 @@
 <li>Click Save private key (if you need it in this format) </li>
 <li>Click on the menu Conversions / Export OpenSSH key and save that key   </li>
 </ol>
-<p><img src="http://farm9.staticflickr.com/8422/7850573396_a560b261e5_o.png" alt=""></p>
+<p><img src="http://farm9.staticflickr.com/8422/7850573396_a560b261e5_o.png"></p>
 <p>Then upload the exported OpenSSH key on the TeamCity server. The one in the putty format isn’t working, and that was my problem!</p>
 <p>Finally copy the public key generated to your clipboard</p>
-<p><img src="http://farm8.staticflickr.com/7253/7850602710_bc53602681_o.png" alt=""></p>
+<p><img src="http://farm8.staticflickr.com/7253/7850602710_bc53602681_o.png"></p>
 <p>and use it in Gitlab</p>
-<p><img src="http://farm9.staticflickr.com/8291/7850608050_0195906fa0_o.png" alt=""></p>
+<p><img src="http://farm9.staticflickr.com/8291/7850608050_0195906fa0_o.png"></p>
 <p>Now when you test the Git connection from TeamCity you should see the following</p>
-<p><img src="http://farm9.staticflickr.com/8436/7850614266_912bc8d8b6_o.png" alt=""></p>
+<p><img src="http://farm9.staticflickr.com/8436/7850614266_912bc8d8b6_o.png"></p>
 
             
 
@@ -377,7 +379,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/Git/" rel="tag">Git</a> <a class="tag tag--primary tag--small t-link" href="/tags/Gitlab/" rel="tag">Gitlab</a> <a class="tag tag--primary tag--small t-link" href="/tags/Team-City/" rel="tag">Team City</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Git/" rel="tag">Git</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Gitlab/" rel="tag">Gitlab</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Team-City/" rel="tag">Team City</a>
 
             </div>
         
@@ -493,7 +495,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -712,7 +714,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

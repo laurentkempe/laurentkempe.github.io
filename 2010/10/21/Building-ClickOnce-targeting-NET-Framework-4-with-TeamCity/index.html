@@ -11,7 +11,9 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I already talked about this topic in a previous post, Building ClickOnce with TeamCity, which was about .NET framework 3.5. This time I will talk about .NET framework 4.\nAs always when you change from one .NET framework version to another, there are some more things to install on our build server than just the .NET Framework.\n\n\nSo this time I had to copy from my local machine (in fact it was Robert doing it, Thanks Robert) the folder\n\nC:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.0A\n\nTo the build server folder\n\nC:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\n\nTake care of the “x86”, due to my 64bits Windows 7 which is removed on the server because it is a 32bits Windows 2003 R2.\nAfter that I created all the registry keys needed\n\nWindows Registry Editor Version 5.00\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SDKs\\Windows\\v7.0A]“InstallationFolder”=”C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\““ProductVersion”=”7.0.30319”“ProductName”=”Microsoft Windows SDK for Visual Studio 2010”\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SDKs\\Windows\\v7.0A\\WinSDK-NetFx35Tools]“ProductVersion”=”7.0.30319”“ComponentName”=”Windows SDK .NET Framework 3.5 Multi-targeting Utilities”“InstallationFolder”=”C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\Bin\\“\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SDKs\\Windows\\v7.0A\\WinSDK-NetFx35Tools-x64]“ProductVersion”=”7.0.30319”“ComponentName”=”Windows SDK .NET Framework 3.5 Multi-targeting Utilities (x64)”“InstallationFolder”=”C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\Bin\\x64\\“\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SDKs\\Windows\\v7.0A\\WinSDK-NetFx35Tools-x86]“ProductVersion”=”7.0.30319”“ComponentName”=”Windows SDK .NET Framework 3.5 Multi-targeting Utilities”“InstallationFolder”=”C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\Bin\\“\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SDKs\\Windows\\v7.0A\\WinSDK-NetFx40Tools]“ProductVersion”=”7.0.30319”“ComponentName”=”Windows SDK Tools for .NET Framework 4.0”“InstallationFolder”=”C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\Bin\\NETFX 4.0 Tools\\“\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SDKs\\Windows\\v7.0A\\WinSDK-NetFx40Tools-x64]“ProductVersion”=”7.0.30319”“ComponentName”=”Windows SDK Tools for .NET Framework 4.0 (x64)”“InstallationFolder”=”C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\Bin\\NETFX 4.0 Tools\\x64\\“\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SDKs\\Windows\\v7.0A\\WinSDK-NetFx40Tools-x86]“ProductVersion”=”7.0.30319”“ComponentName”=”Windows SDK Tools for .NET Framework 4.0”“InstallationFolder”=”C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\Bin\\NETFX 4.0 Tools\\“\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SDKs\\Windows\\v7.0A\\WinSDK-SDKTools]“InstallationFolder”=”C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\Bin\\““ProductVersion”=”7.0.30319”“ComponentName”=”Windows Common Utilities”\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SDKs\\Windows\\v7.0A\\WinSDK-Win32Tools]“InstallationFolder”=”C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\Bin\\““ProductVersion”=”7.0.30319”“ComponentName”=”Windows Utilities for Win32 Development”\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SDKs\\Windows\\v7.0A\\WinSDK-WindowsHeadersLibs]“InstallationFolder”=”C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\““ProductVersion”=”7.0.30319”“ComponentName”=”Windows Headers and Libraries”\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SDKs\\Windows\\v7.0A\\WinSDK-WinSDKIntellisenseRefAssys]“InstallationFolder”=”C:\\Program Files\\Reference Assemblies\\““ProductVersion”=”7.0.30319”“ComponentName”=”Windows Intellisense and Reference Assemblies”\n\nYou can copy this in a .reg file and apply it directly\nFinally I also created the following keys, which you also might copy in a .reg file\n\nWindows Registry Editor Version 5.00\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\GenericBootstrapper]\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\GenericBootstrapper\\4.0]“Path”=”C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\Bootstrapper\\“\n\nAnd here is the result\n\n","dateCreated":"2010-10-21T03:54:59+00:00","dateModified":"2010-10-21T03:56:12+00:00","datePublished":"2010-10-21T03:54:59+00:00","description":"I already talked about this topic in a previous post, Building ClickOnce with TeamCity, which was about .NET framework 3.5. This time I will talk about .NET framework 4.\nAs always when you change from one .NET framework version to another, there are some more things to install on our build server than just the .NET Framework.","headline":"Building ClickOnce targeting .NET Framework 4 with TeamCity","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/10/21/Building-ClickOnce-targeting-NET-Framework-4-with-TeamCity/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/10/21/Building-ClickOnce-targeting-NET-Framework-4-with-TeamCity/","keywords":"Team City, ClickOnce"}</script>
     <meta name="description" content="I already talked about this topic in a previous post, Building ClickOnce with TeamCity, which was about .NET framework 3.5. This time I will talk about .NET framework 4. As always when you change from">
@@ -42,7 +44,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -325,7 +327,7 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>I already talked about this topic in a previous post, <a href="http://www.laurentkempe.com/post/Building-ClickOnce-with-TeamCity.aspx" target="_blank" rel="noopener">Building ClickOnce with TeamCity</a>, which was about .NET framework 3.5. This time I will talk about .NET framework 4.</p>
+            <p>I already talked about this topic in a previous post, <a target="_blank" rel="noopener" href="http://www.laurentkempe.com/post/Building-ClickOnce-with-TeamCity.aspx">Building ClickOnce with TeamCity</a>, which was about .NET framework 3.5. This time I will talk about .NET framework 4.</p>
 <p>As always when you change from one .NET framework version to another, there are some more things to install on our build server than just the .NET Framework.</p>
 <a id="more"></a>
 
@@ -361,7 +363,7 @@
 <p><font size="1">[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\GenericBootstrapper\4.0]<br>“Path”=”C:\Program Files\Microsoft SDKs\Windows\v7.0A\Bootstrapper\“</font></p>
 </blockquote>
 <p>And here is the result</p>
-<p><img src="http://farm2.static.flickr.com/1320/5100316380_6e7c15ae6f_o.png" alt=""></p>
+<p><img src="http://farm2.static.flickr.com/1320/5100316380_6e7c15ae6f_o.png"></p>
 
             
 
@@ -373,7 +375,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/ClickOnce/" rel="tag">ClickOnce</a> <a class="tag tag--primary tag--small t-link" href="/tags/Team-City/" rel="tag">Team City</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/ClickOnce/" rel="tag">ClickOnce</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Team-City/" rel="tag">Team City</a>
 
             </div>
         
@@ -489,7 +491,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -708,7 +710,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

@@ -11,9 +11,11 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Tech Head Brothers Silverlight Streaming framework is an implementation of Silverlight Streaming REST API as a class library and a set of Workflow Foundation activities focused on the Hosting Content on Silverlight Streaming.  \nI have implemented this light framework (some functionality are still missing) as a class library and Patrice Lamarche (http://patricelamarche.net) implemented the Workflow Foundation part of it.  \n\n\nThe following picture shows the classes used in the framework:  \n \nIt is basic with a Manager class (SilverlightStreamingManager) using a set of Command classes (AddFileCommand, DeleteFileCommand, GetFilesetFilesCommand).\nUploading a Video is as simple as those few lines:\n&lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;SilverlightStreamingManager&lt;/span&gt; mgr =\n    &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;SilverlightStreamingManager&lt;/span&gt;(&lt;span style=&quot;color: rgb(163,21,21)&quot;&gt;&quot;TOBEDEFINED&quot;&lt;/span&gt;, &lt;span style=&quot;color: rgb(163,21,21)&quot;&gt;&quot;TOBEDEFINED&quot;&lt;/span&gt;);\n\n&lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;string&lt;/span&gt; fileset = &lt;span style=&quot;color: rgb(163,21,21)&quot;&gt;&quot;testvideo&quot;&lt;/span&gt;;\n\n&lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;if&lt;/span&gt; (mgr.UploadVideo(&lt;span style=&quot;color: rgb(163,21,21)&quot;&gt;@&quot;T:\\_Projects\\Silverlight\\SilverlightStreaming\\media\\fiona.wmv&quot;&lt;/span&gt;, fileset))\n    &lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;Console&lt;/span&gt;.WriteLine(&lt;span style=&quot;color: rgb(163,21,21)&quot;&gt;&quot;Uploaded sucessfully!! &quot;&lt;/span&gt;);\n&lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;else                Console.WriteLine(“Something went wrong !!”);\nYou also might prefer to use the corresponding workflow activities delivered or even the sample workflow:\n \nEnjoy!!\n","dateCreated":"2007-10-12T02:24:05+00:00","dateModified":"2007-10-12T02:24:05+00:00","datePublished":"2007-10-12T02:24:05+00:00","description":"Tech Head Brothers Silverlight Streaming framework is an implementation of Silverlight Streaming REST API as a class library and a set of Workflow Foundation activities focused on the Hosting Content on Silverlight Streaming.  \nI have implemented this light framework (some functionality are still missing) as a class library and Patrice Lamarche (http://patricelamarche.net) implemented the Workflow Foundation part of it.  ","headline":"Tech Head Brothers Silverlight Streaming framework","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/10/12/Tech-Head-Brothers-Silverlight-Streaming-framework/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2007/10/12/Tech-Head-Brothers-Silverlight-Streaming-framework/","keywords":"Silverlight, Silverlight Streaming"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Tech Head Brothers Silverlight Streaming framework is an implementation of Silverlight Streaming REST API as a class library and a set of Workflow Foundation activities focused on the Hosting Content on Silverlight Streaming.  \nI have implemented this light framework (some functionality are still missing) as a class library and Patrice Lamarche (http://patricelamarche.net) implemented the Workflow Foundation part of it.  \n\n\nThe following picture shows the classes used in the framework:  \n \nIt is basic with a Manager class (SilverlightStreamingManager) using a set of Command classes (AddFileCommand, DeleteFileCommand, GetFilesetFilesCommand).\nUploading a Video is as simple as those few lines:\n        &lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;SilverlightStreamingManager&lt;/span&gt; mgr =\n            &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;SilverlightStreamingManager&lt;/span&gt;(&lt;span style=&quot;color: rgb(163,21,21)&quot;&gt;&quot;TOBEDEFINED&quot;&lt;/span&gt;, &lt;span style=&quot;color: rgb(163,21,21)&quot;&gt;&quot;TOBEDEFINED&quot;&lt;/span&gt;);\n\n        &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;string&lt;/span&gt; fileset = &lt;span style=&quot;color: rgb(163,21,21)&quot;&gt;&quot;testvideo&quot;&lt;/span&gt;;\n\n        &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;if&lt;/span&gt; (mgr.UploadVideo(&lt;span style=&quot;color: rgb(163,21,21)&quot;&gt;@&quot;T:\\_Projects\\Silverlight\\SilverlightStreaming\\media\\fiona.wmv&quot;&lt;/span&gt;, fileset))\n            &lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;Console&lt;/span&gt;.WriteLine(&lt;span style=&quot;color: rgb(163,21,21)&quot;&gt;&quot;Uploaded sucessfully!! &quot;&lt;/span&gt;);\n        &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;else\n                Console.WriteLine(“Something went wrong !!”);\nYou also might prefer to use the corresponding workflow activities delivered or even the sample workflow:\n \nEnjoy!!\n","dateCreated":"2007-10-12T02:24:05+00:00","dateModified":"2007-10-12T02:24:05+00:00","datePublished":"2007-10-12T02:24:05+00:00","description":"Tech Head Brothers Silverlight Streaming framework is an implementation of Silverlight Streaming REST API as a class library and a set of Workflow Foundation activities focused on the Hosting Content on Silverlight Streaming.  \nI have implemented this light framework (some functionality are still missing) as a class library and Patrice Lamarche (http://patricelamarche.net) implemented the Workflow Foundation part of it.  ","headline":"Tech Head Brothers Silverlight Streaming framework","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/10/12/Tech-Head-Brothers-Silverlight-Streaming-framework/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2007/10/12/Tech-Head-Brothers-Silverlight-Streaming-framework/","keywords":"Silverlight, Silverlight Streaming"}</script>
     <meta name="description" content="Tech Head Brothers Silverlight Streaming framework is an implementation of Silverlight Streaming REST API as a class library and a set of Workflow Foundation activities focused on the Hosting Content">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Tech Head Brothers Silverlight Streaming framework">
@@ -43,7 +45,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -326,24 +328,25 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p><a href="http://www.codeplex.com/THBSLSFramework" target="_blank" rel="noopener">Tech Head Brothers Silverlight Streaming framework</a> is an implementation of <a href="http://msdn2.microsoft.com/en-us/library/bb851621.aspx" target="_blank" rel="noopener">Silverlight Streaming REST API</a> as a class library and a set of <a href="http://msdn.microsoft.com/workflow/" target="_blank" rel="noopener">Workflow Foundation</a> activities focused on the <a href="http://msdn2.microsoft.com/en-us/library/bb802532.aspx" target="_blank" rel="noopener">Hosting Content on Silverlight Streaming</a>.  </p>
-<p>I have implemented this light framework (some functionality are still missing) as a class library and <a href="http://www.techheadbrothers.com/Auteurs.aspx/patrice-lamarche" target="_blank" rel="noopener">Patrice Lamarche</a> (<a href="http://patricelamarche.net" target="_blank" rel="noopener">http://patricelamarche.net</a>) implemented the Workflow Foundation part of it.  </p>
+            <p><a target="_blank" rel="noopener" href="http://www.codeplex.com/THBSLSFramework">Tech Head Brothers Silverlight Streaming framework</a> is an implementation of <a target="_blank" rel="noopener" href="http://msdn2.microsoft.com/en-us/library/bb851621.aspx">Silverlight Streaming REST API</a> as a class library and a set of <a target="_blank" rel="noopener" href="http://msdn.microsoft.com/workflow/">Workflow Foundation</a> activities focused on the <a target="_blank" rel="noopener" href="http://msdn2.microsoft.com/en-us/library/bb802532.aspx">Hosting Content on Silverlight Streaming</a>.  </p>
+<p>I have implemented this light framework (some functionality are still missing) as a class library and <a target="_blank" rel="noopener" href="http://www.techheadbrothers.com/Auteurs.aspx/patrice-lamarche">Patrice Lamarche</a> (<a target="_blank" rel="noopener" href="http://patricelamarche.net/">http://patricelamarche.net</a>) implemented the Workflow Foundation part of it.  </p>
 <a id="more"></a>
 
 <p>The following picture shows the classes used in the framework:  </p>
-<p><img src="http://farm3.static.flickr.com/2404/1544834652_bb88cafa0d_o.jpg" alt=""> </p>
+<p><img src="http://farm3.static.flickr.com/2404/1544834652_bb88cafa0d_o.jpg"> </p>
 <p>It is basic with a Manager class (<em>SilverlightStreamingManager</em>) using a set of Command classes (<em>AddFileCommand</em>, <em>DeleteFileCommand</em>, <em>GetFilesetFilesCommand</em>).</p>
 <p>Uploading a Video is as simple as those few lines:</p>
-<pre><code>&lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;SilverlightStreamingManager&lt;/span&gt; mgr =
-    &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;SilverlightStreamingManager&lt;/span&gt;(&lt;span style=&quot;color: rgb(163,21,21)&quot;&gt;&quot;TOBEDEFINED&quot;&lt;/span&gt;, &lt;span style=&quot;color: rgb(163,21,21)&quot;&gt;&quot;TOBEDEFINED&quot;&lt;/span&gt;);
+<pre><code>        &lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;SilverlightStreamingManager&lt;/span&gt; mgr =
+            &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;SilverlightStreamingManager&lt;/span&gt;(&lt;span style=&quot;color: rgb(163,21,21)&quot;&gt;&quot;TOBEDEFINED&quot;&lt;/span&gt;, &lt;span style=&quot;color: rgb(163,21,21)&quot;&gt;&quot;TOBEDEFINED&quot;&lt;/span&gt;);
 
-&lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;string&lt;/span&gt; fileset = &lt;span style=&quot;color: rgb(163,21,21)&quot;&gt;&quot;testvideo&quot;&lt;/span&gt;;
+        &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;string&lt;/span&gt; fileset = &lt;span style=&quot;color: rgb(163,21,21)&quot;&gt;&quot;testvideo&quot;&lt;/span&gt;;
 
-&lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;if&lt;/span&gt; (mgr.UploadVideo(&lt;span style=&quot;color: rgb(163,21,21)&quot;&gt;@&quot;T:\_Projects\Silverlight\SilverlightStreaming\media\fiona.wmv&quot;&lt;/span&gt;, fileset))
-    &lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;Console&lt;/span&gt;.WriteLine(&lt;span style=&quot;color: rgb(163,21,21)&quot;&gt;&quot;Uploaded sucessfully!! &quot;&lt;/span&gt;);
-&lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;else</code></pre><p></span>                <span style="color: rgb(43,145,175)">Console</span>.WriteLine(<span style="color: rgb(163,21,21)">“Something went wrong !!”</span>);</p>
+        &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;if&lt;/span&gt; (mgr.UploadVideo(&lt;span style=&quot;color: rgb(163,21,21)&quot;&gt;@&quot;T:\_Projects\Silverlight\SilverlightStreaming\media\fiona.wmv&quot;&lt;/span&gt;, fileset))
+            &lt;span style=&quot;color: rgb(43,145,175)&quot;&gt;Console&lt;/span&gt;.WriteLine(&lt;span style=&quot;color: rgb(163,21,21)&quot;&gt;&quot;Uploaded sucessfully!! &quot;&lt;/span&gt;);
+        &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;else</code></pre>
+<p></span>                <span style="color: rgb(43,145,175)">Console</span>.WriteLine(<span style="color: rgb(163,21,21)">“Something went wrong !!”</span>);</p>
 <p>You also might prefer to use the corresponding workflow activities delivered or even the sample workflow:</p>
-<p><img src="http://farm3.static.flickr.com/2166/1544053443_2beb3e2919_o.jpg" alt=""> </p>
+<p><img src="http://farm3.static.flickr.com/2166/1544053443_2beb3e2919_o.jpg"> </p>
 <p>Enjoy!!</p>
 
             
@@ -356,7 +359,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/Silverlight/" rel="tag">Silverlight</a> <a class="tag tag--primary tag--small t-link" href="/tags/Silverlight-Streaming/" rel="tag">Silverlight Streaming</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Silverlight/" rel="tag">Silverlight</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Silverlight-Streaming/" rel="tag">Silverlight Streaming</a>
 
             </div>
         
@@ -472,7 +475,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -691,7 +694,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

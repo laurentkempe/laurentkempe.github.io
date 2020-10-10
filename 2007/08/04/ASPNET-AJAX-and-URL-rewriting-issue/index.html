@@ -11,9 +11,11 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"If you are using URL rewriting you might know that you have to take care about the way you reference resources has written in the Scott Guthrie post; Tip/Trick: Url Rewriting with ASP.NET:\n\nHandling CSS and Image Reference Correctly\n\n\nOne gotcha that people sometime run into when using Url Rewriting for the very first time is that they find that their image and CSS stylesheet references sometimes seem to stop working.  This is because they have relative references to these files within their HTML pages - and when you start to re-write URLs within an application you need to be aware that the browser will often be requesting files in different logical hierarchy levels than what is really stored on the server.\nFor example, if our /products.aspx page above had a relative reference to “logo.jpg” in the .aspx page, but was requested via the /products/books.aspx url, then the browser will send a request for /products/logo.jpg instead of /logo.jpg when it renders the page.  To reference this file correctly, make sure you root qualify CSS and Image references (“/style.css” instead of “style.css”).  For ASP.NET controls, you can also use the ~ syntax to reference files from the root of the application (for example: &lt;asp:image imageurl=”~/images/logo.jpg” runat=”server”/&gt;\n\nThis is for sure also the case for javascript. \nI am using the Request.PathInfo way described in Scott’s post to rewrite one url on Tech Head Brothers. Everything works fine except that Sys.Services.AuthenticationService get confused about the rewriting of the URL and tries to post back on : \nhttp://localhost:8080/Auteurs.aspx/laurent-kempe/Authentication_JSON_AppService.axd/Login \nWhen I expect  \nhttp://localhost:8080/Authentication_JSON_AppService.axd/Login \nLooking at the page rendered by ASP.NET I see that the following is rendered:\n  \n  \n\n\nSo I am clearly missing a / in the path and due to that the URL rewriting confuse the post to the server.\nThe first solution was found by Cyril Durand (always of good help in this AJAX world ;) and is to add this line of code:\nScriptManager.GetCurrent(Page).AuthenticationService.Path = “/Authentication_JSON_AppService.axd”;\nBut I did it a bit differently, directly in the javascript adding the following line:\nSys.Services.AuthenticationService.set_path(‘/Authentication_JSON_AppService.axd’);\nBtw this javascript line would be generated at rendering time by the solution of Cyril.\nThanks Cyril for the always nice talks.\n","dateCreated":"2007-08-04T06:29:46+00:00","dateModified":"2007-08-04T06:29:46+00:00","datePublished":"2007-08-04T06:29:46+00:00","description":"If you are using URL rewriting you might know that you have to take care about the way you reference resources has written in the Scott Guthrie post; Tip/Trick: Url Rewriting with ASP.NET:\n\nHandling CSS and Image Reference Correctly","headline":"ASP.NET AJAX and URL rewriting issue","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/08/04/ASPNET-AJAX-and-URL-rewriting-issue/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2007/08/04/ASPNET-AJAX-and-URL-rewriting-issue/","keywords":"ASP.NET AJAX, ASP.NET 2.0"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"If you are using URL rewriting you might know that you have to take care about the way you reference resources has written in the Scott Guthrie post; Tip/Trick: Url Rewriting with ASP.NET:\n\nHandling CSS and Image Reference Correctly\n\n\nOne gotcha that people sometime run into when using Url Rewriting for the very first time is that they find that their image and CSS stylesheet references sometimes seem to stop working.  This is because they have relative references to these files within their HTML pages - and when you start to re-write URLs within an application you need to be aware that the browser will often be requesting files in different logical hierarchy levels than what is really stored on the server.\nFor example, if our /products.aspx page above had a relative reference to “logo.jpg” in the .aspx page, but was requested via the /products/books.aspx url, then the browser will send a request for /products/logo.jpg instead of /logo.jpg when it renders the page.  To reference this file correctly, make sure you root qualify CSS and Image references (“/style.css” instead of “style.css”).  For ASP.NET controls, you can also use the ~ syntax to reference files from the root of the application (for example: &lt;asp:image imageurl=”~/images/logo.jpg” runat=”server”/&gt;\n\nThis is for sure also the case for javascript. \nI am using the Request.PathInfo way described in Scott’s post to rewrite one url on Tech Head Brothers. Everything works fine except that Sys.Services.AuthenticationService get confused about the rewriting of the URL and tries to post back on : \nhttp://localhost:8080/Auteurs.aspx/laurent-kempe/Authentication_JSON_AppService.axd/Login \nWhen I expect  \nhttp://localhost:8080/Authentication_JSON_AppService.axd/Login \nLooking at the page rendered by ASP.NET I see that the following is rendered:\n  \n  \n\n\nSo I am clearly missing a / in the path and due to that the URL rewriting confuse the post to the server.\nThe first solution was found by Cyril Durand (always of good help in this AJAX world ;) and is to add this line of code:\nScriptManager.GetCurrent(Page).AuthenticationService.Path = “/Authentication_JSON_AppService.axd”;\nBut I did it a bit differently, directly in the javascript adding the following line:\nSys.Services.AuthenticationService.set_path(‘/Authentication_JSON_AppService.axd’);\nBtw this javascript line would be generated at rendering time by the solution of Cyril.\nThanks Cyril for the always nice talks.\n","dateCreated":"2007-08-04T06:29:46+00:00","dateModified":"2007-08-04T06:29:46+00:00","datePublished":"2007-08-04T06:29:46+00:00","description":"If you are using URL rewriting you might know that you have to take care about the way you reference resources has written in the Scott Guthrie post; Tip/Trick: Url Rewriting with ASP.NET:\n\nHandling CSS and Image Reference Correctly","headline":"ASP.NET AJAX and URL rewriting issue","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/08/04/ASPNET-AJAX-and-URL-rewriting-issue/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2007/08/04/ASPNET-AJAX-and-URL-rewriting-issue/","keywords":"ASP.NET AJAX, ASP.NET 2.0"}</script>
     <meta name="description" content="If you are using URL rewriting you might know that you have to take care about the way you reference resources has written in the Scott Guthrie post; Tip&#x2F;Trick: Url Rewriting with ASP.NET:  Handling C">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="ASP.NET AJAX and URL rewriting issue">
@@ -40,7 +42,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -323,19 +325,19 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>If you are using URL rewriting you might know that you have to take care about the way you reference resources has written in the Scott Guthrie post; <a href="http://weblogs.asp.net/scottgu/archive/2007/02/26/tip-trick-url-rewriting-with-asp-net.aspx" target="_blank" rel="noopener">Tip/Trick: Url Rewriting with ASP.NET</a>:</p>
+            <p>If you are using URL rewriting you might know that you have to take care about the way you reference resources has written in the Scott Guthrie post; <a target="_blank" rel="noopener" href="http://weblogs.asp.net/scottgu/archive/2007/02/26/tip-trick-url-rewriting-with-asp-net.aspx">Tip/Trick: Url Rewriting with ASP.NET</a>:</p>
 <blockquote>
 <h6 id="Handling-CSS-and-Image-Reference-Correctly"><a href="#Handling-CSS-and-Image-Reference-Correctly" class="headerlink" title="Handling CSS and Image Reference Correctly"></a><strong>Handling CSS and Image Reference Correctly</strong></h6></blockquote>
 <a id="more"></a>
 <blockquote>
-<p>One gotcha that people sometime run into when using Url Rewriting for the very first time is that they find that their image and CSS stylesheet references sometimes seem to stop working.  This is because they have relative references to these files within their HTML pages - and when you start to re-write URLs within an application you need to be aware that the browser will often be requesting files in different logical hierarchy levels than what is really stored on the server.</p>
-<p>For example, if our /products.aspx page above had a relative reference to “logo.jpg” in the .aspx page, but was requested via the /products/books.aspx url, then the browser will send a request for /products/logo.jpg instead of /logo.jpg when it renders the page.  To reference this file correctly, make sure you root qualify CSS and Image references (“/style.css” instead of “style.css”).  For ASP.NET controls, you can also use the ~ syntax to reference files from the root of the application (for example: &lt;asp:image imageurl=”~/images/logo.jpg” runat=”server”/&gt;</p>
+<p>One gotcha that people sometime run into when using Url Rewriting for the very first time is that they find that their image and CSS stylesheet references sometimes seem to stop working.  This is because they have relative references to these files within their HTML pages - and when you start to re-write URLs within an application you need to be aware that the browser will often be requesting files in different logical hierarchy levels than what is really stored on the server.</p>
+<p>For example, if our /products.aspx page above had a relative reference to “logo.jpg” in the .aspx page, but was requested via the /products/books.aspx url, then the browser will send a request for /products/logo.jpg instead of /logo.jpg when it renders the page.  To reference this file correctly, make sure you root qualify CSS and Image references (“/style.css” instead of “style.css”).  For ASP.NET controls, you can also use the ~ syntax to reference files from the root of the application (for example: &lt;asp:image imageurl=”~/images/logo.jpg” runat=”server”/&gt;</p>
 </blockquote>
 <p>This is for sure also the case for javascript. </p>
-<p>I am using the Request.PathInfo way described in Scott’s post to rewrite one url on <a href="http://www.techheadbrothers.com/" target="_blank" rel="noopener">Tech Head Brothers</a>. Everything works fine except that Sys.Services.AuthenticationService get confused about the rewriting of the URL and tries to post back on : </p>
-<p><a href="http://localhost:8080/Auteurs.aspx/laurent-kempe/Authentication_JSON_AppService.axd/Login" target="_blank" rel="noopener">http://localhost:8080/Auteurs.aspx/laurent-kempe/Authentication_JSON_AppService.axd/Login</a> </p>
+<p>I am using the Request.PathInfo way described in Scott’s post to rewrite one url on <a target="_blank" rel="noopener" href="http://www.techheadbrothers.com/">Tech Head Brothers</a>. Everything works fine except that Sys.Services.AuthenticationService get confused about the rewriting of the URL and tries to post back on : </p>
+<p><a target="_blank" rel="noopener" href="http://localhost:8080/Auteurs.aspx/laurent-kempe/Authentication_JSON_AppService.axd/Login">http://localhost:8080/Auteurs.aspx/laurent-kempe/Authentication_JSON_AppService.axd/Login</a> </p>
 <p>When I expect  </p>
-<p><a href="http://localhost:8080/Authentication_JSON_AppService.axd/Login" target="_blank" rel="noopener">http://localhost:8080/Authentication_JSON_AppService.axd/Login</a> </p>
+<p><a target="_blank" rel="noopener" href="http://localhost:8080/Authentication_JSON_AppService.axd/Login">http://localhost:8080/Authentication_JSON_AppService.axd/Login</a> </p>
 <p>Looking at the page rendered by ASP.NET I see that the following is rendered:</p>
 <script type="text/javascript">  
 <!--  
@@ -344,10 +346,10 @@ Sys.Services._AuthenticationService.DefaultWebServicePath = 'Authentication_JSON
 </script>
 
 <p>So I am clearly missing a / in the path and due to that the URL rewriting confuse the post to the server.</p>
-<p>The first solution was found by <a href="http://blogs.codes-sources.com/cyril/" target="_blank" rel="noopener">Cyril Durand</a> (always of good help in this AJAX world ;) and is to add this line of code:</p>
-<p><span style="color: rgb(43,145,175)">ScriptManager</span>.GetCurrent(Page).AuthenticationService.Path = <span style="color: rgb(163,21,21)">“/Authentication_JSON_AppService.axd”</span>;<br><a href="http://11011.net/software/vspaste" target="_blank" rel="noopener"></a></p>
+<p>The first solution was found by <a target="_blank" rel="noopener" href="http://blogs.codes-sources.com/cyril/">Cyril Durand</a> (always of good help in this AJAX world ;) and is to add this line of code:</p>
+<p><span style="color: rgb(43,145,175)">ScriptManager</span>.GetCurrent(Page).AuthenticationService.Path = <span style="color: rgb(163,21,21)">“/Authentication_JSON_AppService.axd”</span>;<br><a target="_blank" rel="noopener" href="http://11011.net/software/vspaste"></a></p>
 <p>But I did it a bit differently, directly in the javascript adding the following line:</p>
-<p>Sys.Services.AuthenticationService.set_path(<span style="color: rgb(163,21,21)">‘/Authentication_JSON_AppService.axd’</span>);<br><a href="http://11011.net/software/vspaste" target="_blank" rel="noopener"></a></p>
+<p>Sys.Services.AuthenticationService.set_path(<span style="color: rgb(163,21,21)">‘/Authentication_JSON_AppService.axd’</span>);<br><a target="_blank" rel="noopener" href="http://11011.net/software/vspaste"></a></p>
 <p>Btw this javascript line would be generated at rendering time by the solution of Cyril.</p>
 <p>Thanks Cyril for the always nice talks.</p>
 
@@ -361,7 +363,7 @@ Sys.Services._AuthenticationService.DefaultWebServicePath = 'Authentication_JSON
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET-2-0/" rel="tag">ASP.NET 2.0</a> <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET-AJAX/" rel="tag">ASP.NET AJAX</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/ASP-NET-2-0/" rel="tag">ASP.NET 2.0</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/ASP-NET-AJAX/" rel="tag">ASP.NET AJAX</a>
 
             </div>
         
@@ -477,7 +479,7 @@ Sys.Services._AuthenticationService.DefaultWebServicePath = 'Authentication_JSON
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -696,7 +698,7 @@ Sys.Services._AuthenticationService.DefaultWebServicePath = 'Authentication_JSON
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

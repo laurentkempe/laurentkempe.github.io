@@ -11,9 +11,11 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I tend to use a lot the Live Template of ReSharper, for example working for some time now with the WPF MVVM pattern I created a ViewModel template of such a class and use it extensively.\nToday I updated the File Template I use to write my NUnit tests like this:\n\n\nusing NUnit.Framework; \nnamespace $NAMESPACE${    // ReSharper disable InconsistentNaming \n[TestFixture]     \npublic class $CLASSNAME$      \n{          \n    /*      \n     * ... hold ...      \n     *       \n     * Arrange - Act - Assert      \n     */ \n\n    [Test]     \n    public void $FIRST_TEST_NAME$()      \n    {      \n        $END$      \n    }      \n}    // ReSharper restore InconsistentNaming}\nwhere I have the variable names defined as this:\n\n","dateCreated":"2009-05-09T14:59:33+00:00","dateModified":"2009-05-09T14:59:33+00:00","datePublished":"2009-05-09T14:59:33+00:00","description":"I tend to use a lot the Live Template of ReSharper, for example working for some time now with the WPF MVVM pattern I created a ViewModel template of such a class and use it extensively.\nToday I updated the File Template I use to write my NUnit tests like this:","headline":"Updated my Live Template for NUnit in ReSharper","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2009/05/09/Updated-my-Live-Template-for-NUnit-in-ReSharper/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2009/05/09/Updated-my-Live-Template-for-NUnit-in-ReSharper/","keywords":"ReSharper, Visual Studio, unit test"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I tend to use a lot the Live Template of ReSharper, for example working for some time now with the WPF MVVM pattern I created a ViewModel template of such a class and use it extensively.\nToday I updated the File Template I use to write my NUnit tests like this:\n\n\nusing NUnit.Framework; \nnamespace $NAMESPACE${    // ReSharper disable InconsistentNaming \n    [TestFixture]    public class $CLASSNAME$    {               /*         * … hold …         *         * Arrange - Act - Assert         */ \n        [Test]        public void $FIRST_TEST_NAME$()        {            $END$        }    } \n   // ReSharper restore InconsistentNaming}\nwhere I have the variable names defined as this:\n\n","dateCreated":"2009-05-09T14:59:33+00:00","dateModified":"2009-05-09T14:59:33+00:00","datePublished":"2009-05-09T14:59:33+00:00","description":"I tend to use a lot the Live Template of ReSharper, for example working for some time now with the WPF MVVM pattern I created a ViewModel template of such a class and use it extensively.\nToday I updated the File Template I use to write my NUnit tests like this:","headline":"Updated my Live Template for NUnit in ReSharper","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2009/05/09/Updated-my-Live-Template-for-NUnit-in-ReSharper/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2009/05/09/Updated-my-Live-Template-for-NUnit-in-ReSharper/","keywords":"ReSharper, Visual Studio, unit test"}</script>
     <meta name="description" content="I tend to use a lot the Live Template of ReSharper, for example working for some time now with the WPF MVVM pattern I created a ViewModel template of such a class and use it extensively. Today I updat">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Updated my Live Template for NUnit in ReSharper">
@@ -43,7 +45,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -326,29 +328,17 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>I tend to use a lot the <a href="http://www.jetbrains.com/resharper/features/code_templates.html" target="_blank" rel="noopener">Live Template of ReSharper</a>, for example working for some time now with the WPF MVVM pattern I created a ViewModel template of such a class and use it extensively.</p>
-<p>Today I updated the <a href="http://www.jetbrains.com/resharper/features/code_templates.html#File_Templates" target="_blank" rel="noopener">File Template</a> I use to write my <a href="http://nunit.com/index.php" target="_blank" rel="noopener">NUnit</a> tests like this:</p>
+            <p>I tend to use a lot the <a target="_blank" rel="noopener" href="http://www.jetbrains.com/resharper/features/code_templates.html">Live Template of ReSharper</a>, for example working for some time now with the WPF MVVM pattern I created a ViewModel template of such a class and use it extensively.</p>
+<p>Today I updated the <a target="_blank" rel="noopener" href="http://www.jetbrains.com/resharper/features/code_templates.html#File_Templates">File Template</a> I use to write my <a target="_blank" rel="noopener" href="http://nunit.com/index.php">NUnit</a> tests like this:</p>
 <a id="more"></a>
 
 <p>using NUnit.Framework; </p>
-<p>namespace $NAMESPACE$<br>{<br>    // ReSharper disable InconsistentNaming </p>
-<pre><code>[TestFixture]     
-public class $CLASSNAME$      
-{          
-    /*      
-     * ... hold ...      
-     *       
-     * Arrange - Act - Assert      
-     */ 
-
-    [Test]     
-    public void $FIRST_TEST_NAME$()      
-    {      
-        $END$      
-    }      
-} </code></pre><p>   // ReSharper restore InconsistentNaming<br>}</p>
+<p>namespace $NAMESPACE$<br>{<br>    // ReSharper disable InconsistentNaming </p>
+<p>    [TestFixture]<br>    public class $CLASSNAME$<br>    {       <br>        /*<br>         * … hold …<br>         *<br>         * Arrange - Act - Assert<br>         */ </p>
+<p>        [Test]<br>        public void $FIRST_TEST_NAME$()<br>        {<br>            $END$<br>        }<br>    } </p>
+<p>   // ReSharper restore InconsistentNaming<br>}</p>
 <p>where I have the variable names defined as this:</p>
-<p><img src="http://farm4.static.flickr.com/3326/3515113386_55481b1a06_o.png" alt=""></p>
+<p><img src="http://farm4.static.flickr.com/3326/3515113386_55481b1a06_o.png"></p>
 
             
 
@@ -360,7 +350,7 @@ public class $CLASSNAME$
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/ReSharper/" rel="tag">ReSharper</a> <a class="tag tag--primary tag--small t-link" href="/tags/Visual-Studio/" rel="tag">Visual Studio</a> <a class="tag tag--primary tag--small t-link" href="/tags/unit-test/" rel="tag">unit test</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/ReSharper/" rel="tag">ReSharper</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Visual-Studio/" rel="tag">Visual Studio</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/unit-test/" rel="tag">unit test</a>
 
             </div>
         
@@ -476,7 +466,7 @@ public class $CLASSNAME$
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -695,7 +685,7 @@ public class $CLASSNAME$
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

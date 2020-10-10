@@ -11,9 +11,11 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"In my development process I do use what Rob is describing in his post “Crazy Talk: Reducing ORM Friction” with some slight differences.\nFor example I developed Tech Head Brothers portal this way, as Innoveo Solutions web site. I use TDD and Domain Driven Development and I keep the mapping as one of the last step for my implementation.\n\n\nI do have a generic Repository interface as following:     \nusing System;\nusing System.Collections.Generic;\nusing System.Linq;\nnamespace TechHeadBrothers.Portal.Infrastructure.Interfaces\n{\n&lt;span style=&quot;color: gray&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: green&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: gray&quot;&gt;&lt;summary&gt;&lt;/span&gt;\n\n&lt;span style=&quot;color: gray&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: green&quot;&gt; IRepository exposes all methods to access the data repository&lt;/span&gt;\n\n&lt;span style=&quot;color: gray&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: green&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: gray&quot;&gt;&lt;/summary&gt;&lt;/span&gt;\n\n&lt;span style=&quot;color: blue&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: blue&quot;&gt;interface&lt;/span&gt; &lt;span style=&quot;color: #2b91af&quot;&gt;IRepository&lt;/span&gt;\n\n{\n\n    &lt;span style=&quot;color: blue&quot;&gt;void&lt;/span&gt; InitializeRepository();\n\n    &lt;span style=&quot;color: blue&quot;&gt;bool&lt;/span&gt; Save&lt;T&gt;(T entity) &lt;span style=&quot;color: blue&quot;&gt;where&lt;/span&gt; T : &lt;span style=&quot;color: blue&quot;&gt;class&lt;/span&gt;;\n\n    &lt;span style=&quot;color: blue&quot;&gt;bool&lt;/span&gt; SaveAll&lt;T&gt;(&lt;span style=&quot;color: #2b91af&quot;&gt;IList&lt;/span&gt;&lt;T&gt; entities) &lt;span style=&quot;color: blue&quot;&gt;where&lt;/span&gt; T : &lt;span style=&quot;color: blue&quot;&gt;class&lt;/span&gt;;\n\n    &lt;span style=&quot;color: blue&quot;&gt;bool&lt;/span&gt; Delete&lt;T&gt;(&lt;span style=&quot;color: blue&quot;&gt;string&lt;/span&gt; id) &lt;span style=&quot;color: blue&quot;&gt;where&lt;/span&gt; T : &lt;span style=&quot;color: blue&quot;&gt;class&lt;/span&gt;;\n\n    T Find&lt;T&gt;(&lt;span style=&quot;color: blue&quot;&gt;string&lt;/span&gt; id) &lt;span style=&quot;color: blue&quot;&gt;where&lt;/span&gt; T : &lt;span style=&quot;color: blue&quot;&gt;class&lt;/span&gt;;\n\n    &lt;span style=&quot;color: #2b91af&quot;&gt;IQueryable&lt;/span&gt;&lt;T&gt; Find&lt;T&gt;();\n\n    &lt;span style=&quot;color: #2b91af&quot;&gt;IQueryable&lt;/span&gt;&lt;T&gt; DetachedFind&lt;T&gt;();\n\n    &lt;span style=&quot;color: #2b91af&quot;&gt;IQueryable&lt;/span&gt;&lt;T&gt; Find&lt;T&gt;(System.Linq.Expressions.&lt;span style=&quot;color: #2b91af&quot;&gt;Expression&lt;/span&gt;&lt;&lt;span style=&quot;color: #2b91af&quot;&gt;Func&lt;/span&gt;&lt;T, &lt;span style=&quot;color: blue&quot;&gt;bool&lt;/span&gt;&gt;&gt; expression);\n\n    &lt;span style=&quot;color: blue&quot;&gt;int&lt;/span&gt; Count&lt;T&gt;();\n\n    &lt;span style=&quot;color: blue&quot;&gt;int&lt;/span&gt; Count&lt;T&gt;(System.Linq.Expressions.&lt;span style=&quot;color: #2b91af&quot;&gt;Expression&lt;/span&gt;&lt;&lt;span style=&quot;color: #2b91af&quot;&gt;Func&lt;/span&gt;&lt;T, &lt;span style=&quot;color: blue&quot;&gt;bool&lt;/span&gt;&gt;&gt; expression);\n\n}}\n   \n\nMy ORM mapping tool of choice is Euss. And here comes the slight difference, I do have one implementation of my interface leveraging Euss, and that’s it. All different possibilities are handled by Euss. During my work on the definition of the domain I took the habit to use an Euss XML Engine or an Euss Memory Engine. I use those two engine for my unit test and my real application.\nFollowing the lean principle I postpone the choice of the data repository till the last minute, when I know more about the real need. So it really happen that I stay with an XML Engine so that all my data are stored in an XML file. If I need more I go to an Euss SQL Mapper Engine and then define the mapping.\nSo I moved to the ORM framework the different implementations.\nNow I am still free to go to another ORM, or something else, by using the interface IRepository.\nI used several time this technique and I am currently happy about it.\n","dateCreated":"2008-11-05T06:20:24+00:00","dateModified":"2008-11-05T06:20:24+00:00","datePublished":"2008-11-05T06:20:24+00:00","description":"In my development process I do use what Rob is describing in his post “Crazy Talk: Reducing ORM Friction” with some slight differences.\nFor example I developed Tech Head Brothers portal this way, as Innoveo Solutions web site. I use TDD and Domain Driven Development and I keep the mapping as one of the last step for my implementation.","headline":"Follow up on “Reducing ORM Friction” by Rob Conery","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/11/05/Follow-up-on-e2809cReducing-ORM-Frictione2809d-by-Rob-Conery/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2008/11/05/Follow-up-on-e2809cReducing-ORM-Frictione2809d-by-Rob-Conery/","keywords":"Agile, unit test, Euss, ORM"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"In my development process I do use what Rob is describing in his post “Crazy Talk: Reducing ORM Friction” with some slight differences.\nFor example I developed Tech Head Brothers portal this way, as Innoveo Solutions web site. I use TDD and Domain Driven Development and I keep the mapping as one of the last step for my implementation.\n\n\nI do have a generic Repository interface as following:     \nusing System;\nusing System.Collections.Generic;\nusing System.Linq;\nnamespace TechHeadBrothers.Portal.Infrastructure.Interfaces\n{\n    /// \n    /// IRepository exposes all methods to access the data repository\n    /// \n    public interface IRepository\n    {\n        void InitializeRepository();\n        bool Save(T entity) where T : class;\n        bool SaveAll(IList entities) where T : class;\n        bool Delete(string id) where T : class;\n        T Find(string id) where T : class;\n        IQueryable Find();\n        IQueryable DetachedFind();\n        IQueryable Find(System.Linq.Expressions.Expression&lt;Func&lt;T, bool&gt;&gt; expression);\n        int Count();\n        int Count(System.Linq.Expressions.Expression&lt;Func&lt;T, bool&gt;&gt; expression);\n    }\n}\n   \n\nMy ORM mapping tool of choice is Euss. And here comes the slight difference, I do have one implementation of my interface leveraging Euss, and that’s it. All different possibilities are handled by Euss. During my work on the definition of the domain I took the habit to use an Euss XML Engine or an Euss Memory Engine. I use those two engine for my unit test and my real application.\nFollowing the lean principle I postpone the choice of the data repository till the last minute, when I know more about the real need. So it really happen that I stay with an XML Engine so that all my data are stored in an XML file. If I need more I go to an Euss SQL Mapper Engine and then define the mapping.\nSo I moved to the ORM framework the different implementations.\nNow I am still free to go to another ORM, or something else, by using the interface IRepository.\nI used several time this technique and I am currently happy about it.\n","dateCreated":"2008-11-05T06:20:24+00:00","dateModified":"2008-11-05T06:20:24+00:00","datePublished":"2008-11-05T06:20:24+00:00","description":"In my development process I do use what Rob is describing in his post “Crazy Talk: Reducing ORM Friction” with some slight differences.\nFor example I developed Tech Head Brothers portal this way, as Innoveo Solutions web site. I use TDD and Domain Driven Development and I keep the mapping as one of the last step for my implementation.","headline":"Follow up on “Reducing ORM Friction” by Rob Conery","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/11/05/Follow-up-on-e2809cReducing-ORM-Frictione2809d-by-Rob-Conery/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2008/11/05/Follow-up-on-e2809cReducing-ORM-Frictione2809d-by-Rob-Conery/","keywords":"Agile, unit test, Euss, ORM"}</script>
     <meta name="description" content="In my development process I do use what Rob is describing in his post “Crazy Talk: Reducing ORM Friction” with some slight differences. For example I developed Tech Head Brothers portal this way, as I">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Follow up on “Reducing ORM Friction” by Rob Conery">
@@ -42,7 +44,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -325,8 +327,8 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>In my development process I do use what Rob is describing in his post “<a href="http://blog.wekeroad.com/blog/crazy-talk-reducing-orm-friction/" target="_blank" rel="noopener">Crazy Talk: Reducing ORM Friction</a>” with some slight differences.</p>
-<p>For example I developed <a href="http://www.techheadbrothers.com/" target="_blank" rel="noopener">Tech Head Brothers</a> portal this way, as <a href="http://www.innoveo.com" target="_blank" rel="noopener">Innoveo Solutions</a> web site. I use TDD and Domain Driven Development and I keep the mapping as one of the last step for my implementation.</p>
+            <p>In my development process I do use what Rob is describing in his post “<a target="_blank" rel="noopener" href="http://blog.wekeroad.com/blog/crazy-talk-reducing-orm-friction/">Crazy Talk: Reducing ORM Friction</a>” with some slight differences.</p>
+<p>For example I developed <a target="_blank" rel="noopener" href="http://www.techheadbrothers.com/">Tech Head Brothers</a> portal this way, as <a target="_blank" rel="noopener" href="http://www.innoveo.com/">Innoveo Solutions</a> web site. I use TDD and Domain Driven Development and I keep the mapping as one of the last step for my implementation.</p>
 <a id="more"></a>
 
 <p>I do have a generic Repository interface as following:<br>  <div style="font-family: courier new; background: white; color: black; font-size: 10pt">   </p>
@@ -335,41 +337,27 @@
 <p><span style="color: blue">using</span> System.Linq;</p>
 <p><span style="color: blue">namespace</span> TechHeadBrothers.Portal.Infrastructure.Interfaces</p>
 <p>{</p>
-<pre><code>&lt;span style=&quot;color: gray&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: green&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: gray&quot;&gt;&lt;summary&gt;&lt;/span&gt;
-
-&lt;span style=&quot;color: gray&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: green&quot;&gt; IRepository exposes all methods to access the data repository&lt;/span&gt;
-
-&lt;span style=&quot;color: gray&quot;&gt;///&lt;/span&gt;&lt;span style=&quot;color: green&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: gray&quot;&gt;&lt;/summary&gt;&lt;/span&gt;
-
-&lt;span style=&quot;color: blue&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: blue&quot;&gt;interface&lt;/span&gt; &lt;span style=&quot;color: #2b91af&quot;&gt;IRepository&lt;/span&gt;
-
-{
-
-    &lt;span style=&quot;color: blue&quot;&gt;void&lt;/span&gt; InitializeRepository();
-
-    &lt;span style=&quot;color: blue&quot;&gt;bool&lt;/span&gt; Save&lt;T&gt;(T entity) &lt;span style=&quot;color: blue&quot;&gt;where&lt;/span&gt; T : &lt;span style=&quot;color: blue&quot;&gt;class&lt;/span&gt;;
-
-    &lt;span style=&quot;color: blue&quot;&gt;bool&lt;/span&gt; SaveAll&lt;T&gt;(&lt;span style=&quot;color: #2b91af&quot;&gt;IList&lt;/span&gt;&lt;T&gt; entities) &lt;span style=&quot;color: blue&quot;&gt;where&lt;/span&gt; T : &lt;span style=&quot;color: blue&quot;&gt;class&lt;/span&gt;;
-
-    &lt;span style=&quot;color: blue&quot;&gt;bool&lt;/span&gt; Delete&lt;T&gt;(&lt;span style=&quot;color: blue&quot;&gt;string&lt;/span&gt; id) &lt;span style=&quot;color: blue&quot;&gt;where&lt;/span&gt; T : &lt;span style=&quot;color: blue&quot;&gt;class&lt;/span&gt;;
-
-    T Find&lt;T&gt;(&lt;span style=&quot;color: blue&quot;&gt;string&lt;/span&gt; id) &lt;span style=&quot;color: blue&quot;&gt;where&lt;/span&gt; T : &lt;span style=&quot;color: blue&quot;&gt;class&lt;/span&gt;;
-
-    &lt;span style=&quot;color: #2b91af&quot;&gt;IQueryable&lt;/span&gt;&lt;T&gt; Find&lt;T&gt;();
-
-    &lt;span style=&quot;color: #2b91af&quot;&gt;IQueryable&lt;/span&gt;&lt;T&gt; DetachedFind&lt;T&gt;();
-
-    &lt;span style=&quot;color: #2b91af&quot;&gt;IQueryable&lt;/span&gt;&lt;T&gt; Find&lt;T&gt;(System.Linq.Expressions.&lt;span style=&quot;color: #2b91af&quot;&gt;Expression&lt;/span&gt;&lt;&lt;span style=&quot;color: #2b91af&quot;&gt;Func&lt;/span&gt;&lt;T, &lt;span style=&quot;color: blue&quot;&gt;bool&lt;/span&gt;&gt;&gt; expression);
-
-    &lt;span style=&quot;color: blue&quot;&gt;int&lt;/span&gt; Count&lt;T&gt;();
-
-    &lt;span style=&quot;color: blue&quot;&gt;int&lt;/span&gt; Count&lt;T&gt;(System.Linq.Expressions.&lt;span style=&quot;color: #2b91af&quot;&gt;Expression&lt;/span&gt;&lt;&lt;span style=&quot;color: #2b91af&quot;&gt;Func&lt;/span&gt;&lt;T, &lt;span style=&quot;color: blue&quot;&gt;bool&lt;/span&gt;&gt;&gt; expression);
-
-}</code></pre><p>}</p>
+<p>    <span style="color: gray">///</span><span style="color: green"> </span><span style="color: gray"><summary></span></p>
+<p>    <span style="color: gray">///</span><span style="color: green"> IRepository exposes all methods to access the data repository</span></p>
+<p>    <span style="color: gray">///</span><span style="color: green"> </span><span style="color: gray"></summary></span></p>
+<p>    <span style="color: blue">public</span> <span style="color: blue">interface</span> <span style="color: #2b91af">IRepository</span></p>
+<p>    {</p>
+<p>        <span style="color: blue">void</span> InitializeRepository();</p>
+<p>        <span style="color: blue">bool</span> Save<T>(T entity) <span style="color: blue">where</span> T : <span style="color: blue">class</span>;</p>
+<p>        <span style="color: blue">bool</span> SaveAll<T>(<span style="color: #2b91af">IList</span><T> entities) <span style="color: blue">where</span> T : <span style="color: blue">class</span>;</p>
+<p>        <span style="color: blue">bool</span> Delete<T>(<span style="color: blue">string</span> id) <span style="color: blue">where</span> T : <span style="color: blue">class</span>;</p>
+<p>        T Find<T>(<span style="color: blue">string</span> id) <span style="color: blue">where</span> T : <span style="color: blue">class</span>;</p>
+<p>        <span style="color: #2b91af">IQueryable</span><T> Find<T>();</p>
+<p>        <span style="color: #2b91af">IQueryable</span><T> DetachedFind<T>();</p>
+<p>        <span style="color: #2b91af">IQueryable</span><T> Find<T>(System.Linq.Expressions.<span style="color: #2b91af">Expression</span>&lt;<span style="color: #2b91af">Func</span>&lt;T, <span style="color: blue">bool</span>&gt;&gt; expression);</p>
+<p>        <span style="color: blue">int</span> Count<T>();</p>
+<p>        <span style="color: blue">int</span> Count<T>(System.Linq.Expressions.<span style="color: #2b91af">Expression</span>&lt;<span style="color: #2b91af">Func</span>&lt;T, <span style="color: blue">bool</span>&gt;&gt; expression);</p>
+<p>    }</p>
+<p>}</p>
  </div>  
 
-<p>My ORM mapping tool of choice is <a href="http://www.codeplex.com/euss/" target="_blank" rel="noopener">Euss</a>. And here comes the slight difference, I do have one implementation of my interface leveraging Euss, and that’s it. All different possibilities are handled by Euss. During my work on the definition of the domain I took the habit to use an <a href="http://www.codeplex.com/euss/" target="_blank" rel="noopener">Euss</a> XML Engine or an <a href="http://www.codeplex.com/euss/" target="_blank" rel="noopener">Euss</a> Memory Engine. I use those two engine for my unit test and my real application.</p>
-<p>Following the <a href="http://www.poppendieck.com/ilsd.htm" target="_blank" rel="noopener">lean principle</a> I postpone the choice of the data repository till the last minute, when I know more about the real need. So it really happen that I stay with an XML Engine so that all my data are stored in an XML file. If I need more I go to an Euss SQL Mapper Engine and then define the mapping.</p>
+<p>My ORM mapping tool of choice is <a target="_blank" rel="noopener" href="http://www.codeplex.com/euss/">Euss</a>. And here comes the slight difference, I do have one implementation of my interface leveraging Euss, and that’s it. All different possibilities are handled by Euss. During my work on the definition of the domain I took the habit to use an <a target="_blank" rel="noopener" href="http://www.codeplex.com/euss/">Euss</a> XML Engine or an <a target="_blank" rel="noopener" href="http://www.codeplex.com/euss/">Euss</a> Memory Engine. I use those two engine for my unit test and my real application.</p>
+<p>Following the <a target="_blank" rel="noopener" href="http://www.poppendieck.com/ilsd.htm">lean principle</a> I postpone the choice of the data repository till the last minute, when I know more about the real need. So it really happen that I stay with an XML Engine so that all my data are stored in an XML file. If I need more I go to an Euss SQL Mapper Engine and then define the mapping.</p>
 <p>So I moved to the ORM framework the different implementations.</p>
 <p>Now I am still free to go to another ORM, or something else, by using the interface IRepository.</p>
 <p>I used several time this technique and I am currently happy about it.</p>
@@ -384,7 +372,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/Agile/" rel="tag">Agile</a> <a class="tag tag--primary tag--small t-link" href="/tags/Euss/" rel="tag">Euss</a> <a class="tag tag--primary tag--small t-link" href="/tags/ORM/" rel="tag">ORM</a> <a class="tag tag--primary tag--small t-link" href="/tags/unit-test/" rel="tag">unit test</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Agile/" rel="tag">Agile</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Euss/" rel="tag">Euss</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/ORM/" rel="tag">ORM</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/unit-test/" rel="tag">unit test</a>
 
             </div>
         
@@ -500,7 +488,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -719,7 +707,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

@@ -11,7 +11,9 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
     <script type="application/ld+json">{}</script>
     <meta property="og:type" content="blog">
@@ -34,7 +36,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -320,8 +322,8 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <p><a href="http://codebetter.com/blogs/patricksmacchia/" target="_blank" rel="noopener">Patrick</a> just announced on his blog the launch of the new <a href="http://www.ndepend.com/Version3BetaProgram.aspx" target="_blank" rel="noopener">NDepend v3</a>. It is still in beta but very stable. I am testing it for a month now and enjoy very much it’s integration in Visual Studio 2008. I was using it and will continue to use it in our continuous integration server, <a href="http://www.jetbrains.com/teamcity/index.html" target="_blank" rel="noopener">TeamCity</a>. But getting feedback right out of the developer environment is a very interesting feature.</p>
-<p>Read more on Patrick’s blog post, “<a href="http://codebetter.com/blogs/patricksmacchia/archive/2010/01/28/ndepend-v3-is-now-100-integrated-in-visual-studio.aspx" target="_blank" rel="noopener">NDepend v3 is now 100% integrated in Visual Studio</a>“</p>
+                    <p><a target="_blank" rel="noopener" href="http://codebetter.com/blogs/patricksmacchia/">Patrick</a> just announced on his blog the launch of the new <a target="_blank" rel="noopener" href="http://www.ndepend.com/Version3BetaProgram.aspx">NDepend v3</a>. It is still in beta but very stable. I am testing it for a month now and enjoy very much it’s integration in Visual Studio 2008. I was using it and will continue to use it in our continuous integration server, <a target="_blank" rel="noopener" href="http://www.jetbrains.com/teamcity/index.html">TeamCity</a>. But getting feedback right out of the developer environment is a very interesting feature.</p>
+<p>Read more on Patrick’s blog post, “<a target="_blank" rel="noopener" href="http://codebetter.com/blogs/patricksmacchia/archive/2010/01/28/ndepend-v3-is-now-100-integrated-in-visual-studio.aspx">NDepend v3 is now 100% integrated in Visual Studio</a>“</p>
                     
                         <a
                             href="/2010/01/28/NDepend-v3-now-10025-integrated-in-Visual-Studio/"
@@ -366,9 +368,9 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <p>Tonight we got the following issue on our <a href="http://www.jetbrains.com/teamcity/index.html" target="_blank" rel="noopener">TeamCity</a> build server which produce different ClickOnce setups :</p>
+                    <p>Tonight we got the following issue on our <a target="_blank" rel="noopener" href="http://www.jetbrains.com/teamcity/index.html">TeamCity</a> build server which produce different ClickOnce setups :</p>
 <blockquote>
-<p>c:\WINDOWS\Microsoft.NET\Framework\v3.5\Microsoft.Common.targets(3652, 9): <strong>error MSB3482: An error occurred while signing: Failed to sign ....\Tests\Output\bin\DeployClickOnce\app.publish\setup.exe</strong>. </p>
+<p>c:\WINDOWS\Microsoft.NET\Framework\v3.5\Microsoft.Common.targets(3652, 9): <strong>error MSB3482: An error occurred while signing: Failed to sign ....\Tests\Output\bin\DeployClickOnce\app.publish\setup.exe</strong>. </p>
 </blockquote>
                     
                         <a
@@ -414,7 +416,7 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <p>Tonight I was facing an issue with <a href="http://www.jetbrains.com/teamcity/index.html" target="_blank" rel="noopener">TeamCity</a> 5.0 plugin in Visual Studio 2008. </p>
+                    <p>Tonight I was facing an issue with <a target="_blank" rel="noopener" href="http://www.jetbrains.com/teamcity/index.html">TeamCity</a> 5.0 plugin in Visual Studio 2008. </p>
 <p>I was getting the error message ‘​Failed to collect changes error’ in the new Local changes window.</p>
                     
                         <a
@@ -460,9 +462,9 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <p>JetBrains just published <a href="http://www.jetbrains.com/teamcity/index.html" target="_blank" rel="noopener">TeamCity</a> 5.</p>
+                    <p>JetBrains just published <a target="_blank" rel="noopener" href="http://www.jetbrains.com/teamcity/index.html">TeamCity</a> 5.</p>
 <blockquote>
-<p>The wait is over, ladies and gentlemen! The release build is baked, tested, and put on the shelf. Tastes good, so go and <a href="http://www.jetbrains.com/teamcity/download/index.html" target="_blank" rel="noopener">grab it now</a>!</p>
+<p>The wait is over, ladies and gentlemen! The release build is baked, tested, and put on the shelf. Tastes good, so go and <a target="_blank" rel="noopener" href="http://www.jetbrains.com/teamcity/download/index.html">grab it now</a>!</p>
 </blockquote>
                     
                         <a
@@ -508,8 +510,8 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <p>Since some time I have the current scenario where I need to have conditional reference in a project. Basically the application must reference an assembly in one case in other it should reference another one. This was working correctly from an MSBuild point of view as the first implemented solution let me compile and run the application on my development machine and it was also working for our <a href="http://www.jetbrains.com/teamcity/index.html" target="_blank" rel="noopener">TeamCity</a> build server. So everything was fine in this perfect word expect one thing!</p>
-<p>The issue was the following; Visual Studio was showing two references of the ‘same assembly’ with different path. Not really an issue you would say because the correct one was used at compile time and at run time in all configurations. So the issue was that this had an impact of <a href="http://www.jetbrains.com/resharper/index.html" target="_blank" rel="noopener">ReSharper</a>. And this is I cannot accept because it affect my productivity.</p>
+                    <p>Since some time I have the current scenario where I need to have conditional reference in a project. Basically the application must reference an assembly in one case in other it should reference another one. This was working correctly from an MSBuild point of view as the first implemented solution let me compile and run the application on my development machine and it was also working for our <a target="_blank" rel="noopener" href="http://www.jetbrains.com/teamcity/index.html">TeamCity</a> build server. So everything was fine in this perfect word expect one thing!</p>
+<p>The issue was the following; Visual Studio was showing two references of the ‘same assembly’ with different path. Not really an issue you would say because the correct one was used at compile time and at run time in all configurations. So the issue was that this had an impact of <a target="_blank" rel="noopener" href="http://www.jetbrains.com/resharper/index.html">ReSharper</a>. And this is I cannot accept because it affect my productivity.</p>
                     
                         <a
                             href="/2009/12/03/ProjectReference-with-Condition-in-your-MSBuild-project-files/"
@@ -555,7 +557,7 @@
             
                 <div class="postShorten-excerpt">
                     <p>I wanted today to display the application version in front of our builds, something I already did on the past but never with the VCS version.</p>
-<p>In fact I used the same <a href="http://www.jetbrains.net/confluence/display/TCD4/Predefined+Properties" target="_blank" rel="noopener">BUILD_VCS_NUMBER_<simplified VCS root name></a> that I described here: <a href="http://weblogs.asp.net/lkempe/archive/2009/11/03/build-multiple-clickonce-deployment-packages-using-msbuild-and-team-city.aspx" target="_blank" rel="noopener">Build multiple ClickOnce deployment packages using MSBuild and Team City</a></p>
+<p>In fact I used the same <a target="_blank" rel="noopener" href="http://www.jetbrains.net/confluence/display/TCD4/Predefined+Properties">BUILD_VCS_NUMBER_<simplified VCS root name></a> that I described here: <a target="_blank" rel="noopener" href="http://weblogs.asp.net/lkempe/archive/2009/11/03/build-multiple-clickonce-deployment-packages-using-msbuild-and-team-city.aspx">Build multiple ClickOnce deployment packages using MSBuild and Team City</a></p>
                     
                         <a
                             href="/2009/11/12/Displaying-application-version-on-TeamCity-home-page/"
@@ -600,8 +602,8 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <p>The other day I published different posts about the way I automated our build process at <a href="http://www.innoveo.com/" target="_blank" rel="noopener">Innoveo Solutions</a> to generate different ClickOnce setup using <a href="http://www.jetbrains.com/teamcity/index.html" target="_blank" rel="noopener">TeamCity</a>: </p>
-<p><a href="http://weblogs.asp.net/lkempe/archive/2009/11/03/build-multiple-clickonce-deployment-packages-using-msbuild-and-team-city.aspx" target="_blank" rel="noopener">Build multiple ClickOnce deployment packages using MSBuild and Team City</a>      </p>
+                    <p>The other day I published different posts about the way I automated our build process at <a target="_blank" rel="noopener" href="http://www.innoveo.com/">Innoveo Solutions</a> to generate different ClickOnce setup using <a target="_blank" rel="noopener" href="http://www.jetbrains.com/teamcity/index.html">TeamCity</a>: </p>
+<p><a target="_blank" rel="noopener" href="http://weblogs.asp.net/lkempe/archive/2009/11/03/build-multiple-clickonce-deployment-packages-using-msbuild-and-team-city.aspx">Build multiple ClickOnce deployment packages using MSBuild and Team City</a>      </p>
                     
                         <a
                             href="/2009/11/11/Automating-Publish-of-ClickOnce-with-TeamCity/"
@@ -646,7 +648,7 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <p>Browsing <a href="http://www.jetbrains.com/teamcity/index.html" target="_blank" rel="noopener">TeamCity</a> documentation this evening I discovered that it is possible to <a href="http://www.jetbrains.net/confluence/display/TCD5/How+To...#HowTo...-WatchSeveralTeamCityServersWithWindowsTrayNotifier" target="_blank" rel="noopener">Watch Several TeamCity Servers With Windows Tray Notifier</a></p>
+                    <p>Browsing <a target="_blank" rel="noopener" href="http://www.jetbrains.com/teamcity/index.html">TeamCity</a> documentation this evening I discovered that it is possible to <a target="_blank" rel="noopener" href="http://www.jetbrains.net/confluence/display/TCD5/How+To...#HowTo...-WatchSeveralTeamCityServersWithWindowsTrayNotifier">Watch Several TeamCity Servers With Windows Tray Notifier</a></p>
 <blockquote>
 <p>TeamCity Tray Notifier is used normally to watch builds and receive notifications from a single TeamCity server.</p>
 </blockquote>
@@ -694,8 +696,8 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <p>The other day I posted about <a href="http://weblogs.asp.net/lkempe/archive/2009/10/27/build-clickonce-deployment-packages-using-msbuild-and-team-city.aspx" target="_blank" rel="noopener">Build ClickOnce deployment packages using MSBuild and Team City</a>, and there were something that I didn’t liked in my way of doing it.</p>
-<p>I have multiple ClickOnce deployment packages created using TeamCity and MSBuild but each ClickOnce packages have their own Application Revision due to the usage of TeamCity <a href="http://www.jetbrains.net/confluence/display/TCD4/Predefined+Properties" target="_blank" rel="noopener">BUILD_NUMBER server build property</a>.</p>
+                    <p>The other day I posted about <a target="_blank" rel="noopener" href="http://weblogs.asp.net/lkempe/archive/2009/10/27/build-clickonce-deployment-packages-using-msbuild-and-team-city.aspx">Build ClickOnce deployment packages using MSBuild and Team City</a>, and there were something that I didn’t liked in my way of doing it.</p>
+<p>I have multiple ClickOnce deployment packages created using TeamCity and MSBuild but each ClickOnce packages have their own Application Revision due to the usage of TeamCity <a target="_blank" rel="noopener" href="http://www.jetbrains.net/confluence/display/TCD4/Predefined+Properties">BUILD_NUMBER server build property</a>.</p>
                     
                         <a
                             href="/2009/11/03/Build-multiple-ClickOnce-deployment-packages-using-MSBuild-and-Team-City/"
@@ -740,7 +742,7 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <p><a href="http://weblogs.asp.net/lkempe/archive/2009/11/02/teamcity-migration-tip.aspx" target="_blank" rel="noopener">Migrating our TeamCity</a> server today I got the following error on the new server:</p>
+                    <p><a target="_blank" rel="noopener" href="http://weblogs.asp.net/lkempe/archive/2009/11/02/teamcity-migration-tip.aspx">Migrating our TeamCity</a> server today I got the following error on the new server:</p>
 <p>error MSB3147: Could not find required file ‘setup.bin’ in …</p>
                     
                         <a
@@ -843,7 +845,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

@@ -11,7 +11,9 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I have reached now another step on the new authoring tool for Tech Head Brothers portal by having some authors installing this new version and starting beta testing it. Has you can see, with the following twit, it seems that the tool is on the good way:\nFrom Rédo (french blog)\n\n\n\nJust try the new beta tool of publishing for http://www.techheadbrothers… …. that’s the Wouawwww effect !!! … sorry, it’s NDA ;p about 23 hours ago\n\nFrom Jon Galloway (blog)\n\n@laurentkempe Like I said, I’d pay money for it, and I’m very cheap. Very cool. about 15 hours ago from web in reply to laurentkempe\n\nThis tool let all authors write articles using a customized Word 2007, preview it offline in Internet Explorer as it will be seen on the portal and finally post the article to the portal directly from Word 2007. It is a replacement of THBAuthoring, my old tool found on CodePlex.\nTo achieve this goal I am using quite some technologies. First Word 2007, Ribbon, .NET Framework 3.5 SP1, VSTO 3.0, OpenXML, WordML, XML Schema, XSLT. Than for sure C#, Linq to XML, Linq to Object.\nFor the installation I use ClickOnce. That’s a great improvement! I had so much issues with THBAuthoring.\nFrom an author point of view you are using a almost normal Word 2007 document with different predefined styles, bold, list… There is two exceptions:\n\nSource code\nZip with sample code  \n\nThe usage scenario for the inserting Source Code into the Word document is as following:\n\nCopy the code into the clipboard from Visual Studio 2008/2005\nPosition the cursor into the Word 2007 document where you want to insert the Source Code\nClick on the button Source Code on the custom Ribbon\nThat’s it, easy no?  \n\nThis brings clear text of the source code into the document and colored source code into the HTML preview.\nThe usage scenario for attaching the Zip with the sample code is also easy:\n\nClick on the button Zip in the custom Ribbon\nIn the opening File selector dialog browse to your zip file and select one\nThat’s it, easy no?  \n\nFinally there is another usage scenario; inserting pictures:\n\nFrom Windows Explorer copy a picture file\nPosition the cursor in the Word 2007 document\nPaste\nThat’s it, easy no?  \n\nSo, how does it work technically!\nIt works by doing a projection of the WordML to a well formed Tech Head Brothers XML document defined by an XML Schema. Then it uses a XSLT to produce HTML.\nI hope to find the time to make a little video soon to demonstrate the way it is used!\nHere is a picture of the tool\n\n","dateCreated":"2008-08-22T04:59:58+00:00","dateModified":"2008-08-22T04:59:58+00:00","datePublished":"2008-08-22T04:59:58+00:00","description":"I have reached now another step on the new authoring tool for Tech Head Brothers portal by having some authors installing this new version and starting beta testing it. Has you can see, with the following twit, it seems that the tool is on the good way:\nFrom Rédo (french blog)","headline":"Wowwwwww effect of my new Word 2007 authoring tool","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/08/22/Wowwwwww-effect-of-my-new-Word-2007-authoring-tool/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2008/08/22/Wowwwwww-effect-of-my-new-Word-2007-authoring-tool/","keywords":"Tech Head Brothers, Linq, Open XML, VSTO, .NET Framework 3.5, Office 2007, WordML"}</script>
     <meta name="description" content="I have reached now another step on the new authoring tool for Tech Head Brothers portal by having some authors installing this new version and starting beta testing it. Has you can see, with the follo">
@@ -47,7 +49,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -330,20 +332,20 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>I have reached now another step on the new authoring tool for <a href="http://www.techheadbrothers.com/" target="_blank" rel="noopener">Tech Head Brothers</a> portal by having some authors installing this new version and starting beta testing it. Has you can see, with the following <a href="http://www.twitter.com/" target="_blank" rel="noopener">twit</a>, it seems that the tool is on the good way:</p>
-<p>From <a href="http://twitter.com/Redo" target="_blank" rel="noopener">Rédo</a> (<a href="http://blogs.codes-sources.com/redo" target="_blank" rel="noopener">french blog</a>)</p>
+            <p>I have reached now another step on the new authoring tool for <a target="_blank" rel="noopener" href="http://www.techheadbrothers.com/">Tech Head Brothers</a> portal by having some authors installing this new version and starting beta testing it. Has you can see, with the following <a target="_blank" rel="noopener" href="http://www.twitter.com/">twit</a>, it seems that the tool is on the good way:</p>
+<p>From <a target="_blank" rel="noopener" href="http://twitter.com/Redo">Rédo</a> (<a target="_blank" rel="noopener" href="http://blogs.codes-sources.com/redo">french blog</a>)</p>
 <a id="more"></a>
 
 <blockquote>
-<p>Just try the new beta tool of publishing for <a href="http://www.techheadbrothers.com/" target="_blank" rel="noopener">http://www.techheadbrothers…</a> …. that’s the Wouawwww effect !!! … sorry, it’s NDA ;p <a href="http://twitter.com/Redo/statuses/893763572" target="_blank" rel="noopener"><abbr>about 23 hours</abbr> ago</a></p>
+<p>Just try the new beta tool of publishing for <a target="_blank" rel="noopener" href="http://www.techheadbrothers.com/">http://www.techheadbrothers…</a> …. that’s the Wouawwww effect !!! … sorry, it’s NDA ;p <a target="_blank" rel="noopener" href="http://twitter.com/Redo/statuses/893763572"><abbr>about 23 hours</abbr> ago</a></p>
 </blockquote>
-<p>From <a href="http://twitter.com/jongalloway" target="_blank" rel="noopener">Jon Galloway</a> (<a href="http://weblogs.asp.net/jgalloway" target="_blank" rel="noopener">blog</a>)</p>
+<p>From <a target="_blank" rel="noopener" href="http://twitter.com/jongalloway">Jon Galloway</a> (<a target="_blank" rel="noopener" href="http://weblogs.asp.net/jgalloway">blog</a>)</p>
 <blockquote>
-<p>@<a href="http://twitter.com/laurentkempe" target="_blank" rel="noopener">laurentkempe</a> Like I said, I’d pay money for it, and I’m very cheap. Very cool. <a href="http://twitter.com/jongalloway/statuses/894115079" target="_blank" rel="noopener"><abbr>about 15 hours</abbr> ago</a> from web <a href="http://twitter.com/laurentkempe/statuses/894105384" target="_blank" rel="noopener">in reply to laurentkempe</a></p>
+<p>@<a target="_blank" rel="noopener" href="http://twitter.com/laurentkempe">laurentkempe</a> Like I said, I’d pay money for it, and I’m very cheap. Very cool. <a target="_blank" rel="noopener" href="http://twitter.com/jongalloway/statuses/894115079"><abbr>about 15 hours</abbr> ago</a> from web <a target="_blank" rel="noopener" href="http://twitter.com/laurentkempe/statuses/894105384">in reply to laurentkempe</a></p>
 </blockquote>
-<p>This tool let all authors write articles using a customized Word 2007, preview it offline in Internet Explorer as it will be seen on the portal and finally post the article to the portal directly from Word 2007. It is a replacement of <a href="http://www.codeplex.com/THBAuthoring" target="_blank" rel="noopener">THBAuthoring</a>, my old tool found on <a href="http://www.codeplex.com/" target="_blank" rel="noopener">CodePlex</a>.</p>
+<p>This tool let all authors write articles using a customized Word 2007, preview it offline in Internet Explorer as it will be seen on the portal and finally post the article to the portal directly from Word 2007. It is a replacement of <a target="_blank" rel="noopener" href="http://www.codeplex.com/THBAuthoring">THBAuthoring</a>, my old tool found on <a target="_blank" rel="noopener" href="http://www.codeplex.com/">CodePlex</a>.</p>
 <p>To achieve this goal I am using quite some technologies. First Word 2007, Ribbon, .NET Framework 3.5 SP1, VSTO 3.0, OpenXML, WordML, XML Schema, XSLT. Than for sure C#, Linq to XML, Linq to Object.</p>
-<p>For the installation I use ClickOnce. That’s a great improvement! I had so much issues with <a href="http://www.codeplex.com/THBAuthoring" target="_blank" rel="noopener">THBAuthoring</a>.</p>
+<p>For the installation I use ClickOnce. That’s a great improvement! I had so much issues with <a target="_blank" rel="noopener" href="http://www.codeplex.com/THBAuthoring">THBAuthoring</a>.</p>
 <p>From an author point of view you are using a almost normal Word 2007 document with different predefined styles, bold, list… There is two exceptions:</p>
 <ol>
 <li>Source code</li>
@@ -374,7 +376,7 @@
 <p>It works by doing a projection of the WordML to a well formed Tech Head Brothers XML document defined by an XML Schema. Then it uses a XSLT to produce HTML.</p>
 <p>I hope to find the time to make a little video soon to demonstrate the way it is used!</p>
 <p>Here is a picture of the tool</p>
-<p><img src="http://farm3.static.flickr.com/2086/2327067069_1e37deaa06_o.jpg" alt=""></p>
+<p><img src="http://farm3.static.flickr.com/2086/2327067069_1e37deaa06_o.jpg"></p>
 
             
 
@@ -386,7 +388,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/NET-Framework-3-5/" rel="tag">.NET Framework 3.5</a> <a class="tag tag--primary tag--small t-link" href="/tags/Linq/" rel="tag">Linq</a> <a class="tag tag--primary tag--small t-link" href="/tags/Office-2007/" rel="tag">Office 2007</a> <a class="tag tag--primary tag--small t-link" href="/tags/Open-XML/" rel="tag">Open XML</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tech-Head-Brothers/" rel="tag">Tech Head Brothers</a> <a class="tag tag--primary tag--small t-link" href="/tags/VSTO/" rel="tag">VSTO</a> <a class="tag tag--primary tag--small t-link" href="/tags/WordML/" rel="tag">WordML</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/NET-Framework-3-5/" rel="tag">.NET Framework 3.5</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Linq/" rel="tag">Linq</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Office-2007/" rel="tag">Office 2007</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Open-XML/" rel="tag">Open XML</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Tech-Head-Brothers/" rel="tag">Tech Head Brothers</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/VSTO/" rel="tag">VSTO</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/WordML/" rel="tag">WordML</a>
 
             </div>
         
@@ -413,7 +415,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2008/08/11/Visual-Studio-2008-Service-Pack-1-released/"
+                    href="/2008/08/12/Visual-Studio-2008-Service-Pack-1-released/"
                     data-tooltip="Visual Studio 2008 Service Pack 1 released"
                     aria-label="NEXT: Visual Studio 2008 Service Pack 1 released"
                 >
@@ -502,7 +504,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -542,7 +544,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2008/08/11/Visual-Studio-2008-Service-Pack-1-released/"
+                    href="/2008/08/12/Visual-Studio-2008-Service-Pack-1-released/"
                     data-tooltip="Visual Studio 2008 Service Pack 1 released"
                     aria-label="NEXT: Visual Studio 2008 Service Pack 1 released"
                 >
@@ -721,7 +723,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

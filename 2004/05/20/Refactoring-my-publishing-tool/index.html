@@ -11,7 +11,9 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I started some time ago to work on a new release of the tool I developed to publish content on my web site Tech Head Brothers. This new release will add the possibility for the author to directly post there article to the website.This solution is using:\n\nWord 2003 with it XML features\nXML Schema for the definition of the content\nXSLT for the presentation. Transformation to HTML, PDF using nFOP (FOP is not working properly at the moment), and soon WordML.\nMicrosoft Visual Studio Tools for the Microsoft Office System\nWeb Services Enhancements (WSE), Dime\nSharpZipLib\n\nThe authors write there articles using Word 2003 and can visualize on there computer there article the way it will be displayed on Tech Head Brothers. Then when they are ready, they save the Word document and are asked if they want to publish it. The software then parse the XML published by Word 2003 and replace the references to source code files by the real source code with colorization. It also replaces references to images with a new XML tag representing the image. Then it zip everything; the article as a XML file, the images, if there is a zip with source code… And finally using WSE and DIME attachment the article is posted. The website gets the DIME attachment, unpack the zip, save the files on the server, and add an entry to the database. That’s it.\nI have done all the refactoring by hand. And that’s such a pain. I am now used to do that with Whidbey and it refactoring tools. So I have a bit searched on the internet some tools that will match my need concerning refactoring and I could find some:\n\n.NET Refactoring\nC# Refactory\nReSharper\nNETRefactor 2.0\n\nI tried several of those in the past but now I really want to use one, but it is impossible cause I get an error message when I add an addin to Visual Studio .NET 2003, for exemple yith .NET Reflector 4:\n\nAny one as an idea?\n","dateCreated":"2004-05-20T20:49:00+00:00","dateModified":"2004-05-20T20:49:00+00:00","datePublished":"2004-05-20T20:49:00+00:00","description":"I started some time ago to work on a new release of the tool I developed to publish content on my web site Tech Head Brothers. This new release will add the possibility for the author to directly post there article to the website.This solution is using:\n\nWord 2003 with it XML features","headline":"Refactoring my publishing tool","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2004/05/20/Refactoring-my-publishing-tool/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2004/05/20/Refactoring-my-publishing-tool/","keywords":".NET Development"}</script>
     <meta name="description" content="I started some time ago to work on a new release of the tool I developed to publish content on my web site Tech Head Brothers. This new release will add the possibility for the author to directly post">
@@ -41,7 +43,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -324,25 +326,25 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>I started some time ago to work on a new release of the tool I developed to publish content on my web site <a href="http://www.techheadbrothers.com" target="_blank" rel="noopener" title="Tech Head Brothers">Tech Head Brothers</a>. This new release will add the possibility for the author to directly post there article to the website.<br>This solution is using:</p>
+            <p>I started some time ago to work on a new release of the tool I developed to publish content on my web site <a target="_blank" rel="noopener" href="http://www.techheadbrothers.com/" title="Tech Head Brothers">Tech Head Brothers</a>. This new release will add the possibility for the author to directly post there article to the website.<br>This solution is using:</p>
 <ul>
-<li><a href="http://msdn.microsoft.com/office/understanding/word/" target="_blank" rel="noopener">Word 2003</a> with it XML features<a id="more"></a></li>
+<li><a target="_blank" rel="noopener" href="http://msdn.microsoft.com/office/understanding/word/">Word 2003</a> with it XML features<a id="more"></a></li>
 <li>XML Schema for the definition of the content</li>
 <li>XSLT for the presentation. Transformation to HTML, PDF using nFOP (FOP is not working properly at the moment), and soon WordML.</li>
-<li><a href="http://msdn.microsoft.com/vstudio/office/default.aspx" target="_blank" rel="noopener">Microsoft Visual Studio Tools for the Microsoft Office System</a></li>
-<li><a href="http://msdn.microsoft.com/webservices/building/wse/default.aspx" target="_blank" rel="noopener">Web Services Enhancements (WSE)</a>, Dime</li>
-<li><a href="http://www.icsharpcode.net/OpenSource/SharpZipLib/Default.aspx" target="_blank" rel="noopener">SharpZipLib</a></li>
+<li><a target="_blank" rel="noopener" href="http://msdn.microsoft.com/vstudio/office/default.aspx">Microsoft Visual Studio Tools for the Microsoft Office System</a></li>
+<li><a target="_blank" rel="noopener" href="http://msdn.microsoft.com/webservices/building/wse/default.aspx">Web Services Enhancements (WSE)</a>, Dime</li>
+<li><a target="_blank" rel="noopener" href="http://www.icsharpcode.net/OpenSource/SharpZipLib/Default.aspx">SharpZipLib</a></li>
 </ul>
-<p>The authors write there articles using Word 2003 and can visualize on there computer there article the way it will be displayed on <a href="http://www.techheadbrothers.com" target="_blank" rel="noopener" title="Tech Head Brothers">Tech Head Brothers</a>. Then when they are ready, they save the Word document and are asked if they want to publish it. The software then parse the XML published by Word 2003 and replace the references to source code files by the real source code with colorization. It also replaces references to images with a new XML tag representing the image. Then it zip everything; the article as a XML file, the images, if there is a zip with source code… And finally using WSE and DIME attachment the article is posted. The website gets the DIME attachment, unpack the zip, save the files on the server, and add an entry to the database. That’s it.</p>
+<p>The authors write there articles using Word 2003 and can visualize on there computer there article the way it will be displayed on <a target="_blank" rel="noopener" href="http://www.techheadbrothers.com/" title="Tech Head Brothers">Tech Head Brothers</a>. Then when they are ready, they save the Word document and are asked if they want to publish it. The software then parse the XML published by Word 2003 and replace the references to source code files by the real source code with colorization. It also replaces references to images with a new XML tag representing the image. Then it zip everything; the article as a XML file, the images, if there is a zip with source code… And finally using WSE and DIME attachment the article is posted. The website gets the DIME attachment, unpack the zip, save the files on the server, and add an entry to the database. That’s it.</p>
 <p>I have done all the refactoring by hand. And that’s such a pain. I am now used to do that with Whidbey and it refactoring tools. So I have a bit searched on the internet some tools that will match my need concerning refactoring and I could find some:</p>
 <ul>
-<li><a href="http://dotnetrefactoring.com/" target="_blank" rel="noopener">.NET Refactoring</a></li>
-<li><a href="http://www.xtreme-simplicity.net/" target="_blank" rel="noopener">C# Refactory</a></li>
-<li><a href="http://www.jetbrains.com/resharper/index.html" target="_blank" rel="noopener">ReSharper</a></li>
-<li><a href="http://www.knowdotnet.com/articles/netrefactorproducthome.html" target="_blank" rel="noopener">NETRefactor 2.0</a></li>
+<li><a target="_blank" rel="noopener" href="http://dotnetrefactoring.com/">.NET Refactoring</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.xtreme-simplicity.net/">C# Refactory</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.jetbrains.com/resharper/index.html">ReSharper</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.knowdotnet.com/articles/netrefactorproducthome.html">NETRefactor 2.0</a></li>
 </ul>
-<p>I tried several of those in the past but now I really want to use one, but it is impossible cause I get an error message when I add an addin to Visual Studio .NET 2003, for exemple yith <a href="http://www.aisto.com/roeder/DotNet/" target="_blank" rel="noopener">.NET Reflector 4</a>:</p>
-<p><img src="http://perso.wanadoo.fr/laurent.kempe/images/vserror.png" alt=""></p>
+<p>I tried several of those in the past but now I really want to use one, but it is impossible cause I get an error message when I add an addin to Visual Studio .NET 2003, for exemple yith <a target="_blank" rel="noopener" href="http://www.aisto.com/roeder/DotNet/">.NET Reflector 4</a>:</p>
+<p><img src="http://perso.wanadoo.fr/laurent.kempe/images/vserror.png"></p>
 <p>Any one as an idea?</p>
 
             
@@ -355,7 +357,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/NET-Development/" rel="tag">.NET Development</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/NET-Development/" rel="tag">.NET Development</a>
 
             </div>
         
@@ -471,7 +473,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -690,7 +692,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

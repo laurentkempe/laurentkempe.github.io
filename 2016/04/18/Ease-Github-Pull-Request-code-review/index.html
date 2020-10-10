@@ -11,9 +11,11 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Even if online Github Pull Request is a nice and effective tool, in some situation you need to open your solution in Visual Studio to verify something.\n\nOne evening, I created a project called PReview which after you feed it with a diff file lets you filter Visual Studio Solution Explorer with all files changed. It is really alpha and a quick one evening hack!\nThe other day my colleague Gianluigi proposed to my team an alternative with a PowerShell script which you would run specifying the Pull Request id and the branch name:\n\nreview 272 feature/1270-show-hide-panels\n\nNice! The script is good but as I am spending a bit more than a day of work working on a running train with an unstable internet connection I needed something that would work offline too. So I thought there should be a way that would fulfill that requirement!\nI ended up with something really easy which also leverage the nice possibility of GitDiffMargin to see changes in Visual Studio margin.\nBasically, you create a new branch at the beginning of the branch that you want to review. Then you merge the original branch into the review branch with the squash option.\nLet’s see a concrete example with my project Nubot. Our goal is to review the branch called feature/hipchat-connect.First, we need to find the SHA1 of the previous commit of the start of the branch feature/hipchat-connect. You might use a tool like SourceTree \n\nor with a nice git alias \n\nlg = log –color –graph –pretty=format:’%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset’ –abbrev-commit –\n\n\nOn both screenshots, we see that the SHA1 of the commit is 4d6a5d1\nSo now we create our new review branch\n\ngit checkout -b review/hipchat-connect 4d6a5d1\n\nThen we squash the original branch into the review one\n\n git merge –squash feature/hipchat-connect\n\nNow opening Visual Studio you can go to the Solution Explorer and click on Pending Changes Filter and you will get the list of file modified\n\nAnd on the source code, you will see the changes thanks to GitDiffMargin\n\nYou have now all your current tools to navigate your code and do even easier code review!\n","dateCreated":"2016-04-18T13:21:47+00:00","dateModified":"2020-10-02T19:54:36+00:00","datePublished":"2016-04-18T13:21:47+00:00","description":"Even if online Github Pull Request is a nice and effective tool, in some situation you need to open your solution in Visual Studio to verify something.","headline":"Ease Github Pull Request code review","image":["https://farm1.staticflickr.com/713/20404617220_63ef10f285_q.jpg","https://farm1.staticflickr.com/713/20404617220_dea22d6f2c_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2016/04/18/Ease-Github-Pull-Request-code-review/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2016/04/18/Ease-Github-Pull-Request-code-review/","keywords":"Git, Visual Studio, GitHub","thumbnailUrl":"https://farm1.staticflickr.com/713/20404617220_63ef10f285_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Even if online Github Pull Request is a nice and effective tool, in some situation you need to open your solution in Visual Studio to verify something.\n\nOne evening, I created a project called PReview which after you feed it with a diff file lets you filter Visual Studio Solution Explorer with all files changed. It is really alpha and a quick one evening hack!\nThe other day my colleague Gianluigi proposed to my team an alternative with a PowerShell script which you would run specifying the Pull Request id and the branch name:\n\nreview 272 feature/1270-show-hide-panels\n\nNice! The script is good but as I am spending a bit more than a day of work working on a running train with an unstable internet connection I needed something that would work offline too. So I thought there should be a way that would fulfill that requirement!\nI ended up with something really easy which also leverage the nice possibility of GitDiffMargin to see changes in Visual Studio margin.\nBasically, you create a new branch at the beginning of the branch that you want to review. Then you merge the original branch into the review branch with the squash option.\nLet’s see a concrete example with my project Nubot. Our goal is to review the branch called feature/hipchat-connect.First, we need to find the SHA1 of the previous commit of the start of the branch feature/hipchat-connect. You might use a tool like SourceTree \n\nor with a nice git alias \n\nlg = log –color –graph –pretty=format:’%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset’ –abbrev-commit –\n\n\nOn both screenshots, we see that the SHA1 of the commit is 4d6a5d1\nSo now we create our new review branch\n\ngit checkout -b review/hipchat-connect 4d6a5d1\n\nThen we squash the original branch into the review one\n\n git merge –squash feature/hipchat-connect\n\nNow opening Visual Studio you can go to the Solution Explorer and click on Pending Changes Filter and you will get the list of file modified\n\nAnd on the source code, you will see the changes thanks to GitDiffMargin\n\nYou have now all your current tools to navigate your code and do even easier code review!\n","dateCreated":"2016-04-18T13:21:47+00:00","dateModified":"2020-10-10T12:29:47+00:00","datePublished":"2016-04-18T13:21:47+00:00","description":"Even if online Github Pull Request is a nice and effective tool, in some situation you need to open your solution in Visual Studio to verify something.","headline":"Ease Github Pull Request code review","image":["https://farm1.staticflickr.com/713/20404617220_63ef10f285_q.jpg","https://farm1.staticflickr.com/713/20404617220_dea22d6f2c_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2016/04/18/Ease-Github-Pull-Request-code-review/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2016/04/18/Ease-Github-Pull-Request-code-review/","keywords":"Git, Visual Studio, GitHub","thumbnailUrl":"https://farm1.staticflickr.com/713/20404617220_63ef10f285_q.jpg"}</script>
     <meta name="description" content="Even if online Github Pull Request is a nice and effective tool, in some situation you need to open your solution in Visual Studio to verify something.">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Ease Github Pull Request code review">
@@ -26,7 +28,7 @@
 <meta property="og:image" content="https://farm2.staticflickr.com/1445/26410906852_75b2c64267_o.png">
 <meta property="og:image" content="https://farm2.staticflickr.com/1535/25900395813_bc5efee43e_o.png">
 <meta property="article:published_time" content="2016-04-18T13:21:47.000Z">
-<meta property="article:modified_time" content="2020-10-02T19:54:36.551Z">
+<meta property="article:modified_time" content="2020-10-10T12:29:47.140Z">
 <meta property="article:author" content="Laurent Kempé">
 <meta property="article:tag" content="Git">
 <meta property="article:tag" content="Visual Studio">
@@ -52,7 +54,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -345,17 +347,17 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>Even if online <a href="https://help.github.com/articles/using-pull-requests/" target="_blank" rel="noopener">Github Pull Request</a> is a nice and effective tool, in some situation you need to open your solution in Visual Studio to verify something.</p>
+            <p>Even if online <a target="_blank" rel="noopener" href="https://help.github.com/articles/using-pull-requests/">Github Pull Request</a> is a nice and effective tool, in some situation you need to open your solution in Visual Studio to verify something.</p>
 <a id="more"></a>
-<p>One evening, I created a project called <a href="https://github.com/laurentkempe/PReview" target="_blank" rel="noopener">PReview</a> which after you feed it with a diff file lets you filter Visual Studio Solution Explorer with all files changed. It is really alpha and a quick one evening hack!</p>
-<p>The other day my colleague <a href="https://twitter.com/gianluigiconti" target="_blank" rel="noopener">Gianluigi</a> proposed to my team an alternative with a PowerShell script which you would run specifying the Pull Request id and the branch name:</p>
+<p>One evening, I created a project called <a target="_blank" rel="noopener" href="https://github.com/laurentkempe/PReview">PReview</a> which after you feed it with a diff file lets you filter Visual Studio Solution Explorer with all files changed. It is really alpha and a quick one evening hack!</p>
+<p>The other day my colleague <a target="_blank" rel="noopener" href="https://twitter.com/gianluigiconti">Gianluigi</a> proposed to my team an alternative with a PowerShell script which you would run specifying the Pull Request id and the branch name:</p>
 <blockquote>
 <p>review 272 feature/1270-show-hide-panels</p>
 </blockquote>
 <p>Nice! The script is good but as I am spending a bit more than a day of work working on a running train with an unstable internet connection I needed something that would work offline too. So I thought there should be a way that would fulfill that requirement!</p>
-<p>I ended up with something really easy which also leverage the nice possibility of <a href="https://github.com/laurentkempe/GitDiffMargin" target="_blank" rel="noopener">GitDiffMargin</a> to see changes in Visual Studio margin.</p>
+<p>I ended up with something really easy which also leverage the nice possibility of <a target="_blank" rel="noopener" href="https://github.com/laurentkempe/GitDiffMargin">GitDiffMargin</a> to see changes in Visual Studio margin.</p>
 <p>Basically, you create a new branch at the beginning of the branch that you want to review. Then you merge the original branch into the review branch with the squash option.</p>
-<p>Let’s see a concrete example with my project <a href="https://github.com/laurentkempe/nubot" target="_blank" rel="noopener">Nubot</a>. Our goal is to review the branch called feature/hipchat-connect.<br>First, we need to find the SHA1 of the previous commit of the start of the branch feature/hipchat-connect. You might use a tool like <a href="https://www.sourcetreeapp.com/" target="_blank" rel="noopener">SourceTree</a> </p>
+<p>Let’s see a concrete example with my project <a target="_blank" rel="noopener" href="https://github.com/laurentkempe/nubot">Nubot</a>. Our goal is to review the branch called feature/hipchat-connect.<br>First, we need to find the SHA1 of the previous commit of the start of the branch feature/hipchat-connect. You might use a tool like <a target="_blank" rel="noopener" href="https://www.sourcetreeapp.com/">SourceTree</a> </p>
 <p><img src="https://farm2.staticflickr.com/1570/25900395853_1312aa8129_o.png" alt="Ease Github Pull Request Code Review 1"></p>
 <p>or with a nice git alias </p>
 <blockquote>
@@ -373,7 +375,7 @@
 </blockquote>
 <p>Now opening Visual Studio you can go to the Solution Explorer and click on Pending Changes Filter and you will get the list of file modified</p>
 <p><img src="https://farm2.staticflickr.com/1445/26410906852_75b2c64267_o.png" alt="Ease Github Pull Request Code Review 3"></p>
-<p>And on the source code, you will see the changes thanks to <a href="https://visualstudiogallery.msdn.microsoft.com/cf49cf30-2ca6-4ea0-b7cc-6a8e0dadc1a8" target="_blank" rel="noopener">GitDiffMargin</a></p>
+<p>And on the source code, you will see the changes thanks to <a target="_blank" rel="noopener" href="https://visualstudiogallery.msdn.microsoft.com/cf49cf30-2ca6-4ea0-b7cc-6a8e0dadc1a8">GitDiffMargin</a></p>
 <p><img src="https://farm2.staticflickr.com/1535/25900395813_bc5efee43e_o.png" alt="Ease Github Pull Request Code Review 4"></p>
 <p>You have now all your current tools to navigate your code and do even easier code review!</p>
 
@@ -387,7 +389,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/Git/" rel="tag">Git</a> <a class="tag tag--primary tag--small t-link" href="/tags/GitHub/" rel="tag">GitHub</a> <a class="tag tag--primary tag--small t-link" href="/tags/Visual-Studio/" rel="tag">Visual Studio</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Git/" rel="tag">Git</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/GitHub/" rel="tag">GitHub</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Visual-Studio/" rel="tag">Visual Studio</a>
 
             </div>
         
@@ -503,7 +505,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -722,7 +724,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

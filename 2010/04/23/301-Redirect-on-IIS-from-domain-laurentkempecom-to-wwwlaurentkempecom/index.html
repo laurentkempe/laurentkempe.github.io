@@ -11,9 +11,11 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I got an email the other day from Didier, than a message on my facebook page from Antoine about an issue with my blog www.laurentkempe.com and my .NET portal www.techheadbrothers.com which were not redirecting correctly from laurentkempe.com and techheadbrothers.com to the ones with www in front.\nSo I fired up IIS manager and fixed this using the following easy way:\n\n\n\nCreate a web site for the one without the www; e.g. laurentkempe.com, configure the web site content directory to the path of the one you have in www.laurentkempe.com \nConfigure the web site to listen on laurentkempe.com, if needed         \nThen on the Home directory you will have to set the redirection url using ‘When connecting to this resource the content should come from’ set to ‘A redirection to a URL”’.  And check ‘A permanent redirection for this resource’.   \n\nYou are done! And you can control that using a tool like HttpWatch Professional and for sure from your browser!\n\n","dateCreated":"2010-04-23T15:46:08+00:00","dateModified":"2010-04-23T15:48:09+00:00","datePublished":"2010-04-23T15:46:08+00:00","description":"I got an email the other day from Didier, than a message on my facebook page from Antoine about an issue with my blog www.laurentkempe.com and my .NET portal www.techheadbrothers.com which were not redirecting correctly from laurentkempe.com and techheadbrothers.com to the ones with www in front.\nSo I fired up IIS manager and fixed this using the following easy way:","headline":"301 Redirect on IIS, from domain laurentkempe.com to www.laurentkempe.com","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/04/23/301-Redirect-on-IIS-from-domain-laurentkempecom-to-wwwlaurentkempecom/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/04/23/301-Redirect-on-IIS-from-domain-laurentkempecom-to-wwwlaurentkempecom/","keywords":"IIS"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I got an email the other day from Didier, than a message on my facebook page from Antoine about an issue with my blog www.laurentkempe.com and my .NET portal www.techheadbrothers.com which were not redirecting correctly from laurentkempe.com and techheadbrothers.com to the ones with www in front.\nSo I fired up IIS manager and fixed this using the following easy way:\n\n\n\nCreate a web site for the one without the www; e.g. laurentkempe.com, configure the web site content directory to the path of the one you have in www.laurentkempe.com \nConfigure the web site to listen on laurentkempe.com, if needed         \nThen on the Home directory you will have to set the redirection url using ‘When connecting to this resource the content should come from’ set to ‘A redirection to a URL”’.  And check ‘A permanent redirection for this resource’.   \n\nYou are done! And you can control that using a tool like HttpWatch Professional and for sure from your browser!\n\n","dateCreated":"2010-04-23T15:46:08+00:00","dateModified":"2010-04-23T15:48:09+00:00","datePublished":"2010-04-23T15:46:08+00:00","description":"I got an email the other day from Didier, than a message on my facebook page from Antoine about an issue with my blog www.laurentkempe.com and my .NET portal www.techheadbrothers.com which were not redirecting correctly from laurentkempe.com and techheadbrothers.com to the ones with www in front.\nSo I fired up IIS manager and fixed this using the following easy way:","headline":"301 Redirect on IIS, from domain laurentkempe.com to www.laurentkempe.com","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/04/23/301-Redirect-on-IIS-from-domain-laurentkempecom-to-wwwlaurentkempecom/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/04/23/301-Redirect-on-IIS-from-domain-laurentkempecom-to-wwwlaurentkempecom/","keywords":"IIS"}</script>
     <meta name="description" content="I got an email the other day from Didier, than a message on my facebook page from Antoine about an issue with my blog www.laurentkempe.com and my .NET portal www.techheadbrothers.com which were not re">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="301 Redirect on IIS, from domain laurentkempe.com to www.laurentkempe.com">
@@ -43,7 +45,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -326,16 +328,16 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>I got an email the other day from <a href="http://didierbeck.com/" target="_blank" rel="noopener">Didier</a>, than a message on my facebook page from <a href="http://www.facebook.com/aemond" target="_blank" rel="noopener">Antoine</a> about an issue with my blog <a href="http://www.laurentkempe.com" target="_blank" rel="noopener">www.laurentkempe.com</a> and my .NET portal <a href="http://www.techheadbrothers.com" target="_blank" rel="noopener">www.techheadbrothers.com</a> which were not redirecting correctly from laurentkempe.com and techheadbrothers.com to the ones with www in front.</p>
+            <p>I got an email the other day from <a target="_blank" rel="noopener" href="http://didierbeck.com/">Didier</a>, than a message on my facebook page from <a target="_blank" rel="noopener" href="http://www.facebook.com/aemond">Antoine</a> about an issue with my blog <a target="_blank" rel="noopener" href="http://www.laurentkempe.com/">www.laurentkempe.com</a> and my .NET portal <a target="_blank" rel="noopener" href="http://www.techheadbrothers.com/">www.techheadbrothers.com</a> which were not redirecting correctly from laurentkempe.com and techheadbrothers.com to the ones with www in front.</p>
 <p>So I fired up IIS manager and fixed this using the following easy way:</p>
 <a id="more"></a>
 
 <ol>
-<li>Create a web site for the one without the www; e.g. laurentkempe.com, configure the web site content directory to the path of the one you have in <a href="http://www.laurentkempe.com" target="_blank" rel="noopener">www.laurentkempe.com</a> </li>
+<li>Create a web site for the one without the www; e.g. laurentkempe.com, configure the web site content directory to the path of the one you have in <a target="_blank" rel="noopener" href="http://www.laurentkempe.com/">www.laurentkempe.com</a> </li>
 <li>Configure the web site to listen on laurentkempe.com, if needed<br><img src="/images/4544683393_41bcd8b345_o%5B1%5D.png" alt="4544683393_41bcd8b345_o[1]" title="4544683393_41bcd8b345_o[1]">         </li>
-<li>Then on the Home directory you will have to set the redirection url using ‘When connecting to this resource the content should come from’ set to ‘A redirection to a URL”’.  And check ‘A permanent redirection for this resource’.<br><img src="/images/4544689855_4f1bbd5979_o%5B1%5D.png" alt="4544689855_4f1bbd5979_o[1]" title="4544689855_4f1bbd5979_o[1]">   </li>
+<li>Then on the Home directory you will have to set the redirection url using ‘When connecting to this resource the content should come from’ set to ‘A redirection to a URL”’.  And check ‘A permanent redirection for this resource’.<br><img src="/images/4544689855_4f1bbd5979_o%5B1%5D.png" alt="4544689855_4f1bbd5979_o[1]" title="4544689855_4f1bbd5979_o[1]">   </li>
 </ol>
-<p>You are done! And you can control that using a tool like <a href="http://www.httpwatch.com/" target="_blank" rel="noopener">HttpWatch Professional</a> and for sure from your browser!</p>
+<p>You are done! And you can control that using a tool like <a target="_blank" rel="noopener" href="http://www.httpwatch.com/">HttpWatch Professional</a> and for sure from your browser!</p>
 <p><img src="/images/4545330398_37c2b3747b_o%5B1%5D.png" alt="4545330398_37c2b3747b_o[1]" title="4545330398_37c2b3747b_o[1]"></p>
 
             
@@ -348,7 +350,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/IIS/" rel="tag">IIS</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/IIS/" rel="tag">IIS</a>
 
             </div>
         
@@ -464,7 +466,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -683,7 +685,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

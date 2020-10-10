@@ -11,7 +11,9 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Today TeamCity was showing me one functional test failure on my WPF application.\nI already discussed about this problem here: White’s tip for your automated WPF functional tests       \n\nThe solution I presented at that time was working on my local development environment but not on my Continuous Integration system; aka TeamCity. So I went for another solution which was searching for the filename ComboBox and was setting the value. \nThis was working for some time but today not anymore. The issue I discovered is that using the ComboBox needed that the path was already used in the past otherwise setting the value was failing. So I was stuck and had to find another solution.\nI fired spy++ and searched for a solution and after some debugging I came to the following one:\n  var openModalWindow =  &nbsp;&nbsp;&nbsp;&nbsp;MainWindow.ModalWindow(\"Please choose a Zip file\", InitializeOption.NoCache);  MainWindow.WaitWhileBusy(); Assert.IsNotNull(openModalWindow);  var filePath = Path.Combine(GetCurrentPath(), filename);  var filenameTextBox =  &nbsp;&nbsp;&nbsp;&nbsp;openModalWindow.Get&lt;TextBox&gt;(SearchCriteria.ByAutomationId(\"1148\")); filenameTextBox.SetValue(filePath);  openModalWindow.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);  \n\nThis is working on my local environment but also on TeamCity!\nThe key point was to find the TextBox with the AutomationId of 1148.\n","dateCreated":"2010-07-16T01:22:07+00:00","dateModified":"2012-05-01T22:53:45+00:00","datePublished":"2010-07-16T01:22:07+00:00","description":"Today TeamCity was showing me one functional test failure on my WPF application.\nI already discussed about this problem here: White’s tip for your automated WPF functional tests       ","headline":"File dialog automation using White framework","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/07/16/File-dialog-automation-using-White-framework/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/07/16/File-dialog-automation-using-White-framework/","keywords":"acceptance test, white"}</script>
     <meta name="description" content="Today TeamCity was showing me one functional test failure on my WPF application. I already discussed about this problem here: White’s tip for your automated WPF functional tests">
@@ -40,7 +42,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -323,8 +325,8 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>Today <a href="http://www.jetbrains.com/teamcity/index.html" target="_blank" rel="noopener">TeamCity</a> was showing me one functional test failure on my WPF application.</p>
-<p>I already discussed about this problem here: <a href="http://www.laurentkempe.com/post/Whitee28099s-tip-for-your-automated-WPF-functional-tests.aspx" target="_blank" rel="noopener">White’s tip for your automated WPF functional tests</a>       </p>
+            <p>Today <a target="_blank" rel="noopener" href="http://www.jetbrains.com/teamcity/index.html">TeamCity</a> was showing me one functional test failure on my WPF application.</p>
+<p>I already discussed about this problem here: <a target="_blank" rel="noopener" href="http://www.laurentkempe.com/post/Whitee28099s-tip-for-your-automated-WPF-functional-tests.aspx">White’s tip for your automated WPF functional tests</a>       </p>
 <a id="more"></a>
 <p>The solution I presented at that time was working on my local development environment but not on my Continuous Integration system; aka TeamCity. So I went for another solution which was searching for the filename ComboBox and was setting the value. </p>
 <p>This was working for some time but today not anymore. The issue I discovered is that using the ComboBox needed that the path was already used in the past otherwise setting the value was failing. So I was stuck and had to find another solution.</p>
@@ -344,7 +346,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/acceptance-test/" rel="tag">acceptance test</a> <a class="tag tag--primary tag--small t-link" href="/tags/white/" rel="tag">white</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/acceptance-test/" rel="tag">acceptance test</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/white/" rel="tag">white</a>
 
             </div>
         
@@ -357,7 +359,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2010/07/16/Unit-Test-using-test-doubles-aka-Mock-Stub-Fake-Dummy/"
+                    href="/2010/07/17/Unit-Test-using-test-doubles-aka-Mock-Stub-Fake-Dummy/"
                     data-tooltip="Unit Test using test doubles, aka Mock, Stub, Fake, Dummy"
                     aria-label="PREVIOUS: Unit Test using test doubles, aka Mock, Stub, Fake, Dummy"
                 >
@@ -371,7 +373,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2010/07/14/Application-Acceptance-Testing/"
+                    href="/2010/07/15/Application-Acceptance-Testing/"
                     data-tooltip="Application Acceptance Testing"
                     aria-label="NEXT: Application Acceptance Testing"
                 >
@@ -460,7 +462,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -486,7 +488,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2010/07/16/Unit-Test-using-test-doubles-aka-Mock-Stub-Fake-Dummy/"
+                    href="/2010/07/17/Unit-Test-using-test-doubles-aka-Mock-Stub-Fake-Dummy/"
                     data-tooltip="Unit Test using test doubles, aka Mock, Stub, Fake, Dummy"
                     aria-label="PREVIOUS: Unit Test using test doubles, aka Mock, Stub, Fake, Dummy"
                 >
@@ -500,7 +502,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2010/07/14/Application-Acceptance-Testing/"
+                    href="/2010/07/15/Application-Acceptance-Testing/"
                     data-tooltip="Application Acceptance Testing"
                     aria-label="NEXT: Application Acceptance Testing"
                 >
@@ -679,7 +681,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

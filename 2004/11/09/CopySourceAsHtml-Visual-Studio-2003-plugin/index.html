@@ -11,9 +11,11 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Ever wanted to copy paste some code from Visual Studio .NET 2003 to your blog tool (e.g. Sauce Reader) and keep the colorization ?Here is the solution, CopySourceAsHtml, an awesome plugin from Colin Coller. The cool point is that if “VS.NET can highlight it, CSAH can copy it, and your code should look the same in your browser as it does in your editor“. I was a bit disappointed not finding the context menu in the editor for other source then C# but you might add a keyboard shortcups as described on this page.\nEven better, Colin provides the source. I guess I will soon integrate his colorization way to Tech Head Brothers Word 2003 publishing tool.\n\n\nHere a sample output of a C# code:\n\n\n\n   39         #region GuiBuilder\n   40  \n   41         //http://support.microsoft.com/default.aspx?scid=kb;EN-US;303018\n   42         private bool setupCommandBar()\n   43         {\n   44             ThisApplication.CustomizationContext = ThisDocument;\n   45  \n   46             // Add a button to the command bar.\n   47  \n   48             oCommandBar = ThisApplication.CommandBars.Add(“Tech Head Brothers“, oMissing, oMissing, true);\n   49  \n   50             AddButton(ref oCommandBar,\n   51                       ref oButtonNew,\n   52                       new _CommandBarButtonEvents_ClickEventHandler(oButtonNew_Click),\n   53                       “New Document”,\n   54                       12);\n\n\n\nXSLT:\n\n\n\n    1 \n    2 &lt;xsl:stylesheet xmlns:thb=”http://www.techheadbrothers.com/WordFormat30.xsd&quot; xmlns:xsl=”http://www.w3.org/1999/XSL/Transform&quot; version=”3.0”&gt;\n    3    &lt;xsl:output method=”html” version=”4.0” encoding=”iso-8859-1” indent=”yes” /&gt;\n    4  \n    5    &lt;xsl:param name=”readcounter” /&gt;\n\n","dateCreated":"2004-11-09T05:36:00+00:00","dateModified":"2004-11-09T05:36:00+00:00","datePublished":"2004-11-09T05:36:00+00:00","description":"Ever wanted to copy paste some code from Visual Studio .NET 2003 to your blog tool (e.g. Sauce Reader) and keep the colorization ?Here is the solution, CopySourceAsHtml, an awesome plugin from Colin Coller. The cool point is that if “VS.NET can highlight it, CSAH can copy it, and your code should look the same in your browser as it does in your editor“. I was a bit disappointed not finding the context menu in the editor for other source then C# but you might add a keyboard shortcups as described on this page.\nEven better, Colin provides the source. I guess I will soon integrate his colorization way to Tech Head Brothers Word 2003 publishing tool.","headline":"CopySourceAsHtml - Visual Studio 2003 plugin","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2004/11/09/CopySourceAsHtml-Visual-Studio-2003-plugin/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2004/11/09/CopySourceAsHtml-Visual-Studio-2003-plugin/","keywords":".NET Development, Tools"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Ever wanted to copy paste some code from Visual Studio .NET 2003 to your blog tool (e.g. Sauce Reader) and keep the colorization ?Here is the solution, CopySourceAsHtml, an awesome plugin from Colin Coller. The cool point is that if “VS.NET can highlight it, CSAH can copy it, and your code should look the same in your browser as it does in your editor“. I was a bit disappointed not finding the context menu in the editor for other source then C# but you might add a keyboard shortcups as described on this page.\nEven better, Colin provides the source. I guess I will soon integrate his colorization way to Tech Head Brothers Word 2003 publishing tool.\n\n\nHere a sample output of a C# code:\n\n\n\n   39         #region GuiBuilder\n   40  \n   41         //http://support.microsoft.com/default.aspx?scid=kb;EN-US;303018\n   42         private bool setupCommandBar()\n   43         {\n   44             ThisApplication.CustomizationContext = ThisDocument;\n   45  \n   46             // Add a button to the command bar.\n   47  \n   48             oCommandBar = ThisApplication.CommandBars.Add(“Tech Head Brothers“, oMissing, oMissing, true);\n   49  \n   50             AddButton(ref oCommandBar,\n   51                       ref oButtonNew,\n   52                       new _CommandBarButtonEvents_ClickEventHandler(oButtonNew_Click),\n   53                       “New Document”,\n   54                       12);\n\n\n\nXSLT:\n\n\n\n    1 \n    2 &lt;xsl:stylesheet xmlns:thb=”http://www.techheadbrothers.com/WordFormat30.xsd&quot; xmlns:xsl=”http://www.w3.org/1999/XSL/Transform&quot; version=”3.0”&gt;\n    3    &lt;xsl:output method=”html” version=”4.0” encoding=”iso-8859-1” indent=”yes” /&gt;\n    4  \n    5    &lt;xsl:param name=”readcounter” /&gt;\n\n","dateCreated":"2004-11-09T05:36:00+00:00","dateModified":"2004-11-09T05:36:00+00:00","datePublished":"2004-11-09T05:36:00+00:00","description":"Ever wanted to copy paste some code from Visual Studio .NET 2003 to your blog tool (e.g. Sauce Reader) and keep the colorization ?Here is the solution, CopySourceAsHtml, an awesome plugin from Colin Coller. The cool point is that if “VS.NET can highlight it, CSAH can copy it, and your code should look the same in your browser as it does in your editor“. I was a bit disappointed not finding the context menu in the editor for other source then C# but you might add a keyboard shortcups as described on this page.\nEven better, Colin provides the source. I guess I will soon integrate his colorization way to Tech Head Brothers Word 2003 publishing tool.","headline":"CopySourceAsHtml - Visual Studio 2003 plugin","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2004/11/09/CopySourceAsHtml-Visual-Studio-2003-plugin/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2004/11/09/CopySourceAsHtml-Visual-Studio-2003-plugin/","keywords":".NET Development, Tools"}</script>
     <meta name="description" content="Ever wanted to copy paste some code from Visual Studio .NET 2003 to your blog tool (e.g. Sauce Reader) and keep the colorization ?Here is the solution, CopySourceAsHtml, an awesome plugin from Colin C">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="CopySourceAsHtml - Visual Studio 2003 plugin">
@@ -40,7 +42,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -323,30 +325,30 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>Ever wanted to copy paste some code from Visual Studio .NET 2003 to your blog tool (e.g. <a href="http://www.synop.com/Products/SauceReader/" target="_blank" rel="noopener">Sauce Reader</a>) and keep the colorization ?<br>Here is the solution, <a href="http://www.jtleigh.com/people/colin/blog/archives/2004/11/copysourceashtm_3.html" target="_blank" rel="noopener">CopySourceAsHtml</a>, an awesome plugin from <a href="http://www.jtleigh.com/people/colin/blog/" target="_blank" rel="noopener">Colin Coller</a>. The cool point is that if “<em>VS.NET can highlight it, CSAH can copy it, and your code should look the same in your browser as it does in your editor</em>“. I was a bit disappointed not finding the context menu in the editor for other source then C# but you might add a keyboard shortcups as described on this <a href="http://www.jtleigh.com/people/colin/blog/archives/2004/10/copysourceashtm_1.html" target="_blank" rel="noopener">page</a>.</p>
-<p>Even better, Colin provides the source. I guess I will soon integrate his colorization way to <a href="http://www.techheadbrothers.com" target="_blank" rel="noopener" title="Tech Head Brothers">Tech Head Brothers</a> Word 2003 <a href="http://weblogs.asp.net/lkempe/archive/2004/08/23/219122.aspx" target="_blank" rel="noopener">publishing tool</a>.</p>
+            <p>Ever wanted to copy paste some code from Visual Studio .NET 2003 to your blog tool (e.g. <a target="_blank" rel="noopener" href="http://www.synop.com/Products/SauceReader/">Sauce Reader</a>) and keep the colorization ?<br>Here is the solution, <a target="_blank" rel="noopener" href="http://www.jtleigh.com/people/colin/blog/archives/2004/11/copysourceashtm_3.html">CopySourceAsHtml</a>, an awesome plugin from <a target="_blank" rel="noopener" href="http://www.jtleigh.com/people/colin/blog/">Colin Coller</a>. The cool point is that if “<em>VS.NET can highlight it, CSAH can copy it, and your code should look the same in your browser as it does in your editor</em>“. I was a bit disappointed not finding the context menu in the editor for other source then C# but you might add a keyboard shortcups as described on this <a target="_blank" rel="noopener" href="http://www.jtleigh.com/people/colin/blog/archives/2004/10/copysourceashtm_1.html">page</a>.</p>
+<p>Even better, Colin provides the source. I guess I will soon integrate his colorization way to <a target="_blank" rel="noopener" href="http://www.techheadbrothers.com/" title="Tech Head Brothers">Tech Head Brothers</a> Word 2003 <a target="_blank" rel="noopener" href="http://weblogs.asp.net/lkempe/archive/2004/08/23/219122.aspx">publishing tool</a>.</p>
 <a id="more"></a>
 
 <p>Here a sample output of a C# code:</p>
 <div style="BORDER-RIGHT: windowtext 1pt solid; PADDING-RIGHT: 0pt; BORDER-TOP: windowtext 1pt solid; PADDING-LEFT: 0pt; FONT-SIZE: 10pt; BACKGROUND: #ffffff; PADDING-BOTTOM: 0pt; BORDER-LEFT: windowtext 1pt solid; COLOR: #000000; PADDING-TOP: 0pt; BORDER-BOTTOM: windowtext 1pt solid; FONT-FAMILY: Courier New">
 
 
-<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   39</span> <span style="COLOR: #0000ff">        #region</span><span> GuiBuilder</span></p>
-<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   40</span>  </p>
-<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   41</span> <span>        </span><span style="COLOR: #008000">//<a href="http://support.microsoft.com/default.aspx?scid=kb;EN-US;303018" target="_blank" rel="noopener">http://support.microsoft.com/default.aspx?scid=kb;EN-US;303018</a></span></p>
-<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   42</span> <span>        </span><span style="COLOR: #0000ff">private</span><span style="COLOR: #0000ff"> bool</span><span> setupCommandBar()</span></p>
-<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   43</span> <span>        {</span></p>
-<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   44</span> <span>            ThisApplication.CustomizationContext = ThisDocument;</span></p>
-<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   45</span>  </p>
-<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   46</span> <span>            </span><span style="COLOR: #008000">// Add a button to the command bar.</span></p>
-<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   47</span>  </p>
-<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   48</span> <span>            oCommandBar = ThisApplication.CommandBars.Add(“<a href="http://www.techheadbrothers.com" target="_blank" rel="noopener" title="Tech Head Brothers">Tech Head Brothers</a>“, oMissing, oMissing, </span><span style="COLOR: #0000ff">true</span><span>);</span></p>
-<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   49</span>  </p>
-<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   50</span> <span>            AddButton(</span><span style="COLOR: #0000ff">ref</span><span> oCommandBar,</span></p>
-<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   51</span> <span>                      </span><span style="COLOR: #0000ff">ref</span><span> oButtonNew,</span></p>
-<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   52</span> <span>                      </span><span style="COLOR: #0000ff">new</span><span> _CommandBarButtonEvents_ClickEventHandler(oButtonNew_Click),</span></p>
-<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   53</span> <span>                      “New Document”,</span></p>
-<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   54</span> <span>                      12);</span></p>
+<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   39</span> <span style="COLOR: #0000ff">        #region</span><span> GuiBuilder</span></p>
+<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   40</span>  </p>
+<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   41</span> <span>        </span><span style="COLOR: #008000">//<a target="_blank" rel="noopener" href="http://support.microsoft.com/default.aspx?scid=kb;EN-US;303018">http://support.microsoft.com/default.aspx?scid=kb;EN-US;303018</a></span></p>
+<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   42</span> <span>        </span><span style="COLOR: #0000ff">private</span><span style="COLOR: #0000ff"> bool</span><span> setupCommandBar()</span></p>
+<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   43</span> <span>        {</span></p>
+<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   44</span> <span>            ThisApplication.CustomizationContext = ThisDocument;</span></p>
+<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   45</span>  </p>
+<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   46</span> <span>            </span><span style="COLOR: #008000">// Add a button to the command bar.</span></p>
+<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   47</span>  </p>
+<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   48</span> <span>            oCommandBar = ThisApplication.CommandBars.Add(“<a target="_blank" rel="noopener" href="http://www.techheadbrothers.com/" title="Tech Head Brothers">Tech Head Brothers</a>“, oMissing, oMissing, </span><span style="COLOR: #0000ff">true</span><span>);</span></p>
+<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   49</span>  </p>
+<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   50</span> <span>            AddButton(</span><span style="COLOR: #0000ff">ref</span><span> oCommandBar,</span></p>
+<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   51</span> <span>                      </span><span style="COLOR: #0000ff">ref</span><span> oButtonNew,</span></p>
+<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   52</span> <span>                      </span><span style="COLOR: #0000ff">new</span><span> _CommandBarButtonEvents_ClickEventHandler(oButtonNew_Click),</span></p>
+<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   53</span> <span>                      “New Document”,</span></p>
+<p><span style="BACKGROUND: #ffffff; COLOR: #008080">   54</span> <span>                      12);</span></p>
 </div>
 
 
@@ -354,11 +356,11 @@
 <div style="BORDER-RIGHT: windowtext 1pt solid; PADDING-RIGHT: 0pt; BORDER-TOP: windowtext 1pt solid; PADDING-LEFT: 0pt; FONT-SIZE: 10pt; BACKGROUND: #ffffff; PADDING-BOTTOM: 0pt; BORDER-LEFT: windowtext 1pt solid; COLOR: #000000; PADDING-TOP: 0pt; BORDER-BOTTOM: windowtext 1pt solid; FONT-FAMILY: Courier New">
 
 
-<p><span style="BACKGROUND: #ffffff; COLOR: #008080">    1</span> <span style="COLOR: #0000ff"><?</span><span style="COLOR: #800000">xml</span><span style="COLOR: #ff0000"> version</span><span style="COLOR: #0000ff">="1.0"</span><span style="COLOR: #ff0000"> encoding</span><span style="COLOR: #0000ff">="ISO-8859-1"</span><span style="COLOR: #0000ff"> ?></span></p>
-<p><span style="BACKGROUND: #ffffff; COLOR: #008080">    2</span> <span style="COLOR: #0000ff">&lt;</span><span style="COLOR: #800000">xsl:stylesheet</span><span style="COLOR: #800000"> xmlns</span><span style="COLOR: #ff00ff">:</span><span style="COLOR: #ff0000">thb</span><span style="COLOR: #0000ff">=”<a href="http://www.techheadbrothers.com/WordFormat30.xsd&quot;" target="_blank" rel="noopener">http://www.techheadbrothers.com/WordFormat30.xsd&quot;</a></span><span style="COLOR: #800000"> xmlns</span><span style="COLOR: #ff00ff">:</span><span style="COLOR: #ff0000">xsl</span><span style="COLOR: #0000ff">=”<a href="http://www.w3.org/1999/XSL/Transform&quot;" target="_blank" rel="noopener">http://www.w3.org/1999/XSL/Transform&quot;</a></span><span style="COLOR: #ff0000"> version</span><span style="COLOR: #0000ff">=”3.0”&gt;</span></p>
-<p><span style="BACKGROUND: #ffffff; COLOR: #008080">    3</span> <span style="COLOR: #0000ff">   &lt;</span><span style="COLOR: #800000">xsl:output</span><span style="COLOR: #ff0000"> method</span><span style="COLOR: #0000ff">=”html”</span><span style="COLOR: #ff0000"> version</span><span style="COLOR: #0000ff">=”4.0”</span><span style="COLOR: #ff0000"> encoding</span><span style="COLOR: #0000ff">=”iso-8859-1”</span><span style="COLOR: #ff0000"> indent</span><span style="COLOR: #0000ff">=”yes”</span><span style="COLOR: #0000ff"> /&gt;</span></p>
-<p><span style="BACKGROUND: #ffffff; COLOR: #008080">    4</span>  </p>
-<p><span style="BACKGROUND: #ffffff; COLOR: #008080">    5</span> <span style="COLOR: #0000ff">   &lt;</span><span style="COLOR: #800000">xsl:param</span><span style="COLOR: #ff0000"> name</span><span style="COLOR: #0000ff">=”readcounter”</span><span style="COLOR: #0000ff"> /&gt;</span></p>
+<p><span style="BACKGROUND: #ffffff; COLOR: #008080">    1</span> <span style="COLOR: #0000ff"><?</span><span style="COLOR: #800000">xml</span><span style="COLOR: #ff0000"> version</span><span style="COLOR: #0000ff">="1.0"</span><span style="COLOR: #ff0000"> encoding</span><span style="COLOR: #0000ff">="ISO-8859-1"</span><span style="COLOR: #0000ff"> ?></span></p>
+<p><span style="BACKGROUND: #ffffff; COLOR: #008080">    2</span> <span style="COLOR: #0000ff">&lt;</span><span style="COLOR: #800000">xsl:stylesheet</span><span style="COLOR: #800000"> xmlns</span><span style="COLOR: #ff00ff">:</span><span style="COLOR: #ff0000">thb</span><span style="COLOR: #0000ff">=”<a target="_blank" rel="noopener" href="http://www.techheadbrothers.com/WordFormat30.xsd&quot;">http://www.techheadbrothers.com/WordFormat30.xsd&quot;</a></span><span style="COLOR: #800000"> xmlns</span><span style="COLOR: #ff00ff">:</span><span style="COLOR: #ff0000">xsl</span><span style="COLOR: #0000ff">=”<a target="_blank" rel="noopener" href="http://www.w3.org/1999/XSL/Transform&quot;">http://www.w3.org/1999/XSL/Transform&quot;</a></span><span style="COLOR: #ff0000"> version</span><span style="COLOR: #0000ff">=”3.0”&gt;</span></p>
+<p><span style="BACKGROUND: #ffffff; COLOR: #008080">    3</span> <span style="COLOR: #0000ff">   &lt;</span><span style="COLOR: #800000">xsl:output</span><span style="COLOR: #ff0000"> method</span><span style="COLOR: #0000ff">=”html”</span><span style="COLOR: #ff0000"> version</span><span style="COLOR: #0000ff">=”4.0”</span><span style="COLOR: #ff0000"> encoding</span><span style="COLOR: #0000ff">=”iso-8859-1”</span><span style="COLOR: #ff0000"> indent</span><span style="COLOR: #0000ff">=”yes”</span><span style="COLOR: #0000ff"> /&gt;</span></p>
+<p><span style="BACKGROUND: #ffffff; COLOR: #008080">    4</span>  </p>
+<p><span style="BACKGROUND: #ffffff; COLOR: #008080">    5</span> <span style="COLOR: #0000ff">   &lt;</span><span style="COLOR: #800000">xsl:param</span><span style="COLOR: #ff0000"> name</span><span style="COLOR: #0000ff">=”readcounter”</span><span style="COLOR: #0000ff"> /&gt;</span></p>
 </div>
 
             
@@ -371,7 +373,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/NET-Development/" rel="tag">.NET Development</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tools/" rel="tag">Tools</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/NET-Development/" rel="tag">.NET Development</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Tools/" rel="tag">Tools</a>
 
             </div>
         
@@ -487,7 +489,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -706,7 +708,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

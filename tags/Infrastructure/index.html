@@ -11,7 +11,9 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
     <script type="application/ld+json">{}</script>
     <meta property="og:type" content="blog">
@@ -34,7 +36,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -321,7 +323,7 @@
             
                 <div class="postShorten-excerpt">
                     <p>Over the weekend I realized that my notebook became quite slow and was always reading something on the HD, even without any memory pressure. When I was to some music, starting an application was really corrupting the sound. So after some I realized that my Primary IDE controller went from DMA back to the old PIO mode. To solve this issue I reinstalled the the primary IDE port using the Device Manager, and after two reboots it went back to DMA and a acceptable speed.</p>
-<p>You might find more information about that issue here: <a href="http://support.microsoft.com/?kbid=817472" target="_blank" rel="noopener">IDE ATA and ATAPI disks use PIO mode after multiple time-out or CRC errors occur</a>.</p>
+<p>You might find more information about that issue here: <a target="_blank" rel="noopener" href="http://support.microsoft.com/?kbid=817472">IDE ATA and ATAPI disks use PIO mode after multiple time-out or CRC errors occur</a>.</p>
                     
                         <a
                             href="/2004/11/16/Back-to-correct-speed/"
@@ -347,7 +349,7 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2004/07/22/Managing-IIS-with-scripts/"
+                            href="/2004/07/23/Managing-IIS-with-scripts/"
                             aria-label=": Managing IIS with scripts"
                         >
                             Managing IIS with scripts
@@ -366,11 +368,11 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <p>I needed to create a virtual directory in IIS 6 during the deployment of one of our backend application on a Windows 2003 server. This application is a COM component written in C++ that I developed wrapping a very old VB6 COM component. The whole exposed as a Web Service using the <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=C943C0DD-CEEC-4088-9753-86F052EC8450&displaylang=en" target="_blank" rel="noopener">SOAP Toolkit 3</a>. I already discussed about it <a href="http://weblogs.asp.net/lkempe/archive/2003/11/06/36233.aspx" target="_blank" rel="noopener">here</a>.</p>
-<p>So I created a script that will register both COM component, by the way regsvr32 is really bad cause it doesn’t return different value if it fails. Right now I have no verification in the script that let me know if the registration went well. I plan to add it in a second step by reading the content of the registry using the <a href="http://www.microsoft.com/resources/documentation/windows/xp/all/proddocs/en-us/reg.mspx" target="_blank" rel="noopener">reg command</a>. The script is using the <em>SOAPVDIR.CMD</em> packaged with the <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=C943C0DD-CEEC-4088-9753-86F052EC8450&displaylang=en" target="_blank" rel="noopener">SOAP Toolkit 3</a> to create the Virtual Directory with the soap ISAPI of the <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=C943C0DD-CEEC-4088-9753-86F052EC8450&displaylang=en" target="_blank" rel="noopener">SOAP Toolkit 3</a>:</p>
+                    <p>I needed to create a virtual directory in IIS 6 during the deployment of one of our backend application on a Windows 2003 server. This application is a COM component written in C++ that I developed wrapping a very old VB6 COM component. The whole exposed as a Web Service using the <a target="_blank" rel="noopener" href="http://www.microsoft.com/downloads/details.aspx?FamilyId=C943C0DD-CEEC-4088-9753-86F052EC8450&displaylang=en">SOAP Toolkit 3</a>. I already discussed about it <a target="_blank" rel="noopener" href="http://weblogs.asp.net/lkempe/archive/2003/11/06/36233.aspx">here</a>.</p>
+<p>So I created a script that will register both COM component, by the way regsvr32 is really bad cause it doesn’t return different value if it fails. Right now I have no verification in the script that let me know if the registration went well. I plan to add it in a second step by reading the content of the registry using the <a target="_blank" rel="noopener" href="http://www.microsoft.com/resources/documentation/windows/xp/all/proddocs/en-us/reg.mspx">reg command</a>. The script is using the <em>SOAPVDIR.CMD</em> packaged with the <a target="_blank" rel="noopener" href="http://www.microsoft.com/downloads/details.aspx?FamilyId=C943C0DD-CEEC-4088-9753-86F052EC8450&displaylang=en">SOAP Toolkit 3</a> to create the Virtual Directory with the soap ISAPI of the <a target="_blank" rel="noopener" href="http://www.microsoft.com/downloads/details.aspx?FamilyId=C943C0DD-CEEC-4088-9753-86F052EC8450&displaylang=en">SOAP Toolkit 3</a>:</p>
                     
                         <a
-                            href="/2004/07/22/Managing-IIS-with-scripts/"
+                            href="/2004/07/23/Managing-IIS-with-scripts/"
                             class="postShorten-excerpt_link link"
                             aria-label=": Managing IIS with scripts"
                         >
@@ -415,7 +417,7 @@
                     <P>After uninstalling V2i from Symantec I was asked to reboot my notebook. The reboot took for ever so I decide after 30 minutes to switch it off. Problems started when I rebooted, lots of drivers where missing and it seems that I lost the plug and play features. One of the first driver I decided to recover was the Sound driver. This is the way I recover from that sound driver issue.</P>
 <OL>
 <LI>In services, check that WinAudio service is enabled, set to automatic, and running.</LI>
-<LI>In Device Manager, System Devices check that Plug and Play Software Device Enumerator is installed and running</LI></OL>
+<LI>In Device Manager, System Devices check that Plug and Play Software Device Enumerator is installed and running</LI></OL>
 <P>If not , then you need to reinstall it:</P>
 <OL>
 <LI>Copy machine.inf from %windir%\inf to your desktop</LI>
@@ -476,8 +478,8 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>Now DNS are updated and I have Exchange 2003 working. I get a new email that I will have to share with my contacts. Thats will be lots of work. There is still something I need to fix: Outlook Web Access</p>
-<p>I also installed <a href="http://www.vamsoft.com/orf/orfee_prodspec.asp" target="_blank" rel="noopener">Open Relay Filter Enterprise Edition</a> from <a href="http://www.vamsoft.com/default.asp" target="_blank" rel="noopener">Vamsoft</a>. Thanks to them for gracefully providing me a version.</p>
+                    <p>Now DNS are updated and I have Exchange 2003 working. I get a new email that I will have to share with my contacts. Thats will be lots of work. There is still something I need to fix: Outlook Web Access</p>
+<p>I also installed <a target="_blank" rel="noopener" href="http://www.vamsoft.com/orf/orfee_prodspec.asp">Open Relay Filter Enterprise Edition</a> from <a target="_blank" rel="noopener" href="http://www.vamsoft.com/default.asp">Vamsoft</a>. Thanks to them for gracefully providing me a version.</p>
 
                     
                         
@@ -529,8 +531,8 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>I continued the installation of Exchange 2003 and I am almost done with it. Currently I am able to send email, to get email from my different internet pop emails using <a href="http://www.swsoft.co.uk/index.asp?page=freesoftware" target="_blank" rel="noopener">Pullmail</a>. But I can’t get directly emails for my domain. As I have a dynamic ip i used <a href="http://www.dyndns.org/" target="_blank" rel="noopener">DynDns</a> and changed the MX record of my DNS provider to point to a CNAME with the domain name used in DynDns. It seems that the problem is coming from there, but I could not fix it, and I don’t have any idea.</p>
-<p>I want to thanks <a href="http://www.hametbenoit.info/" target="_blank" rel="noopener">Benoit Hamet</a> for his wonderful support. I used also a really good article: <a href="http://www.msexchange.org/tutorials/MF002.html" target="_blank" rel="noopener">Hosting Your Own SMTP Mail Using Exchange 2000</a> by <a href="http://www.msexchange.org/Mark_Fugatt/" target="_blank" rel="noopener">Mark Fugatt</a>. Thanks Mark.</p>
+                    <p>I continued the installation of Exchange 2003 and I am almost done with it. Currently I am able to send email, to get email from my different internet pop emails using <a target="_blank" rel="noopener" href="http://www.swsoft.co.uk/index.asp?page=freesoftware">Pullmail</a>. But I can’t get directly emails for my domain. As I have a dynamic ip i used <a target="_blank" rel="noopener" href="http://www.dyndns.org/">DynDns</a> and changed the MX record of my DNS provider to point to a CNAME with the domain name used in DynDns. It seems that the problem is coming from there, but I could not fix it, and I don’t have any idea.</p>
+<p>I want to thanks <a target="_blank" rel="noopener" href="http://www.hametbenoit.info/">Benoit Hamet</a> for his wonderful support. I used also a really good article: <a target="_blank" rel="noopener" href="http://www.msexchange.org/tutorials/MF002.html">Hosting Your Own SMTP Mail Using Exchange 2000</a> by <a target="_blank" rel="noopener" href="http://www.msexchange.org/Mark_Fugatt/">Mark Fugatt</a>. Thanks Mark.</p>
 
                     
                         
@@ -582,7 +584,7 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>Finally I managed to install my DC, DNS… I stopped this morning at 2 AM and restarted at 7:30 AM. Thanks to <a href="http://thierrymille.online.fr/minicv.html" target="_blank" rel="noopener">Thierry Mille </a>(always of good support) and <a href="http://www.mcse.ms/message560050.html" target="_blank" rel="noopener">Tim Hines</a> for his message that solved my issue. Now I start installing Exchange 2003, and hope that I will be successfull. For the moment it goes ok. When it will be finished I will need to reimport my user profile, that will tough, I guess. Thanks to <a href="http://weblogs.asp.net/jlerman/" target="_blank" rel="noopener">Julia Lerman</a> for her kind message, thats right we are only developers ;-)</p>
+                    <p>Finally I managed to install my DC, DNS… I stopped this morning at 2 AM and restarted at 7:30 AM. Thanks to <a target="_blank" rel="noopener" href="http://thierrymille.online.fr/minicv.html">Thierry Mille </a>(always of good support) and <a target="_blank" rel="noopener" href="http://www.mcse.ms/message560050.html">Tim Hines</a> for his message that solved my issue. Now I start installing Exchange 2003, and hope that I will be successfull. For the moment it goes ok. When it will be finished I will need to reimport my user profile, that will tough, I guess. Thanks to <a target="_blank" rel="noopener" href="http://weblogs.asp.net/jlerman/">Julia Lerman</a> for her kind message, thats right we are only developers ;-)</p>
 
                     
                         
@@ -721,7 +723,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

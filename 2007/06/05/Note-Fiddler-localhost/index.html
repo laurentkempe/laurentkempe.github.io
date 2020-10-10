@@ -11,15 +11,17 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"That’s just a reminder for me about Fiddler and localhost/127.0.0.1:\n\n   \n\n\n\nI don’t see IE7 or .NET traffic sent to localhost or 127.0.0.1. \n\nIE7 and the .NET Framework are hardcoded not to send requests for Localhost through proxies.  Fiddler runs as a proxy.  The workaround is to use your machine name as the hostname instead of Localhost or 127.0.0.1.\nSo, for instance, rather than hitting http://localhost:8081/mytestpage.aspx, instead visit http://machinename:8081/mytestpage.aspx.  Alternatively, you can use http://localhost.:8081/mytestpage.aspx (note the trailing dot after localhost).  Alternatively, you can customize your Rules file like so:\nstatic function OnBeforeRequest(oSession:Fiddler.Session){  if (oSession.host.ToUpper() == “MYAPP”) { oSession.host = “127.0.0.1:8081”; }}\n…and then navigate to http://myapp, which will act as an alias for 127.0.0.1:8081.\n\n\n","dateCreated":"2007-06-05T16:21:49+00:00","dateModified":"2010-05-07T05:45:48+00:00","datePublished":"2007-06-05T16:21:49+00:00","description":"That’s just a reminder for me about Fiddler and localhost/127.0.0.1:\n\n   \n","headline":"[Note] - Fiddler localhost","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/06/05/Note-Fiddler-localhost/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2007/06/05/Note-Fiddler-localhost/","keywords":"Tools, Note"}</script>
-    <meta name="description" content="That’s just a reminder for me about Fiddler and localhost&#x2F;127.0.0.1:">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"That’s just a reminder for me about Fiddler and localhost/127.0.0.1:\n\n   \n\n\n\nI don’t see IE7 or .NET traffic sent to localhost or 127.0.0.1. \n\nIE7 and the .NET Framework are hardcoded not to send requests for Localhost through proxies.  Fiddler runs as a proxy.  The workaround is to use your machine name as the hostname instead of Localhost or 127.0.0.1.\nSo, for instance, rather than hitting http://localhost:8081/mytestpage.aspx, instead visit http://machinename:8081/mytestpage.aspx.  Alternatively, you can use http://localhost.:8081/mytestpage.aspx (note the trailing dot after localhost).  Alternatively, you can customize your Rules file like so:\nstatic function OnBeforeRequest(oSession:Fiddler.Session){  if (oSession.host.ToUpper() == “MYAPP”) { oSession.host = “127.0.0.1:8081”; }}\n…and then navigate to http://myapp, which will act as an alias for 127.0.0.1:8081.\n\n\n","dateCreated":"2007-06-05T16:21:49+00:00","dateModified":"2010-05-07T05:45:48+00:00","datePublished":"2007-06-05T16:21:49+00:00","description":"That’s just a reminder for me about Fiddler and localhost/127.0.0.1:\n\n   \n","headline":"[Note] - Fiddler localhost","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/06/05/Note-Fiddler-localhost/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2007/06/05/Note-Fiddler-localhost/","keywords":"Tools, Note"}</script>
+    <meta name="description" content="That’s just a reminder for me about Fiddler and localhost&#x2F;127.0.0.1:">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="[Note] - Fiddler localhost">
 <meta property="og:url" content="https://laurentkempe.com/2007/06/05/Note-Fiddler-localhost/index.html">
 <meta property="og:site_name" content="Laurent Kempé">
-<meta property="og:description" content="That’s just a reminder for me about Fiddler and localhost&#x2F;127.0.0.1:">
+<meta property="og:description" content="That’s just a reminder for me about Fiddler and localhost&#x2F;127.0.0.1:">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2007-06-05T16:21:49.000Z">
 <meta property="article:modified_time" content="2010-05-07T05:45:48.000Z">
@@ -40,7 +42,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -323,7 +325,7 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>That’s just a reminder for me about <a href="http://www.fiddler2.com/" target="_blank" rel="noopener">Fiddler</a> and localhost/127.0.0.1:</p>
+            <p>That’s just a reminder for me about <a target="_blank" rel="noopener" href="http://www.fiddler2.com/">Fiddler</a> and localhost/127.0.0.1:</p>
 <blockquote>
 <table cellspacing="0" cellpadding="20" width="100%" border="0" unselectable="on"> <tbody> <tr> <td width="100%"><font size="2">
 </blockquote>
@@ -331,10 +333,10 @@
 <blockquote>
 <h4 id="I-don’t-see-IE7-or-NET-traffic-sent-to-localhost-or-127-0-0-1"><a href="#I-don’t-see-IE7-or-NET-traffic-sent-to-localhost-or-127-0-0-1" class="headerlink" title="I don’t see IE7 or .NET traffic sent to localhost or 127.0.0.1."></a>I don’t see IE7 or .NET traffic sent to <u><em>localhost</em></u> or <u><em>127.0.0.1.</em></u></h4> <blockquote>
 
-<p>IE7 and the .NET Framework are hardcoded not to send requests for Localhost through proxies.  Fiddler runs as a proxy.  The workaround is to use your machine name as the hostname instead of Localhost or 127.0.0.1.</p>
-<p>So, for instance, rather than hitting http://<strong>localhost</strong>:8081/mytestpage.aspx, instead visit http://<strong>machinename</strong>:8081/mytestpage.aspx.  Alternatively, you can use http://<strong><span class="style4">localhost.</span></strong>:8081/mytestpage.aspx (note the trailing dot after <em>localhost</em>).  Alternatively, you can customize your Rules file like so:<br><font color="#0000ff" size="2"></p>
-<p>static<font size="2"> </font>function<font size="2"> OnBeforeRequest</font><font color="#ff0000" size="2">(</font>oSession<font color="#ff0000" size="2">:</font><font size="2">Fiddler</font><font color="#ff0000" size="2">.</font><font size="2">Session</font><font color="#ff0000" size="2">)</font><font size="2">{<br></font>  if</font><font size="2"> </font><font color="#ff0000" size="2">(</font><font color="#0000ff" size="2">oSession</font><font color="#ff0000" size="2">.</font><font color="#ff00ff" size="2">host</font><font color="#ff0000" size="2">.</font><font size="2">ToUpper</font><font color="#ff0000" size="2">()</font><font size="2"> </font><font color="#ff0000" size="2">==</font><font size="2"> </font><font color="#4682b4" size="2">“MYAPP”</font><font color="#ff0000" size="2">)</font><font size="2"> { </font><font color="#0000ff" size="2">oSession</font><font color="#ff0000" size="2">.</font><font color="#ff00ff" size="2">host</font><font size="2"> </font><font color="#ff0000" size="2">=</font><font size="2"> </font><font color="#4682b4" size="2">“127.0.0.1:8081”</font><font color="#ff0000" size="2">;</font><font size="2"> }</font><br><font color="#0000ff" size="2"><strong>}</strong></font></p>
-<p>…and then navigate to <a href="http://www.fiddler2.com/" target="_blank" rel="noopener">http://myapp</a>, which will act as an alias for 127.0.0.1:8081.</p>
+<p>IE7 and the .NET Framework are hardcoded not to send requests for Localhost through proxies.  Fiddler runs as a proxy.  The workaround is to use your machine name as the hostname instead of Localhost or 127.0.0.1.</p>
+<p>So, for instance, rather than hitting http://<strong>localhost</strong>:8081/mytestpage.aspx, instead visit http://<strong>machinename</strong>:8081/mytestpage.aspx.  Alternatively, you can use http://<strong><span class="style4">localhost.</span></strong>:8081/mytestpage.aspx (note the trailing dot after <em>localhost</em>).  Alternatively, you can customize your Rules file like so:<br><font color="#0000ff" size="2"></p>
+<p>static<font size="2"> </font>function<font size="2"> OnBeforeRequest</font><font color="#ff0000" size="2">(</font>oSession<font color="#ff0000" size="2">:</font><font size="2">Fiddler</font><font color="#ff0000" size="2">.</font><font size="2">Session</font><font color="#ff0000" size="2">)</font><font size="2">{<br></font>  if</font><font size="2"> </font><font color="#ff0000" size="2">(</font><font color="#0000ff" size="2">oSession</font><font color="#ff0000" size="2">.</font><font color="#ff00ff" size="2">host</font><font color="#ff0000" size="2">.</font><font size="2">ToUpper</font><font color="#ff0000" size="2">()</font><font size="2"> </font><font color="#ff0000" size="2">==</font><font size="2"> </font><font color="#4682b4" size="2">“MYAPP”</font><font color="#ff0000" size="2">)</font><font size="2"> { </font><font color="#0000ff" size="2">oSession</font><font color="#ff0000" size="2">.</font><font color="#ff00ff" size="2">host</font><font size="2"> </font><font color="#ff0000" size="2">=</font><font size="2"> </font><font color="#4682b4" size="2">“127.0.0.1:8081”</font><font color="#ff0000" size="2">;</font><font size="2"> }</font><br><font color="#0000ff" size="2"><strong>}</strong></font></p>
+<p>…and then navigate to <a target="_blank" rel="noopener" href="http://www.fiddler2.com/">http://myapp</a>, which will act as an alias for 127.0.0.1:8081.</p>
 </blockquote></font></td></tr></tbody></table>
 </blockquote>
 
@@ -348,7 +350,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/Note/" rel="tag">Note</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tools/" rel="tag">Tools</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Note/" rel="tag">Note</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Tools/" rel="tag">Tools</a>
 
             </div>
         
@@ -464,7 +466,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -683,7 +685,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

@@ -11,9 +11,11 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"For three night now I focused on one scenario for the Tech Head Brothers authoring tool:\n\nAs an author I want to be able to copy source code from Visual Studio and insert it into the authored Word document\nAs an author I want to preview a document with source code inserted in Internet Explorer  \n\nThis might not look really difficult at first, but I had some difficulties to fulfill the requirements of those two user story.\nThe first one was almost already implemented in step 7, using CustomXML capabilities of WordML.\nThe biggest issue I had was to figure out why when I was inserting CustomXML, the WordML format of the hyperlink was changing. It took me the most time to realize that inserting CustomXML was not the issue. The issue was proofing. Somehow inserting CustomXML was activating the auto proofing and then I got some error like on the following picture. The red underlined Brothers which is a link was the issue. In fact this simple thing change the WordML representation of the hyperlink.\nAs I had something working I had to find a way other than adding a second way to parse Hyperlinks. I came to the solution of disabling proofing then saving the document before making my projection to Tech Head Brothers XML. Then for sure re-enabling the proofing. Nice and easy!\nThe next issue was to be able at the time of parsing the WordML to identify that source code was at at the current position in the WordML. I turned and turned the problem, than asked some clever WordML guys (Julien, Pierre) and some generally good advisor (Mitsu, Cyril). Nothing! I finally came to a solution tonight:\n\nGetting the Id of the PlainTextContentControl from the WordML\nSearching for this Control in the Controls collection\nFinally using the plainTextContentControl.XMLMapping.CustomXMLPart.XML property I had access to my CustomXML  \n\nI couldn’t find any way to do that parsing the WordML and honestly tonight I don’t know how it is possible to go from the WordML to the CustomXML.\nThe result is here!\nCopying source code from Visual Studio\n \nInserting it in Word 2007\n \nFinal result in Internet Explorer\n  \nThere is still a little bug with the spacing that will solved tomorrow or later!\nNow the next steps will be: \n\nProjection of hyperlink\nProjection of picture\nProjection of numbered list and bullet list\nFixing bugs found by Sébastien and Rédo \nPicture caption\nGiving the possibility to insert source code \nProjection of the source code \nAdding the possibility to the author to post the article directly from Word to Tech Head Brothers web site using secured web services made out of WCF \nAdding all validation of the content\n\n","dateCreated":"2008-08-09T04:26:19+00:00","dateModified":"2008-08-09T04:26:19+00:00","datePublished":"2008-08-09T04:26:19+00:00","description":"For three night now I focused on one scenario for the Tech Head Brothers authoring tool:\n\nAs an author I want to be able to copy source code from Visual Studio and insert it into the authored Word document","headline":"Tech Head Brothers new authoring tool, step 8","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/08/09/Tech-Head-Brothers-new-authoring-tool-step-8/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2008/08/09/Tech-Head-Brothers-new-authoring-tool-step-8/","keywords":"Tech Head Brothers, WCF, VSTO, Office 2007"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"For three night now I focused on one scenario for the Tech Head Brothers authoring tool:\n\nAs an author I want to be able to copy source code from Visual Studio and insert it into the authored Word document\nAs an author I want to preview a document with source code inserted in Internet Explorer  \n\nThis might not look really difficult at first, but I had some difficulties to fulfill the requirements of those two user story.\nThe first one was almost already implemented in step 7, using CustomXML capabilities of WordML.\nThe biggest issue I had was to figure out why when I was inserting CustomXML, the WordML format of the hyperlink was changing. It took me the most time to realize that inserting CustomXML was not the issue. The issue was proofing. Somehow inserting CustomXML was activating the auto proofing and then I got some error like on the following picture. The red underlined Brothers which is a link was the issue. In fact this simple thing change the WordML representation of the hyperlink.\nAs I had something working I had to find a way other than adding a second way to parse Hyperlinks. I came to the solution of disabling proofing then saving the document before making my projection to Tech Head Brothers XML. Then for sure re-enabling the proofing. Nice and easy!\nThe next issue was to be able at the time of parsing the WordML to identify that source code was at at the current position in the WordML. I turned and turned the problem, than asked some clever WordML guys (Julien, Pierre) and some generally good advisor (Mitsu, Cyril). Nothing! I finally came to a solution tonight:\n\nGetting the Id of the PlainTextContentControl from the WordML\nSearching for this Control in the Controls collection\nFinally using the plainTextContentControl.XMLMapping.CustomXMLPart.XML property I had access to my CustomXML  \n\nI couldn’t find any way to do that parsing the WordML and honestly tonight I don’t know how it is possible to go from the WordML to the CustomXML.\nThe result is here!\nCopying source code from Visual Studio\n \nInserting it in Word 2007\n \nFinal result in Internet Explorer\n  \nThere is still a little bug with the spacing that will solved tomorrow or later!\nNow the next steps will be: \n\nProjection of hyperlink\nProjection of picture\nProjection of numbered list and bullet list\nFixing bugs found by Sébastien and Rédo \nPicture caption\nGiving the possibility to insert source code \nProjection of the source code \nAdding the possibility to the author to post the article directly from Word to Tech Head Brothers web site using secured web services made out of WCF \nAdding all validation of the content\n\n","dateCreated":"2008-08-09T04:26:19+00:00","dateModified":"2008-08-09T04:26:19+00:00","datePublished":"2008-08-09T04:26:19+00:00","description":"For three night now I focused on one scenario for the Tech Head Brothers authoring tool:\n\nAs an author I want to be able to copy source code from Visual Studio and insert it into the authored Word document","headline":"Tech Head Brothers new authoring tool, step 8","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/08/09/Tech-Head-Brothers-new-authoring-tool-step-8/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2008/08/09/Tech-Head-Brothers-new-authoring-tool-step-8/","keywords":"Tech Head Brothers, WCF, VSTO, Office 2007"}</script>
     <meta name="description" content="For three night now I focused on one scenario for the Tech Head Brothers authoring tool:  As an author I want to be able to copy source code from Visual Studio and insert it into the authored Word doc">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Tech Head Brothers new authoring tool, step 8">
@@ -47,7 +49,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -336,8 +338,8 @@
 <li>As an author I want to preview a document with source code inserted in Internet Explorer  </li>
 </ul>
 <p>This might not look really difficult at first, but I had some difficulties to fulfill the requirements of those two user story.</p>
-<p>The first one was almost already implemented <a href="http://weblogs.asp.net/lkempe/archive/2008/03/12/tech-head-brothers-new-authoring-tool-step-7.aspx" target="_blank" rel="noopener">in step 7</a>, using CustomXML capabilities of WordML.</p>
-<p><img src="http://farm4.static.flickr.com/3228/2745205622_92d3d8e762_o.png" alt="">The biggest issue I had was to figure out why when I was inserting CustomXML, the WordML format of the hyperlink was changing. It took me the most time to realize that inserting CustomXML was not the issue. The issue was proofing. Somehow inserting CustomXML was activating the auto proofing and then I got some error like on the following picture. The red underlined Brothers which is a link was the issue. In fact this simple thing change the WordML representation of the hyperlink.</p>
+<p>The first one was almost already implemented <a target="_blank" rel="noopener" href="http://weblogs.asp.net/lkempe/archive/2008/03/12/tech-head-brothers-new-authoring-tool-step-7.aspx">in step 7</a>, using CustomXML capabilities of WordML.</p>
+<p><img src="http://farm4.static.flickr.com/3228/2745205622_92d3d8e762_o.png">The biggest issue I had was to figure out why when I was inserting CustomXML, the WordML format of the hyperlink was changing. It took me the most time to realize that inserting CustomXML was not the issue. The issue was proofing. Somehow inserting CustomXML was activating the auto proofing and then I got some error like on the following picture. The red underlined Brothers which is a link was the issue. In fact this simple thing change the WordML representation of the hyperlink.</p>
 <p>As I had something working I had to find a way other than adding a second way to parse Hyperlinks. I came to the solution of disabling proofing then saving the document before making my projection to Tech Head Brothers XML. Then for sure re-enabling the proofing. Nice and easy!</p>
 <p>The next issue was to be able at the time of parsing the WordML to identify that source code was at at the current position in the WordML. I turned and turned the problem, than asked some clever WordML guys (Julien, Pierre) and some generally good advisor (Mitsu, Cyril). Nothing! I finally came to a solution tonight:</p>
 <ol>
@@ -348,11 +350,11 @@
 <p>I couldn’t find any way to do that parsing the WordML and honestly tonight I don’t know how it is possible to go from the WordML to the CustomXML.</p>
 <p>The result is here!</p>
 <p><strong>Copying source code from Visual Studio</strong></p>
-<p><img src="http://farm4.static.flickr.com/3089/2744413383_26bf4a4025_o.png" alt=""> </p>
+<p><img src="http://farm4.static.flickr.com/3089/2744413383_26bf4a4025_o.png"> </p>
 <p><strong>Inserting it in Word 2007</strong></p>
-<p><img src="http://farm4.static.flickr.com/3001/2744414779_d4d7af5829_o.png" alt=""> </p>
+<p><img src="http://farm4.static.flickr.com/3001/2744414779_d4d7af5829_o.png"> </p>
 <p><strong>Final result in Internet Explorer</strong></p>
-<p><img src="http://farm4.static.flickr.com/3043/2744419063_c55860a60c_o.png" alt="">  </p>
+<p><img src="http://farm4.static.flickr.com/3043/2744419063_c55860a60c_o.png">  </p>
 <p>There is still a little bug with the spacing that will solved tomorrow or later!</p>
 <p>Now the next steps will be: </p>
 <ol>
@@ -363,7 +365,7 @@
 <li><strike>Picture caption</strike></li>
 <li><strike>Giving the possibility to insert source code </strike></li>
 <li><strike>Projection of the source code</strike> </li>
-<li>Adding the possibility to the author to post the article directly from Word to <a href="http://www.techheadbrothers.com/" target="_blank" rel="noopener">Tech Head Brothers</a> web site using secured web services made out of WCF </li>
+<li>Adding the possibility to the author to post the article directly from Word to <a target="_blank" rel="noopener" href="http://www.techheadbrothers.com/">Tech Head Brothers</a> web site using secured web services made out of WCF </li>
 <li>Adding all validation of the content</li>
 </ol>
 
@@ -377,7 +379,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/Office-2007/" rel="tag">Office 2007</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tech-Head-Brothers/" rel="tag">Tech Head Brothers</a> <a class="tag tag--primary tag--small t-link" href="/tags/VSTO/" rel="tag">VSTO</a> <a class="tag tag--primary tag--small t-link" href="/tags/WCF/" rel="tag">WCF</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Office-2007/" rel="tag">Office 2007</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Tech-Head-Brothers/" rel="tag">Tech Head Brothers</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/VSTO/" rel="tag">VSTO</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/WCF/" rel="tag">WCF</a>
 
             </div>
         
@@ -390,7 +392,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2008/08/11/Visual-Studio-2008-Service-Pack-1-released/"
+                    href="/2008/08/12/Visual-Studio-2008-Service-Pack-1-released/"
                     data-tooltip="Visual Studio 2008 Service Pack 1 released"
                     aria-label="PREVIOUS: Visual Studio 2008 Service Pack 1 released"
                 >
@@ -493,7 +495,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -519,7 +521,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2008/08/11/Visual-Studio-2008-Service-Pack-1-released/"
+                    href="/2008/08/12/Visual-Studio-2008-Service-Pack-1-released/"
                     data-tooltip="Visual Studio 2008 Service Pack 1 released"
                     aria-label="PREVIOUS: Visual Studio 2008 Service Pack 1 released"
                 >
@@ -712,7 +714,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

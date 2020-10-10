@@ -11,15 +11,17 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"A new release (10606) is out, that you might download on CodePlex.\nI quickly tried out the script combining stuff and it works really great. I saved 7 round trip to the server and almost 2 seconds in the page load. You might read more about it on Shawn Burke\n\n\n\nScript Combining.  With the Toolkit, we made the decision to have components be responsible for their own scripts, as opposed to having one mondo-script file with all the script for the whole Toolkit.  This was the right call, as it allows adding to the Toolkit without having everyone pay a penalty for the added items.  However, for components with deep dependancies, this could add up to a lot of individual script files which caused multiple requests back to the server - a problem on slower connections.  We’ve not got functionality such that all of the scripts needed for all of the Toolkit components on the page will be dynamically combined into just one script file and sent down that way.\n\nand Scott Guthrie blogs.\n\nOne of the biggest improvements with this toolkit release is support for a new “ToolkitScriptCombiner” control.  This control allows you to replace the default asp:scriptmanager control behavior, and supports the ability to dynamically merge multiple client-side Javascript scripts into a single file that is downloaded to the client at runtime.  Better yet, only the Javascript needed by the specific controls on the page are included within the combined download, to make it as small as possible.\n\nAnd this just by doing this:\n&lt;span style=&quot;background: rgb(255,238,98)&quot;&gt;&lt;%&lt;span style=&quot;color: rgb(0,128,0)&quot;&gt;&lt;/span&gt;--&lt;asp:ScriptManager ID=&quot;scriptManager&quot; runat=&quot;server&quot;/&gt;--&lt;/span&gt;&lt;span style=&quot;background: rgb(255,238,98)&quot;&gt;%&gt;        &lt;ajaxToolkit:ToolkitScriptManager runat=”Server” ID=”scriptManager” /&gt;\n","dateCreated":"2007-06-09T04:24:41+00:00","dateModified":"2007-06-09T04:24:41+00:00","datePublished":"2007-06-09T04:24:41+00:00","description":"A new release (10606) is out, that you might download on CodePlex.\nI quickly tried out the script combining stuff and it works really great. I saved 7 round trip to the server and almost 2 seconds in the page load. You might read more about it on Shawn Burke","headline":"AJAX Control Toolkit - ToolkitScriptManager","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/06/09/AJAX-Control-Toolkit-ToolkitScriptManager/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2007/06/09/AJAX-Control-Toolkit-ToolkitScriptManager/","keywords":"ASP.NET AJAX"}</script>
-    <meta name="description" content="A new release (10606) is out, that you might download on CodePlex. I quickly tried out the script combining stuff and it works really great. I saved 7 round trip to the server and almost 2 seconds in">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"A new release (10606) is out, that you might download on CodePlex.\nI quickly tried out the script combining stuff and it works really great. I saved 7 round trip to the server and almost 2 seconds in the page load. You might read more about it on Shawn Burke\n\n\n\nScript Combining.  With the Toolkit, we made the decision to have components be responsible for their own scripts, as opposed to having one mondo-script file with all the script for the whole Toolkit.  This was the right call, as it allows adding to the Toolkit without having everyone pay a penalty for the added items.  However, for components with deep dependancies, this could add up to a lot of individual script files which caused multiple requests back to the server - a problem on slower connections.  We’ve not got functionality such that all of the scripts needed for all of the Toolkit components on the page will be dynamically combined into just one script file and sent down that way.\n\nand Scott Guthrie blogs.\n\nOne of the biggest improvements with this toolkit release is support for a new “ToolkitScriptCombiner” control.  This control allows you to replace the default asp:scriptmanager control behavior, and supports the ability to dynamically merge multiple client-side Javascript scripts into a single file that is downloaded to the client at runtime.  Better yet, only the Javascript needed by the specific controls on the page are included within the combined download, to make it as small as possible.\n\nAnd this just by doing this:\n    &lt;span style=&quot;background: rgb(255,238,98)&quot;&gt;&lt;%&lt;span style=&quot;color: rgb(0,128,0)&quot;&gt;&lt;/span&gt;--&lt;asp:ScriptManager ID=&quot;scriptManager&quot; runat=&quot;server&quot;/&gt;--&lt;/span&gt;&lt;span style=&quot;background: rgb(255,238,98)&quot;&gt;%&gt;\n        &lt;ajaxToolkit:ToolkitScriptManager runat=”Server” ID=”scriptManager” /&gt;\n","dateCreated":"2007-06-09T04:24:41+00:00","dateModified":"2007-06-09T04:24:41+00:00","datePublished":"2007-06-09T04:24:41+00:00","description":"A new release (10606) is out, that you might download on CodePlex.\nI quickly tried out the script combining stuff and it works really great. I saved 7 round trip to the server and almost 2 seconds in the page load. You might read more about it on Shawn Burke","headline":"AJAX Control Toolkit - ToolkitScriptManager","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/06/09/AJAX-Control-Toolkit-ToolkitScriptManager/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2007/06/09/AJAX-Control-Toolkit-ToolkitScriptManager/","keywords":"ASP.NET AJAX"}</script>
+    <meta name="description" content="A new release (10606) is out, that you might download on CodePlex. I quickly tried out the script combining stuff and it works really great. I saved 7 round trip to the server and almost 2 seconds in">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="AJAX Control Toolkit - ToolkitScriptManager">
 <meta property="og:url" content="https://laurentkempe.com/2007/06/09/AJAX-Control-Toolkit-ToolkitScriptManager/index.html">
 <meta property="og:site_name" content="Laurent Kempé">
-<meta property="og:description" content="A new release (10606) is out, that you might download on CodePlex. I quickly tried out the script combining stuff and it works really great. I saved 7 round trip to the server and almost 2 seconds in">
+<meta property="og:description" content="A new release (10606) is out, that you might download on CodePlex. I quickly tried out the script combining stuff and it works really great. I saved 7 round trip to the server and almost 2 seconds in">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2007-06-09T04:24:41.000Z">
 <meta property="article:modified_time" content="2007-06-09T04:24:41.000Z">
@@ -39,7 +41,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -322,19 +324,20 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>A new release (10606) is out, that you might <a href="http://www.codeplex.com/AtlasControlToolkit" target="_blank" rel="noopener">download on CodePlex</a>.</p>
-<p>I quickly tried out the script combining stuff and it works really great. I saved 7 round trip to the server and almost 2 seconds in the page load. You might read more about it on <a href="http://blogs.msdn.com/sburke/archive/2007/06/07/updated-toolkit-release-now-available.aspx" target="_blank" rel="noopener">Shawn Burke</a></p>
+            <p>A new release (10606) is out, that you might <a target="_blank" rel="noopener" href="http://www.codeplex.com/AtlasControlToolkit">download on CodePlex</a>.</p>
+<p>I quickly tried out the script combining stuff and it works really great. I saved 7 round trip to the server and almost 2 seconds in the page load. You might read more about it on <a target="_blank" rel="noopener" href="http://blogs.msdn.com/sburke/archive/2007/06/07/updated-toolkit-release-now-available.aspx">Shawn Burke</a></p>
 <a id="more"></a>
 
 <blockquote>
-<p><strong>Script Combining</strong>.  With the Toolkit, we made the decision to have components be responsible for their own scripts, as opposed to having one mondo-script file with all the script for the whole Toolkit.  This was the right call, as it allows adding to the Toolkit without having everyone pay a penalty for the added items.  However, for components with deep dependancies, this could add up to a lot of individual script files which caused multiple requests back to the server - a problem on slower connections.  We’ve not got functionality such that all of the scripts needed for all of the Toolkit components on the page will be dynamically combined into just one script file and sent down that way.</p>
+<p><strong>Script Combining</strong>.  With the Toolkit, we made the decision to have components be responsible for their own scripts, as opposed to having one mondo-script file with all the script for the whole Toolkit.  This was the right call, as it allows adding to the Toolkit without having everyone pay a penalty for the added items.  However, for components with deep dependancies, this could add up to a lot of individual script files which caused multiple requests back to the server - a problem on slower connections.  We’ve not got functionality such that all of the scripts needed for all of the Toolkit components on the page will be dynamically combined into just one script file and sent down that way.</p>
 </blockquote>
-<p>and <a href="http://weblogs.asp.net/scottgu/archive/2007/06/08/new-asp-net-ajax-control-toolkit-release.aspx" target="_blank" rel="noopener">Scott Guthrie</a> blogs.</p>
+<p>and <a target="_blank" rel="noopener" href="http://weblogs.asp.net/scottgu/archive/2007/06/08/new-asp-net-ajax-control-toolkit-release.aspx">Scott Guthrie</a> blogs.</p>
 <blockquote>
-<p>One of the biggest improvements with this toolkit release is support for a new “ToolkitScriptCombiner” control.  This control allows you to replace the default <a href="asp:scriptmanager">asp:scriptmanager</a> control behavior, and supports the ability to dynamically merge multiple client-side Javascript scripts into a single file that is downloaded to the client at runtime.  Better yet, only the Javascript needed by the specific controls on the page are included within the combined download, to make it as small as possible.</p>
+<p>One of the biggest improvements with this toolkit release is support for a new “ToolkitScriptCombiner” control.  This control allows you to replace the default <a href="asp:scriptmanager">asp:scriptmanager</a> control behavior, and supports the ability to dynamically merge multiple client-side Javascript scripts into a single file that is downloaded to the client at runtime.  Better yet, only the Javascript needed by the specific controls on the page are included within the combined download, to make it as small as possible.</p>
 </blockquote>
 <p>And this just by doing this:</p>
-<pre><code>&lt;span style=&quot;background: rgb(255,238,98)&quot;&gt;&lt;%&lt;span style=&quot;color: rgb(0,128,0)&quot;&gt;&lt;/span&gt;--&lt;asp:ScriptManager ID=&quot;scriptManager&quot; runat=&quot;server&quot;/&gt;--&lt;/span&gt;&lt;span style=&quot;background: rgb(255,238,98)&quot;&gt;%&gt;</code></pre><p></span>        <span style="color: rgb(0,0,255)">&lt;</span><span style="color: rgb(163,21,21)">ajaxToolkit</span><span style="color: rgb(0,0,255)">:</span><span style="color: rgb(163,21,21)">ToolkitScriptManager</span> <span style="color: rgb(255,0,0)">runat</span><span style="color: rgb(0,0,255)">=”Server”</span> <span style="color: rgb(255,0,0)">ID</span><span style="color: rgb(0,0,255)">=”scriptManager”</span> <span style="color: rgb(0,0,255)">/&gt;<br></span><br><a href="http://11011.net/software/vspaste" target="_blank" rel="noopener"></a></p>
+<pre><code>    &lt;span style=&quot;background: rgb(255,238,98)&quot;&gt;&lt;%&lt;span style=&quot;color: rgb(0,128,0)&quot;&gt;&lt;/span&gt;--&lt;asp:ScriptManager ID=&quot;scriptManager&quot; runat=&quot;server&quot;/&gt;--&lt;/span&gt;&lt;span style=&quot;background: rgb(255,238,98)&quot;&gt;%&gt;</code></pre>
+<p></span>        <span style="color: rgb(0,0,255)">&lt;</span><span style="color: rgb(163,21,21)">ajaxToolkit</span><span style="color: rgb(0,0,255)">:</span><span style="color: rgb(163,21,21)">ToolkitScriptManager</span> <span style="color: rgb(255,0,0)">runat</span><span style="color: rgb(0,0,255)">=”Server”</span> <span style="color: rgb(255,0,0)">ID</span><span style="color: rgb(0,0,255)">=”scriptManager”</span> <span style="color: rgb(0,0,255)">/&gt;<br></span><br><a target="_blank" rel="noopener" href="http://11011.net/software/vspaste"></a></p>
 
             
 
@@ -346,7 +349,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET-AJAX/" rel="tag">ASP.NET AJAX</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/ASP-NET-AJAX/" rel="tag">ASP.NET AJAX</a>
 
             </div>
         
@@ -462,7 +465,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -681,7 +684,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

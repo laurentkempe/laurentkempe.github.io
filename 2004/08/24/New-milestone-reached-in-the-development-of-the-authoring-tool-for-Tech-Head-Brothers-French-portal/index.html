@@ -11,7 +11,9 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"In this version we now have:\n\na toolbar hosting Preview, Zip, Post plugin\na dropdown connecting to a web service at first click to get back the articles categories, used before posting\na web service to post the article using DIME\n\nInternal changes:\n\neverything is configured in a config file now\nXML Schema is associated with Word at runtime, read from config file\nAll source code colorization is done through configured properties\n\nHere is a picture of Word 2003 with the toolbar:\n\nI am still facing an issue. I am able to read configuration files from the assembly, but when I want to deserialize one part of my configuration file I get an exception saying: “There is an error in XML document” and the inner exception is “Security error”. It seems to be a French problem cause I could find someone having the same issue in the newsgroup, here. I emailed Peter Torr that replied to this newsgroup message, I hope ot get an answer and a solution ;)\n","dateCreated":"2004-08-24T04:41:00+00:00","dateModified":"2004-08-24T04:41:00+00:00","datePublished":"2004-08-24T04:41:00+00:00","description":"In this version we now have:\n\na toolbar hosting Preview, Zip, Post plugin","headline":"New milestone reached in the development of the authoring tool for Tech Head Brothers French portal","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2004/08/24/New-milestone-reached-in-the-development-of-the-authoring-tool-for-Tech-Head-Brothers-French-portal/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2004/08/24/New-milestone-reached-in-the-development-of-the-authoring-tool-for-Tech-Head-Brothers-French-portal/","keywords":"Tech Head Brothers, .NET Development"}</script>
     <meta name="description" content="In this version we now have:  a toolbar hosting Preview, Zip, Post plugin">
@@ -42,7 +44,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -338,8 +340,8 @@
 <li>All source code colorization is done through configured properties</li>
 </ul>
 <p>Here is a picture of Word 2003 with the toolbar:</p>
-<p><img src="http://perso.wanadoo.fr/laurent.kempe/images/thbpublisher.png" alt=""></p>
-<p>I am still facing an issue. I am able to read configuration files from the assembly, but when I want to deserialize one part of my configuration file I get an exception saying: “There is an error in XML document” and the inner exception is “Security error”. It seems to be a French problem cause I could find someone having the same issue in the newsgroup, <a href="http://groups.google.com/groups?q=vsto+deserialize&hl=en&lr=&ie=UTF-8&selm=e1gzbqcrDHA.2588%40tk2msftngp13.phx.gbl&rnum=1" target="_blank" rel="noopener">here</a>. I emailed <a href="http://blogs.msdn.com/ptorr" target="_blank" rel="noopener">Peter Torr</a> that replied to this newsgroup message, I hope ot get an answer and a solution ;)</p>
+<p><img src="http://perso.wanadoo.fr/laurent.kempe/images/thbpublisher.png"></p>
+<p>I am still facing an issue. I am able to read configuration files from the assembly, but when I want to deserialize one part of my configuration file I get an exception saying: “There is an error in XML document” and the inner exception is “Security error”. It seems to be a French problem cause I could find someone having the same issue in the newsgroup, <a target="_blank" rel="noopener" href="http://groups.google.com/groups?q=vsto+deserialize&hl=en&lr=&ie=UTF-8&selm=e1gzbqcrDHA.2588@tk2msftngp13.phx.gbl&rnum=1">here</a>. I emailed <a target="_blank" rel="noopener" href="http://blogs.msdn.com/ptorr">Peter Torr</a> that replied to this newsgroup message, I hope ot get an answer and a solution ;)</p>
 
             
 
@@ -351,7 +353,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/NET-Development/" rel="tag">.NET Development</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tech-Head-Brothers/" rel="tag">Tech Head Brothers</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/NET-Development/" rel="tag">.NET Development</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Tech-Head-Brothers/" rel="tag">Tech Head Brothers</a>
 
             </div>
         
@@ -467,7 +469,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -686,7 +688,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

@@ -11,7 +11,9 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Today I had the pleasure to attend “Git and GitHub Training” held by Tim Berglund one of the GitHubber, so called because he is working at Github.\nIn the past I enjoyed very much the video Tim and Matthew McCullough, another GitHubber, did for O’Reilly\n\n\n\nMcCullough and Berglund on Mastering Git\nMcCullough and Berglund on Mastering Advanced Git\n\nSo it was really nice to meet Tim in one of his course.\nWhat are the class objectives?\n\nUnderstand how Git works and how to apply that to day to day development.\nLearn how GitHub makes distributed collaboration both effective and enjoyable.\nPractice the use of Pull Requests to make contributions to any project.\nLearn the basic 10 commands that will appear in your every-day use of Git.\nKnow how to “back out” mistakes using Git’s incredible history and ability to revert almost any change.\nLeverage the features of GitHub for easier collaboration with colleagues.\nDiscover how the offline capabilities of Git work.\n\nTopics\n\nIntroductions\nGit and your initial setup\nGit configuration and its inheritance\nSSH Authentication and your first repository\nUnderstanding and thinking in Git’s three stages\nAdding, committing, and diff-ing code changes\nThe Similarity Index; Moving, Renaming, and Removing files\nReviewing Version History in Git\nStrategies for Efficiency (quick workflows, GitIgnores, etc.)\nManaging and using Git Remotes\nGitHub\nForking Repos\nPull Requests\nBranching, Tagging, and Stashing\nMerging, Rebasing, and managing conflicts\nUndoing your work with Git\n\nThe course was taking place at Canoo headquarters in Basel, which have really very nice offices and were welcoming us very nicely!\nWe went through all the topics described and even a bit more as most of the people in the course were already having some experience with git.\nDid I liked the course, the format and the way to present it?\nDefinitely yes! I enjoyed it and would really recommend it to people which are starting with git. I especially liked the way Tim presented the inner working of git which I think is important to get right, especially when you come from another vcs like svn. Also that the log is a graph and not a list…\nDid I learned a lot?\nNot really but that was planned. I spent almost two years working with git svn at Innoveo Solutions and git for my personal projects. Now I am also using git without the svn part at work and continue to take influence so that the whole company migrate to git. So I gained some experience, which the course would have give me much quicker, and I guess my colleagues, Cédric, Carlos and Christian gained some knowledge in one day which took me much more time to grasp. So the course if a great starter, as for quite some things, you need to practice to really get it!\nFor people with a good understanding of git I would take care to go to the Advanced Git &amp; GitHub Course.\nDuring the course we had some open discussions on various topics, but here are some which I would like to put some emphasis on.\nMy personal experience brought me from thinking that I want to have the tools integrated into my IDE to, after getting more knowledge about git, using git from the command line. This makes me as a developer much more efficient and let me automate some stuff, which I couldn’t do with the IDE. For sure I agree with Tim  that if I would have to work with cmd it would be rude but today there is PowerShell and combined with ConEmu and PoshGit it makes very effective, even on Windows which was still seen as a clicking environment!\nI learned about\n\ngit config –global credential.helper cache\n\nBut this wasn’t working on my Windows machine, so I went back to https://github.com/anurse/git-credential-winstore\nThis was also new to me\n\ngit push –delete origin mybranch\n\nbecause I am used to do it with the following, which is for sure less expressive of what it does\n\ngit push origin :mybranch\n\nFinally things I heard during the course which I want to investigate further are\n\npackfiles for binary files - http://git-scm.com/book/en/Git-Internals-Packfiles\ngit daemon start a git daemon on a shared wifi\ngit bundle if network is difficult\ndig more on the git help config\n\nI also had interesting discussions with some of the Canoo people especially about Scratch, one way to bring kids to programming and the Raspberry Pi.\nSo that was a great day! And I hope to have some others like this one in the future.\n","dateCreated":"2013-05-28T04:20:00+00:00","dateModified":"2013-05-28T14:16:36+00:00","datePublished":"2013-05-28T04:20:00+00:00","description":"Today I had the pleasure to attend “Git and GitHub Training” held by Tim Berglund one of the GitHubber, so called because he is working at Github.\nIn the past I enjoyed very much the video Tim and Matthew McCullough, another GitHubber, did for O’Reilly","headline":"Git and GitHub Training","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2013/05/28/Git-and-GitHub-Training/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2013/05/28/Git-and-GitHub-Training/","keywords":"Git, GitHub"}</script>
     <meta name="description" content="Today I had the pleasure to attend “Git and GitHub Training” held by Tim Berglund one of the GitHubber, so called because he is working at Github. In the past I enjoyed very much the video Tim and Mat">
@@ -42,7 +44,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -325,13 +327,13 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>Today I had the pleasure to attend “Git and GitHub Training” held by <a href="http://timberglund.com/" target="_blank" rel="noopener">Tim Berglund</a> one of the GitHubber, so called because he is working at <a href="https://github.com/" target="_blank" rel="noopener">Github</a>.</p>
-<p>In the past I enjoyed very much the video Tim and <a href="http://matthewjmccullough.com/" target="_blank" rel="noopener">Matthew McCullough</a>, another GitHubber, did for O’Reilly</p>
+            <p>Today I had the pleasure to attend “Git and GitHub Training” held by <a target="_blank" rel="noopener" href="http://timberglund.com/">Tim Berglund</a> one of the GitHubber, so called because he is working at <a target="_blank" rel="noopener" href="https://github.com/">Github</a>.</p>
+<p>In the past I enjoyed very much the video Tim and <a target="_blank" rel="noopener" href="http://matthewjmccullough.com/">Matthew McCullough</a>, another GitHubber, did for O’Reilly</p>
 <a id="more"></a>
 
 <ul>
-<li><a href="http://shop.oreilly.com/product/0636920017462.do" target="_blank" rel="noopener">McCullough and Berglund on Mastering Git</a></li>
-<li><a href="http://shop.oreilly.com/product/0636920024774.do" target="_blank" rel="noopener">McCullough and Berglund on Mastering Advanced Git</a></li>
+<li><a target="_blank" rel="noopener" href="http://shop.oreilly.com/product/0636920017462.do">McCullough and Berglund on Mastering Git</a></li>
+<li><a target="_blank" rel="noopener" href="http://shop.oreilly.com/product/0636920024774.do">McCullough and Berglund on Mastering Advanced Git</a></li>
 </ul>
 <p>So it was really nice to meet Tim in one of his course.</p>
 <p><strong>What are the class objectives?</strong></p>
@@ -363,20 +365,20 @@
 <li>Merging, Rebasing, and managing conflicts</li>
 <li>Undoing your work with Git</li>
 </ul>
-<p>The course was taking place at <a href="http://www.canoo.com/service/contact/" target="_blank" rel="noopener">Canoo headquarters</a> in Basel, which have really very nice offices and were welcoming us very nicely!</p>
+<p>The course was taking place at <a target="_blank" rel="noopener" href="http://www.canoo.com/service/contact/">Canoo headquarters</a> in Basel, which have really very nice offices and were welcoming us very nicely!</p>
 <p>We went through all the topics described and even a bit more as most of the people in the course were already having some experience with git.</p>
 <p>Did I liked the course, the format and the way to present it?</p>
 <p><strong>Definitely yes!</strong> I enjoyed it and would really recommend it to people which are starting with git. I especially liked the way Tim presented the inner working of git which I think is important to get right, especially when you come from another vcs like svn. Also that the log is a graph and not a list…</p>
 <p>Did I learned a lot?</p>
-<p>Not really but that was planned. I spent almost two years working with git svn at <a href="http://www.innoveo.com/" target="_blank" rel="noopener">Innoveo Solutions</a> and git for my personal projects. Now I am also using git without the svn part at work and continue to take influence so that the whole company migrate to git. So I gained some experience, which the course would have give me much quicker, and I guess my colleagues, Cédric, Carlos and Christian gained some knowledge in one day which took me much more time to grasp. So the course if a great starter, as for quite some things, you need to practice to really get it!</p>
-<p>For people with a good understanding of git I would take care to go to the <a href="http://training.github.com/web/advanced-git/" target="_blank" rel="noopener">Advanced Git &amp; GitHub Course</a>.</p>
+<p>Not really but that was planned. I spent almost two years working with git svn at <a target="_blank" rel="noopener" href="http://www.innoveo.com/">Innoveo Solutions</a> and git for my personal projects. Now I am also using git without the svn part at work and continue to take influence so that the whole company migrate to git. So I gained some experience, which the course would have give me much quicker, and I guess my colleagues, Cédric, Carlos and Christian gained some knowledge in one day which took me much more time to grasp. So the course if a great starter, as for quite some things, you need to practice to really get it!</p>
+<p>For people with a good understanding of git I would take care to go to the <a target="_blank" rel="noopener" href="http://training.github.com/web/advanced-git/">Advanced Git &amp; GitHub Course</a>.</p>
 <p>During the course we had some open discussions on various topics, but here are some which I would like to put some emphasis on.</p>
-<p>My personal experience brought me from thinking that I want to have the tools integrated into my IDE to, after getting more knowledge about git, using git from the command line. This makes me as a developer much more efficient and let me automate some stuff, which I couldn’t do with the IDE. For sure I agree with Tim <img src="/images/wlEmoticon-winkingsmile.png" alt="Winking smile"> that if I would have to work with cmd it would be rude but today there is <a href="http://technet.microsoft.com/en-us/scriptcenter/powershell.aspx" target="_blank" rel="noopener">PowerShell</a> and combined with <a href="https://code.google.com/p/conemu-maximus5/" target="_blank" rel="noopener">ConEmu</a> and <a href="https://github.com/dahlbyk/posh-git" target="_blank" rel="noopener">PoshGit</a> it makes very effective, even on Windows which was still seen as a clicking environment!</p>
+<p>My personal experience brought me from thinking that I want to have the tools integrated into my IDE to, after getting more knowledge about git, using git from the command line. This makes me as a developer much more efficient and let me automate some stuff, which I couldn’t do with the IDE. For sure I agree with Tim <img src="/images/wlEmoticon-winkingsmile.png" alt="Winking smile"> that if I would have to work with cmd it would be rude but today there is <a target="_blank" rel="noopener" href="http://technet.microsoft.com/en-us/scriptcenter/powershell.aspx">PowerShell</a> and combined with <a target="_blank" rel="noopener" href="https://code.google.com/p/conemu-maximus5/">ConEmu</a> and <a target="_blank" rel="noopener" href="https://github.com/dahlbyk/posh-git">PoshGit</a> it makes very effective, even on Windows which was still seen as a clicking environment!</p>
 <p>I learned about</p>
 <blockquote>
 <p>git config –global credential.helper cache</p>
 </blockquote>
-<p>But this wasn’t working on my Windows machine, so I went back to <a href="https://github.com/anurse/git-credential-winstore" target="_blank" rel="noopener">https://github.com/anurse/git-credential-winstore</a></p>
+<p>But this wasn’t working on my Windows machine, so I went back to <a target="_blank" rel="noopener" href="https://github.com/anurse/git-credential-winstore">https://github.com/anurse/git-credential-winstore</a></p>
 <p>This was also new to me</p>
 <blockquote>
 <p>git push –delete origin mybranch</p>
@@ -387,12 +389,12 @@
 </blockquote>
 <p>Finally things I heard during the course which I want to investigate further are</p>
 <ul>
-<li>packfiles for binary files - <a href="http://git-scm.com/book/en/Git-Internals-Packfiles" target="_blank" rel="noopener">http://git-scm.com/book/en/Git-Internals-Packfiles</a></li>
+<li>packfiles for binary files - <a target="_blank" rel="noopener" href="http://git-scm.com/book/en/Git-Internals-Packfiles">http://git-scm.com/book/en/Git-Internals-Packfiles</a></li>
 <li>git daemon start a git daemon on a shared wifi</li>
 <li>git bundle if network is difficult</li>
 <li>dig more on the git help config</li>
 </ul>
-<p>I also had interesting discussions with some of the Canoo people especially about <a href="http://scratch.mit.edu/" target="_blank" rel="noopener">Scratch</a>, one way to bring kids to programming and the <a href="http://www.raspberrypi.org/" target="_blank" rel="noopener">Raspberry Pi</a>.</p>
+<p>I also had interesting discussions with some of the Canoo people especially about <a target="_blank" rel="noopener" href="http://scratch.mit.edu/">Scratch</a>, one way to bring kids to programming and the <a target="_blank" rel="noopener" href="http://www.raspberrypi.org/">Raspberry Pi</a>.</p>
 <p>So that was a great day! And I hope to have some others like this one in the future.</p>
 
             
@@ -405,7 +407,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/Git/" rel="tag">Git</a> <a class="tag tag--primary tag--small t-link" href="/tags/GitHub/" rel="tag">GitHub</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Git/" rel="tag">Git</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/GitHub/" rel="tag">GitHub</a>
 
             </div>
         
@@ -521,7 +523,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -740,7 +742,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

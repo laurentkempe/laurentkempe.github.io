@@ -11,7 +11,9 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I finally found some time this evening to re-configure Team City and adapt my MSBuild script to be able to achieve the following build configuration for Tech Head Brothers portal:\n \n\n\n\nCI Trunk - Unit Tests, Coverage, Deploy Staging\n\nCheckout source code from subversion Portal project trunk\nCompile\nRun NUnit tests\nRun NCover with summary code coverage report\nDeploy to the Staging IIS    Nightly Trunk - Duplicate Finder\n\n\n\nFind duplicates using Team City Build Runner    Nightly Trunk - Unit Tests, Coverage, NDepend\n\n\n\nCheckout source code from subversion Portal project trunk\nCompile\nRun NUnit tests\nRun NCover with summary code coverage report\nRun NCover with full code coverage report\nRun NDepend   \n\n\n\nAsap I will post about the way I achieve this configuration!\n","dateCreated":"2008-04-23T05:16:19+00:00","dateModified":"2008-04-23T05:16:19+00:00","datePublished":"2008-04-23T05:16:19+00:00","description":"I finally found some time this evening to re-configure Team City and adapt my MSBuild script to be able to achieve the following build configuration for Tech Head Brothers portal:\n ","headline":"Continuous integration and Nightly build with Team City","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/04/23/Continuous-integration-and-Nightly-build-with-Team-City/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2008/04/23/Continuous-integration-and-Nightly-build-with-Team-City/","keywords":"Tech Head Brothers, continuous integration, Team City"}</script>
     <meta name="description" content="I finally found some time this evening to re-configure Team City and adapt my MSBuild script to be able to achieve the following build configuration for Tech Head Brothers portal:">
@@ -43,7 +45,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -326,8 +328,8 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>I finally found some time this evening to re-configure Team City and adapt my MSBuild script to be able to achieve the following build configuration for <a href="http://www.techheadbrothers.com/" target="_blank" rel="noopener">Tech Head Brothers</a> portal:</p>
-<p><img src="http://farm3.static.flickr.com/2006/2434398929_d8bb394867_o.jpg" alt=""> </p>
+            <p>I finally found some time this evening to re-configure Team City and adapt my MSBuild script to be able to achieve the following build configuration for <a target="_blank" rel="noopener" href="http://www.techheadbrothers.com/">Tech Head Brothers</a> portal:</p>
+<p><img src="http://farm3.static.flickr.com/2006/2434398929_d8bb394867_o.jpg"> </p>
 <a id="more"></a>
 
 <ul>
@@ -335,8 +337,8 @@
 <li><ul>
 <li>Checkout source code from subversion Portal project trunk</li>
 <li>Compile</li>
-<li>Run <a href="http://nunit.com/index.php" target="_blank" rel="noopener">NUnit</a> tests</li>
-<li>Run <a href="http://www.ncover.com/" target="_blank" rel="noopener">NCover</a> with summary code coverage report</li>
+<li>Run <a target="_blank" rel="noopener" href="http://nunit.com/index.php">NUnit</a> tests</li>
+<li>Run <a target="_blank" rel="noopener" href="http://www.ncover.com/">NCover</a> with summary code coverage report</li>
 <li>Deploy to the Staging IIS    Nightly Trunk - Duplicate Finder</li>
 </ul>
 </li>
@@ -347,10 +349,10 @@
 <li><ul>
 <li>Checkout source code from subversion Portal project trunk</li>
 <li>Compile</li>
-<li>Run <a href="http://nunit.com/index.php" target="_blank" rel="noopener">NUnit</a> tests</li>
-<li>Run <a href="http://www.ncover.com/" target="_blank" rel="noopener">NCover</a> with summary code coverage report</li>
-<li>Run <a href="http://www.ncover.com/" target="_blank" rel="noopener">NCover</a> with full code coverage report</li>
-<li>Run <a href="http://www.ndepend.com/" target="_blank" rel="noopener">NDepend</a>   </li>
+<li>Run <a target="_blank" rel="noopener" href="http://nunit.com/index.php">NUnit</a> tests</li>
+<li>Run <a target="_blank" rel="noopener" href="http://www.ncover.com/">NCover</a> with summary code coverage report</li>
+<li>Run <a target="_blank" rel="noopener" href="http://www.ncover.com/">NCover</a> with full code coverage report</li>
+<li>Run <a target="_blank" rel="noopener" href="http://www.ndepend.com/">NDepend</a>   </li>
 </ul>
 </li>
 </ul>
@@ -366,7 +368,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/Team-City/" rel="tag">Team City</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tech-Head-Brothers/" rel="tag">Tech Head Brothers</a> <a class="tag tag--primary tag--small t-link" href="/tags/continuous-integration/" rel="tag">continuous integration</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Team-City/" rel="tag">Team City</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Tech-Head-Brothers/" rel="tag">Tech Head Brothers</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/continuous-integration/" rel="tag">continuous integration</a>
 
             </div>
         
@@ -482,7 +484,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -701,7 +703,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

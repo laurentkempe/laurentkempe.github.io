@@ -11,9 +11,11 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Tonight we got the following issue on our TeamCity build server which produce different ClickOnce setups :\n\nc:\\WINDOWS\\Microsoft.NET\\Framework\\v3.5\\Microsoft.Common.targets(3652, 9): error MSB3482: An error occurred while signing: Failed to sign ....\\Tests\\Output\\bin\\DeployClickOnce\\app.publish\\setup.exe. \n\n\n\nSignTool Error: ISignedCode::Sign returned error: 0x80880253**    **The signer’s certificate is not valid for signing.SignTool Error: An error occurred while attempting to sign: ....\\Tests\\Output\\bin\\DeployClickOnce\\app.publish\\setup.exe\n\nChecking the certificate used by our project I found that the expiration date was yesterday:\n \nSo I had first to create a new test certificate.\nThen I had to re-install the certificate on the server, as described in “ClickOnce certificate and TeamCity”. Before installing I had to remove the old one using:\n\nPsexec.exe -i -s cmd.exe\n\nthen running\n\nmmc\n\nand removing by hand the old certifcate.\n","dateCreated":"2010-01-12T05:08:53+00:00","dateModified":"2010-01-12T05:08:53+00:00","datePublished":"2010-01-12T05:08:53+00:00","description":"Tonight we got the following issue on our TeamCity build server which produce different ClickOnce setups :\n\nc:\\WINDOWS\\Microsoft.NET\\Framework\\v3.5\\Microsoft.Common.targets(3652, 9): error MSB3482: An error occurred while signing: Failed to sign ....\\Tests\\Output\\bin\\DeployClickOnce\\app.publish\\setup.exe. \n","headline":"ClickOnce ISignedCode::Sign returned error: 0x80880253","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/01/12/ClickOnce-ISignedCodeSign-returned-error-0x80880253/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/01/12/ClickOnce-ISignedCodeSign-returned-error-0x80880253/","keywords":"continuous integration, Team City, MSBuild, ClickOnce"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Tonight we got the following issue on our TeamCity build server which produce different ClickOnce setups :\n\nc:\\WINDOWS\\Microsoft.NET\\Framework\\v3.5\\Microsoft.Common.targets(3652, 9): error MSB3482: An error occurred while signing: Failed to sign ....\\Tests\\Output\\bin\\DeployClickOnce\\app.publish\\setup.exe. \n\n\n\nSignTool Error: ISignedCode::Sign returned error: 0x80880253**    **The signer’s certificate is not valid for signing.SignTool Error: An error occurred while attempting to sign: ....\\Tests\\Output\\bin\\DeployClickOnce\\app.publish\\setup.exe\n\nChecking the certificate used by our project I found that the expiration date was yesterday:\n \nSo I had first to create a new test certificate.\nThen I had to re-install the certificate on the server, as described in “ClickOnce certificate and TeamCity”. Before installing I had to remove the old one using:\n\nPsexec.exe -i -s cmd.exe\n\nthen running\n\nmmc\n\nand removing by hand the old certifcate.\n","dateCreated":"2010-01-12T05:08:53+00:00","dateModified":"2010-01-12T05:08:53+00:00","datePublished":"2010-01-12T05:08:53+00:00","description":"Tonight we got the following issue on our TeamCity build server which produce different ClickOnce setups :\n\nc:\\WINDOWS\\Microsoft.NET\\Framework\\v3.5\\Microsoft.Common.targets(3652, 9): error MSB3482: An error occurred while signing: Failed to sign ....\\Tests\\Output\\bin\\DeployClickOnce\\app.publish\\setup.exe. \n","headline":"ClickOnce ISignedCode::Sign returned error: 0x80880253","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/01/12/ClickOnce-ISignedCodeSign-returned-error-0x80880253/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/01/12/ClickOnce-ISignedCodeSign-returned-error-0x80880253/","keywords":"continuous integration, Team City, MSBuild, ClickOnce"}</script>
     <meta name="description" content="Tonight we got the following issue on our TeamCity build server which produce different ClickOnce setups :  c:\WINDOWS\Microsoft.NET\Framework\v3.5\Microsoft.Common.targets(3652, 9): error MSB3482: An">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="ClickOnce ISignedCode::Sign returned error: 0x80880253">
@@ -44,7 +46,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -327,18 +329,18 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>Tonight we got the following issue on our <a href="http://www.jetbrains.com/teamcity/index.html" target="_blank" rel="noopener">TeamCity</a> build server which produce different ClickOnce setups :</p>
+            <p>Tonight we got the following issue on our <a target="_blank" rel="noopener" href="http://www.jetbrains.com/teamcity/index.html">TeamCity</a> build server which produce different ClickOnce setups :</p>
 <blockquote>
-<p>c:\WINDOWS\Microsoft.NET\Framework\v3.5\Microsoft.Common.targets(3652, 9): <strong>error MSB3482: An error occurred while signing: Failed to sign ....\Tests\Output\bin\DeployClickOnce\app.publish\setup.exe</strong>. </p>
+<p>c:\WINDOWS\Microsoft.NET\Framework\v3.5\Microsoft.Common.targets(3652, 9): <strong>error MSB3482: An error occurred while signing: Failed to sign ....\Tests\Output\bin\DeployClickOnce\app.publish\setup.exe</strong>. </p>
 </blockquote>
 <a id="more"></a>
 <blockquote>
-<p><strong>SignTool Error: ISignedCode::Sign returned error: 0x80880253<br>**    **The signer’s certificate is not valid for signing.</strong><br>SignTool Error: An error occurred while attempting to sign: ....\Tests\Output\bin\DeployClickOnce\app.publish\setup.exe</p>
+<p><strong>SignTool Error: ISignedCode::Sign returned error: 0x80880253<br>**    **The signer’s certificate is not valid for signing.</strong><br>SignTool Error: An error occurred while attempting to sign: ....\Tests\Output\bin\DeployClickOnce\app.publish\setup.exe</p>
 </blockquote>
 <p>Checking the certificate used by our project I found that the expiration date was yesterday:</p>
-<p><img src="/images/4267117780_617c4d5071_o1_2F2A08B4.png" alt=""> </p>
+<p><img src="/images/4267117780_617c4d5071_o1_2F2A08B4.png"> </p>
 <p>So I had first to create a new test certificate.</p>
-<p>Then I had to re-install the certificate on the server, as described in “<a href="http://weblogs.asp.net/lkempe/archive/2009/11/02/clickonce-certificate-and-teamcity.aspx" target="_blank" rel="noopener">ClickOnce certificate and TeamCity</a>”. Before installing I had to remove the old one using:</p>
+<p>Then I had to re-install the certificate on the server, as described in “<a target="_blank" rel="noopener" href="http://weblogs.asp.net/lkempe/archive/2009/11/02/clickonce-certificate-and-teamcity.aspx">ClickOnce certificate and TeamCity</a>”. Before installing I had to remove the old one using:</p>
 <blockquote>
 <p>Psexec.exe -i -s cmd.exe</p>
 </blockquote>
@@ -358,7 +360,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/ClickOnce/" rel="tag">ClickOnce</a> <a class="tag tag--primary tag--small t-link" href="/tags/MSBuild/" rel="tag">MSBuild</a> <a class="tag tag--primary tag--small t-link" href="/tags/Team-City/" rel="tag">Team City</a> <a class="tag tag--primary tag--small t-link" href="/tags/continuous-integration/" rel="tag">continuous integration</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/ClickOnce/" rel="tag">ClickOnce</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/MSBuild/" rel="tag">MSBuild</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Team-City/" rel="tag">Team City</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/continuous-integration/" rel="tag">continuous integration</a>
 
             </div>
         
@@ -474,7 +476,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -693,7 +695,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

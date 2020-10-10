@@ -11,7 +11,9 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"This end of afternoon I worked on the mapping part of my new project for innoveo solutions, a blog engine.\nTill now I was using the XML Persistence Engine of Euss but it was time to go to a real mapping and a database.\n\n\n \nI ended up with some .bat file in my solution. \nFor example diffMapping.bat uses WinMerge to compare the mapping I currently use to one that I just generated out of my Domain assembly.\nThen I wanted to be able to run this .bat script from the IDE, without having it in Visual Studio 2005 External Tools menu (not tried with 2008 currently). So I tried the right click on the .bat Open With, then gave the path of cmd.exe. That’s was not working, it just opened a cmd prompt.\nThen I pointed Open With to PowerShell exe and it works!!! It will run you .bat file from Solution Explorer. You can even define it as the default program for .bat and double clicking on a .bat file in Solution Explorer will run it. \nNice no ?!\n","dateCreated":"2007-11-30T02:30:45+00:00","dateModified":"2007-11-30T02:30:45+00:00","datePublished":"2007-11-30T02:30:45+00:00","description":"This end of afternoon I worked on the mapping part of my new project for innoveo solutions, a blog engine.\nTill now I was using the XML Persistence Engine of Euss but it was time to go to a real mapping and a database.","headline":"Visual Studio and PowerShell Trick","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/11/30/Visual-Studio-and-PowerShell-Trick/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2007/11/30/Visual-Studio-and-PowerShell-Trick/","keywords":"innoveo solutions, Visual Studio, white"}</script>
     <meta name="description" content="This end of afternoon I worked on the mapping part of my new project for innoveo solutions, a blog engine. Till now I was using the XML Persistence Engine of Euss but it was time to go to a real mappi">
@@ -43,7 +45,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -326,13 +328,13 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>This end of afternoon I worked on the mapping part of my new project for <a href="http://www.innoveo.com/" target="_blank" rel="noopener">innoveo solutions</a>, a blog engine.</p>
-<p>Till now I was using the XML Persistence Engine of <a href="http://euss.evaluant.com/" target="_blank" rel="noopener">Euss</a> but it was time to go to a real mapping and a database.</p>
+            <p>This end of afternoon I worked on the mapping part of my new project for <a target="_blank" rel="noopener" href="http://www.innoveo.com/">innoveo solutions</a>, a blog engine.</p>
+<p>Till now I was using the XML Persistence Engine of <a target="_blank" rel="noopener" href="http://euss.evaluant.com/">Euss</a> but it was time to go to a real mapping and a database.</p>
 <a id="more"></a>
 
-<p><img src="http://farm3.static.flickr.com/2130/2073540103_dcff049d11_o.jpg" alt=""> </p>
+<p><img src="http://farm3.static.flickr.com/2130/2073540103_dcff049d11_o.jpg"> </p>
 <p>I ended up with some .bat file in my solution. </p>
-<p>For example <em>diffMapping.bat</em> uses <a href="http://winmerge.org/" target="_blank" rel="noopener">WinMerge</a> to compare the mapping I currently use to one that I just generated out of my Domain assembly.</p>
+<p>For example <em>diffMapping.bat</em> uses <a target="_blank" rel="noopener" href="http://winmerge.org/">WinMerge</a> to compare the mapping I currently use to one that I just generated out of my Domain assembly.</p>
 <p>Then I wanted to be able to <strong>run this .bat script from the IDE</strong>, without having it in Visual Studio 2005 External Tools menu (not tried with 2008 currently). So I tried the right click on the .bat Open With, then gave the path of cmd.exe. That’s was not working, it just opened a cmd prompt.</p>
 <p>Then I <strong>pointed Open With to PowerShell exe and it works</strong>!!! <strong>It will run you .bat file from Solution Explorer</strong>. You can even define it as the default program for .bat and double clicking on a .bat file in Solution Explorer will run it. </p>
 <p>Nice no ?!</p>
@@ -347,7 +349,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/Visual-Studio/" rel="tag">Visual Studio</a> <a class="tag tag--primary tag--small t-link" href="/tags/innoveo-solutions/" rel="tag">innoveo solutions</a> <a class="tag tag--primary tag--small t-link" href="/tags/white/" rel="tag">white</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Visual-Studio/" rel="tag">Visual Studio</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/innoveo-solutions/" rel="tag">innoveo solutions</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/white/" rel="tag">white</a>
 
             </div>
         
@@ -463,7 +465,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -682,7 +684,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 

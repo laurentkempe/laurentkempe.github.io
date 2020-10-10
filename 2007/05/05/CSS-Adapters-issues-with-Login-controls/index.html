@@ -11,15 +11,17 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"If you are using ASP.NET 2.0 CSS Friendly Control Adapters 1.0 with the Login controls of ASP.NET 2.0 you might have experienced some issue like multiple postback when using Internet Explorer. You might get a GREAT fix and explanation of the issue from Tana Isaac of Wellington, New Zealand.\n\nDouble Postback Problem - Cause (skip this if you just want the fix!):\n\n\n\nButtons that reside within the controls that are *adapted *by the CSS Control Adapters, for example the CreateUserWizard.CreateUserButton, are rendered out differently depending on the button type (which is set for example via CreateUserWizard.CreateUserButtonType = ButtonType.Link). The default button type used by the membership controls is Button. The following html controls are rendered out for the different System.Web.UI.WebControls.ButtonType enum values:\nButtonType.Button: input, type=submitButtonType.Image: input, type=imageButtonType.Link: anchor\nBoth of the input controls will automatically cause the form that they reside within to be posted back to the server when they are clicked, whereas the anchor will not - instead it needs some javascript to cause a postback. This is where the problem is - all three html controls are rendered out with javascript attached to post the form back to the server on a click event, which allows buttons of type ‘Link’ to work correctly but causes buttons of type ‘Button’ and ‘Image’ to postback twice - the first time due to the javascript and the second because of the native postback.\nThe javascript method used to cause the postback is as follows:\nWebForm_DoPostBackWithOptions(WebForm_PostBackOptions(eventTarget, eventArgument, validation, validationGroup, actionUrl, trackFocus, clientSubmit))\nIn order to stop ‘Button’ buttons and ‘Image’ buttons firing twice we just need to set the clientSubmit parameter to false when these types of buttons are rendered out.\nOther problems (specific to the CreateUserWizardAdapter control)\nOnce the double postback problem was fixed two other problems popped up. The first was that users still weren’t being created. This was because the id and name (which is derived from the id) being used for the create user button was missing an underscore.\nThe other problem was that the cancel button didn’t work. It was also missing an underscore from its name and also wasn’t registered for Event Validation.\nRead more…\n\nGreat work Tana, Thanks for sharing you saved me some time.\nUpdate:** **The CSS Adapters project is now hosted on Codeplex, http://www.codeplex.com/cssfriendly.\n","dateCreated":"2007-05-05T04:45:12+00:00","dateModified":"2007-05-05T04:45:12+00:00","datePublished":"2007-05-05T04:45:12+00:00","description":"If you are using ASP.NET 2.0 CSS Friendly Control Adapters 1.0 with the Login controls of ASP.NET 2.0 you might have experienced some issue like multiple postback when using Internet Explorer. You might get a GREAT fix and explanation of the issue from Tana Isaac of Wellington, New Zealand.\n\nDouble Postback Problem - Cause (skip this if you just want the fix!):\n","headline":"CSS Adapters issues with Login controls","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/05/05/CSS-Adapters-issues-with-Login-controls/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2007/05/05/CSS-Adapters-issues-with-Login-controls/","keywords":"ASP.NET 2.0, ASP.NET"}</script>
-    <meta name="description" content="If you are using ASP.NET 2.0 CSS Friendly Control Adapters 1.0 with the Login controls of ASP.NET 2.0 you might have experienced some issue like multiple postback when using Internet Explorer. You mig">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"If you are using ASP.NET 2.0 CSS Friendly Control Adapters 1.0 with the Login controls of ASP.NET 2.0 you might have experienced some issue like multiple postback when using Internet Explorer. You might get a GREAT fix and explanation of the issue from Tana Isaac of Wellington, New Zealand.\n\nDouble Postback Problem - Cause (skip this if you just want the fix!):\n\n\n\nButtons that reside within the controls that are *adapted *by the CSS Control Adapters, for example the CreateUserWizard.CreateUserButton, are rendered out differently depending on the button type (which is set for example via CreateUserWizard.CreateUserButtonType = ButtonType.Link). The default button type used by the membership controls is Button. The following html controls are rendered out for the different System.Web.UI.WebControls.ButtonType enum values:\nButtonType.Button: input, type=submitButtonType.Image: input, type=imageButtonType.Link: anchor\nBoth of the input controls will automatically cause the form that they reside within to be posted back to the server when they are clicked, whereas the anchor will not - instead it needs some javascript to cause a postback. This is where the problem is - all three html controls are rendered out with javascript attached to post the form back to the server on a click event, which allows buttons of type ‘Link’ to work correctly but causes buttons of type ‘Button’ and ‘Image’ to postback twice - the first time due to the javascript and the second because of the native postback.\nThe javascript method used to cause the postback is as follows:\nWebForm_DoPostBackWithOptions(WebForm_PostBackOptions(eventTarget, eventArgument, validation, validationGroup, actionUrl, trackFocus, clientSubmit))\nIn order to stop ‘Button’ buttons and ‘Image’ buttons firing twice we just need to set the clientSubmit parameter to false when these types of buttons are rendered out.\nOther problems (specific to the CreateUserWizardAdapter control)\nOnce the double postback problem was fixed two other problems popped up. The first was that users still weren’t being created. This was because the id and name (which is derived from the id) being used for the create user button was missing an underscore.\nThe other problem was that the cancel button didn’t work. It was also missing an underscore from its name and also wasn’t registered for Event Validation.\nRead more…\n\nGreat work Tana, Thanks for sharing you saved me some time.\nUpdate:** **The CSS Adapters project is now hosted on Codeplex, http://www.codeplex.com/cssfriendly.\n","dateCreated":"2007-05-05T04:45:12+00:00","dateModified":"2007-05-05T04:45:12+00:00","datePublished":"2007-05-05T04:45:12+00:00","description":"If you are using ASP.NET 2.0 CSS Friendly Control Adapters 1.0 with the Login controls of ASP.NET 2.0 you might have experienced some issue like multiple postback when using Internet Explorer. You might get a GREAT fix and explanation of the issue from Tana Isaac of Wellington, New Zealand.\n\nDouble Postback Problem - Cause (skip this if you just want the fix!):\n","headline":"CSS Adapters issues with Login controls","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/05/05/CSS-Adapters-issues-with-Login-controls/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2007/05/05/CSS-Adapters-issues-with-Login-controls/","keywords":"ASP.NET 2.0, ASP.NET"}</script>
+    <meta name="description" content="If you are using ASP.NET 2.0 CSS Friendly Control Adapters 1.0 with the Login controls of ASP.NET 2.0 you might have experienced some issue like multiple postback when using Internet Explorer. You mig">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="CSS Adapters issues with Login controls">
 <meta property="og:url" content="https://laurentkempe.com/2007/05/05/CSS-Adapters-issues-with-Login-controls/index.html">
 <meta property="og:site_name" content="Laurent Kempé">
-<meta property="og:description" content="If you are using ASP.NET 2.0 CSS Friendly Control Adapters 1.0 with the Login controls of ASP.NET 2.0 you might have experienced some issue like multiple postback when using Internet Explorer. You mig">
+<meta property="og:description" content="If you are using ASP.NET 2.0 CSS Friendly Control Adapters 1.0 with the Login controls of ASP.NET 2.0 you might have experienced some issue like multiple postback when using Internet Explorer. You mig">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2007-05-05T04:45:12.000Z">
 <meta property="article:modified_time" content="2007-05-05T04:45:12.000Z">
@@ -40,7 +42,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nld0n6ntwmgwn7ag2qmatflfxqznsimmfdgkgxxvbemp9ncqh97za70xvybr.min.css">
+<link rel="stylesheet" href="/assets/css/style-llvm04djftximjicugan19amwmydexdiqkwgi1il4qgjoe6rwnifgybbqbxt.min.css">
 
     <!--STYLES END-->
     
@@ -323,7 +325,7 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>If you are using <a href="http://www.asp.net/cssadapters/" target="_blank" rel="noopener">ASP.NET 2.0 CSS Friendly Control Adapters 1.0</a> with the Login controls of ASP.NET 2.0 you might have experienced some issue like multiple postback when using Internet Explorer. You might get a <a href="http://forums.asp.net/ShowPost.aspx?PostID=1676119" target="_blank" rel="noopener">GREAT fix and explanation of the issue</a> from <a href="http://forums.asp.net/members/ticanaer.aspx" target="_blank" rel="noopener">Tana Isaac</a> of Wellington, New Zealand.</p>
+            <p>If you are using <a target="_blank" rel="noopener" href="http://www.asp.net/cssadapters/">ASP.NET 2.0 CSS Friendly Control Adapters 1.0</a> with the Login controls of ASP.NET 2.0 you might have experienced some issue like multiple postback when using Internet Explorer. You might get a <a target="_blank" rel="noopener" href="http://forums.asp.net/ShowPost.aspx?PostID=1676119">GREAT fix and explanation of the issue</a> from <a target="_blank" rel="noopener" href="http://forums.asp.net/members/ticanaer.aspx">Tana Isaac</a> of Wellington, New Zealand.</p>
 <blockquote>
 <p><strong>Double Postback Problem - Cause</strong> (skip this if you just want the fix!):</p>
 </blockquote>
@@ -338,10 +340,10 @@
 <p><strong>Other problems (specific to the CreateUserWizardAdapter control)</strong></p>
 <p>Once the double postback problem was fixed two other problems popped up. The first was that users still weren’t being created. This was because the id and name (which is derived from the id) being used for the create user button was missing an underscore.</p>
 <p>The other problem was that the cancel button didn’t work. It was also missing an underscore from its name and also wasn’t registered for Event Validation.</p>
-<p><a href="http://forums.asp.net/ShowPost.aspx?PostID=1676119" target="_blank" rel="noopener">Read more…</a></p>
+<p><a target="_blank" rel="noopener" href="http://forums.asp.net/ShowPost.aspx?PostID=1676119">Read more…</a></p>
 </blockquote>
 <p><strong>Great work Tana</strong>, <strong>Thanks</strong> for sharing you saved me some time.</p>
-<p><u>Update</u>:** **The CSS Adapters project is now hosted on Codeplex, <a href="http://www.codeplex.com/cssfriendly" target="_blank" rel="noopener" title="http://www.codeplex.com/cssfriendly">http://www.codeplex.com/cssfriendly</a>.</p>
+<p><u>Update</u>:** **The CSS Adapters project is now hosted on Codeplex, <a target="_blank" rel="noopener" href="http://www.codeplex.com/cssfriendly" title="http://www.codeplex.com/cssfriendly">http://www.codeplex.com/cssfriendly</a>.</p>
 
             
 
@@ -353,7 +355,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET/" rel="tag">ASP.NET</a> <a class="tag tag--primary tag--small t-link" href="/tags/ASP-NET-2-0/" rel="tag">ASP.NET 2.0</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/ASP-NET/" rel="tag">ASP.NET</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/ASP-NET-2-0/" rel="tag">ASP.NET 2.0</a>
 
             </div>
         
@@ -469,7 +471,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -688,7 +690,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-qcmj9sl8b176dmz5y8fkpbggthejqcnjxauu1kqbn5g5jbaamuh4sukm5yel.min.js"></script>
+<script src="/assets/js/script-be91dxmsnue3ojleqwwvchhxugkosdb5xsanjneaszn4dh2fti44rkvsa8ag.min.js"></script>
 
 <!--SCRIPTS END-->
 
