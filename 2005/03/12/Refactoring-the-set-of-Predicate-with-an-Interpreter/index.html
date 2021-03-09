@@ -44,7 +44,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-nnpgrwinnnx96w4cmzvptbfnefyzifvd4xxkb3zyqkm6kbpfoqrtoj4fqylb.min.css">
+<link rel="stylesheet" href="/assets/css/style-5snpv2crs8j3mkvmdh7eitg8mmhdwadqxnjrqp9igm7gavjhg6te663jmzar.min.css">
 
     <!--STYLES END-->
     
@@ -328,7 +328,7 @@
     <div class="post-content markdown">
         <div class="main-content-wrap">
             <p>This evening I continued my journey with the <a target="_blank" rel="noopener" href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnvs05/html/csharp_generics.asp">C# Generics</a>.<br>I refactored what I described in my post “<a target="_blank" rel="noopener" href="http://weblogs.asp.net/lkempe/archive/2005/03/09/391247.aspx">DataAccessLayer.FindAll(PublishedBy(Author))</a><br>“ to be able to use the <a target="_blank" rel="noopener" href="http://www.dofactory.com/Patterns/PatternInterpreter.aspx">Design<br>Pattern Interpreter</a>.</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <p>The result in the ASPX code behind file is the following:</p>
 <p><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  1</span> AndSpec spec = <font color="blue">new</font> AndSpec(<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  2</span>                         <font color="blue">new</font> AndSpec(<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  3</span>                             <font color="blue">new</font> PublishedSpec(),<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  4</span>                             <font color="blue">new</font> BeforeDateSpec(DateTime.Parse(<font color="maroon">“01/01/2005”</font>))<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  5</span>                         ),<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  6</span>                         <font color="blue">new</font> OrSpec(<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  7</span>                             <font color="blue">new</font> AuthorSpec(<font color="maroon">“Mathieu Kempé”</font>),<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  8</span>                             <font color="blue">new</font> AuthorSpec(<font color="maroon">“Laurent Kempé”</font>)<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey">  9</span>                         )<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 10</span>                     );<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 11</span><br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 12</span> DataAccessor<Article> articles = <font color="blue">new</font> DataAccessor<Article>(<font color="maroon">“GetArticles”</font>);<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 13</span> GridView3.DataSource = articles.FindAll(Matching(spec));<br><span style="COLOR: teal; BACKGROUND-COLOR: lightgrey"> 14</span> GridView3.DataBind();</p>
@@ -707,7 +707,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-xywlkevztkx6f8tegr8zt7atiif16dpe95uq6favaeuibjfk8mxzevk5ke7b.min.js"></script>
+<script src="/assets/js/script-uqthkswrfmqihpm2smb6hmete3k7flvdsyceoj9j1lpogwpocmp1bxpgewnp.min.js"></script>
 
 <!--SCRIPTS END-->
 
