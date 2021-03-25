@@ -1,0 +1,753 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Calling Dapr service with gRPC - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"In previous posts, we focused on Dapr service invocation using the HTTP protocol. Dapr, through its service invocation, can also reliably and securely communicate with other applications using gRPC. We will have a look at this other capability in this post.\n\nIntroductionWe want to show how you can avoid having a dependency on another third party other than the one dealing with the transport protocol. That’s one of the advantages of Dapr, you can integrate with it just by relying on HTTP and/or gRPC. In the previous cases, with HTTP, we could do it without any dependencies. In the case of gRPC, we need to bring at least this dependency so that we can call Dapr services.\nCreating the gRPC clientWe are creating a standard console application in which we want to leverage the proto file delivered with the Dapr project to generate the C# Darp client.\nWe can get the Dapr proto files from the Dapr project on Github. Those files are included in the project in a Dapr folder at the root of the project. We need to include some nuget packages to be able to generate C# code from the proto files as we can see on the GrpcClient.csproj file.\nGrpcClient.csproj1234567891011121314151617181920212223242526272829303132333435&lt;Project Sdk=&quot;Microsoft.NET.Sdk&quot;&gt;  &lt;PropertyGroup&gt;    &lt;OutputType&gt;Exe&lt;/OutputType&gt;    &lt;TargetFramework&gt;net5.0&lt;/TargetFramework&gt;  &lt;/PropertyGroup&gt;  &lt;ItemGroup&gt;    &lt;PackageReference Include=&quot;Google.Protobuf&quot; Version=&quot;3.15.6&quot; /&gt;    &lt;PackageReference Include=&quot;Google.Api.CommonProtos&quot; Version=&quot;2.2.0&quot; /&gt;    &lt;PackageReference Include=&quot;Grpc&quot; Version=&quot;2.36.1&quot; /&gt;    &lt;PackageReference Include=&quot;Grpc.Core&quot; Version=&quot;2.36.1&quot; /&gt;    &lt;PackageReference Include=&quot;Grpc.Net.Client&quot; Version=&quot;2.36.1&quot; /&gt;    &lt;PackageReference Include=&quot;Grpc.Tools&quot; Version=&quot;2.36.1&quot;&gt;      &lt;PrivateAssets&gt;all&lt;/PrivateAssets&gt;      &lt;IncludeAssets&gt;runtime; build; native; contentfiles; analyzers; buildtransitive&lt;/IncludeAssets&gt;    &lt;/PackageReference&gt;  &lt;/ItemGroup&gt;  &lt;ItemGroup&gt;    &lt;Protobuf Include=&quot;.\\dapr\\proto\\common\\v1\\common.proto&quot;              ProtoRoot=&quot;.\\&quot;              GrpcServices=&quot;Client&quot; /&gt;    &lt;Protobuf Include=&quot;.\\dapr\\proto\\runtime\\v1\\dapr.proto&quot;              ProtoRoot=&quot;.\\&quot;              GrpcServices=&quot;Client&quot;              Access=&quot;Public&quot;              ProtoCompile=&quot;True&quot;              CompileOutputs=&quot;True&quot;              Generator=&quot;MSBuild:Compile&quot;              OutputDir=&quot;obj\\Debug\\net5.0\\&quot;&gt;    &lt;/Protobuf&gt;  &lt;/ItemGroup&gt;&lt;/Project&gt;\n\nUsing the generated gRPC clientLooking at the dapr.proto we see in which C# namespace the client code will be generated.\ndapr.proto1option csharp_namespace &#x3D; &quot;Dapr.Client.Autogen.Grpc.v1&quot;;\n\nWe can now use the generated client and specify which service we want to call using the InvokeServiceRequest specifying the Id which is the app-id of the Dapr sidecar so in our case proxy. Then, we specify that we want to call the method weatherforecastproxy, with an HTTP Get and pass the QueryString.\nThen we call daprClient.InvokeService to invoke the Dapr service through the sidecars, get the response as JSON which we deserialize, and display the results.\nProgram.cs123456789101112131415161718192021222324252627282930313233using System;using System.Collections.Generic;using System.Text.Json;using Dapr.Client.Autogen.Grpc.v1;using Grpc.Core;var channel = new Channel(&quot;127.0.0.1:3500&quot;, ChannelCredentials.Insecure);var daprClient = new Dapr.Client.Autogen.Grpc.v1.Dapr.DaprClient(channel);var request = new InvokeServiceRequest&#123;    Id = &quot;proxy&quot;,    Message = new InvokeRequest    &#123;        Method = &quot;weatherforecastproxy&quot;,        HttpExtension = new HTTPExtension        &#123;            Verb = HTTPExtension.Types.Verb.Get,            Querystring = &quot;count=2&quot;        &#125;    &#125;&#125;;var invokeResponse = daprClient.InvokeService(request);var json = invokeResponse.Data.Value.ToStringUtf8();Console.WriteLine(json);var jsonSerializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);var weatherForecasts =    JsonSerializer.Deserialize&lt;List&lt;WeatherForecast&gt;&gt;(json, jsonSerializerOptions);foreach (var weatherForecast in weatherForecasts)&#123;    Console.WriteLine($&quot;Date: &#123;weatherForecast.Date&#125;, &#123;weatherForecast.Summary&#125;, &#123;weatherForecast.TemperatureC&#125;°&quot;);&#125;\n\nNotice that we connect to the app-id proxy on the URI 127.0.0.1:3500 which is the gRPC port of our proxy service. We are invoking the weatherforecastproxy method on the service. The proxy service is an HTTP service that we are calling with gRPC thanks to Dapr sidecar. That proxy service is then calling the backend service also exposed through HTTP but accessible through gRPC again thanks to the Dapr sidecar.\nAll calls between Dapr sidecars go over gRPC for performance. Only calls between services and Dapr sidecars can be either HTTP or gRPC\n\n\nStarting proxy and backend Dapr sidecarYou can use the start.ps1 PowerShell script if you have Windows Terminal installed, and it will display side by side both outputs in a new full-screen window. On the left is the proxy sidecar output and on the right the backend. There are some slight differences from the previous start.ps1 because we want to specify the gRPC port of the first sidecar, which is set to 3500.\nHere is the output of our client.\n123[&#123;&quot;date&quot;:&quot;2021-03-26T17:52:47.5849398+01:00&quot;,&quot;temperatureC&quot;:4,&quot;temperatureF&quot;:39,&quot;summary&quot;:&quot;Scorching&quot;&#125;,&#123;&quot;date&quot;:&quot;2021-03-27T17:52:47.5850893+01:00&quot;,&quot;temperatureC&quot;:22,&quot;temperatureF&quot;:71,&quot;summary&quot;:&quot;Bracing&quot;&#125;]Date: 3&#x2F;26&#x2F;2021 5:52:47 PM, Scorching, 4°Date: 3&#x2F;27&#x2F;2021 5:52:47 PM, Bracing, 22°\n\nConclusionWe have seen that Dapr provides a way to communicate with other applications using gRPC and without taking any dependencies to any third-party framework.\nYou can get access to the code of this blog post on GitHub in the GrpcServiceToService folder.\n\n\n  \n\n\n\n\n","dateCreated":"2021-03-25T17:07:50+00:00","dateModified":"2021-03-25T17:12:13+00:00","datePublished":"2021-03-25T17:07:50+00:00","description":"In previous posts, we focused on Dapr service invocation using the HTTP protocol. Dapr, through its service invocation, can also reliably and securely communicate with other applications using gRPC. We will have a look at this other capability in this post.","headline":"Calling Dapr service with gRPC","image":["https://live.staticflickr.com/65535/51063269481_4d617ff8ac_q.jpg","https://live.staticflickr.com/65535/51063269481_b31f5a9d09_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2021/03/25/calling-dapr-service-with-grpc/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2021/03/25/calling-dapr-service-with-grpc/","keywords":".NET, Dapr, gRPC","thumbnailUrl":"https://live.staticflickr.com/65535/51063269481_4d617ff8ac_q.jpg"}</script>
+    <meta name="description" content="In previous posts, we focused on Dapr service invocation using the HTTP protocol. Dapr, through its service invocation, can also reliably and securely communicate with other applications using gRPC. W">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Calling Dapr service with gRPC">
+<meta property="og:url" content="https://laurentkempe.com/2021/03/25/calling-dapr-service-with-grpc/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="In previous posts, we focused on Dapr service invocation using the HTTP protocol. Dapr, through its service invocation, can also reliably and securely communicate with other applications using gRPC. W">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-03-25T17:07:50.000Z">
+<meta property="article:modified_time" content="2021-03-25T17:12:13.080Z">
+<meta property="article:author" content="Laurent Kempé">
+<meta property="article:tag" content=".NET">
+<meta property="article:tag" content="Dapr">
+<meta property="article:tag" content="gRPC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/65535/51063269481_4d617ff8ac_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/65535/51063269481_4d617ff8ac_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/65535/51063269481_b31f5a9d09_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/65535/51063269481_b31f5a9d09_h.jpg"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-zpzencuy9pio3vcbskwk9xnhnb8ylxdobpswj5e9m6naj7betqzvud95loi3.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-64298-8');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Laurent Kempé
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/presentations.html"
+                            
+                            rel="noopener"
+                            title="Presentations"
+                        >
+                        <i class="sidebar-button-icon fa fa-file-powerpoint" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Presentations</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/about-laurent-kempe.html"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://twitter.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/in/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://flickr.com/photos/laurentkempe/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Flickr"
+                        >
+                        <i class="sidebar-button-icon fab fa-flickr" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Flickr</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://feeds.feedburner.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial"
+             style="background-image:url('https://live.staticflickr.com/65535/51063269481_b31f5a9d09_h.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Calling Dapr service with gRPC
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2021-03-25T17:07:50+00:00">
+	
+		    Mar 25, 2021
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Illzach, France</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>In previous posts, we focused on Dapr service invocation using the HTTP protocol. Dapr, through its service invocation, can also reliably and securely communicate with other applications using gRPC. We will have a look at this other capability in this post.</p>
+<span id="more"></span>
+<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>We want to show how you can avoid having a dependency on another third party other than the one dealing with the transport protocol. That’s one of the advantages of Dapr, you can integrate with it just by relying on HTTP and/or gRPC. In the previous cases, with HTTP, we could do it without any dependencies. In the case of gRPC, we need to bring at least this dependency so that we can call Dapr services.</p>
+<h1 id="Creating-the-gRPC-client"><a href="#Creating-the-gRPC-client" class="headerlink" title="Creating the gRPC client"></a>Creating the gRPC client</h1><p>We are creating a standard console application in which we want to leverage the proto file delivered with the Dapr project to generate the C# Darp client.</p>
+<p>We can get the <a target="_blank" rel="noopener" href="https://github.com/dapr/dapr/tree/master/dapr/proto">Dapr proto files</a> from the Dapr project on Github. Those files are included in the project in a Dapr folder at the root of the project. We need to include some nuget packages to be able to generate C# code from the proto files as we can see on the <strong>GrpcClient.csproj</strong> file.</p>
+<figure class="highlight xml"><figcaption><span>GrpcClient.csproj</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Project</span> <span class="attr">Sdk</span>=<span class="string">&quot;Microsoft.NET.Sdk&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">OutputType</span>&gt;</span>Exe<span class="tag">&lt;/<span class="name">OutputType</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TargetFramework</span>&gt;</span>net5.0<span class="tag">&lt;/<span class="name">TargetFramework</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">&quot;Google.Protobuf&quot;</span> <span class="attr">Version</span>=<span class="string">&quot;3.15.6&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">&quot;Google.Api.CommonProtos&quot;</span> <span class="attr">Version</span>=<span class="string">&quot;2.2.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">&quot;Grpc&quot;</span> <span class="attr">Version</span>=<span class="string">&quot;2.36.1&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">&quot;Grpc.Core&quot;</span> <span class="attr">Version</span>=<span class="string">&quot;2.36.1&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">&quot;Grpc.Net.Client&quot;</span> <span class="attr">Version</span>=<span class="string">&quot;2.36.1&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">&quot;Grpc.Tools&quot;</span> <span class="attr">Version</span>=<span class="string">&quot;2.36.1&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">PrivateAssets</span>&gt;</span>all<span class="tag">&lt;/<span class="name">PrivateAssets</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">IncludeAssets</span>&gt;</span>runtime; build; native; contentfiles; analyzers; buildtransitive<span class="tag">&lt;/<span class="name">IncludeAssets</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">PackageReference</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Protobuf</span> <span class="attr">Include</span>=<span class="string">&quot;.\dapr\proto\common\v1\common.proto&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">ProtoRoot</span>=<span class="string">&quot;.\&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">GrpcServices</span>=<span class="string">&quot;Client&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Protobuf</span> <span class="attr">Include</span>=<span class="string">&quot;.\dapr\proto\runtime\v1\dapr.proto&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">ProtoRoot</span>=<span class="string">&quot;.\&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">GrpcServices</span>=<span class="string">&quot;Client&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">Access</span>=<span class="string">&quot;Public&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">ProtoCompile</span>=<span class="string">&quot;True&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">CompileOutputs</span>=<span class="string">&quot;True&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">Generator</span>=<span class="string">&quot;MSBuild:Compile&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">OutputDir</span>=<span class="string">&quot;obj\Debug\net5.0\&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Protobuf</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">Project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="Using-the-generated-gRPC-client"><a href="#Using-the-generated-gRPC-client" class="headerlink" title="Using the generated gRPC client"></a>Using the generated gRPC client</h1><p>Looking at the <strong>dapr.proto</strong> we see in which C# namespace the client code will be generated.</p>
+<figure class="highlight plain"><figcaption><span>dapr.proto</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">option csharp_namespace &#x3D; &quot;Dapr.Client.Autogen.Grpc.v1&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>We can now use the generated client and specify which service we want to call using the <code>InvokeServiceRequest</code> specifying the <code>Id</code> which is the <em>app-id</em> of the Dapr sidecar so in our case <em>proxy</em>. Then, we specify that we want to call the method <em>weatherforecastproxy</em>, with an HTTP Get and pass the <code>QueryString</code>.</p>
+<p>Then we call <code>daprClient.InvokeService</code> to invoke the Dapr service through the sidecars, get the response as JSON which we deserialize, and display the results.</p>
+<figure class="highlight csharp"><figcaption><span>Program.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Text.Json;</span><br><span class="line"><span class="keyword">using</span> Dapr.Client.Autogen.Grpc.v1;</span><br><span class="line"><span class="keyword">using</span> Grpc.Core;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> channel = <span class="keyword">new</span> Channel(<span class="string">&quot;127.0.0.1:3500&quot;</span>, ChannelCredentials.Insecure);</span><br><span class="line"><span class="keyword">var</span> daprClient = <span class="keyword">new</span> Dapr.Client.Autogen.Grpc.v1.Dapr.DaprClient(channel);</span><br><span class="line"><span class="keyword">var</span> request = <span class="keyword">new</span> InvokeServiceRequest</span><br><span class="line">&#123;</span><br><span class="line">    Id = <span class="string">&quot;proxy&quot;</span>,</span><br><span class="line">    Message = <span class="keyword">new</span> InvokeRequest</span><br><span class="line">    &#123;</span><br><span class="line">        Method = <span class="string">&quot;weatherforecastproxy&quot;</span>,</span><br><span class="line">        HttpExtension = <span class="keyword">new</span> HTTPExtension</span><br><span class="line">        &#123;</span><br><span class="line">            Verb = HTTPExtension.Types.Verb.Get,</span><br><span class="line">            Querystring = <span class="string">&quot;count=2&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> invokeResponse = daprClient.InvokeService(request);</span><br><span class="line"><span class="keyword">var</span> json = invokeResponse.Data.Value.ToStringUtf8();</span><br><span class="line">Console.WriteLine(json);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> jsonSerializerOptions = <span class="keyword">new</span> JsonSerializerOptions(JsonSerializerDefaults.Web);</span><br><span class="line"><span class="keyword">var</span> weatherForecasts =</span><br><span class="line">    JsonSerializer.Deserialize&lt;List&lt;WeatherForecast&gt;&gt;(json, jsonSerializerOptions);</span><br><span class="line"><span class="keyword">foreach</span> (<span class="keyword">var</span> weatherForecast <span class="keyword">in</span> weatherForecasts)</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;Date: <span class="subst">&#123;weatherForecast.Date&#125;</span>, <span class="subst">&#123;weatherForecast.Summary&#125;</span>, <span class="subst">&#123;weatherForecast.TemperatureC&#125;</span>°&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Notice that we connect to the <em>app-id</em> <strong>proxy</strong> on the URI <strong>127.0.0.1:3500</strong> which is the gRPC port of our proxy service. We are invoking the <strong>weatherforecastproxy</strong> method on the service. The proxy service is an HTTP service that we are calling with gRPC thanks to Dapr sidecar. That proxy service is then calling the <strong>backend</strong> service also exposed through HTTP but accessible through gRPC again thanks to the Dapr sidecar.</p>
+<div class="alert info"><p><a target="_blank" rel="noopener" href="https://docs.dapr.io/developing-applications/building-blocks/service-invocation/service-invocation-overview/#service-invocation">All calls between Dapr sidecars go over gRPC</a> for performance. Only calls between services and Dapr sidecars can be either HTTP or gRPC</p>
+</div>
+
+<h1 id="Starting-proxy-and-backend-Dapr-sidecar"><a href="#Starting-proxy-and-backend-Dapr-sidecar" class="headerlink" title="Starting proxy and backend Dapr sidecar"></a>Starting proxy and backend Dapr sidecar</h1><p>You can use the start.ps1 PowerShell script if you have Windows Terminal installed, and it will display side by side both outputs in a new full-screen window. On the left is the proxy sidecar output and on the right the backend. There are some slight differences from the previous start.ps1 because we want to specify the gRPC port of the first sidecar, which is set to 3500.</p>
+<p>Here is the output of our client.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[&#123;&quot;date&quot;:&quot;2021-03-26T17:52:47.5849398+01:00&quot;,&quot;temperatureC&quot;:4,&quot;temperatureF&quot;:39,&quot;summary&quot;:&quot;Scorching&quot;&#125;,&#123;&quot;date&quot;:&quot;2021-03-27T17:52:47.5850893+01:00&quot;,&quot;temperatureC&quot;:22,&quot;temperatureF&quot;:71,&quot;summary&quot;:&quot;Bracing&quot;&#125;]</span><br><span class="line">Date: 3&#x2F;26&#x2F;2021 5:52:47 PM, Scorching, 4°</span><br><span class="line">Date: 3&#x2F;27&#x2F;2021 5:52:47 PM, Bracing, 22°</span><br></pre></td></tr></table></figure>
+
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>We have seen that Dapr provides a way to communicate with other applications using gRPC and without taking any dependencies to any third-party framework.</p>
+<p>You can get access to the code of this blog post on GitHub in the <a target="_blank" rel="noopener" href="https://github.com/laurentkempe/daprPlayground/tree/master/GrpcServiceToService">GrpcServiceToService folder</a>.</p>
+<p></p>
+<div style="text-align: left">
+  <div class="github-card"
+    data-user="laurentkempe"
+    data-repo="daprPlayground"
+    data-height="200"
+    data-width="400"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/NET/" rel="tag">.NET</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Dapr/" rel="tag">Dapr</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/gRPC/" rel="tag">gRPC</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/18/service-to-service-invocation-with-refit-and-dapr-dotnet-sdk/"
+                    data-tooltip="Service to service invocation with Refit and Dapr .NET SDK"
+                    aria-label="NEXT: Service to service invocation with Refit and Dapr .NET SDK"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2021/03/25/calling-dapr-service-with-grpc/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2021/03/25/calling-dapr-service-with-grpc/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2021/03/25/calling-dapr-service-with-grpc/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2021 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/18/service-to-service-invocation-with-refit-and-dapr-dotnet-sdk/"
+                    data-tooltip="Service to service invocation with Refit and Dapr .NET SDK"
+                    aria-label="NEXT: Service to service invocation with Refit and Dapr .NET SDK"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2021/03/25/calling-dapr-service-with-grpc/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2021/03/25/calling-dapr-service-with-grpc/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2021/03/25/calling-dapr-service-with-grpc/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2021/03/25/calling-dapr-service-with-grpc/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2021/03/25/calling-dapr-service-with-grpc/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2021/03/25/calling-dapr-service-with-grpc/"
+                        aria-label="global.share_on_linkedin"
+                    >
+                        <i class="fab fa-linkedin" aria-hidden="true"></i><span>global.share_on_linkedin</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Distinguished Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-v9nojqzvo0gfmxxklmtder4l98rvqqeojpkb56xgjmflmtqtvcaylszxikxc.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://laurentkempe.com/2021/03/25/calling-dapr-service-with-grpc/';
+              
+            this.page.identifier = '20210325060750';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'laurentkempe';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>
