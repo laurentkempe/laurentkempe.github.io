@@ -1,0 +1,773 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Accessing Dapr secrets building block using Dapr .NET SDK - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"In all previous posts, we were looking at the Dapr service invocation building block. We have seen how to expose and call HTTP and gRPC services using it. In this post, we will see how Dapr ease developers life when it comes to deal with secrets, thanks to the secrets management building block.\n\n\nIntroductionThe little application used to illustrate the Dapr secrets management building block is leveraging Twitter and Tweetinvi an intuitive Twitter C# library for the REST and Stream API. To be able to run the application you will need to create a Twitter app. When you have created the application you will need to get the API key &amp; secret, the Access token &amp; secret as described on the Tweetinvi Getting Started, Steps to create my first credentials. Those four pieces of information are the ones which we want to keep secret.\nDapr secrets management building blockThe secrets management building block is a building block that comes with a new capability which we didn’t talk about in the previous posts, the components.\nDapr uses a modular design where functionality is delivered as a component. Each component has an interface definition. All of the components are pluggable so that you can swap out one component with the same interface for another.\nA building block can use any combination of components.\n\n\nThis is one of the great power of Dapr. Here is the interface declaration for the secrets management building block which each component needs to implement.\nSecretStore12345678910type SecretStore interface &#123;  // Init authenticates with the actual secret store and performs other init operation  Init(metadata Metadata) error  // GetSecret retrieves a secret using a key and returns a map of decrypted string/string values  GetSecret(req GetSecretRequest) (GetSecretResponse, error)  // BulkGetSecrets retrieves all secrets in the store and returns a map of decrypted string/string values  BulkGetSecret(req BulkGetSecretRequest) (BulkGetSecretResponse, error)&#125;\n\nCurrently, we can have access transparently to all of those components to handle secrets:\n\nLocal file storage (for development, do not use this in production)\nAzure KeyVault\nAWS Secret manager\nKubernetes\nHashicorp Vault\nGCP Secret Manager\n\nIn this post, we are using local file storage to store the Twitter secrets, which should be used only for development. This could be easily replaced by one of the other components for production.\nClientComponents folderThis is the first time we are seeing the components folder in which you can define components for your application. In today’s post, we are defining a local secret store for local development and this is the only thing you would need to change when you would be ready to go into production with your application. The super nice part is that you could go to Azure, AWS, Google Cloud Platform, or any places in which secret components exist just by the change of a configuration file.\nlocal-secret-store.yaml123456789101112apiVersion: dapr.io/v1alpha1kind: Componentmetadata:  name: local-secret-store  namespace: defaultspec:  type: secretstores.local.file  metadata:  - name: secretsFile    value: ./client/components/secrets.json  - name: nestedSeparator    value: &quot;:&quot;\n\nIn this configuration we are defining the name of the component, local-secret-store  to be able to reference it from our code. Then, the type of component secretstores.local.file and where the secret file is stored.\nAnd here is the local secrets file.\nYou should not push this file to your code repository, as it contains your secrets!\n\n\nsecrets.json12345678&#123;  &quot;twitterSecrets&quot;: &#123;    &quot;consumerKey&quot;: &quot;TOADD&quot;,    &quot;consumerSecret&quot;: &quot;TOADD&quot;,    &quot;accessToken&quot;: &quot;TOADD&quot;,    &quot;accessSecret&quot;: &quot;TOADD&quot;  &#125;&#125;\n\nStarting Dapr sidecarYou can use the start.ps1 PowerShell script if you have Windows Terminal installed, and it will start the Dapr sidecar. It executes the following:\n\ndapr.exe run –dapr-grpc-port 50001 –components-path .\\client\\components\\\n\nWe just define the default gRPC port which the Dapr .NET SDK will be using in our application to connect to the secrets building block and the local file storage component to get the secrets. We also need to tell Dapr in which folder our components are defined.\nApplicationOur super simple application is again a C# 9 top-level statements application using the Dapr .NET SDK to access the Dapr secrets building block and the local file storage component by calling one of its API GetBulkSecretAsync. Then we build a twitterClient using Tweetinvi getting information from the authenticated user, of which you provided the secrets, to display her description.\nProgram.cs123456789101112131415161718192021using System;using System.Linq;using Dapr.Client;using Tweetinvi;Console.WriteLine(&quot;Hello Dapr secrets!&quot;);var daprClient = new DaprClientBuilder().Build();var twitterSecrets = daprClient.GetBulkSecretAsync(&quot;local-secret-store&quot;).Result;var consumerKey = twitterSecrets[&quot;twitterSecrets:consumerKey&quot;].Values.First();var consumerSecret = twitterSecrets[&quot;twitterSecrets:consumerSecret&quot;].Values.First();var accessToken = twitterSecrets[&quot;twitterSecrets:accessToken&quot;].Values.First();var accessSecret = twitterSecrets[&quot;twitterSecrets:accessSecret&quot;].Values.First();var twitterClient =    new TwitterClient(consumerKey, consumerSecret, accessToken, accessSecret);var user = await twitterClient.Users.GetAuthenticatedUserAsync();Console.WriteLine(user.Description);\n\nHere you can see the result:\n\nHello Dapr secrets!Team Leader, Distinguished Solution Architect with a passion for shipping high quality products by empowering development team and culture\n\nConclusionWe have seen that Dapr provides a very easy and nice way to retrieve secrets that will be used by your application. From a security point of view, this provides the advantage to not store your secrets in your application code or on system environment variables. It also provides an abstraction on top of a set of secrets stores which let you develop your application without being tight to concrete implementation and let you choose at the time of deployment which secrets store your want to use, without changing one line of code of your application.\nYou can get access to the code of this blog post on GitHub in the Secrets folder.\n\n\n  \n\n\n\n","dateCreated":"2021-04-06T14:49:45+00:00","dateModified":"2021-04-06T14:58:06+00:00","datePublished":"2021-04-06T14:49:45+00:00","description":"In all previous posts, we were looking at the Dapr service invocation building block. We have seen how to expose and call HTTP and gRPC services using it. In this post, we will see how Dapr ease developers life when it comes to deal with secrets, thanks to the secrets management building block.","headline":"Accessing Dapr secrets building block using Dapr .NET SDK","image":["https://live.staticflickr.com/7191/7038530105_ce4260f771_q.jpg","https://live.staticflickr.com/7191/7038530105_abaf41225f_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2021/04/06/accessing-dapr-secrets-building-block-using-dapr-dotnet-sdk/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2021/04/06/accessing-dapr-secrets-building-block-using-dapr-dotnet-sdk/","keywords":".NET, Dapr","thumbnailUrl":"https://live.staticflickr.com/7191/7038530105_ce4260f771_q.jpg"}</script>
+    <meta name="description" content="In all previous posts, we were looking at the Dapr service invocation building block. We have seen how to expose and call HTTP and gRPC services using it. In this post, we will see how Dapr ease devel">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Accessing Dapr secrets building block using Dapr .NET SDK">
+<meta property="og:url" content="https://laurentkempe.com/2021/04/06/accessing-dapr-secrets-building-block-using-dapr-dotnet-sdk/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="In all previous posts, we were looking at the Dapr service invocation building block. We have seen how to expose and call HTTP and gRPC services using it. In this post, we will see how Dapr ease devel">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-04-06T14:49:45.000Z">
+<meta property="article:modified_time" content="2021-04-06T14:58:06.290Z">
+<meta property="article:author" content="Laurent Kempé">
+<meta property="article:tag" content=".NET">
+<meta property="article:tag" content="Dapr">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/7191/7038530105_ce4260f771_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/7191/7038530105_ce4260f771_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/7191/7038530105_abaf41225f_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/7191/7038530105_abaf41225f_h.jpg"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-y86g7qtclglestdr2iodmcrhbmeuicpvxafzxxumf3v9gk2fmr5sik7wmui9.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-64298-8');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Laurent Kempé
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/presentations.html"
+                            
+                            rel="noopener"
+                            title="Presentations"
+                        >
+                        <i class="sidebar-button-icon fa fa-file-powerpoint" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Presentations</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/about-laurent-kempe.html"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://twitter.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/in/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://flickr.com/photos/laurentkempe/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Flickr"
+                        >
+                        <i class="sidebar-button-icon fab fa-flickr" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Flickr</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://feeds.feedburner.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial"
+             style="background-image:url('https://live.staticflickr.com/7191/7038530105_abaf41225f_h.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Accessing Dapr secrets building block using Dapr .NET SDK
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2021-04-06T14:49:45+00:00">
+	
+		    Apr 06, 2021
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Barcelona, Spain</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>In all <a href="https://laurentkempe.com/tags/Dapr/">previous posts</a>, we were looking at the Dapr service invocation building block. We have seen how to expose and call HTTP and gRPC services using it. In this post, we will see how Dapr ease developers life when it comes to deal with secrets, thanks to the secrets management building block.</p>
+<span id="more"></span>
+
+<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>The little application used to illustrate the Dapr secrets management building block is leveraging <a target="_blank" rel="noopener" href="https://twitter.com/laurentkempe">Twitter</a> and <a target="_blank" rel="noopener" href="https://github.com/linvi/tweetinvi">Tweetinvi</a> an intuitive Twitter C# library for the REST and Stream API. To be able to run the application you will need to <a target="_blank" rel="noopener" href="https://developer.twitter.com/en/portal/apps/new">create a Twitter app</a>. When you have created the application you will need to get the API key &amp; secret, the Access token &amp; secret as described on the <a target="_blank" rel="noopener" href="https://linvi.github.io/tweetinvi/dist/intro/getting-started.html">Tweetinvi Getting Started, Steps to create my first credentials</a>. Those four pieces of information are the ones which we want to keep secret.</p>
+<h1 id="Dapr-secrets-management-building-block"><a href="#Dapr-secrets-management-building-block" class="headerlink" title="Dapr secrets management building block"></a>Dapr secrets management building block</h1><p>The secrets management building block is a building block that comes with a new capability which we didn’t talk about in the previous posts, the components.</p>
+<div class="alert info"><p>Dapr uses a modular design where functionality is delivered as a component. Each component has an interface definition. All of the components are pluggable so that you can swap out one component with the same interface for another.</p>
+<p>A building block can use any combination of components.</p>
+</div>
+
+<p>This is one of the great power of Dapr. Here is the interface declaration for the secrets management building block which each component needs to implement.</p>
+<figure class="highlight protobuf"><figcaption><span>SecretStore</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">type SecretStore interface &#123;</span><br><span class="line">  <span class="comment">// Init authenticates with the actual secret store and performs other init operation</span></span><br><span class="line">  Init(metadata Metadata) error</span><br><span class="line"></span><br><span class="line">  <span class="comment">// GetSecret retrieves a secret using a key and returns a map of decrypted string/string values</span></span><br><span class="line">  GetSecret(req GetSecretRequest) (GetSecretResponse, error)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// BulkGetSecrets retrieves all secrets in the store and returns a map of decrypted string/string values</span></span><br><span class="line">  BulkGetSecret(req BulkGetSecretRequest) (BulkGetSecretResponse, error)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Currently, we can have access transparently to all of those components to handle secrets:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.dapr.io/operations/components/setup-secret-store/supported-secret-stores/file-secret-store/">Local file storage (for development, do not use this in production)</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.dapr.io/operations/components/setup-secret-store/supported-secret-stores/azure-keyvault/">Azure KeyVault</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.dapr.io/operations/components/setup-secret-store/supported-secret-stores/aws-secret-manager/">AWS Secret manager</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.dapr.io/operations/components/setup-secret-store/supported-secret-stores/kubernetes-secret-store/">Kubernetes</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.dapr.io/operations/components/setup-secret-store/supported-secret-stores/hashicorp-vault/">Hashicorp Vault</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.dapr.io/operations/components/setup-secret-store/supported-secret-stores/gcp-secret-manager/">GCP Secret Manager</a></li>
+</ul>
+<p>In this post, we are using local file storage to store the Twitter secrets, which should be used only for development. This could be easily replaced by one of the other components for production.</p>
+<h1 id="Client"><a href="#Client" class="headerlink" title="Client"></a>Client</h1><h2 id="Components-folder"><a href="#Components-folder" class="headerlink" title="Components folder"></a>Components folder</h2><p>This is the first time we are seeing the components folder in which you can define components for your application. In today’s post, we are defining a local secret store for local development and this is the only thing you would need to change when you would be ready to go into production with your application. The super nice part is that you could go to Azure, AWS, Google Cloud Platform, or any places in which secret components exist just by the change of a configuration file.</p>
+<figure class="highlight yaml"><figcaption><span>local-secret-store.yaml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">dapr.io/v1alpha1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Component</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">local-secret-store</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">secretstores.local.file</span></span><br><span class="line">  <span class="attr">metadata:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">secretsFile</span></span><br><span class="line">    <span class="attr">value:</span> <span class="string">./client/components/secrets.json</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nestedSeparator</span></span><br><span class="line">    <span class="attr">value:</span> <span class="string">&quot;:&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>In this configuration we are defining the <em>name</em> of the component, <strong>local-secret-store</strong>  to be able to reference it from our code. Then, the type of component <em>secretstores.local.file</em> and where the secret file is stored.</p>
+<p>And here is the local secrets file.</p>
+<div class="alert warning"><p>You should not push this file to your code repository, as it contains your secrets!</p>
+</div>
+
+<figure class="highlight json"><figcaption><span>secrets.json</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;twitterSecrets&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;consumerKey&quot;</span>: <span class="string">&quot;TOADD&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;consumerSecret&quot;</span>: <span class="string">&quot;TOADD&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;accessToken&quot;</span>: <span class="string">&quot;TOADD&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;accessSecret&quot;</span>: <span class="string">&quot;TOADD&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Starting-Dapr-sidecar"><a href="#Starting-Dapr-sidecar" class="headerlink" title="Starting Dapr sidecar"></a>Starting Dapr sidecar</h2><p>You can use the start.ps1 PowerShell script if you have Windows Terminal installed, and it will start the Dapr sidecar. It executes the following:</p>
+<blockquote>
+<p>dapr.exe run –dapr-grpc-port 50001 –components-path .\client\components\</p>
+</blockquote>
+<p>We just define the default gRPC port which the Dapr .NET SDK will be using in our application to connect to the secrets building block and the local file storage component to get the secrets. We also need to tell Dapr in which folder our components are defined.</p>
+<h2 id="Application"><a href="#Application" class="headerlink" title="Application"></a>Application</h2><p>Our super simple application is again a <a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/top-level-statements">C# 9 top-level statements application</a> using the <a target="_blank" rel="noopener" href="https://docs.dapr.io/developing-applications/sdks/dotnet/">Dapr .NET SDK</a> to access the Dapr secrets building block and the local file storage component by calling one of its API <em>GetBulkSecretAsync</em>. Then we build a <em>twitterClient</em> using Tweetinvi getting information from the authenticated user, of which you provided the secrets, to display her description.</p>
+<figure class="highlight csharp"><figcaption><span>Program.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> Dapr.Client;</span><br><span class="line"><span class="keyword">using</span> Tweetinvi;</span><br><span class="line"></span><br><span class="line">Console.WriteLine(<span class="string">&quot;Hello Dapr secrets!&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> daprClient = <span class="keyword">new</span> DaprClientBuilder().Build();</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> twitterSecrets = daprClient.GetBulkSecretAsync(<span class="string">&quot;local-secret-store&quot;</span>).Result;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> consumerKey = twitterSecrets[<span class="string">&quot;twitterSecrets:consumerKey&quot;</span>].Values.First();</span><br><span class="line"><span class="keyword">var</span> consumerSecret = twitterSecrets[<span class="string">&quot;twitterSecrets:consumerSecret&quot;</span>].Values.First();</span><br><span class="line"><span class="keyword">var</span> accessToken = twitterSecrets[<span class="string">&quot;twitterSecrets:accessToken&quot;</span>].Values.First();</span><br><span class="line"><span class="keyword">var</span> accessSecret = twitterSecrets[<span class="string">&quot;twitterSecrets:accessSecret&quot;</span>].Values.First();</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> twitterClient =</span><br><span class="line">    <span class="keyword">new</span> TwitterClient(consumerKey, consumerSecret, accessToken, accessSecret);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> user = <span class="keyword">await</span> twitterClient.Users.GetAuthenticatedUserAsync();</span><br><span class="line">Console.WriteLine(user.Description);</span><br></pre></td></tr></table></figure>
+
+<p>Here you can see the result:</p>
+<blockquote>
+<p>Hello Dapr secrets!<br>Team Leader, Distinguished Solution Architect with a passion for shipping high quality products by empowering development team and culture</p>
+</blockquote>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>We have seen that Dapr provides a very easy and nice way to retrieve secrets that will be used by your application. From a security point of view, this provides the advantage to not store your secrets in your application code or on system environment variables. It also provides an abstraction on top of a set of secrets stores which let you develop your application without being tight to concrete implementation and let you choose at the time of deployment which secrets store your want to use, without changing one line of code of your application.</p>
+<p>You can get access to the code of this blog post on GitHub in the <a target="_blank" rel="noopener" href="https://github.com/laurentkempe/daprPlayground/tree/master/Secrets">Secrets folder</a>.</p>
+<p></p>
+<div style="text-align: left">
+  <div class="github-card"
+    data-user="laurentkempe"
+    data-repo="daprPlayground"
+    data-height="200"
+    data-width="400"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/NET/" rel="tag">.NET</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Dapr/" rel="tag">Dapr</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/25/calling-dapr-service-with-grpc/"
+                    data-tooltip="Calling Dapr service with gRPC"
+                    aria-label="NEXT: Calling Dapr service with gRPC"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2021/04/06/accessing-dapr-secrets-building-block-using-dapr-dotnet-sdk/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2021/04/06/accessing-dapr-secrets-building-block-using-dapr-dotnet-sdk/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2021/04/06/accessing-dapr-secrets-building-block-using-dapr-dotnet-sdk/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2021 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/25/calling-dapr-service-with-grpc/"
+                    data-tooltip="Calling Dapr service with gRPC"
+                    aria-label="NEXT: Calling Dapr service with gRPC"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2021/04/06/accessing-dapr-secrets-building-block-using-dapr-dotnet-sdk/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2021/04/06/accessing-dapr-secrets-building-block-using-dapr-dotnet-sdk/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2021/04/06/accessing-dapr-secrets-building-block-using-dapr-dotnet-sdk/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2021/04/06/accessing-dapr-secrets-building-block-using-dapr-dotnet-sdk/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2021/04/06/accessing-dapr-secrets-building-block-using-dapr-dotnet-sdk/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2021/04/06/accessing-dapr-secrets-building-block-using-dapr-dotnet-sdk/"
+                        aria-label="global.share_on_linkedin"
+                    >
+                        <i class="fab fa-linkedin" aria-hidden="true"></i><span>global.share_on_linkedin</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Distinguished Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-iajtduny32j11qkkk9gefahu317qcofb83llaimpym6p9pdqsour4zg3rqrt.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://laurentkempe.com/2021/04/06/accessing-dapr-secrets-building-block-using-dapr-dotnet-sdk/';
+              
+            this.page.identifier = '20210406044945';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'laurentkempe';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>
