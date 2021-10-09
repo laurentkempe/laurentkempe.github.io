@@ -6,7 +6,7 @@
   <link href="https://laurentkempe.com/atom.xml" rel="self"/>
   
   <link href="https://laurentkempe.com/"/>
-  <updated>2021-10-09T07:35:24.581Z</updated>
+  <updated>2021-10-09T07:40:05.937Z</updated>
   <id>https://laurentkempe.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://laurentkempe.com/2021/04/06/accessing-dapr-secrets-building-block-using-dapr-dotnet-sdk/"/>
     <id>https://laurentkempe.com/2021/04/06/accessing-dapr-secrets-building-block-using-dapr-dotnet-sdk/</id>
     <published>2021-04-06T14:49:45.000Z</published>
-    <updated>2021-10-09T07:35:24.581Z</updated>
+    <updated>2021-10-09T07:40:05.937Z</updated>
     
     
     <summary type="html">&lt;p&gt;In all &lt;a href=&quot;https://laurentkempe.com/tags/Dapr/&quot;&gt;previous posts&lt;/a&gt;, we were looking at the Dapr service invocation building block. We have seen how to expose and call HTTP and gRPC services using it. In this post, we will see how Dapr ease developers life when it comes to deal with secrets, thanks to the secrets management building block.&lt;/p&gt;</summary>
@@ -40,7 +40,7 @@
     <link href="https://laurentkempe.com/2021/03/25/calling-dapr-service-with-grpc/"/>
     <id>https://laurentkempe.com/2021/03/25/calling-dapr-service-with-grpc/</id>
     <published>2021-03-25T17:07:50.000Z</published>
-    <updated>2021-10-09T07:35:24.581Z</updated>
+    <updated>2021-10-09T07:40:05.937Z</updated>
     
     
     <summary type="html">&lt;p&gt;In previous posts, we focused on Dapr service invocation using the HTTP protocol. Dapr, through its service invocation, can also reliably and securely communicate with other applications using gRPC. We will have a look at this other capability in this post.&lt;/p&gt;</summary>
@@ -61,7 +61,7 @@
     <link href="https://laurentkempe.com/2021/03/18/service-to-service-invocation-with-refit-and-dapr-dotnet-sdk/"/>
     <id>https://laurentkempe.com/2021/03/18/service-to-service-invocation-with-refit-and-dapr-dotnet-sdk/</id>
     <published>2021-03-18T15:20:00.000Z</published>
-    <updated>2021-10-09T07:35:24.581Z</updated>
+    <updated>2021-10-09T07:40:05.937Z</updated>
     
     
     <summary type="html">&lt;p&gt;In the last post, we have seen how to &lt;a href=&quot;https://laurentkempe.com/2021/03/16/service-to-service-invocation-with-dapr-dotnet-sdk/&quot;&gt;call a service from another service using the Dapr .NET SDK&lt;/a&gt;. In this one, we will have a look at a possible way to simplify the development of the client code using &lt;a href=&quot;https://reactiveui.github.io/refit/&quot;&gt;Refit&lt;/a&gt;, the automatic type-safe REST library for .NET Core, Xamarin, and .NET.&lt;/p&gt;</summary>
@@ -82,7 +82,7 @@
     <link href="https://laurentkempe.com/2021/03/16/service-to-service-invocation-with-dapr-dotnet-sdk/"/>
     <id>https://laurentkempe.com/2021/03/16/service-to-service-invocation-with-dapr-dotnet-sdk/</id>
     <published>2021-03-16T16:00:39.000Z</published>
-    <updated>2021-10-09T07:35:24.581Z</updated>
+    <updated>2021-10-09T07:40:05.937Z</updated>
     
     
     <summary type="html">&lt;p&gt;In the previous two posts, we tackled the way to start with Dapr and how to call services. In this one, we will see how we can leverage the Dapr .NET SDK to handle service to service calls.&lt;/p&gt;
@@ -107,7 +107,7 @@
     <link href="https://laurentkempe.com/2021/03/11/using-service-invocation-from-dapr-dotnet-sdk/"/>
     <id>https://laurentkempe.com/2021/03/11/using-service-invocation-from-dapr-dotnet-sdk/</id>
     <published>2021-03-11T15:51:49.000Z</published>
-    <updated>2021-10-09T07:35:24.581Z</updated>
+    <updated>2021-10-09T07:40:05.937Z</updated>
     
     
     <summary type="html">&lt;p&gt;In the previous post “&lt;a href=&quot;https://laurentkempe.com/2021/03/09/getting-started-with-dapr-for-dotnet-developers/&quot;&gt;Getting started with Dapr for .NET Developers&lt;/a&gt;“ we have seen how easy it was to expose a web API written in .NET and the power of exposing it through Dapr sidecar. In this post, we are looking at the different possible ways to invoke that service.&lt;/p&gt;</summary>
@@ -126,7 +126,7 @@
     <link href="https://laurentkempe.com/2021/03/09/getting-started-with-dapr-for-dotnet-developers/"/>
     <id>https://laurentkempe.com/2021/03/09/getting-started-with-dapr-for-dotnet-developers/</id>
     <published>2021-03-09T15:53:56.000Z</published>
-    <updated>2021-10-09T07:35:24.581Z</updated>
+    <updated>2021-10-09T07:40:05.937Z</updated>
     
     
     <summary type="html">&lt;p&gt;&lt;a href=&quot;https://docs.microsoft.com/en-us/dotnet/architecture/dapr-for-net-developers/&quot;&gt;Dapr for .NET Developers&lt;/a&gt; is a great book, read in a weekend, to start gaining an understanding of what &lt;a href=&quot;https://dapr.io/&quot;&gt;Dapr&lt;/a&gt; is and especially for .NET Developers. In this post, we will see how you can use .NET to create a service and run it with Dapr and what does this provides.&lt;/p&gt;</summary>
@@ -145,7 +145,7 @@
     <link href="https://laurentkempe.com/2020/02/28/Automate-developer-work-using-Git-Aliases/"/>
     <id>https://laurentkempe.com/2020/02/28/Automate-developer-work-using-Git-Aliases/</id>
     <published>2020-02-28T15:26:27.000Z</published>
-    <updated>2021-10-09T07:35:24.541Z</updated>
+    <updated>2021-10-09T07:40:05.917Z</updated>
     
     
     <summary type="html">&lt;p&gt;I am using Git for many, many years. I am a big fan of it. How could that be different when you had to use versioning systems like CVS, SVN… I even took influence so that the whole company I work for migrates to it.&lt;/p&gt;
@@ -167,7 +167,7 @@
     <link href="https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/"/>
     <id>https://laurentkempe.com/2019/09/25/gRPC-and-csharp-8-Async-stream-cancellation/</id>
     <published>2019-09-25T20:06:12.000Z</published>
-    <updated>2021-10-09T07:35:24.581Z</updated>
+    <updated>2021-10-09T07:40:05.937Z</updated>
     
     
     <summary type="html">&lt;p&gt;In the previous post “&lt;a href=&quot;https://laurentkempe.com/2019/09/18/gRPC-and-csharp-8-Async-stream/&quot;&gt;gRPC and C# 8 Async stream&lt;/a&gt;“, we looked at how gRPC server stream and C# 8 Async stream work great together. In this post, we are looking at the way we can, from the client, stop the server to stream results back.&lt;/p&gt;</summary>
@@ -188,7 +188,7 @@
     <link href="https://laurentkempe.com/2019/09/18/gRPC-and-csharp-8-Async-stream/"/>
     <id>https://laurentkempe.com/2019/09/18/gRPC-and-csharp-8-Async-stream/</id>
     <published>2019-09-18T17:23:00.000Z</published>
-    <updated>2021-10-09T07:35:24.581Z</updated>
+    <updated>2021-10-09T07:40:05.937Z</updated>
     
     
     <summary type="html">&lt;p&gt;&lt;a href=&quot;https://grpc.io/&quot;&gt;gRPC&lt;/a&gt; and its idea to describe an API in a standardized file, which can generate both client and server code to interact in different languages is a compelling idea.&lt;br&gt;In this post, I would like to have a quick look at the experience you would have with gRPC streaming capability and the new &lt;a href=&quot;https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-8.0/async-streams&quot;&gt;C# 8 async streams&lt;/a&gt;, which sounds like a perfect match.&lt;/p&gt;</summary>
@@ -209,7 +209,7 @@
     <link href="https://laurentkempe.com/2019/09/03/WPF-and-dotnet-Generic-Host-with-dotnet-Core-3-0/"/>
     <id>https://laurentkempe.com/2019/09/03/WPF-and-dotnet-Generic-Host-with-dotnet-Core-3-0/</id>
     <published>2019-09-03T20:21:08.000Z</published>
-    <updated>2021-10-09T07:35:24.577Z</updated>
+    <updated>2021-10-09T07:40:05.937Z</updated>
     
     
     <summary type="html">&lt;p&gt;I like very much the idea of a &lt;a href=&quot;https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0&quot;&gt;.NET Generic Host in the MSDN documentation&lt;/a&gt;:&lt;/p&gt;
@@ -237,7 +237,7 @@
     <link href="https://laurentkempe.com/2019/04/18/WPF-and-IOC-on-NET-Core-3-0/"/>
     <id>https://laurentkempe.com/2019/04/18/WPF-and-IOC-on-NET-Core-3-0/</id>
     <published>2019-04-18T08:57:56.000Z</published>
-    <updated>2021-10-09T07:35:24.577Z</updated>
+    <updated>2021-10-09T07:40:05.937Z</updated>
     
     
     <summary type="html">&lt;p&gt;At work, we are planning to migrate our WPF application from .NET Framework 4.7 to &lt;a href=&quot;https://docs.microsoft.com/en-us/dotnet/core/whats-new/dotnet-core-3-0&quot;&gt;.NET Core 3.0&lt;/a&gt;. The main reason for doing so is that it was always a big pain to organize the updates of the .NET Framework on our customer machines. So being able to bundle .NET Core with our application is a big plus for us. Then, for sure, we are looking for the performance improvements brought by .NET Core and finally the new capabilities brought by the fast pace of innovation of .NET Core.&lt;/p&gt;</summary>
@@ -256,7 +256,7 @@
     <link href="https://laurentkempe.com/2019/03/05/Azure-DevOps-for-Visual-Studio-Extensions/"/>
     <id>https://laurentkempe.com/2019/03/05/Azure-DevOps-for-Visual-Studio-Extensions/</id>
     <published>2019-03-05T21:14:42.000Z</published>
-    <updated>2021-10-09T07:35:24.553Z</updated>
+    <updated>2021-10-09T07:40:05.917Z</updated>
     
     
     <summary type="html">&lt;p&gt;As you might have guessed reading some of my older posts, I like to automate things which I believe a computer should do in place of humans.&lt;/p&gt;</summary>
@@ -279,7 +279,7 @@
     <link href="https://laurentkempe.com/2019/02/18/dynamically-compile-and-run-code-using-dotNET-Core-3.0/"/>
     <id>https://laurentkempe.com/2019/02/18/dynamically-compile-and-run-code-using-dotNET-Core-3.0/</id>
     <published>2019-02-18T19:30:12.000Z</published>
-    <updated>2021-10-09T07:35:24.553Z</updated>
+    <updated>2021-10-09T07:40:05.917Z</updated>
     
     
     <summary type="html">&lt;p&gt;Let’ see in this blog post the new possibility offered by &lt;strong&gt;.NET Core 3.0 preview 2&lt;/strong&gt; to load and unload assemblies at run time using &lt;strong&gt;&lt;a href=&quot;https://github.com/dotnet/coreclr/blob/master/src/System.Private.CoreLib/src/System/Runtime/Loader/AssemblyLoadContext.cs#L14&quot;&gt;AssemblyLoadContext&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</summary>
@@ -298,7 +298,7 @@
     <link href="https://laurentkempe.com/2018/06/06/dotnet-core-community-online-hackathon/"/>
     <id>https://laurentkempe.com/2018/06/06/dotnet-core-community-online-hackathon/</id>
     <published>2018-06-06T06:20:54.000Z</published>
-    <updated>2021-10-09T07:35:24.553Z</updated>
+    <updated>2021-10-09T07:40:05.917Z</updated>
     
     
     <summary type="html">&lt;p&gt;On Saturday, June 2, 2018, I had the chance to participate in the .NET Core Community online Hackathon.&lt;/p&gt;
@@ -316,7 +316,7 @@
     <link href="https://laurentkempe.com/2018/06/01/Automating-development-machine-installation/"/>
     <id>https://laurentkempe.com/2018/06/01/Automating-development-machine-installation/</id>
     <published>2018-06-01T16:15:12.000Z</published>
-    <updated>2021-10-09T07:35:24.581Z</updated>
+    <updated>2021-10-09T07:40:05.937Z</updated>
     
     
     <summary type="html">&lt;p&gt;Since Microsoft went to &lt;a href=&quot;https://docs.microsoft.com/en-us/windows/deployment/update/waas-quick-start&quot;&gt;Windows as a service&lt;/a&gt;, so since Windows 10, I fully re-install my development machine, a Surface Book, with each main release of Windows.&lt;/p&gt;
@@ -336,7 +336,7 @@
     <link href="https://laurentkempe.com/2017/09/26/Debugging-into-ASP.NET-Core-2.0-source-code/"/>
     <id>https://laurentkempe.com/2017/09/26/Debugging-into-ASP.NET-Core-2.0-source-code/</id>
     <published>2017-09-26T18:44:11.000Z</published>
-    <updated>2021-10-09T07:35:24.553Z</updated>
+    <updated>2021-10-09T07:40:05.917Z</updated>
     
     
     <summary type="html">&lt;p&gt;I am just back from 2.5 months unpaid leave which I used to spend time with my family. So, I almost did not spend time with software development. One exception is that I wanted to be able to configure Visual Studio 2017 to be able to debug into ASP.NET Core 2.0 source code.&lt;/p&gt;</summary>
@@ -355,7 +355,7 @@
     <link href="https://laurentkempe.com/2017/04/14/ASPNET-Core-MVC-app-running-on-raspberry-pi/"/>
     <id>https://laurentkempe.com/2017/04/14/ASPNET-Core-MVC-app-running-on-raspberry-pi/</id>
     <published>2017-04-14T15:26:06.000Z</published>
-    <updated>2021-10-09T07:35:24.541Z</updated>
+    <updated>2021-10-09T07:40:05.913Z</updated>
     
     
     <summary type="html">&lt;p&gt;After running a first console app on my Raspberry Pi 3, I had to try ASP.NET Core and API. Two weeks ago when I posted &lt;a href=&quot;http://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/&quot;&gt;“.NET Core console app running on Raspberry Pi”&lt;/a&gt;, I could make API working, but I had no chance with MVC. Today it worked!&lt;/p&gt;</summary>
@@ -376,7 +376,7 @@
     <link href="https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/"/>
     <id>https://laurentkempe.com/2017/04/03/Dotnet-Core-app-running-on-raspberry-pi/</id>
     <published>2017-04-03T19:40:07.000Z</published>
-    <updated>2021-10-09T07:35:24.553Z</updated>
+    <updated>2021-10-09T07:40:05.917Z</updated>
     
     
     <summary type="html">&lt;p&gt;Now that there is a distribution of .NET Core on a Linux distro running on my &lt;a href=&quot;https://www.raspberrypi.org/products/raspberry-pi-3-model-b/&quot;&gt;Raspberry Pi 3&lt;/a&gt;, I had to try it.&lt;/p&gt;
@@ -398,7 +398,7 @@
     <link href="https://laurentkempe.com/2016/07/18/Build-ship-and-run-ASP-NET-Core-on-Microsoft-Azure-using-Docker-Cloud/"/>
     <id>https://laurentkempe.com/2016/07/18/Build-ship-and-run-ASP-NET-Core-on-Microsoft-Azure-using-Docker-Cloud/</id>
     <published>2016-07-18T17:04:21.000Z</published>
-    <updated>2021-10-09T07:35:24.553Z</updated>
+    <updated>2021-10-09T07:40:05.917Z</updated>
     
     
     <summary type="html">&lt;p&gt;In the last posts, we looked at the code to &lt;a href=&quot;http://laurentkempe.com/2016/05/16/ASP-NET-Core-RC2-Docker-and-HipChat-Connect-add-on/&quot;&gt;build a HipChat Connect add-on with ASP.NET Core&lt;/a&gt;, &lt;a href=&quot;http://laurentkempe.com/2016/06/08/Deploying-Docker-containers-running-ASPNET-Core-RC2-to-Microsoft-Azure-Cloud/&quot;&gt;run the solution in a Docker container&lt;/a&gt; and &lt;a href=&quot;http://laurentkempe.com/2016/06/20/Free-HTTPS-certificates-for-Docker-containers-running-ASPNET-Core-RC2-on-Microsoft-Azure/&quot;&gt;secure the access to the application with a valid HTTPS certificate that we got from Let’s Encrypt for free&lt;/a&gt; and finally deploy all of this on Azure!&lt;/p&gt;</summary>
@@ -421,7 +421,7 @@
     <link href="https://laurentkempe.com/2016/06/20/Free-HTTPS-certificates-for-Docker-containers-running-ASPNET-Core-RC2-on-Microsoft-Azure/"/>
     <id>https://laurentkempe.com/2016/06/20/Free-HTTPS-certificates-for-Docker-containers-running-ASPNET-Core-RC2-on-Microsoft-Azure/</id>
     <published>2016-06-20T17:51:30.000Z</published>
-    <updated>2021-10-09T07:35:24.557Z</updated>
+    <updated>2021-10-09T07:40:05.921Z</updated>
     
     
     <summary type="html">&lt;p&gt;Following my previous posts on &lt;a href=&quot;&quot;&gt;ASP.NET Core RC2, Docker and HipChat Connect add-on&lt;/a&gt; and &lt;a href=&quot;&quot;&gt;Deploying Docker containers running ASP.NET Core RC2 to Microsoft Azure Cloud&lt;/a&gt; I needed, as promised in the last post, to come with a solution to secure the whole with an HTTPS certificate!&lt;/p&gt;</summary>
