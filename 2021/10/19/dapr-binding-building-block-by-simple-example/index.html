@@ -1,0 +1,766 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Dapr binding building block by simple example - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Till now, we have seen two Dapr building blocks which are the service to service invocation building block and the secrets building block. The secret building block serves to protect things like a database connection string, an API key… so that they’re never disclosed outside of the application. The service to service invocation building block serves to make calls between services in your distributed application easy. In this post, we will introduce a third one which is the bindings building block. The bindings building block enables your distributed application to handle external events or invoke external services.\n\nIntroductionToday’s applications often need to be called from other external applications or call external services.\nA binding provides a bi-directional connection to an external cloud/on-premise service or system. Dapr allows you to invoke the external service through the Dapr binding API, and it allows your application to be triggered by events sent by the connected service.\n\n\nWhat is the difference between just being called or calling yourself the external service? Like for previous building blocks the benefits are mostly similar\n\n\n\nFocus on your business logic and avoid implementation details of how to interact with an external system keeping your code free from other SDKs or third parties libraries\nBeing able to swap between Dapr bindings for different environments without any code change\nHaving not to care about the handling of retries and failure recoveries\n\nSample applicationWe will implement a very simple application that will poll an external Time service on a configured interval to get the current time in that place. To achieve that we will use two Dapr bindings\n\n\n\nAn input Cron binding\nAn output HTTP binding\n\nAs previously those are configured in the dapr/components folder.\nscheduleHttpJobCron.yaml1234567891011apiVersion: dapr.io/v1alpha1kind: Componentmetadata:  name: scheduleHttpJob  namespace: defaultspec:  type: bindings.cron  version: v1  metadata:    - name: schedule      value: &quot;@every 10s&quot;\n\nThe Dapr Cron binding named scheduleHttpJob will be triggering each 10 seconds.\nhttpJob.yaml1234567891011apiVersion: dapr.io/v1alpha1kind: Componentmetadata:  name: httpJob  namespace: defaultspec:  type: bindings.http  version: v1  metadata:    - name: url      value: http://worldtimeapi.org/api/timezone/Europe/Paris\n\nThe Dapr Http binding named httpJob will call the WorldTimeAPI service to get the current time in Paris.\nNow that we have the Dapr configurations done, we need to have some code that will be called when the scheduleHttpJob is triggered.\nTo tie together the two Dapr bindings we create an ASP.NET controller that will be called by the scheduleHttpJob binding using an HTTP POST on the route scheduleHttpJob. The controller will use the httpJob binding to call the external service.\nScheduledHttpJobController.cs1234567891011121314151617181920212223242526[Route(&quot;scheduleHttpJob&quot;)][ApiController]public class ScheduledHttpJobController : ControllerBase&#123;    private readonly ILogger&lt;ScheduledHttpJobController&gt; _logger;    private readonly DaprClient _daprClient;    public ScheduledHttpJobController(ILogger&lt;ScheduledHttpJobController&gt; logger,                                      DaprClient daprClient)    &#123;        _logger = logger;        _daprClient = daprClient;    &#125;    [HttpPost]    public async Task HttpJob()    &#123;        _logger.LogInformation($&quot;&#123;nameof(ScheduledHttpJobController)&#125; called 😎&quot;);        var response =            await _daprClient.InvokeBindingAsync(new BindingRequest(&quot;httpJob&quot;, &quot;get&quot;));        var timeData = JsonSerializer.Deserialize&lt;TimeData&gt;(response.Data.Span);        _logger.LogInformation($&quot;⏰ in Paris &#123;timeData?.utc_datetime&#125;&quot;);    &#125;&#125;\n\nStarting the applicationA start.ps1 script is provided in the GitHub repository. It will start the ASP.NET application and the Dapr sidecar.\nAnd here are the results displayed after starting the application and waiting ten seconds that the cron input binding triggers and call the ASP.NET controller\n1234== APP == info: Worker.Controllers.ScheduledHttpJobController[0]== APP ==       ScheduledHttpJobController called 😎== APP == info: Worker.Controllers.ScheduledHttpJobController[0]== APP ==       ⏰ in Paris 10/19/2021 1:29:04 PM\n\nConclusionWe have seen that Dapr provides a great way to integrate with external systems using its binding building block. By leveraging Dapr building blocks your code becomes independent from the external systems you are integrating with keeping your code free from SDKs or third parties libraries. We will see that in a future post showing the integration of an external system using GraphQL.\nYou can get access to the code of this blog post on GitHub in the CronHttpBindings folder.\n\n\n\n  \n\n\n\n","dateCreated":"2021-10-19T11:32:05+00:00","dateModified":"2021-10-19T11:35:53+00:00","datePublished":"2021-10-19T11:32:05+00:00","description":"Till now, we have seen two Dapr building blocks which are the service to service invocation building block and the secrets building block. The secret building block serves to protect things like a database connection string, an API key… so that they’re never disclosed outside of the application. The service to service invocation building block serves to make calls between services in your distributed application easy. In this post, we will introduce a third one which is the bindings building block. The bindings building block enables your distributed application to handle external events or invoke external services.","headline":"Dapr binding building block by simple example","image":["https://live.staticflickr.com/65535/46976463834_cd93cdcab2_q.jpg","https://live.staticflickr.com/65535/46976463834_99a78b828f_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2021/10/19/dapr-binding-building-block-by-simple-example/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2021/10/19/dapr-binding-building-block-by-simple-example/","keywords":".NET, Dapr","thumbnailUrl":"https://live.staticflickr.com/65535/46976463834_cd93cdcab2_q.jpg"}</script>
+    <meta name="description" content="Till now, we have seen two Dapr building blocks which are the service to service invocation building block and the secrets building block. The secret building block serves to protect things like a dat">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Dapr binding building block by simple example">
+<meta property="og:url" content="https://laurentkempe.com/2021/10/19/dapr-binding-building-block-by-simple-example/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="Till now, we have seen two Dapr building blocks which are the service to service invocation building block and the secrets building block. The secret building block serves to protect things like a dat">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-10-19T11:32:05.000Z">
+<meta property="article:modified_time" content="2021-10-19T11:35:53.893Z">
+<meta property="article:author" content="Laurent Kempé">
+<meta property="article:tag" content=".NET">
+<meta property="article:tag" content="Dapr">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/65535/46976463834_cd93cdcab2_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/65535/46976463834_cd93cdcab2_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/65535/46976463834_99a78b828f_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/65535/46976463834_99a78b828f_h.jpg"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-mqkeoo4gznuymibny0dhdi3wuo2a7opz2o5iprogjjfswscdpvp9vo3ihe8p.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-64298-8');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Laurent Kempé
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/presentations.html"
+                            
+                            rel="noopener"
+                            title="Presentations"
+                        >
+                        <i class="sidebar-button-icon fa fa-file-powerpoint" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Presentations</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/about-laurent-kempe.html"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://twitter.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/in/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://flickr.com/photos/laurentkempe/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Flickr"
+                        >
+                        <i class="sidebar-button-icon fab fa-flickr" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Flickr</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://feeds.feedburner.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial"
+             style="background-image:url('https://live.staticflickr.com/65535/46976463834_99a78b828f_h.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Dapr binding building block by simple example
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2021-10-19T11:32:05+00:00">
+	
+		    Oct 19, 2021
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Lomont, Haute-Saône, Franche-Comté, France</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>Till now, we have seen two <a href="https://laurentkempe.com/tags/Dapr/">Dapr building blocks</a> which are the <a target="_blank" rel="noopener" href="https://docs.dapr.io/developing-applications/building-blocks/service-invocation/service-invocation-overview/">service to service invocation building block</a> and the <a target="_blank" rel="noopener" href="https://docs.dapr.io/developing-applications/building-blocks/secrets/secrets-overview/">secrets building block</a>. The secret building block serves to protect things like a database connection string, an API key… so that they’re never disclosed outside of the application. The service to service invocation building block serves to make calls between services in your distributed application easy. In this post, we will introduce a third one which is the <a target="_blank" rel="noopener" href="https://docs.dapr.io/developing-applications/building-blocks/bindings/bindings-overview/">bindings building block</a>. The bindings building block enables your distributed application to handle external events or invoke external services.</p>
+<span id="more"></span>
+<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>Today’s applications often need to be called from other external applications or call external services.</p>
+<div class="alert info"><p>A binding provides a bi-directional connection to an external cloud/on-premise service or system. Dapr allows you to invoke the external service through the Dapr binding API, and it allows your application to be triggered by events sent by the connected service.</p>
+</div>
+
+<p>What is the difference between just being called or calling yourself the external service? Like for previous building blocks the benefits are mostly similar</p>
+<p></p>
+
+<ul>
+<li>Focus on your business logic and avoid implementation details of how to interact with an external system keeping your code free from other SDKs or third parties libraries</li>
+<li>Being able to swap between Dapr bindings for different environments without any code change</li>
+<li>Having not to care about the handling of retries and failure recoveries</li>
+</ul>
+<h1 id="Sample-application"><a href="#Sample-application" class="headerlink" title="Sample application"></a>Sample application</h1><p>We will implement a very simple application that will poll an external <a target="_blank" rel="noopener" href="http://worldtimeapi.org/">Time service</a> on a configured interval to get the current time in that place. To achieve that we will use two <a target="_blank" rel="noopener" href="https://docs.dapr.io/developing-applications/building-blocks/bindings/bindings-overview/">Dapr bindings</a></p>
+<p></p>
+
+<ol>
+<li>An input <a target="_blank" rel="noopener" href="https://docs.dapr.io/reference/components-reference/supported-bindings/cron/">Cron binding</a></li>
+<li>An output <a target="_blank" rel="noopener" href="https://docs.dapr.io/reference/components-reference/supported-bindings/http/">HTTP binding</a></li>
+</ol>
+<p>As previously those are configured in the <strong>dapr/components</strong> folder.</p>
+<figure class="highlight yaml"><figcaption><span>scheduleHttpJobCron.yaml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">dapr.io/v1alpha1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Component</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">scheduleHttpJob</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">bindings.cron</span></span><br><span class="line">  <span class="attr">version:</span> <span class="string">v1</span></span><br><span class="line">  <span class="attr">metadata:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">schedule</span></span><br><span class="line">      <span class="attr">value:</span> <span class="string">&quot;@every 10s&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>The Dapr Cron binding named <em>scheduleHttpJob</em> will be triggering each 10 seconds.</p>
+<figure class="highlight yaml"><figcaption><span>httpJob.yaml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">dapr.io/v1alpha1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Component</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">httpJob</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">bindings.http</span></span><br><span class="line">  <span class="attr">version:</span> <span class="string">v1</span></span><br><span class="line">  <span class="attr">metadata:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">url</span></span><br><span class="line">      <span class="attr">value:</span> <span class="string">http://worldtimeapi.org/api/timezone/Europe/Paris</span></span><br></pre></td></tr></table></figure>
+
+<p>The Dapr Http binding named <em>httpJob</em> will call the WorldTimeAPI service to get the current time in Paris.</p>
+<p>Now that we have the Dapr configurations done, we need to have some code that will be called when the <em>scheduleHttpJob</em> is triggered.</p>
+<p>To tie together the two Dapr bindings we create an ASP.NET controller that will be called by the <em>scheduleHttpJob</em> binding using an HTTP POST on the route <em>scheduleHttpJob</em>. The controller will use the <em>httpJob</em> binding to call the external service.</p>
+<figure class="highlight csharp"><figcaption><span>ScheduledHttpJobController.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Route(<span class="meta-string">&quot;scheduleHttpJob&quot;</span>)</span>]</span><br><span class="line">[<span class="meta">ApiController</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ScheduledHttpJobController</span> : <span class="title">ControllerBase</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">readonly</span> ILogger&lt;ScheduledHttpJobController&gt; _logger;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">readonly</span> DaprClient _daprClient;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ScheduledHttpJobController</span>(<span class="params">ILogger&lt;ScheduledHttpJobController&gt; logger,</span></span></span><br><span class="line"><span class="params"><span class="function">                                      DaprClient daprClient</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        _logger = logger;</span><br><span class="line">        _daprClient = daprClient;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">HttpPost</span>]</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">async</span> Task <span class="title">HttpJob</span>(<span class="params"></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        _logger.LogInformation(<span class="string">$&quot;<span class="subst">&#123;<span class="keyword">nameof</span>(ScheduledHttpJobController)&#125;</span> called 😎&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> response =</span><br><span class="line">            <span class="keyword">await</span> _daprClient.InvokeBindingAsync(<span class="keyword">new</span> BindingRequest(<span class="string">&quot;httpJob&quot;</span>, <span class="string">&quot;get&quot;</span>));</span><br><span class="line">        <span class="keyword">var</span> timeData = JsonSerializer.Deserialize&lt;TimeData&gt;(response.Data.Span);</span><br><span class="line"></span><br><span class="line">        _logger.LogInformation(<span class="string">$&quot;⏰ in Paris <span class="subst">&#123;timeData?.utc_datetime&#125;</span>&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Starting-the-application"><a href="#Starting-the-application" class="headerlink" title="Starting the application"></a>Starting the application</h1><p>A start.ps1 script is provided in the GitHub repository. It will start the ASP.NET application and the Dapr sidecar.</p>
+<p>And here are the results displayed after starting the application and waiting ten seconds that the cron input binding triggers and call the ASP.NET controller</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">== APP == info: Worker.Controllers.ScheduledHttpJobController[0]</span><br><span class="line">== APP ==       ScheduledHttpJobController called 😎</span><br><span class="line">== APP == info: Worker.Controllers.ScheduledHttpJobController[0]</span><br><span class="line">== APP ==       ⏰ in Paris 10/19/2021 1:29:04 PM</span><br></pre></td></tr></table></figure>
+
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>We have seen that Dapr provides a great way to integrate with external systems using its binding building block. By leveraging Dapr building blocks your code becomes independent from the external systems you are integrating with keeping your code free from SDKs or third parties libraries. We will see that in a future post showing the integration of an external system using GraphQL.</p>
+<p>You can get access to the code of this blog post on GitHub in the <a target="_blank" rel="noopener" href="https://github.com/laurentkempe/daprPlayground/tree/master/CronHttpBindings">CronHttpBindings folder</a>.</p>
+<p></p>
+
+<div style="text-align: left">
+  <div class="github-card"
+    data-user="laurentkempe"
+    data-repo="daprPlayground"
+    data-height="200"
+    data-width="400"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/NET/" rel="tag">.NET</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Dapr/" rel="tag">Dapr</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/04/06/accessing-dapr-secrets-building-block-using-dapr-dotnet-sdk/"
+                    data-tooltip="Accessing Dapr secrets building block using Dapr .NET SDK"
+                    aria-label="NEXT: Accessing Dapr secrets building block using Dapr .NET SDK"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2021/10/19/dapr-binding-building-block-by-simple-example/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2021/10/19/dapr-binding-building-block-by-simple-example/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2021/10/19/dapr-binding-building-block-by-simple-example/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2021 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/04/06/accessing-dapr-secrets-building-block-using-dapr-dotnet-sdk/"
+                    data-tooltip="Accessing Dapr secrets building block using Dapr .NET SDK"
+                    aria-label="NEXT: Accessing Dapr secrets building block using Dapr .NET SDK"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2021/10/19/dapr-binding-building-block-by-simple-example/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2021/10/19/dapr-binding-building-block-by-simple-example/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2021/10/19/dapr-binding-building-block-by-simple-example/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2021/10/19/dapr-binding-building-block-by-simple-example/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2021/10/19/dapr-binding-building-block-by-simple-example/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2021/10/19/dapr-binding-building-block-by-simple-example/"
+                        aria-label="global.share_on_linkedin"
+                    >
+                        <i class="fab fa-linkedin" aria-hidden="true"></i><span>global.share_on_linkedin</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Distinguished Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-pbmkztfll2bgeccdb8lz2bp0pkbr7pqhtarvvypa7ayf7ftztzqbcnxudqxk.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://laurentkempe.com/2021/10/19/dapr-binding-building-block-by-simple-example/';
+              
+            this.page.identifier = '20211019013205';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'laurentkempe';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>
