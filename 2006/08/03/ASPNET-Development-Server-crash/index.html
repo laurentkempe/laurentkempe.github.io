@@ -15,7 +15,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"This morning I had a strange crash of ASP.NET Development Server, it is the first time that it happens and I was really stressed about it.\nWith debugger I got: “An unhandled exception of type ‘System.StackOverflowException’ occurred in Unknown Module.”\n\n\nI thought of third parties assemblies but that wasn’t it, so I finally thought of infinite loop and pointed out that I was doing the following in my last changes:\n\n\npublic virtual string ChromeTemplateFile\n{\n    get\n    {\n        if (WebPartManager.GetCurrentWebPartManager(Page).DisplayMode == WebPartManager.BrowseDisplayMode)\n            return BrowseDisplayModeChromeTemplateFile;\n        else\n            return ChromeTemplateFile;\n    }\n    set { throw new ApplicationException(“Not Implemented”); }\n}\n\n\nBingo, one miss tipping of a properties name and you end up in an infinite loop. Thanks Valentin for the nice msn talks ;-)\n","dateCreated":"2006-08-03T16:09:00+00:00","dateModified":"2006-08-03T16:09:00+00:00","datePublished":"2006-08-03T16:09:00+00:00","description":"This morning I had a strange crash of ASP.NET Development Server, it is the first time that it happens and I was really stressed about it.\nWith debugger I got: “An unhandled exception of type ‘System.StackOverflowException’ occurred in Unknown Module.”","headline":"ASP.NET Development Server crash","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2006/08/03/ASPNET-Development-Server-crash/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2006/08/03/ASPNET-Development-Server-crash/","keywords":".NET, ASP.NET 2.0, Visual Studio"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"This morning I had a strange crash of ASP.NET Development Server, it is the first time that it happens and I was really stressed about it.\nWith debugger I got: “An unhandled exception of type ‘System.StackOverflowException’ occurred in Unknown Module.”\n\n\nI thought of third parties assemblies but that wasn’t it, so I finally thought of infinite loop and pointed out that I was doing the following in my last changes:\n\n\npublic virtual string ChromeTemplateFile\n{\n    get\n    {\n        if (WebPartManager.GetCurrentWebPartManager(Page).DisplayMode &#x3D;&#x3D; WebPartManager.BrowseDisplayMode)\n            return BrowseDisplayModeChromeTemplateFile;\n        else\n            return ChromeTemplateFile;\n    }\n    set { throw new ApplicationException(“Not Implemented”); }\n}\n\n\nBingo, one miss tipping of a properties name and you end up in an infinite loop. Thanks Valentin for the nice msn talks ;-)\n","dateCreated":"2006-08-03T16:09:00+00:00","dateModified":"2006-08-03T16:09:00+00:00","datePublished":"2006-08-03T16:09:00+00:00","description":"This morning I had a strange crash of ASP.NET Development Server, it is the first time that it happens and I was really stressed about it.\nWith debugger I got: “An unhandled exception of type ‘System.StackOverflowException’ occurred in Unknown Module.”","headline":"ASP.NET Development Server crash","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2006/08/03/ASPNET-Development-Server-crash/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2006/08/03/ASPNET-Development-Server-crash/","keywords":".NET, ASP.NET 2.0, Visual Studio"}</script>
     <meta name="description" content="This morning I had a strange crash of ASP.NET Development Server, it is the first time that it happens and I was really stressed about it. With debugger I got: “An unhandled exception of type ‘System.">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="ASP.NET Development Server crash">
@@ -43,7 +43,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-mqkeoo4gznuymibny0dhdi3wuo2a7opz2o5iprogjjfswscdpvp9vo3ihe8p.min.css">
+<link rel="stylesheet" href="/assets/css/style-av2396ih1i0n5zlranokouxpb5a7wqhp63qz9j2x1quasjiixch6c1dscmjd.min.css">
 
     <!--STYLES END-->
     
@@ -337,7 +337,7 @@
 <p>{</p>
 <p>    <span style="color: blue">get</span></p>
 <p>    {</p>
-<p>        <span style="color: blue">if</span> (<span style="color: teal">WebPartManager</span>.GetCurrentWebPartManager(Page).DisplayMode == <span style="color: teal">WebPartManager</span>.BrowseDisplayMode)</p>
+<p>        <span style="color: blue">if</span> (<span style="color: teal">WebPartManager</span>.GetCurrentWebPartManager(Page).DisplayMode &#x3D;&#x3D; <span style="color: teal">WebPartManager</span>.BrowseDisplayMode)</p>
 <p>            <span style="color: blue">return</span> BrowseDisplayModeChromeTemplateFile;</p>
 <p>        <span style="color: blue">else</span></p>
 <p>            <span style="color: blue">return</span> <strong>ChromeTemplateFile</strong>;</p>
@@ -485,7 +485,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2021 Laurent Kempé. All Rights Reserved.
+        Copyrights &copy; 2022 Laurent Kempé. All Rights Reserved.
     </span>
 </footer>
 
@@ -693,7 +693,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-pbmkztfll2bgeccdb8lz2bp0pkbr7pqhtarvvypa7ayf7ftztzqbcnxudqxk.min.js"></script>
+<script src="/assets/js/script-mefxjeckeircjezj0vkw1x4cija3nln5hn68kgmqdyrodm9hgaevco4rrktb.min.js"></script>
 
 <!--SCRIPTS END-->
 

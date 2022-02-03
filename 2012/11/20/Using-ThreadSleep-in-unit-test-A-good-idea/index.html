@@ -15,7 +15,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"\nIn my humble opinion it is definitely not a good idea! Why?\n\nIt is brittle test because it depends to the CPU load of the machine running the test. Maybe it runs fine on your development machine, and will for sure from time to time fail on your build server because of the load on the server. \nIt is slower then needed. If you increase the sleep time so that you “ensure” that the test should pass in all situation then the test will always as long as this time.   \n\nSo what can we do about it?\nOne of the first approach is to using polling like NUnit and it’s Delayed Contraint does. But I am not a big fan of this because you have to remember the details of it, and you can fall in that trap easily:\n\nUse of a DelayedConstraint with a value argument makes no sense, since the value will be extracted at the point of call. It’s intended use is with delegates and references. If a delegate is used with polling, it may be called multiple times so only methods without side effects should be used in this way.\n\nMy personal preferred approach is:\n\nto expose as a protected property the Task running the background operation \nto create a SUT class in my test class which inherit from the class with the protected property \nto make the Task a public property of the SUT class \nto have my test use the Task by calling the Task.Wait() just before the assertion   \n\nFor example here is one of my test using that approach:\n \n","dateCreated":"2012-11-20T18:57:00+00:00","dateModified":"2012-11-20T19:25:46+00:00","datePublished":"2012-11-20T18:57:00+00:00","description":"\nIn my humble opinion it is definitely not a good idea! Why?\n\nIt is brittle test because it depends to the CPU load of the machine running the test. Maybe it runs fine on your development machine, and will for sure from time to time fail on your build server because of the load on the server.","headline":"Using Thread.Sleep() in Unit Test! A good idea?","image":["https://farm8.staticflickr.com/7040/6978718001_f2bdaca933_q.jpg","https://farm8.staticflickr.com/7040/6978718001_f2bdaca933_b.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2012/11/20/Using-ThreadSleep-in-unit-test-A-good-idea/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2012/11/20/Using-ThreadSleep-in-unit-test-A-good-idea/","keywords":".NET, TDD, C#","thumbnailUrl":"https://farm8.staticflickr.com/7040/6978718001_f2bdaca933_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"\nIn my humble opinion it is definitely not a good idea! Why?\n\nIt is brittle test because it depends to the CPU load of the machine running the test. Maybe it runs fine on your development machine, and will for sure from time to time fail on your build server because of the load on the server. \nIt is slower then needed. If you increase the sleep time so that you “ensure” that the test should pass in all situation then the test will always as long as this time.\n\nSo what can we do about it?\nOne of the first approach is to using polling like NUnit and it’s Delayed Contraint does. But I am not a big fan of this because you have to remember the details of it, and you can fall in that trap easily:\n\nUse of a DelayedConstraint with a value argument makes no sense, since the value will be extracted at the point of call. It’s intended use is with delegates and references. If a delegate is used with polling, it may be called multiple times so only methods without side effects should be used in this way.\n\nMy personal preferred approach is:\n\nto expose as a protected property the Task running the background operation \nto create a SUT class in my test class which inherit from the class with the protected property \nto make the Task a public property of the SUT class \nto have my test use the Task by calling the Task.Wait() just before the assertion\n\nFor example here is one of my test using that approach:\n \n","dateCreated":"2012-11-20T18:57:00+00:00","dateModified":"2012-11-20T19:25:46+00:00","datePublished":"2012-11-20T18:57:00+00:00","description":"\nIn my humble opinion it is definitely not a good idea! Why?\n\nIt is brittle test because it depends to the CPU load of the machine running the test. Maybe it runs fine on your development machine, and will for sure from time to time fail on your build server because of the load on the server.","headline":"Using Thread.Sleep() in Unit Test! A good idea?","image":["https://farm8.staticflickr.com/7040/6978718001_f2bdaca933_q.jpg","https://farm8.staticflickr.com/7040/6978718001_f2bdaca933_b.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2012/11/20/Using-ThreadSleep-in-unit-test-A-good-idea/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2012/11/20/Using-ThreadSleep-in-unit-test-A-good-idea/","keywords":".NET, TDD, C#","thumbnailUrl":"https://farm8.staticflickr.com/7040/6978718001_f2bdaca933_q.jpg"}</script>
     <meta name="description" content="In my humble opinion it is definitely not a good idea! Why?  It is brittle test because it depends to the CPU load of the machine running the test. Maybe it runs fine on your development machine, and">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Using Thread.Sleep() in Unit Test! A good idea?">
@@ -49,7 +49,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-mqkeoo4gznuymibny0dhdi3wuo2a7opz2o5iprogjjfswscdpvp9vo3ihe8p.min.css">
+<link rel="stylesheet" href="/assets/css/style-av2396ih1i0n5zlranokouxpb5a7wqhp63qz9j2x1quasjiixch6c1dscmjd.min.css">
 
     <!--STYLES END-->
     
@@ -346,7 +346,7 @@
 <p>In my humble opinion it is definitely not a good idea! Why?</p>
 <ol>
 <li>It is brittle test because it depends to the CPU load of the machine running the test. Maybe it runs fine on your development machine, and will for sure from time to time fail on your build server because of the load on the server. <span id="more"></span></li>
-<li>It is slower then needed. If you increase the sleep time so that you “ensure” that the test should pass in all situation then the test will always as long as this time.   </li>
+<li>It is slower then needed. If you increase the sleep time so that you “ensure” that the test should pass in all situation then the test will always as long as this time.</li>
 </ol>
 <p>So what can we do about it?</p>
 <p>One of the first approach is to using polling like <a target="_blank" rel="noopener" href="http://www.nunit.org/index.php?p=delayedConstraint&r=2.6">NUnit and it’s Delayed Contraint</a> does. But I am not a big fan of this because you have to remember the details of it, and you can fall in that trap easily:</p>
@@ -358,7 +358,7 @@
 <li>to expose as a protected property the Task running the background operation </li>
 <li>to create a SUT class in my test class which inherit from the class with the protected property </li>
 <li>to make the Task a public property of the SUT class </li>
-<li>to have my test use the Task by calling the Task.Wait() just before the assertion   </li>
+<li>to have my test use the Task by calling the Task.Wait() just before the assertion</li>
 </ol>
 <p>For example here is one of my test using that approach:</p>
 <script src="https://gist.github.com/4117094.js"> </script>
@@ -500,7 +500,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2021 Laurent Kempé. All Rights Reserved.
+        Copyrights &copy; 2022 Laurent Kempé. All Rights Reserved.
     </span>
 </footer>
 
@@ -708,7 +708,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-pbmkztfll2bgeccdb8lz2bp0pkbr7pqhtarvvypa7ayf7ftztzqbcnxudqxk.min.js"></script>
+<script src="/assets/js/script-mefxjeckeircjezj0vkw1x4cija3nln5hn68kgmqdyrodm9hgaevco4rrktb.min.js"></script>
 
 <!--SCRIPTS END-->
 

@@ -15,7 +15,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"If you are a user of the fantastic DropBox tool you might know that you have to organize your folders under a top root folder. This was really an issue for me which I wanted to solve because I like to organize my files in a different manner.\nI used the mklink command from a Windows Command\n\n\nE:\\My Dropbox&gt;mklinkCreates a symbolic link.\nMKLINK [[/D] | [/H] | [/J]] Link Target\n    /D      Creates a directory symbolic link.  Default is a file\n            symbolic link.\n    /H      Creates a hard link instead of a symbolic link.\n    /J      Creates a Directory Junction.\n    Link    specifies the new symbolic link name.\n    Target  specifies the path (relative or absolute) that the new link\n            refers to.\nI used it this way to create a symbolic link between a folder in “My Dropbox” folder on a folder outside:\nE:\\My Dropbox&gt;mklink /D “Logs” “L:\\Logs”symbolic link created for Logs &lt;&lt;===&gt;&gt; L:\\Logs\nSo now everything which is on my *L:\\Logs *folder is synchronized using DropBox.\nYou can also use this trick to move folder around on your system after having those under the DropBox root folder. Before that I always stop DropBox and restart it after the creation of the symbolic link.\nVery helpful!\n","dateCreated":"2010-09-28T01:32:55+00:00","dateModified":"2010-09-28T01:32:55+00:00","datePublished":"2010-09-28T01:32:55+00:00","description":"If you are a user of the fantastic DropBox tool you might know that you have to organize your folders under a top root folder. This was really an issue for me which I wanted to solve because I like to organize my files in a different manner.\nI used the mklink command from a Windows Command","headline":"Using windows 7 symbolic link to organize your DropBox","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/09/28/Using-windows-7-symbolic-link-to-organize-your-DropBox/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/09/28/Using-windows-7-symbolic-link-to-organize-your-DropBox/","keywords":"Tools, Windows 7"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"If you are a user of the fantastic DropBox tool you might know that you have to organize your folders under a top root folder. This was really an issue for me which I wanted to solve because I like to organize my files in a different manner.\nI used the mklink command from a Windows Command\n\n\nE:\\My Dropbox&gt;mklinkCreates a symbolic link.\nMKLINK [[&#x2F;D] | [&#x2F;H] | [&#x2F;J]] Link Target\n    /D      Creates a directory symbolic link.  Default is a file\n            symbolic link.\n    /H      Creates a hard link instead of a symbolic link.\n    /J      Creates a Directory Junction.\n    Link    specifies the new symbolic link name.\n    Target  specifies the path (relative or absolute) that the new link\n            refers to.\n\nI used it this way to create a symbolic link between a folder in “My Dropbox” folder on a folder outside:\nE:\\My Dropbox&gt;mklink &#x2F;D “Logs” “L:\\Logs”symbolic link created for Logs &lt;&lt;&#x3D;&#x3D;&#x3D;&gt;&gt; L:\\Logs\nSo now everything which is on my *L:\\Logs *folder is synchronized using DropBox.\nYou can also use this trick to move folder around on your system after having those under the DropBox root folder. Before that I always stop DropBox and restart it after the creation of the symbolic link.\nVery helpful!\n","dateCreated":"2010-09-28T01:32:55+00:00","dateModified":"2010-09-28T01:32:55+00:00","datePublished":"2010-09-28T01:32:55+00:00","description":"If you are a user of the fantastic DropBox tool you might know that you have to organize your folders under a top root folder. This was really an issue for me which I wanted to solve because I like to organize my files in a different manner.\nI used the mklink command from a Windows Command","headline":"Using windows 7 symbolic link to organize your DropBox","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/09/28/Using-windows-7-symbolic-link-to-organize-your-DropBox/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/09/28/Using-windows-7-symbolic-link-to-organize-your-DropBox/","keywords":"Tools, Windows 7"}</script>
     <meta name="description" content="If you are a user of the fantastic DropBox tool you might know that you have to organize your folders under a top root folder. This was really an issue for me which I wanted to solve because I like to">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Using windows 7 symbolic link to organize your DropBox">
@@ -42,7 +42,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-mqkeoo4gznuymibny0dhdi3wuo2a7opz2o5iprogjjfswscdpvp9vo3ihe8p.min.css">
+<link rel="stylesheet" href="/assets/css/style-av2396ih1i0n5zlranokouxpb5a7wqhp63qz9j2x1quasjiixch6c1dscmjd.min.css">
 
     <!--STYLES END-->
     
@@ -330,16 +330,17 @@
 <span id="more"></span>
 
 <p>E:\My Dropbox&gt;mklink<br>Creates a symbolic link.</p>
-<p>MKLINK [[/D] | [/H] | [/J]] Link Target</p>
+<p>MKLINK [[&#x2F;D] | [&#x2F;H] | [&#x2F;J]] Link Target</p>
 <pre><code>    /D      Creates a directory symbolic link.  Default is a file
             symbolic link.
     /H      Creates a hard link instead of a symbolic link.
     /J      Creates a Directory Junction.
     Link    specifies the new symbolic link name.
     Target  specifies the path (relative or absolute) that the new link
-            refers to.</code></pre>
+            refers to.
+</code></pre>
 <p>I used it this way to create a symbolic link between a folder in “My Dropbox” folder on a folder outside:</p>
-<p>E:\My Dropbox&gt;mklink /D “Logs” “L:\Logs”<br>symbolic link created for Logs &lt;&lt;===&gt;&gt; L:\Logs</p>
+<p>E:\My Dropbox&gt;mklink &#x2F;D “Logs” “L:\Logs”<br>symbolic link created for Logs &lt;&lt;&#x3D;&#x3D;&#x3D;&gt;&gt; L:\Logs</p>
 <p>So now everything which is on my *L:\Logs *folder is synchronized using DropBox.</p>
 <p>You can also use this trick to move folder around on your system after having those under the DropBox root folder. Before that I always stop DropBox and restart it after the creation of the symbolic link.</p>
 <p>Very helpful!</p>
@@ -481,7 +482,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2021 Laurent Kempé. All Rights Reserved.
+        Copyrights &copy; 2022 Laurent Kempé. All Rights Reserved.
     </span>
 </footer>
 
@@ -689,7 +690,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-pbmkztfll2bgeccdb8lz2bp0pkbr7pqhtarvvypa7ayf7ftztzqbcnxudqxk.min.js"></script>
+<script src="/assets/js/script-mefxjeckeircjezj0vkw1x4cija3nln5hn68kgmqdyrodm9hgaevco4rrktb.min.js"></script>
 
 <!--SCRIPTS END-->
 

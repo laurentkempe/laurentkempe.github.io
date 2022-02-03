@@ -15,7 +15,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"The other day I posted about Build ClickOnce deployment packages using MSBuild and Team City, and there were something that I didn’t liked in my way of doing it.\nI have multiple ClickOnce deployment packages created using TeamCity and MSBuild but each ClickOnce packages have their own Application Revision due to the usage of TeamCity BUILD_NUMBER server build property.\n\n\nSo I changed to use TeamCity BUILD_VCS_NUMBER_     \n\n\n&lt;ApplicationRevision&gt;$(BUILD_VCS_NUMBER_MyApplication_Trunk)&lt;/ApplicationRevision&gt;     \n\nAnd now all my ClickOnce packages have the same Application Revision which is better !\n","dateCreated":"2009-11-03T16:10:52+00:00","dateModified":"2009-11-03T16:10:52+00:00","datePublished":"2009-11-03T16:10:52+00:00","description":"The other day I posted about Build ClickOnce deployment packages using MSBuild and Team City, and there were something that I didn’t liked in my way of doing it.\nI have multiple ClickOnce deployment packages created using TeamCity and MSBuild but each ClickOnce packages have their own Application Revision due to the usage of TeamCity BUILD_NUMBER server build property.","headline":"Build multiple ClickOnce deployment packages using MSBuild and Team City","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2009/11/03/Build-multiple-ClickOnce-deployment-packages-using-MSBuild-and-Team-City/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2009/11/03/Build-multiple-ClickOnce-deployment-packages-using-MSBuild-and-Team-City/","keywords":"continuous integration, Team City, MSBuild, ClickOnce"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"The other day I posted about Build ClickOnce deployment packages using MSBuild and Team City, and there were something that I didn’t liked in my way of doing it.\nI have multiple ClickOnce deployment packages created using TeamCity and MSBuild but each ClickOnce packages have their own Application Revision due to the usage of TeamCity BUILD_NUMBER server build property.\n\n\nSo I changed to use TeamCity BUILD_VCS_NUMBER_     \n\n\n&lt;ApplicationRevision&gt;$(BUILD_VCS_NUMBER_MyApplication_Trunk)&lt;&#x2F;ApplicationRevision&gt;   \n\nAnd now all my ClickOnce packages have the same Application Revision which is better !\n","dateCreated":"2009-11-03T16:10:52+00:00","dateModified":"2009-11-03T16:10:52+00:00","datePublished":"2009-11-03T16:10:52+00:00","description":"The other day I posted about Build ClickOnce deployment packages using MSBuild and Team City, and there were something that I didn’t liked in my way of doing it.\nI have multiple ClickOnce deployment packages created using TeamCity and MSBuild but each ClickOnce packages have their own Application Revision due to the usage of TeamCity BUILD_NUMBER server build property.","headline":"Build multiple ClickOnce deployment packages using MSBuild and Team City","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2009/11/03/Build-multiple-ClickOnce-deployment-packages-using-MSBuild-and-Team-City/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2009/11/03/Build-multiple-ClickOnce-deployment-packages-using-MSBuild-and-Team-City/","keywords":"continuous integration, Team City, MSBuild, ClickOnce"}</script>
     <meta name="description" content="The other day I posted about Build ClickOnce deployment packages using MSBuild and Team City, and there were something that I didn’t liked in my way of doing it. I have multiple ClickOnce deployment p">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Build multiple ClickOnce deployment packages using MSBuild and Team City">
@@ -44,7 +44,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-mqkeoo4gznuymibny0dhdi3wuo2a7opz2o5iprogjjfswscdpvp9vo3ihe8p.min.css">
+<link rel="stylesheet" href="/assets/css/style-av2396ih1i0n5zlranokouxpb5a7wqhp63qz9j2x1quasjiixch6c1dscmjd.min.css">
 
     <!--STYLES END-->
     
@@ -334,7 +334,7 @@
 <p>So I changed to use TeamCity <a target="_blank" rel="noopener" href="http://www.jetbrains.net/confluence/display/TCD4/Predefined+Properties">BUILD_VCS_NUMBER_<simplified VCS root name></a><br>  <div style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:938d7efb-f5b5-4dca-90a2-68001b35ba46" class="wlWriterEditableSmartContent"> <div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt"> <div style="background: #fff; max-height: 300px; overflow: auto"> </p>
 <ol>
 <li><span style="color:#0000ff"><!--</span><span style="color:#008000"> ClickOnce getting build number from Team City </span><span style="color:#0000ff">--></span></li>
-<li><span style="color:#0000ff">&lt;</span><span style="color:#a31515">ApplicationRevision</span><span style="color:#0000ff">&gt;</span>$(BUILD_VCS_NUMBER_MyApplication_Trunk)<span style="color:#0000ff">&lt;/</span><span style="color:#a31515">ApplicationRevision</span><span style="color:#0000ff">&gt;</span> </div> </div> </div>  </li>
+<li><span style="color:#0000ff">&lt;</span><span style="color:#a31515">ApplicationRevision</span><span style="color:#0000ff">&gt;</span>$(BUILD_VCS_NUMBER_MyApplication_Trunk)<span style="color:#0000ff">&lt;&#x2F;</span><span style="color:#a31515">ApplicationRevision</span><span style="color:#0000ff">&gt;</span> </div> </div> </div></li>
 </ol>
 <p>And now all my ClickOnce packages have the same Application Revision which is better !</p>
 
@@ -475,7 +475,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2021 Laurent Kempé. All Rights Reserved.
+        Copyrights &copy; 2022 Laurent Kempé. All Rights Reserved.
     </span>
 </footer>
 
@@ -683,7 +683,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-pbmkztfll2bgeccdb8lz2bp0pkbr7pqhtarvvypa7ayf7ftztzqbcnxudqxk.min.js"></script>
+<script src="/assets/js/script-mefxjeckeircjezj0vkw1x4cija3nln5hn68kgmqdyrodm9hgaevco4rrktb.min.js"></script>
 
 <!--SCRIPTS END-->
 

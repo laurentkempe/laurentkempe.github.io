@@ -1,0 +1,827 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Automate your .NET project builds with NUKE a cross-platform build automation solution - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Early in my journey in developing software, I used to start a project by setting first a way to build my software automatically each time I did a set of changes. Long, very long ago, I used scripts scheduled to run. When JetBrains shipped TeamCity I started to use it extensively for my projects, here is my first post about “Set Up a Build Computer using VisualSVN, Team City, MsTest, NUnit“ from March 21, 2008, but used it since version 1.0. Later on, I also used Azure Pipelines to build Git Diff Margin and also GitHub Actions, for example, to build and deploy those pages.\n\nHistoryI introduced TeamCity at Innoveo; all teams still use it today.\nYou can watch the video “How Innoveo Skye Business Canvas is built - CI From The Trenches #8“ a conversation about how my team uses TeamCity to build the Innoveo Business Canvas. By the way, we are hiring; feel free to get in touch with me if you are interested!\n\n\n\nWe started using TeamCity UI with MSBuild as an ultra-fast getting started experience. We leveraged all runners integrated to run our whole build, from restoring nugets, compiling, running tests with code coverage, R# code inspections, NDepend analysis, packaging. It was serving us well. But we discovered that not versioning your build script with your code can be a real pain when you need to ship patches! That was a trigger for a change. We could have gone by versioning the TeamCity configuration into our code repository, so both would be aligned.\nWe had a look at lots of existing things on the .NET ecosystem like PSake, Fake. Till I found out Cake and presented to the team. We all liked that it was kind of C# as we are all C# developers. So, Cake helped us unify our different build processes in the “one” kind of C# project and we started to version with our app source code. Another improvement was that each developer could run our build on their machine! All of that keeping an easy integration in TeamCity. The project is open source and had (and still, I guess) a great responsive community.\nWe liked this new solution for quite some time then we had our build complexity start to grow. We didn’t keep it as clean as it could be, and even if it was C#, it was like C# but without all the developers tooling that you have as a C# developer. And it was starting to be painful to maintain with doing CTRL+F to find things.\nSo, some frustration started to appear. Honestly, a part of the problem was coming from us. On the other hand, another was really because of C# scripts, which is only like C#.\nWhy Nuke 💣 (FEB 2021)I was following the Nuke project for some time. But, I never really invested the time to look deep enough to understand its full power. And oh boy, it is powerful! I had several discussions with its author Matthias Koch followed by a quick personal presentation. I decided it was time to invest some time to move to the next thing and nuke the past 😆\nThe first argument for me was; you develop your build pipelines in real C#! A killer feature for a C# developer, because it helps you to start very quickly with all the tools you know. On top of that, NUKE provides extensions for all major .NET IDE; Rider, Visual Studio, Visual Studio Code which let you run a target with its dependencies or without, start a debugging session directly from the target from the hit of a shortcut.\nA developer experience, on another level 🏆! Again, it is real C# 😍, no more magic strings, no more CTRL+F 💝, all build pipelines in one .NET project 🥰 with code navigation, refactoring, debugging😻. Oh, and again all running with our already in place TeamCity, and everywhere you can run .NET.\nYou can generate CI Integration with partitioning. For example, you can run your tests on one agent in parallel to your static code analysis on another agent and shorten your overall build time. We have not gone that way for now, because of our build running in an acceptable average of 10 minutes. But, who would not like faster build time? Finally, it supports cloud build services GitHub Actions, Azure pipelines which we might consider in the future🔮.\nMigration from Cake to NUKEWith all of those positive arguments, the decision to migrate was easy. I jumped on to migrate our Cake C# scripts to NUKE. As I wrote our Cake C# scripts were getting messy, nevertheless I decided to port with the current mess. More on that later.\nIt needed some new learnings but went straightforward without a big surprise. One thing that made it easy is that the high-level concepts of both tools are the same or very similar. The other is that even if Cake is C# scripts, you can easily copy this code and paste it into a NUKE project.\nSo, I had it running quite fast after starting the port, but with the mess. The next step was to refactor the whole. I wrote before it is a C# project. So I was in my comfort zone with all my refactoring tools in Rider. Again, this was super fast.\nSomething I liked was the easy CLI Tools interaction with Fluent API with almost all the tools we are using already integrated, except one NDepend. \nI liked the easy CLI Tools interaction with Fluent API with almost all the tools we are using already integrated, except one NDepend. And that integration was also made simple. The only thing I had trouble with and needed some help with was that NDepend exited with an error code. We are breaking some NDepend rules. There is no way to change that. And NUKE then handled that as a build failure. Nothing wrong from the point of view of NDepend and NUKE. But, when you use tools like NDepend you cannot fix all the reported problems in one go. So, you often start by putting a rule that you at least don’t want to make worse. Over time, we extended NDepend with our own rules. Then also fixed some bundled broken rules. And we verify on each build that those issues do not reappear.\nGetting startedInstall NUKE extension for your IDELeverage the power of the NUKE IDE extensions to ease the creation, edition, debugging and execution of NUKE builds.\n\nInstall NUKE CLI .NET toolNUKE CLI .NET tool will help you to create and execute NUKE builds, or even update to a new version of NUKE.\n\ndotnet tool install Nuke.GlobalTool –global\n\nExtend you shell with NUKE auto-completionTo simplify your life, you can extend your PowerShell, ZSH or BASH with auto-completion so that you don’t have to remember all nuke details and just tab!\n123456Register-ArgumentCompleter -Native -CommandName nuke -ScriptBlock &#123;    param($commandName, $wordToComplete, $cursorPosition)        nuke :complete &quot;$wordToComplete&quot; | ForEach-Object &#123;           [System.Management.Automation.CompletionResult]::new($_, $_, &#x27;ParameterValue&#x27;, $_)        &#125;&#125;\n\nCreate your first NUKE build project\nFrom the project you want to build run\n\nnuke :setup\n\nFollow the easy steps and you are done with a basic C# build project!\nNow, you can either run your build using NUKE dotnet tool\n\nnuke [targets] [arguments]\n\nor with the PowerShell script created\n\n.\\build.ps1 [targets] [arguments]\n\nWhat code is generated?NUKE build is implemented as a console application. I removed some minor parts to make it easier to understand.\nBuild.cs1234567891011121314151617181920212223242526272829303132333435363738394041class Build : NukeBuild&#123;    public static int Main () =&gt; Execute&lt;Build&gt;(x =&gt; x.Compile);    [Parameter(&quot;Configuration to build - Default is &#x27;Debug&#x27; (local) or &#x27;Release&#x27; (server)&quot;)]    readonly Configuration Configuration                = IsLocalBuild ? Configuration.Debug : Configuration.Release;    [Solution] readonly Solution Solution;    AbsolutePath SourceDirectory =&gt; RootDirectory / &quot;src&quot;;    AbsolutePath TestsDirectory =&gt; RootDirectory / &quot;tests&quot;;    AbsolutePath OutputDirectory =&gt; RootDirectory / &quot;output&quot;;    Target Clean =&gt; _ =&gt; _        .Before(Restore)        .Executes(() =&gt;        &#123;            SourceDirectory.GlobDirectories(&quot;**/bin&quot;, &quot;**/obj&quot;).ForEach(DeleteDirectory);            TestsDirectory.GlobDirectories(&quot;**/bin&quot;, &quot;**/obj&quot;).ForEach(DeleteDirectory);            EnsureCleanDirectory(OutputDirectory);        &#125;);    Target Restore =&gt; _ =&gt; _        .Executes(() =&gt;        &#123;            DotNetRestore(s =&gt; s                .SetProjectFile(Solution));        &#125;);    Target Compile =&gt; _ =&gt; _        .DependsOn(Restore)        .Executes(() =&gt;        &#123;            DotNetBuild(s =&gt; s                .SetProjectFile(Solution)                .SetConfiguration(Configuration)                .EnableNoRestore());        &#125;);&#125;\n\nThe entry point of the console application is Main and by default it calls Compile on line 3. With your preferred IDE you can use code navigation to get to the Compilecode. Compile is a Target and we can see that this is not a magic string which has been the case with other build tools 👍🏼.\nA Configuration Parameter is defined which can be passed to our build to specify if it is a Debug or Release build.\nA Solution is defined which is used later on the Compile Target. Through the usage of the C# attribute [Solution], the solution file will be found using either command-line arguments, environment variables, or finally _build\\config\\parameters.json file created when you generated the NUKE project.\n_build\\config\\parameters.json1234&#123;  &quot;$schema&quot;: &quot;./build.schema.json&quot;,  &quot;Solution&quot;: &quot;NukeBuildAutomation.sln&quot;&#125;\n\nOr it could be done like this\nBuild.cs1[Solution(&quot;.\\\\NukeBuildAutomation.sln&quot;)] readonly Solution Solution;\n\nThen some AbsolutePath are defined for SourceDirectory, TestsDirectory, OutputDirectoryshowing how easy it is to compose paths. Those are used in the Clean Target in which it is used to clean folder with a nice syntax SourceDirectory.GlobDirectories(&quot;**/bin&quot;, &quot;**/obj&quot;).ForEach(DeleteDirectory).\nTargetsNUKE uses similar dependency-based as other build automation solutions. The execution model is using Target which can relate one another and create a directed dependency graph.\nIn the generated code we can see that target Clean is told to run Before the Restore target. For the Compile target we can see that it DependsOn depends on the Restore target. You can read more about all the capabilities of NUKE in that matter in the NUKE documentation - Execution Dependencies.\nA super nice feature is to be able to visualize our target relationships with a graph that NUKE generates for us, using the command\n\nnuke –plan\n\n\nWith such an execution plan defined by our targets, we can see that the Clean target is executed before the Restore target and the Compile target is executed after the Restore target. We also see that if the Clean target is not specified as a command line parameter it won’t be executed.\nThe .Before(Restore) on the clean Target means that even if you run your command like this\n\nnuke Compile Clean\n\nthe Clean target will be executed before the Compile target.\nFluent APIThe following code example shows NUKE fluent API which can be used with some pre-defined CLI tools. In that concrete case we are using JetBrains dotCover command line to run our tests with and generate code coverage report.\nBuild.Tests.cs123456789101112131415161718192021222324252627partial class Build&#123;    const string TestResultsXmlSuffix = &quot;_TestResults.xml&quot;;    IEnumerable&lt;string&gt; TestAssemblies =&gt; GlobFiles(OutputDirectory, &quot;*.Tests.*.dll&quot;);        Target TestWithCoverage =&gt; _ =&gt; _        .DependsOn(Compile)        .Executes(() =&gt;        &#123;            DotCoverCover(GetDotCoverSettings, Environment.ProcessorCount);        &#125;);        IEnumerable&lt;DotCoverCoverSettings&gt; GetDotCoverSettings(DotCoverCoverSettings settings) =&gt;        TestAssemblies.Select(testAssembly =&gt; new DotCoverCoverSettings()            .SetTargetExecutable(ToolPathResolver.GetPathExecutable(&quot;dotnet&quot;))            .SetTargetWorkingDirectory(OutputDirectory)            .SetTargetArguments($&quot;test --test-adapter-path:. &#123;testAssembly&#125;  --logger trx;LogFileName=&#123;testAssembly&#125;&#123;TestResultsXmlSuffix&#125;&quot;)            .SetFilters(                &quot;+:MyProject&quot;)            .SetAttributeFilters(                &quot;System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute&quot;,                &quot;System.CodeDom.Compiler.GeneratedCodeAttribute&quot;)            .SetOutputFile(GetDotCoverOutputFile(testAssembly)));        AbsolutePath GetDotCoverOutputFile(string testAssembly) =&gt; OutputDirectory / $&quot;dotCover_&#123;Path.GetFileName(testAssembly)&#125;.dcvr&quot;;&#125;\n\nConclusionThere is much more to write about NUKE than just the basics. You can read more about it in the NUKE documentation. Nevertheless, I hope this blog post will help your to get started quickly. I heavily encourage you to invest the time to have a look to NUKE. It will for sure save you time when you want to automate your build pipelines in C# and have those run where ever .NET runs. For us, it was definitely a great decision to move to it and I would not look back. Now, I look forward to have some time to invest into its capabilities to partition our build and have it running in even less time. That would also be the reason to write another post on that particular capability 😉\nPresentation\n  \n\n\n\nPress f key to see the presentation full screen, or navigate to it.\nNUKE presentation video (French)For French speaking people, join us for remote DevApps meetup each Wednesday late afternoon for a bit of fun. Here is the recording of the meetup about NUKE from 2.2.2022.\n\n\n\nCodeYou can find all the code used in this blog post and for the meetup on the following repository\n\n  \n\n\n\n","dateCreated":"2022-02-02T20:26:31+00:00","dateModified":"2022-02-03T04:54:37+00:00","datePublished":"2022-02-02T20:26:31+00:00","description":"Early in my journey in developing software, I used to start a project by setting first a way to build my software automatically each time I did a set of changes. Long, very long ago, I used scripts scheduled to run. When JetBrains shipped TeamCity I started to use it extensively for my projects, here is my first post about “Set Up a Build Computer using VisualSVN, Team City, MsTest, NUnit“ from March 21, 2008, but used it since version 1.0. Later on, I also used Azure Pipelines to build Git Diff Margin and also GitHub Actions, for example, to build and deploy those pages.","headline":"Automate your .NET project builds with NUKE a cross-platform build automation solution","image":["https://live.staticflickr.com/65535/51852266955_c9c796318e_q.jpg","https://live.staticflickr.com/65535/51852266955_978cbb4ee8_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2022/02/02/automate-your-dotnet-project-builds-with-nuke-a-cross-platform-build-automation-solution/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2022/02/02/automate-your-dotnet-project-builds-with-nuke-a-cross-platform-build-automation-solution/","keywords":".NET, C#, Build, NUKE","thumbnailUrl":"https://live.staticflickr.com/65535/51852266955_c9c796318e_q.jpg"}</script>
+    <meta name="description" content="Early in my journey in developing software, I used to start a project by setting first a way to build my software automatically each time I did a set of changes. Long, very long ago, I used scripts sc">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Automate your .NET project builds with NUKE a cross-platform build automation solution">
+<meta property="og:url" content="https://laurentkempe.com/2022/02/02/automate-your-dotnet-project-builds-with-nuke-a-cross-platform-build-automation-solution/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="Early in my journey in developing software, I used to start a project by setting first a way to build my software automatically each time I did a set of changes. Long, very long ago, I used scripts sc">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://laurentkempe.com/images/nuke_rider_extension.png">
+<meta property="og:image" content="https://laurentkempe.com/images/nuke%20setup.png">
+<meta property="og:image" content="https://laurentkempe.com/images/nuke%20plan.png">
+<meta property="article:published_time" content="2022-02-02T20:26:31.000Z">
+<meta property="article:modified_time" content="2022-02-03T04:54:37.454Z">
+<meta property="article:author" content="Laurent Kempé">
+<meta property="article:tag" content=".NET">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Build">
+<meta property="article:tag" content="NUKE">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://laurentkempe.com/images/nuke_rider_extension.png">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/65535/51852266955_c9c796318e_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/65535/51852266955_c9c796318e_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/65535/51852266955_978cbb4ee8_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/65535/51852266955_978cbb4ee8_h.jpg"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-av2396ih1i0n5zlranokouxpb5a7wqhp63qz9j2x1quasjiixch6c1dscmjd.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-64298-8');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Laurent Kempé
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/presentations.html"
+                            
+                            rel="noopener"
+                            title="Presentations"
+                        >
+                        <i class="sidebar-button-icon fa fa-file-powerpoint" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Presentations</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/about-laurent-kempe.html"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://twitter.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/in/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://flickr.com/photos/laurentkempe/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Flickr"
+                        >
+                        <i class="sidebar-button-icon fab fa-flickr" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Flickr</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://feeds.feedburner.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial"
+             style="background-image:url('https://live.staticflickr.com/65535/51852266955_978cbb4ee8_h.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Automate your .NET project builds with NUKE a cross-platform build automation solution
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2022-02-02T20:26:31+00:00">
+	
+		    Feb 02, 2022
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Bastia, Corse, France</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>Early in my journey in developing software, I used to start a project by setting first a way to build my software automatically each time I did a set of changes. Long, very long ago, I used scripts scheduled to run. When JetBrains shipped <a target="_blank" rel="noopener" href="https://www.jetbrains.com/teamcity/">TeamCity</a> I started to use it extensively for <a href="https://laurentkempe.com/tags/NDepend/">my projects</a>, here is my first post about “<a href="https://laurentkempe.com/2008/03/21/Set-Up-a-Build-Computer-using-VisualSVN-Team-City-MsTest-NUnit/">Set Up a Build Computer using VisualSVN, Team City, MsTest, NUnit</a>“ from March 21, 2008, but used it since version 1.0. Later on, I also used Azure Pipelines to build Git Diff Margin and also GitHub Actions, for example, to build and deploy those pages.</p>
+<span id="more"></span>
+<h1 id="History"><a href="#History" class="headerlink" title="History"></a>History</h1><p>I introduced TeamCity at <a target="_blank" rel="noopener" href="http://www.innoveo.com/">Innoveo</a>; all teams still use it today.</p>
+<p>You can watch the video “<em>How Innoveo Skye Business Canvas is built - CI From The Trenches #8</em>“ a conversation about how my team uses TeamCity to build the Innoveo Business Canvas. By the way, we are hiring; feel free to get in touch with me if you are interested!</p>
+<p></p>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/Xvjiujn08vo" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+
+<p>We started using TeamCity UI with MSBuild as an ultra-fast getting started experience. We leveraged all runners integrated to run our whole build, from restoring nugets, compiling, running tests with code coverage, R# code inspections, NDepend analysis, packaging. It was serving us well. But we discovered that not versioning your build script with your code can be a real pain when you need to ship patches! That was a trigger for a change. We could have gone by versioning the TeamCity configuration into our code repository, so both would be aligned.</p>
+<p>We had a look at lots of existing things on the .NET ecosystem like PSake, Fake. Till I found out <a target="_blank" rel="noopener" href="https://cakebuild.net/">Cake</a> and <a target="_blank" rel="noopener" href="https://sway.office.com/G8xS5gVqbwOA9euI">presented to the team</a>. We all liked that it was kind of C# as we are all C# developers. So, Cake helped us unify our different build processes in the “one” kind of C# project and we started to version with our app source code. Another improvement was that each developer could run our build on their machine! All of that keeping an easy integration in TeamCity. The project is open source and had (and still, I guess) a great responsive community.</p>
+<p>We liked this new solution for quite some time then we had our build complexity start to grow. We didn’t keep it as clean as it could be, and even if it was C#, it was like C# but without all the developers tooling that you have as a C# developer. And it was starting to be painful to maintain with doing CTRL+F to find things.</p>
+<p>So, some frustration started to appear. Honestly, a part of the problem was coming from us. On the other hand, another was really because of C# scripts, which is only like C#.</p>
+<h1 id="Why-Nuke-💣-FEB-2021"><a href="#Why-Nuke-💣-FEB-2021" class="headerlink" title="Why Nuke 💣 (FEB 2021)"></a>Why Nuke 💣 (FEB 2021)</h1><p>I was following the <a target="_blank" rel="noopener" href="https://nuke.build/">Nuke</a> project for some time. But, I never really invested the time to look deep enough to understand its full power. <strong>And oh boy, it is powerful</strong>! I had several discussions with its author <a target="_blank" rel="noopener" href="https://twitter.com/matkoch87">Matthias Koch</a> followed by a quick personal presentation. I decided it was time to invest some time to move to the next thing and nuke the past 😆</p>
+<p>The first argument for me was; you develop your build pipelines in <strong>real C#</strong>! A killer feature for a C# developer, because it helps you to start very quickly with all the tools you know. On top of that, NUKE provides <a target="_blank" rel="noopener" href="https://nuke.build/docs/running-builds/from-ides.html">extensions for all major .NET IDE</a>; Rider, Visual Studio, Visual Studio Code which let you run a target with its dependencies or without, start a debugging session directly from the target from the hit of a shortcut.</p>
+<p>A developer experience, on another level 🏆! Again, it is real C# 😍, no more magic strings, no more CTRL+F 💝, all build pipelines in one .NET project 🥰 with code navigation, refactoring, debugging😻. Oh, and again all running with our already in place TeamCity, and everywhere you can run <a target="_blank" rel="noopener" href="http://dot.net/">.NET</a>.</p>
+<p>You can generate <a target="_blank" rel="noopener" href="https://nuke.build/docs/authoring-builds/ci-integration.html">CI Integration</a> with partitioning. For example, you can run your tests on one agent in parallel to your static code analysis on another agent and shorten your overall build time. We have not gone that way for now, because of our build running in an acceptable average of 10 minutes. But, who would not like faster build time? Finally, it supports cloud build services GitHub Actions, Azure pipelines which we might consider in the future🔮.</p>
+<h1 id="Migration-from-Cake-to-NUKE"><a href="#Migration-from-Cake-to-NUKE" class="headerlink" title="Migration from Cake to NUKE"></a>Migration from Cake to NUKE</h1><p>With all of those positive arguments, the decision to migrate was easy. I jumped on to migrate our Cake C# scripts to NUKE. As I wrote our Cake C# scripts were getting messy, nevertheless I decided to port with the current mess. More on that later.</p>
+<p>It needed some new learnings but went straightforward without a big surprise. One thing that made it easy is that the high-level concepts of both tools are the same or very similar. The other is that even if Cake is C# scripts, you can easily copy this code and paste it into a NUKE project.</p>
+<p>So, I had it running quite fast after starting the port, but with the mess. The next step was to refactor the whole. I wrote before it is a C# project. So I was in my comfort zone with all my refactoring tools in Rider. Again, this was super fast.</p>
+<p>Something I liked was the easy CLI Tools interaction with Fluent API with almost all the tools we are using already integrated, except one NDepend. </p>
+<p>I liked the easy CLI Tools interaction with Fluent API with almost all the tools we are using already integrated, except one NDepend. And that integration was also made simple. The only thing I had trouble with and needed some help with was that NDepend exited with an error code. We are breaking some NDepend rules. There is no way to change that. And NUKE then handled that as a build failure. Nothing wrong from the point of view of NDepend and NUKE. But, when you use tools like NDepend you cannot fix all the reported problems in one go. So, you often start by putting a rule that you at least don’t want to make worse. Over time, we extended NDepend with our own rules. Then also fixed some bundled broken rules. And we verify on each build that those issues do not reappear.</p>
+<h1 id="Getting-started"><a href="#Getting-started" class="headerlink" title="Getting started"></a>Getting started</h1><h2 id="Install-NUKE-extension-for-your-IDE"><a href="#Install-NUKE-extension-for-your-IDE" class="headerlink" title="Install NUKE extension for your IDE"></a>Install NUKE extension for your IDE</h2><p>Leverage the power of the <a target="_blank" rel="noopener" href="https://nuke.build/docs/running-builds/from-ides.html">NUKE IDE extensions</a> to ease the creation, edition, debugging and execution of NUKE builds.</p>
+<p><img src="/images/nuke_rider_extension.png" alt="NUKE rider extension"></p>
+<h2 id="Install-NUKE-CLI-NET-tool"><a href="#Install-NUKE-CLI-NET-tool" class="headerlink" title="Install NUKE CLI .NET tool"></a>Install NUKE CLI .NET tool</h2><p>NUKE CLI .NET tool will help you to create and execute NUKE builds, or even update to a new version of NUKE.</p>
+<blockquote>
+<p>dotnet tool install Nuke.GlobalTool –global</p>
+</blockquote>
+<h2 id="Extend-you-shell-with-NUKE-auto-completion"><a href="#Extend-you-shell-with-NUKE-auto-completion" class="headerlink" title="Extend you shell with NUKE auto-completion"></a>Extend you shell with NUKE auto-completion</h2><p>To simplify your life, you can extend your <a target="_blank" rel="noopener" href="https://nuke.build/docs/running-builds/global-tool.html#shell-snippets">PowerShell, ZSH or BASH with auto-completion</a> so that you don’t have to remember all nuke details and just tab!</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Register-ArgumentCompleter</span> <span class="literal">-Native</span> <span class="literal">-CommandName</span> nuke <span class="literal">-ScriptBlock</span> &#123;</span><br><span class="line">    <span class="keyword">param</span>(<span class="variable">$commandName</span>, <span class="variable">$wordToComplete</span>, <span class="variable">$cursorPosition</span>)</span><br><span class="line">        nuke :complete <span class="string">&quot;<span class="variable">$wordToComplete</span>&quot;</span> | <span class="built_in">ForEach-Object</span> &#123;</span><br><span class="line">           [<span class="type">System.Management.Automation.CompletionResult</span>]::new(<span class="variable">$_</span>, <span class="variable">$_</span>, <span class="string">&#x27;ParameterValue&#x27;</span>, <span class="variable">$_</span>)</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Create-your-first-NUKE-build-project"><a href="#Create-your-first-NUKE-build-project" class="headerlink" title="Create your first NUKE build project"></a>Create your first NUKE build project</h2><p><img src="/images/nuke%20setup.png" alt="NUKE setup"></p>
+<p>From the project you want to build run</p>
+<blockquote>
+<p>nuke :setup</p>
+</blockquote>
+<p>Follow the easy steps and you are done with a basic C# build project!</p>
+<p>Now, you can either run your build using NUKE dotnet tool</p>
+<blockquote>
+<p>nuke [targets] [arguments]</p>
+</blockquote>
+<p>or with the PowerShell script created</p>
+<blockquote>
+<p>.\build.ps1 [targets] [arguments]</p>
+</blockquote>
+<h2 id="What-code-is-generated"><a href="#What-code-is-generated" class="headerlink" title="What code is generated?"></a>What code is generated?</h2><p>NUKE build is implemented as a console application. I removed some minor parts to make it easier to understand.</p>
+<figure class="highlight csharp"><figcaption><span>Build.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Build</span> : <span class="title">NukeBuild</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">int</span> <span class="title">Main</span> (<span class="params"></span>)</span> =&gt; Execute&lt;Build&gt;(x =&gt; x.Compile);</span><br><span class="line"></span><br><span class="line">    [<span class="meta">Parameter(<span class="meta-string">&quot;Configuration to build - Default is &#x27;Debug&#x27; (local) or &#x27;Release&#x27; (server)&quot;</span>)</span>]</span><br><span class="line">    <span class="keyword">readonly</span> Configuration Configuration</span><br><span class="line">                = IsLocalBuild ? Configuration.Debug : Configuration.Release;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">Solution</span>] <span class="keyword">readonly</span> Solution Solution;</span><br><span class="line"></span><br><span class="line">    AbsolutePath SourceDirectory =&gt; RootDirectory / <span class="string">&quot;src&quot;</span>;</span><br><span class="line">    AbsolutePath TestsDirectory =&gt; RootDirectory / <span class="string">&quot;tests&quot;</span>;</span><br><span class="line">    AbsolutePath OutputDirectory =&gt; RootDirectory / <span class="string">&quot;output&quot;</span>;</span><br><span class="line"></span><br><span class="line">    Target Clean =&gt; _ =&gt; _</span><br><span class="line">        .Before(Restore)</span><br><span class="line">        .Executes(() =&gt;</span><br><span class="line">        &#123;</span><br><span class="line">            SourceDirectory.GlobDirectories(<span class="string">&quot;**/bin&quot;</span>, <span class="string">&quot;**/obj&quot;</span>).ForEach(DeleteDirectory);</span><br><span class="line">            TestsDirectory.GlobDirectories(<span class="string">&quot;**/bin&quot;</span>, <span class="string">&quot;**/obj&quot;</span>).ForEach(DeleteDirectory);</span><br><span class="line">            EnsureCleanDirectory(OutputDirectory);</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">    Target Restore =&gt; _ =&gt; _</span><br><span class="line">        .Executes(() =&gt;</span><br><span class="line">        &#123;</span><br><span class="line">            DotNetRestore(s =&gt; s</span><br><span class="line">                .SetProjectFile(Solution));</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">    Target Compile =&gt; _ =&gt; _</span><br><span class="line">        .DependsOn(Restore)</span><br><span class="line">        .Executes(() =&gt;</span><br><span class="line">        &#123;</span><br><span class="line">            DotNetBuild(s =&gt; s</span><br><span class="line">                .SetProjectFile(Solution)</span><br><span class="line">                .SetConfiguration(Configuration)</span><br><span class="line">                .EnableNoRestore());</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The entry point of the console application is <code>Main</code> and by default it calls <code>Compile</code> on line 3. With your preferred IDE you can use code navigation to get to the <code>Compile</code>code. <code>Compile</code> is a <code>Target</code> and we can see that this is not a magic string which has been the case with other build tools 👍🏼.</p>
+<p>A <code>Configuration</code> <code>Parameter</code> is defined which can be passed to our build to specify if it is a <code>Debug</code> or <code>Release</code> build.</p>
+<p>A <code>Solution</code> is defined which is used later on the <code>Compile</code> <code>Target</code>. Through the usage of the C# attribute <code>[Solution]</code>, the solution file will be found using either command-line arguments, environment variables, or finally <code>_build\config\parameters.json</code> file created when you generated the NUKE project.</p>
+<figure class="highlight json"><figcaption><span>_build\config\parameters.json</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;$schema&quot;</span>: <span class="string">&quot;./build.schema.json&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;Solution&quot;</span>: <span class="string">&quot;NukeBuildAutomation.sln&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Or it could be done like this</p>
+<figure class="highlight csharp"><figcaption><span>Build.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Solution(<span class="meta-string">&quot;.\\NukeBuildAutomation.sln&quot;</span>)</span>] <span class="keyword">readonly</span> Solution Solution;</span><br></pre></td></tr></table></figure>
+
+<p>Then some <code>AbsolutePath</code> are defined for <code>SourceDirectory</code>, <code>TestsDirectory</code>, <code>OutputDirectory</code>showing how easy it is to compose paths. Those are used in the <code>Clean</code> <code>Target</code> in which it is used to clean folder with a nice syntax <code>SourceDirectory.GlobDirectories(&quot;**/bin&quot;, &quot;**/obj&quot;).ForEach(DeleteDirectory)</code>.</p>
+<h2 id="Targets"><a href="#Targets" class="headerlink" title="Targets"></a>Targets</h2><p>NUKE uses similar dependency-based as other build automation solutions. The execution model is using <code>Target</code> which can relate one another and create a directed dependency graph.</p>
+<p>In the generated code we can see that target <code>Clean</code> is told to run <code>Before</code> the <code>Restore</code> target. For the <code>Compile</code> target we can see that it <code>DependsOn</code> depends on the <code>Restore</code> target. You can read more about all the capabilities of NUKE in that matter in the <a target="_blank" rel="noopener" href="https://nuke.build/docs/authoring-builds/fundamentals.html#execution-dependencies">NUKE documentation - Execution Dependencies</a>.</p>
+<p>A super nice feature is to be able to visualize our target relationships with a graph that NUKE generates for us, using the command</p>
+<blockquote>
+<p>nuke –plan</p>
+</blockquote>
+<p><img src="/images/nuke%20plan.png" alt="NUKE plan"></p>
+<p>With such an execution plan defined by our targets, we can see that the <code>Clean</code> target is executed before the <code>Restore</code> target and the <code>Compile</code> target is executed after the <code>Restore</code> target. We also see that if the <code>Clean</code> target is not specified as a command line parameter it won’t be executed.</p>
+<p>The <code>.Before(Restore)</code> on the clean <code>Target</code> means that even if you run your command like this</p>
+<blockquote>
+<p>nuke Compile Clean</p>
+</blockquote>
+<p>the <code>Clean</code> target will be executed before the <code>Compile</code> target.</p>
+<h2 id="Fluent-API"><a href="#Fluent-API" class="headerlink" title="Fluent API"></a>Fluent API</h2><p>The following code example shows NUKE fluent API which can be used with some pre-defined <a target="_blank" rel="noopener" href="https://nuke.build/docs/authoring-builds/cli-tools.html">CLI tools</a>. In that concrete case we are using <a target="_blank" rel="noopener" href="https://www.jetbrains.com/help/dotcover/Running_Coverage_Analysis_from_the_Command_LIne.html">JetBrains dotCover command line</a> to run our tests with and generate code coverage report.</p>
+<figure class="highlight csharp"><figcaption><span>Build.Tests.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">Build</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">string</span> TestResultsXmlSuffix = <span class="string">&quot;_TestResults.xml&quot;</span>;</span><br><span class="line"></span><br><span class="line">    IEnumerable&lt;<span class="built_in">string</span>&gt; TestAssemblies =&gt; GlobFiles(OutputDirectory, <span class="string">&quot;*.Tests.*.dll&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    Target TestWithCoverage =&gt; _ =&gt; _</span><br><span class="line">        .DependsOn(Compile)</span><br><span class="line">        .Executes(() =&gt;</span><br><span class="line">        &#123;</span><br><span class="line">            DotCoverCover(GetDotCoverSettings, Environment.ProcessorCount);</span><br><span class="line">        &#125;);</span><br><span class="line">    </span><br><span class="line">    <span class="function">IEnumerable&lt;DotCoverCoverSettings&gt; <span class="title">GetDotCoverSettings</span>(<span class="params">DotCoverCoverSettings settings</span>)</span> =&gt;</span><br><span class="line">        TestAssemblies.Select(testAssembly =&gt; <span class="keyword">new</span> DotCoverCoverSettings()</span><br><span class="line">            .SetTargetExecutable(ToolPathResolver.GetPathExecutable(<span class="string">&quot;dotnet&quot;</span>))</span><br><span class="line">            .SetTargetWorkingDirectory(OutputDirectory)</span><br><span class="line">            .SetTargetArguments(<span class="string">$&quot;test --test-adapter-path:. <span class="subst">&#123;testAssembly&#125;</span>  --logger trx;LogFileName=<span class="subst">&#123;testAssembly&#125;</span><span class="subst">&#123;TestResultsXmlSuffix&#125;</span>&quot;</span>)</span><br><span class="line">            .SetFilters(</span><br><span class="line">                <span class="string">&quot;+:MyProject&quot;</span>)</span><br><span class="line">            .SetAttributeFilters(</span><br><span class="line">                <span class="string">&quot;System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute&quot;</span>,</span><br><span class="line">                <span class="string">&quot;System.CodeDom.Compiler.GeneratedCodeAttribute&quot;</span>)</span><br><span class="line">            .SetOutputFile(GetDotCoverOutputFile(testAssembly)));</span><br><span class="line">    </span><br><span class="line">    <span class="function">AbsolutePath <span class="title">GetDotCoverOutputFile</span>(<span class="params"><span class="built_in">string</span> testAssembly</span>)</span> =&gt; OutputDirectory / <span class="string">$&quot;dotCover_<span class="subst">&#123;Path.GetFileName(testAssembly)&#125;</span>.dcvr&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>There is much more to write about NUKE than just the basics. You can read more about it in the <a target="_blank" rel="noopener" href="https://nuke.build/docs/">NUKE documentation</a>. Nevertheless, I hope this blog post will help your to get started quickly. I heavily encourage you to invest the time to have a look to <a target="_blank" rel="noopener" href="https://nuke.build/index.html">NUKE</a>. It will for sure save you time when you want to automate your build pipelines in C# and have those run where ever .NET runs. For us, it was definitely a great decision to move to it and I would not look back. Now, I look forward to have some time to invest into its <a target="_blank" rel="noopener" href="https://nuke.build/docs/authoring-builds/ci-integration.html#partitioning">capabilities to partition</a> our build and have it running in even less time. That would also be the reason to write another post on that particular capability 😉</p>
+<h1 id="Presentation"><a href="#Presentation" class="headerlink" title="Presentation"></a>Presentation</h1><div class="slides" style="
+  position: relative;
+  padding-bottom: 56.25%;
+  padding-top: 35px;
+  height: 0;
+  overflow: hidden;
+">
+  <iframe src="https://laurentkempe.com/presentations/dotNET%20build%20automation%20with%20NUKE/#/" width="800" height="600" frameborder="0" allowfullscreen="" style="
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  "></iframe>
+</div>
+
+
+<p>Press f key to see the presentation full screen, or <a href="https://laurentkempe.com/presentations/dotNET%20build%20automation%20with%20NUKE/#/">navigate to it</a>.</p>
+<h1 id="NUKE-presentation-video-French"><a href="#NUKE-presentation-video-French" class="headerlink" title="NUKE presentation video (French)"></a>NUKE presentation video (French)</h1><p>For French speaking people, join us for remote <a target="_blank" rel="noopener" href="https://devapps.ms/meetup">DevApps meetup</a> each Wednesday late afternoon for a bit of fun. Here is the recording of the meetup about NUKE from 2.2.2022.</p>
+<p></p>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/o0XLGRObd4E" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>You can find all the code used in this blog post and for the meetup on the following repository</p>
+<div style="text-align: left">
+  <div class="github-card"
+    data-user="laurentkempe"
+    data-repo="NukeBuildAutomation"
+    data-height="200"
+    data-width="400"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/NET/" rel="tag">.NET</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Build/" rel="tag">Build</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/C/" rel="tag">C#</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/NUKE/" rel="tag">NUKE</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/10/19/dapr-binding-building-block-by-simple-example/"
+                    data-tooltip="Dapr binding building block by simple example"
+                    aria-label="NEXT: Dapr binding building block by simple example"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2022/02/02/automate-your-dotnet-project-builds-with-nuke-a-cross-platform-build-automation-solution/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2022/02/02/automate-your-dotnet-project-builds-with-nuke-a-cross-platform-build-automation-solution/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2022/02/02/automate-your-dotnet-project-builds-with-nuke-a-cross-platform-build-automation-solution/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2022 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/10/19/dapr-binding-building-block-by-simple-example/"
+                    data-tooltip="Dapr binding building block by simple example"
+                    aria-label="NEXT: Dapr binding building block by simple example"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2022/02/02/automate-your-dotnet-project-builds-with-nuke-a-cross-platform-build-automation-solution/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2022/02/02/automate-your-dotnet-project-builds-with-nuke-a-cross-platform-build-automation-solution/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2022/02/02/automate-your-dotnet-project-builds-with-nuke-a-cross-platform-build-automation-solution/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2022/02/02/automate-your-dotnet-project-builds-with-nuke-a-cross-platform-build-automation-solution/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2022/02/02/automate-your-dotnet-project-builds-with-nuke-a-cross-platform-build-automation-solution/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2022/02/02/automate-your-dotnet-project-builds-with-nuke-a-cross-platform-build-automation-solution/"
+                        aria-label="global.share_on_linkedin"
+                    >
+                        <i class="fab fa-linkedin" aria-hidden="true"></i><span>global.share_on_linkedin</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Distinguished Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-mefxjeckeircjezj0vkw1x4cija3nln5hn68kgmqdyrodm9hgaevco4rrktb.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://laurentkempe.com/2022/02/02/automate-your-dotnet-project-builds-with-nuke-a-cross-platform-build-automation-solution/';
+              
+            this.page.identifier = '20220202092631';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'laurentkempe';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>
