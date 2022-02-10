@@ -1,0 +1,753 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Unit testing Async WPF ICommand - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"In the past, within my team at Innoveo, we had several discussions about the best way to unit test async WPF ICommand. We value quality, so testing is essential to us. We decided to make the methods called by the command internal so that our tests could call those.\nWhat is the problem with unit testing an Async WPF ICommand? The problem is that the command is an async void method! So, you have no way to await the end of the execution of your command. So, your test might assert on things that are still executing.\n\nSome weeks ago, a question about “Extract and Override call” taken from the book “Working Effectively with Legacy Code” for testing was raised on the French DevApps community. I immediately thought of the discussions about testing async WPF ICommand and proposed that solution as a pragmatic solution that is not only easy to implement but also very simple to understand. Some did not like that solution because it was not perfect. I agree, but sometimes it is good to be pragmatic.\nThe discussion went further about async void testing and Gérald Barré from Meziantou’s blog, which I highly recommend, answered it interestingly! He made a blog post about his solution “Awaiting an async void method in .NET“ which leverage his own implementation of a SynchronizationContext and TaskCompletionSource.\nI decided to apply his solution to our original question; “How to test an async WPF ICommand”?\nI quickly created a small .NET 6 WPF project and added to it the Windows Community Toolkit MVVM nuget. I copy-pasted the code from Gérald to it and wrote the following tests.\nMainWindowViewModelTests.cs123456789101112131415161718192021222324[TestFixture]public class MainWindowViewModelTests&#123;    [Test]    public void Click_FailingToAwaitCommandExecution()    &#123;        var mainWindowViewModel = new MainWindowViewModel();        mainWindowViewModel.Click.Execute(null);                Assert.That(mainWindowViewModel.Upper, Is.EqualTo(&quot;BEFORE&quot;));    &#125;    [Test]    public async Task Click_ExpectUpperToBeUpperCase()    &#123;        var mainWindowViewModel = new MainWindowViewModel();        await AsyncVoidSynchronizationContext.Run(            () =&gt; mainWindowViewModel.Click.Execute(null));                Assert.That(mainWindowViewModel.Upper, Is.EqualTo(&quot;BEFORE&quot;));    &#125;&#125;\n\nThe first one fails because nothing awaits the execution of the WPF command. The second one succeeds because the test is awaiting the command execution. Nice, very nice!\nAnd here is the code of the MainWindowViewModel class.\nMainWindowViewModel.cs1234567891011121314151617181920public class MainWindowViewModel : ObservableObject&#123;    private ICommand? _click;    private string _upper = &quot;before&quot;;    public ICommand Click =&gt; _click ??= new AsyncRelayCommand(Execute);    public string Upper    &#123;        get =&gt; _upper;        set =&gt; SetProperty(ref _upper, value);    &#125;    private async Task Execute()    &#123;        await Task.Delay(2000);        Upper = Upper.ToUpper();    &#125;&#125;\n\nSo, that is one way of solving testing an async WPF ICommand. But it is not the only way.\nWindows Community Toolkit MVVM provides the AsyncRelayCommand which implements IAsyncRelayCommand providing an ExecuteAsync method returning a Task which can be awaited.\n123456789[Test]public async Task OtherClick_ExpectUpperToBeUpperCase()&#123;    var mainWindowViewModel = new MainWindowViewModel();    await mainWindowViewModel.OtherClick.ExecuteAsync(null);        Assert.That(mainWindowViewModel.Upper, Is.EqualTo(&quot;BEFORE&quot;));&#125;\n\nAnd in this case we need to declare the command as an IAsyncRelayCommand\n123private IAsyncRelayCommand? _otherClick;public IAsyncRelayCommand OtherClick =&gt; _otherClick ??= new AsyncRelayCommand(Execute);\n\nand use the ExecuteAsync method in our test\n123456789[Test]public async Task OtherClick_ExpectUpperToBeUpperCase()&#123;    var mainWindowViewModel = new MainWindowViewModel();    await mainWindowViewModel.OtherClick.ExecuteAsync(null);        Assert.That(mainWindowViewModel.Upper, Is.EqualTo(&quot;BEFORE&quot;));&#125;\n\nConclusionAs a developer, I think it is always good to be pragmatic but this does not avoid to search for better solutions.\n\n\n  \n\n\n\n","dateCreated":"2022-02-10T19:37:38+00:00","dateModified":"2022-02-10T19:42:55+00:00","datePublished":"2022-02-10T19:37:38+00:00","description":"In the past, within my team at Innoveo, we had several discussions about the best way to unit test async WPF ICommand. We value quality, so testing is essential to us. We decided to make the methods called by the command internal so that our tests could call those.\nWhat is the problem with unit testing an Async WPF ICommand? The problem is that the command is an async void method! So, you have no way to await the end of the execution of your command. So, your test might assert on things that are still executing.","headline":"Unit testing Async WPF ICommand","image":["https://live.staticflickr.com/65535/51872954907_ef93021c01_q.jpg","https://live.staticflickr.com/65535/51872954907_2104a32913_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2022/02/10/unit-testing-async-wpf-icommand/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2022/02/10/unit-testing-async-wpf-icommand/","keywords":"WPF, .NET, unit test, C#","thumbnailUrl":"https://live.staticflickr.com/65535/51872954907_ef93021c01_q.jpg"}</script>
+    <meta name="description" content="In the past, within my team at Innoveo, we had several discussions about the best way to unit test async WPF ICommand. We value quality, so testing is essential to us. We decided to make the methods c">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Unit testing Async WPF ICommand">
+<meta property="og:url" content="https://laurentkempe.com/2022/02/10/unit-testing-async-wpf-icommand/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="In the past, within my team at Innoveo, we had several discussions about the best way to unit test async WPF ICommand. We value quality, so testing is essential to us. We decided to make the methods c">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-10T19:37:38.000Z">
+<meta property="article:modified_time" content="2022-02-10T19:42:55.360Z">
+<meta property="article:author" content="Laurent Kempé">
+<meta property="article:tag" content="WPF">
+<meta property="article:tag" content=".NET">
+<meta property="article:tag" content="unit test">
+<meta property="article:tag" content="C#">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/65535/51872954907_ef93021c01_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/65535/51872954907_ef93021c01_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/65535/51872954907_2104a32913_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/65535/51872954907_2104a32913_h.jpg"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-u6rbvjgdr47akvb9sm2ohgxsdn8qzdaafrlqvjlv8ukby9vyivgilsaixipr.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-64298-8');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Laurent Kempé
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/presentations.html"
+                            
+                            rel="noopener"
+                            title="Presentations"
+                        >
+                        <i class="sidebar-button-icon fa fa-file-powerpoint" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Presentations</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/about-laurent-kempe.html"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://twitter.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/in/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://flickr.com/photos/laurentkempe/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Flickr"
+                        >
+                        <i class="sidebar-button-icon fab fa-flickr" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Flickr</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://feeds.feedburner.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial"
+             style="background-image:url('https://live.staticflickr.com/65535/51872954907_2104a32913_h.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Unit testing Async WPF ICommand
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2022-02-10T19:37:38+00:00">
+	
+		    Feb 10, 2022
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">North Mona Vale, Australia</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>In the past, within my team at <a target="_blank" rel="noopener" href="http://www.innoveo.com/">Innoveo</a>, we had several discussions about the best way to unit test async WPF ICommand. We value quality, so testing is essential to us. We decided to make the methods called by the command <code>internal</code> so that our tests could call those.</p>
+<p>What is the problem with unit testing an Async WPF ICommand? The problem is that the command is an <code>async void</code> method! So, you have no way to <code>await</code> the end of the execution of your command. So, your test might assert on things that are still executing.</p>
+<span id="more"></span>
+<p>Some weeks ago, a question about “Extract and Override call” taken from the book “Working Effectively with Legacy Code” for testing was raised on the <a target="_blank" rel="noopener" href="https://devapps.ms/devenirmembre">French DevApps community</a>. I immediately thought of the discussions about testing async WPF ICommand and proposed that solution as a pragmatic solution that is not only easy to implement but also very simple to understand. Some did not like that solution because it was not perfect. I agree, but sometimes it is good to be pragmatic.</p>
+<p>The discussion went further about <code>async void</code> testing and <a target="_blank" rel="noopener" href="https://twitter.com/meziantou">Gérald Barré</a> from <a target="_blank" rel="noopener" href="https://meziantou.net/">Meziantou’s blog</a>, which I highly recommend, answered it interestingly! He made a blog post about his solution “<a target="_blank" rel="noopener" href="https://www.meziantou.net/awaiting-an-async-void-method-in-dotnet.htm">Awaiting an async void method in .NET</a>“ which leverage his own implementation of a <a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.synchronizationcontext?view=net-6.0">SynchronizationContext</a> and <code>TaskCompletionSource</code>.</p>
+<p>I decided to apply his solution to our original question; “How to test an async WPF ICommand”?</p>
+<p>I quickly created a small .NET 6 WPF project and added to it the <a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/communitytoolkit/">Windows Community Toolkit</a> <a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/communitytoolkit/mvvm/introduction">MVVM</a> nuget. I copy-pasted the code from Gérald to it and wrote the following tests.</p>
+<figure class="highlight csharp"><figcaption><span>MainWindowViewModelTests.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestFixture</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MainWindowViewModelTests</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">Test</span>]</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Click_FailingToAwaitCommandExecution</span>(<span class="params"></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> mainWindowViewModel = <span class="keyword">new</span> MainWindowViewModel();</span><br><span class="line"></span><br><span class="line">        mainWindowViewModel.Click.Execute(<span class="literal">null</span>);</span><br><span class="line">        </span><br><span class="line">        Assert.That(mainWindowViewModel.Upper, Is.EqualTo(<span class="string">&quot;BEFORE&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">Test</span>]</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">async</span> Task <span class="title">Click_ExpectUpperToBeUpperCase</span>(<span class="params"></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> mainWindowViewModel = <span class="keyword">new</span> MainWindowViewModel();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">await</span> AsyncVoidSynchronizationContext.Run(</span><br><span class="line">            () =&gt; mainWindowViewModel.Click.Execute(<span class="literal">null</span>));</span><br><span class="line">        </span><br><span class="line">        Assert.That(mainWindowViewModel.Upper, Is.EqualTo(<span class="string">&quot;BEFORE&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The first one fails because nothing awaits the execution of the WPF command. The second one succeeds because the test is awaiting the command execution. Nice, very nice!</p>
+<p>And here is the code of the <code>MainWindowViewModel</code> class.</p>
+<figure class="highlight csharp"><figcaption><span>MainWindowViewModel.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MainWindowViewModel</span> : <span class="title">ObservableObject</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> ICommand? _click;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span> _upper = <span class="string">&quot;before&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ICommand Click =&gt; _click ??= <span class="keyword">new</span> AsyncRelayCommand(Execute);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> Upper</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span> =&gt; _upper;</span><br><span class="line">        <span class="keyword">set</span> =&gt; SetProperty(<span class="keyword">ref</span> _upper, <span class="keyword">value</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">async</span> Task <span class="title">Execute</span>(<span class="params"></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">await</span> Task.Delay(<span class="number">2000</span>);</span><br><span class="line"></span><br><span class="line">        Upper = Upper.ToUpper();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>So, that is one way of solving testing an async WPF ICommand. But it is not the only way.</p>
+<p>Windows Community Toolkit MVVM provides the <code>AsyncRelayCommand</code> which implements <code>IAsyncRelayCommand</code> providing an <code>ExecuteAsync</code> method returning a <code>Task</code> which can be awaited.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Test</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">async</span> Task <span class="title">OtherClick_ExpectUpperToBeUpperCase</span>(<span class="params"></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> mainWindowViewModel = <span class="keyword">new</span> MainWindowViewModel();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">await</span> mainWindowViewModel.OtherClick.ExecuteAsync(<span class="literal">null</span>);</span><br><span class="line">    </span><br><span class="line">    Assert.That(mainWindowViewModel.Upper, Is.EqualTo(<span class="string">&quot;BEFORE&quot;</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>And in this case we need to declare the command as an <code>IAsyncRelayCommand</code></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> IAsyncRelayCommand? _otherClick;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> IAsyncRelayCommand OtherClick =&gt; _otherClick ??= <span class="keyword">new</span> AsyncRelayCommand(Execute);</span><br></pre></td></tr></table></figure>
+
+<p>and use the <code>ExecuteAsync</code> method in our test</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Test</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">async</span> Task <span class="title">OtherClick_ExpectUpperToBeUpperCase</span>(<span class="params"></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> mainWindowViewModel = <span class="keyword">new</span> MainWindowViewModel();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">await</span> mainWindowViewModel.OtherClick.ExecuteAsync(<span class="literal">null</span>);</span><br><span class="line">    </span><br><span class="line">    Assert.That(mainWindowViewModel.Upper, Is.EqualTo(<span class="string">&quot;BEFORE&quot;</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>As a developer, I think it is always good to be pragmatic but this does not avoid to search for better solutions.</p>
+<p></p>
+<div style="text-align: left">
+  <div class="github-card"
+    data-user="laurentkempe"
+    data-repo="AsyncVoidCommandTesting"
+    data-height="200"
+    data-width="400"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/NET/" rel="tag">.NET</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/C/" rel="tag">C#</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/WPF/" rel="tag">WPF</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/unit-test/" rel="tag">unit test</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/02/02/automate-your-dotnet-project-builds-with-nuke-a-cross-platform-build-automation-solution/"
+                    data-tooltip="Automate your .NET project builds with NUKE a cross-platform build automation solution"
+                    aria-label="NEXT: Automate your .NET project builds with NUKE a cross-platform build automation solution"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2022/02/10/unit-testing-async-wpf-icommand/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2022/02/10/unit-testing-async-wpf-icommand/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2022/02/10/unit-testing-async-wpf-icommand/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2022 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/02/02/automate-your-dotnet-project-builds-with-nuke-a-cross-platform-build-automation-solution/"
+                    data-tooltip="Automate your .NET project builds with NUKE a cross-platform build automation solution"
+                    aria-label="NEXT: Automate your .NET project builds with NUKE a cross-platform build automation solution"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2022/02/10/unit-testing-async-wpf-icommand/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2022/02/10/unit-testing-async-wpf-icommand/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2022/02/10/unit-testing-async-wpf-icommand/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2022/02/10/unit-testing-async-wpf-icommand/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2022/02/10/unit-testing-async-wpf-icommand/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2022/02/10/unit-testing-async-wpf-icommand/"
+                        aria-label="global.share_on_linkedin"
+                    >
+                        <i class="fab fa-linkedin" aria-hidden="true"></i><span>global.share_on_linkedin</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Distinguished Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-g6wyfs6xpgjyeywufin7t1htmrpnrvtixipsbpvw52clmjn2ovnqtkigmzil.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://laurentkempe.com/2022/02/10/unit-testing-async-wpf-icommand/';
+              
+            this.page.identifier = '20220210083738';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'laurentkempe';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>
