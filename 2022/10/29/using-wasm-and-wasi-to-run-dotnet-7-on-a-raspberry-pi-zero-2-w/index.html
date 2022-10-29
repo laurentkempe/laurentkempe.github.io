@@ -1,0 +1,779 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Using WASM and WASI to run .NET 7 on a Raspberry PI Zero 2 W - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"WebAssembly (WASM) and WebAssembly System Interface (WASI) are opening new opportunities for developers. .NET developers became familiar with WASM when Blazor WebAssembly was released. Blazor WebAssembly runs client-side in the browser on a WebAssembly-based .NET runtime. WASI is bringing WASM out of the browser world by providing a system interface to run WebAssembly outside the web. It is a standard for how WASM modules interact with the host environment. This post will show you how to run .NET 7 on a Raspberry PI Zero 2 W using WASM and WASI.\n\n\nWhat is WASM?WebAssembly (WASM) is a binary instruction format for a stack-based virtual machine. WASM is a portable compilation target for programming languages. It is a low-level assembly-like language with a compact binary format that runs near-native performance and provides languages such as C#, C&#x2F;C++, and Rust… with a compilation target that can run in browsers and other environments.\nWhat is WASI?WebAssembly System Interface (WASI) is a standard for how WASM modules can interact with the host environment. WASI is a specification for a system interface for WebAssembly. It is a set of APIs that a WebAssembly module can call to access the host environment.As WASI is about running securely WASM outside the browser, it cannot leverage the runtime embedded in our modern web browsers. It needs another runtime. It is why runtimes like Wasmtime, Wasmer or WasmEdge exist. Wasmtime is a standalone JIT-style runtime for WebAssembly. It is designed to run as a standalone command-line utility, embedded into other applications, or used to run WebAssembly modules within larger’s runtimes.\n.NET 7 WASI SDKSteve Sanderson is known as the creator of ASP.NET Core Blazor WebAssembly and opened the GitHub repository SteveSandersonMS &#x2F; dotnet-wasi-sdk some months ago. The “Experimental WASI SDK for .NET Core” was born. A couple of weeks ago, the experiment moved to dotnet &#x2F; dotnet-wasi-sdk. Is it a hint that it is ready to move to the next step? I am convinced and hope we will hear about this during the .NET Conf 2022.\nCreating a .NET WASI projectThe goal is to build a .NET 7 Web Api using WASI SDK for .NET and to run it on a Raspberry PI Zero 2 W using Wasmtime. I won’t repeat the instructions here. The only difference is that I am using ASP.NET Core Web API project template and not the Web template.\nSo, the following command will create a .NET 7 Web API project then you add WASI SDK for .NET as described on “How to use: ASP.NET Core applications“ page.\n1dotnet new webapi -o WasiWebApi\n\nBuilding the .NET WASI projectThe following command will build and publish the .NET 7 Web API project for WASI.\n1dotnet publish -c Release\n\nYou end up with a WasiWebApi.wasm file in the WasiWebApi\\bin\\Release\\net7.0\\ folder, which is the WebAssembly module that you can run on Wasmtime.\nRunning the .NET WASI project locally on Windows using WasmtimeDownload Wasmtime from the releases GitHub page, e.g. wasmtime-v2.0.1-x86_64-windows.zip. Unzip the archive and add the wasmtime.exe to your PATH environment variable.\nThen, you can run the WebAssembly module using the following command.\n1wasmtime bin\\Release\\net7.0\\WasiWebApi.wasm --tcplisten localhost:8080 --env ASPNETCORE_URLS=http://localhost:8080\n\nor you can use the run command.\n1dotnet run\n\nThen you can access the Web API using the following URL: http://localhost:8080/weatherforecast.\nUploading the project to the Raspberry PI Zero 2 WToday, Windows supports ssh and scp out of the box. It is super easy to copy our application from our PC to the Raspberry PI Zero 2 W. In this example, my PI Zero 2 W is named piw.lan and I am using the default user pi to copy the wasm file, to the folder &#x2F;home&#x2F;pi&#x2F;wasm.\n1scp .\\bin\\Release\\net7.0\\WasiWebApi.wasm pi@piw.lan:/home/pi/wasm\n\nRunning the .NET WASI project on Pi Zero 2 W using WasmtimeConnect to your Raspberry PI Zero 2 W using ssh.\n1ssh pi@piw.lan\n\nWe first need to install Wasmtime on the Raspberry PI Zero 2 W. We need again to download Wasmtime from the releases GitHub page, but this time for Linux 64 bits e.g. wasmtime-v2.0.1-aarch64-linux.tar.xz. Unzip the archive and copy the wasmtime file to the folder &#x2F;home&#x2F;pi&#x2F;wasm.\n123wget https://github.com/bytecodealliance/wasmtime/releases/download/v2.0.1/wasmtime-v2.0.1-aarch64-linux.tar.xztar -xvf wasmtime-v2.0.1-aarch64-linux.tar.xz -C .cp wasmtime-v2.0.1-aarch64-linux/wasmtime .\n\nThe following command will run the project using Wasmtime.\n1./wasmtime WasiWebApi.wasm --tcplisten piw.lan:5000 --env ASPNETCORE_URLS=http://piw.lan:5000\n\nThen you can access the Web API using the following URL: http://piw.lan:5000/weatherforecast and should see something like this\n\nConclusionWe have seen that it is possible to run the same Wasm module built from a .NET 7 Web API on Windows and then on a Raspberry PI Zero 2 W using WASI SDK for .NET and Wasmtime. It was a very interesting experiment. I am looking forward to seeing what will happen next. I hope we hear about this during the .NET Conf 2022.\nCode\n\n  \n\n\n\n\nReferences\nWASM\nBlazor WebAssembly\nWASI\nStandardizing WASI: A system interface to run WebAssembly outside the web\nWasmtime\nWasmer\nWasmEdge\nRaspberry PI Zero 2 W\n\n","dateCreated":"2022-10-29T09:04:42+00:00","dateModified":"2022-10-29T09:05:34+00:00","datePublished":"2022-10-29T09:04:42+00:00","description":"WebAssembly (WASM) and WebAssembly System Interface (WASI) are opening new opportunities for developers. .NET developers became familiar with WASM when Blazor WebAssembly was released. Blazor WebAssembly runs client-side in the browser on a WebAssembly-based .NET runtime. WASI is bringing WASM out of the browser world by providing a system interface to run WebAssembly outside the web. It is a standard for how WASM modules interact with the host environment. This post will show you how to run .NET 7 on a Raspberry PI Zero 2 W using WASM and WASI.","headline":"Using WASM and WASI to run .NET 7 on a Raspberry PI Zero 2 W","image":["https://live.staticflickr.com/65535/46849237405_9522c01139_q.jpg","https://live.staticflickr.com/65535/46849237405_c2d528b3a9_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2022/10/29/using-wasm-and-wasi-to-run-dotnet-7-on-a-raspberry-pi-zero-2-w/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2022/10/29/using-wasm-and-wasi-to-run-dotnet-7-on-a-raspberry-pi-zero-2-w/","keywords":"ASP.NET Core, Raspberry Pi, Wasm, Wasi","thumbnailUrl":"https://live.staticflickr.com/65535/46849237405_9522c01139_q.jpg"}</script>
+    <meta name="description" content="WebAssembly (WASM) and WebAssembly System Interface (WASI) are opening new opportunities for developers. .NET developers became familiar with WASM when Blazor WebAssembly was released. Blazor WebAssem">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Using WASM and WASI to run .NET 7 on a Raspberry PI Zero 2 W">
+<meta property="og:url" content="https://laurentkempe.com/2022/10/29/using-wasm-and-wasi-to-run-dotnet-7-on-a-raspberry-pi-zero-2-w/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="WebAssembly (WASM) and WebAssembly System Interface (WASI) are opening new opportunities for developers. .NET developers became familiar with WASM when Blazor WebAssembly was released. Blazor WebAssem">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://laurentkempe.com/images/WasiWebApi.png">
+<meta property="article:published_time" content="2022-10-29T09:04:42.000Z">
+<meta property="article:modified_time" content="2022-10-29T09:05:34.934Z">
+<meta property="article:author" content="Laurent Kempé">
+<meta property="article:tag" content="ASP.NET Core">
+<meta property="article:tag" content="Raspberry Pi">
+<meta property="article:tag" content="Wasm">
+<meta property="article:tag" content="Wasi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://laurentkempe.com/images/WasiWebApi.png">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/65535/46849237405_9522c01139_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/65535/46849237405_9522c01139_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/65535/46849237405_c2d528b3a9_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/65535/46849237405_c2d528b3a9_h.jpg"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-m1hvuomdm4adlviw7vmr4fjmj6zjd2tig2rtqjdqacpyb9avbtqadxyf01kn.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-64298-8');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Laurent Kempé
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/presentations.html"
+                            
+                            rel="noopener"
+                            title="Presentations"
+                        >
+                        <i class="sidebar-button-icon fa fa-file-powerpoint" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Presentations</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/about-laurent-kempe.html"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://twitter.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/in/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://flickr.com/photos/laurentkempe/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Flickr"
+                        >
+                        <i class="sidebar-button-icon fab fa-flickr" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Flickr</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://feeds.feedburner.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial"
+             style="background-image:url('https://live.staticflickr.com/65535/46849237405_c2d528b3a9_h.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Using WASM and WASI to run .NET 7 on a Raspberry PI Zero 2 W
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2022-10-29T09:04:42+00:00">
+	
+		    Oct 29, 2022
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Lomont, Haute-Saône, Franche-Comté, France</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>WebAssembly (WASM) and WebAssembly System Interface (WASI) are opening new opportunities for developers. .NET developers became familiar with WASM when Blazor WebAssembly was released. Blazor WebAssembly runs client-side in the browser on a WebAssembly-based .NET runtime. WASI is bringing WASM out of the browser world by providing a system interface to run WebAssembly outside the web. It is a standard for how WASM modules interact with the host environment. This post will show you how to run .NET 7 on a Raspberry PI Zero 2 W using WASM and WASI.</p>
+<span id="more"></span>
+
+<h2 id="What-is-WASM"><a href="#What-is-WASM" class="headerlink" title="What is WASM?"></a>What is WASM?</h2><p>WebAssembly (WASM) is a <strong>binary instruction format</strong> for a stack-based <strong>virtual machine</strong>. WASM is a <strong>portable compilation target</strong> for programming languages. It is a low-level assembly-like language with a compact binary format that runs <strong>near-native performance</strong> and provides languages such as C#, C&#x2F;C++, and Rust… with a compilation target that can run in browsers and other environments.</p>
+<h2 id="What-is-WASI"><a href="#What-is-WASI" class="headerlink" title="What is WASI?"></a>What is WASI?</h2><p>WebAssembly System Interface (WASI) is a <strong>standard</strong> for how WASM modules can <strong>interact with the host environment</strong>. WASI is a specification for a system interface for WebAssembly. It is a set of APIs that a WebAssembly module can call to access the host environment.<br>As WASI is about running securely WASM outside the browser, it cannot leverage the runtime embedded in our modern web browsers. It needs another runtime. It is why runtimes like <a target="_blank" rel="noopener" href="https://wasmtime.dev/">Wasmtime</a>, <a target="_blank" rel="noopener" href="https://wasmer.io/">Wasmer</a> or <a target="_blank" rel="noopener" href="https://wasmedge.org/">WasmEdge</a> exist. Wasmtime is a standalone JIT-style runtime for WebAssembly. It is designed to run as a standalone command-line utility, embedded into other applications, or used to run WebAssembly modules within larger’s runtimes.</p>
+<h2 id="NET-7-WASI-SDK"><a href="#NET-7-WASI-SDK" class="headerlink" title=".NET 7 WASI SDK"></a>.NET 7 WASI SDK</h2><p><a target="_blank" rel="noopener" href="https://twitter.com/stevensanderson">Steve Sanderson</a> is known as the creator of ASP.NET Core Blazor WebAssembly and opened the GitHub repository <a target="_blank" rel="noopener" href="https://github.com/SteveSandersonMS/dotnet-wasi-sdk">SteveSandersonMS &#x2F; dotnet-wasi-sdk</a> some months ago. The “Experimental WASI SDK for .NET Core” was born. A couple of weeks ago, the experiment moved to <a target="_blank" rel="noopener" href="https://github.com/dotnet/dotnet-wasi-sdk">dotnet &#x2F; dotnet-wasi-sdk</a>. Is it a hint that it is ready to move to the next step? I am convinced and hope we will hear about this during the <a target="_blank" rel="noopener" href="https://www.dotnetconf.net/">.NET Conf 2022</a>.</p>
+<h2 id="Creating-a-NET-WASI-project"><a href="#Creating-a-NET-WASI-project" class="headerlink" title="Creating a .NET WASI project"></a>Creating a .NET WASI project</h2><p>The goal is to build a .NET 7 Web Api using WASI SDK for .NET and to run it on a Raspberry PI Zero 2 W using Wasmtime. I won’t repeat the instructions here. The only difference is that I am using ASP.NET Core Web API project template and not the Web template.</p>
+<p>So, the following command will create a .NET 7 Web API project then you add WASI SDK for .NET as described on “<a target="_blank" rel="noopener" href="https://github.com/dotnet/dotnet-wasi-sdk#how-to-use-aspnet-core-applications">How to use: ASP.NET Core applications</a>“ page.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet new webapi <span class="literal">-o</span> WasiWebApi</span><br></pre></td></tr></table></figure>
+
+<h2 id="Building-the-NET-WASI-project"><a href="#Building-the-NET-WASI-project" class="headerlink" title="Building the .NET WASI project"></a>Building the .NET WASI project</h2><p>The following command will build and publish the .NET 7 Web API project for WASI.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet publish <span class="literal">-c</span> Release</span><br></pre></td></tr></table></figure>
+
+<p>You end up with a <code>WasiWebApi.wasm</code> file in the <code>WasiWebApi\bin\Release\net7.0\</code> folder, which is the WebAssembly module that you can run on Wasmtime.</p>
+<h2 id="Running-the-NET-WASI-project-locally-on-Windows-using-Wasmtime"><a href="#Running-the-NET-WASI-project-locally-on-Windows-using-Wasmtime" class="headerlink" title="Running the .NET WASI project locally on Windows using Wasmtime"></a>Running the .NET WASI project locally on Windows using Wasmtime</h2><p>Download Wasmtime from the <a target="_blank" rel="noopener" href="https://github.com/bytecodealliance/wasmtime/releases">releases GitHub page</a>, e.g. <em>wasmtime-v2.0.1-x86_64-windows.zip</em>. Unzip the archive and add the <code>wasmtime.exe</code> to your <code>PATH</code> environment variable.</p>
+<p>Then, you can run the WebAssembly module using the following command.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wasmtime bin\Release\net7.<span class="number">0</span>\WasiWebApi.wasm <span class="literal">--tcplisten</span> localhost:<span class="number">8080</span> <span class="literal">--env</span> ASPNETCORE_URLS=http://localhost:<span class="number">8080</span></span><br></pre></td></tr></table></figure>
+
+<p>or you can use the <code>run</code> command.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet run</span><br></pre></td></tr></table></figure>
+
+<p>Then you can access the Web API using the following URL: <a target="_blank" rel="noopener" href="http://localhost:8080/weatherforecast">http://localhost:8080/weatherforecast</a>.</p>
+<h2 id="Uploading-the-project-to-the-Raspberry-PI-Zero-2-W"><a href="#Uploading-the-project-to-the-Raspberry-PI-Zero-2-W" class="headerlink" title="Uploading the project to the Raspberry PI Zero 2 W"></a>Uploading the project to the Raspberry PI Zero 2 W</h2><p>Today, Windows supports <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/terminal/tutorials/ssh">ssh</a> and scp out of the box. It is super easy to copy our application from our PC to the Raspberry PI Zero 2 W. In this example, my PI Zero 2 W is named <code>piw.lan</code> and I am using the default user <code>pi</code> to copy the wasm file, to the folder <em>&#x2F;home&#x2F;pi&#x2F;wasm</em>.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp .\bin\Release\net7.<span class="number">0</span>\WasiWebApi.wasm pi@piw.lan:/home/pi/wasm</span><br></pre></td></tr></table></figure>
+
+<h2 id="Running-the-NET-WASI-project-on-Pi-Zero-2-W-using-Wasmtime"><a href="#Running-the-NET-WASI-project-on-Pi-Zero-2-W-using-Wasmtime" class="headerlink" title="Running the .NET WASI project on Pi Zero 2 W using Wasmtime"></a>Running the .NET WASI project on Pi Zero 2 W using Wasmtime</h2><p>Connect to your Raspberry PI Zero 2 W using ssh.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh pi@piw.lan</span><br></pre></td></tr></table></figure>
+
+<p>We first need to install Wasmtime on the Raspberry PI Zero 2 W. We need again to download Wasmtime from the <a target="_blank" rel="noopener" href="https://github.com/bytecodealliance/wasmtime/releases">releases GitHub page</a>, but this time for Linux 64 bits e.g. <em>wasmtime-v2.0.1-aarch64-linux.tar.xz</em>. Unzip the archive and copy the <code>wasmtime</code> file to the folder <em>&#x2F;home&#x2F;pi&#x2F;wasm</em>.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">wget</span> https://github.com/bytecodealliance/wasmtime/releases/download/v2.<span class="number">0.1</span>/wasmtime<span class="literal">-v2</span>.<span class="number">0.1</span><span class="literal">-aarch64-linux</span>.tar.xz</span><br><span class="line">tar <span class="literal">-xvf</span> wasmtime<span class="literal">-v2</span>.<span class="number">0.1</span><span class="literal">-aarch64-linux</span>.tar.xz <span class="literal">-C</span> .</span><br><span class="line"><span class="built_in">cp</span> wasmtime<span class="literal">-v2</span>.<span class="number">0.1</span><span class="literal">-aarch64-linux</span>/wasmtime .</span><br></pre></td></tr></table></figure>
+
+<p>The following command will run the project using Wasmtime.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./wasmtime WasiWebApi.wasm <span class="literal">--tcplisten</span> piw.lan:<span class="number">5000</span> <span class="literal">--env</span> ASPNETCORE_URLS=http://piw.lan:<span class="number">5000</span></span><br></pre></td></tr></table></figure>
+
+<p>Then you can access the Web API using the following URL: <a target="_blank" rel="noopener" href="http://piw.lan:5000/weatherforecast">http://piw.lan:5000/weatherforecast</a> and should see something like this</p>
+<p><img src="/images/WasiWebApi.png" alt="Running the .NET WASI project on Pi Zero 2 W using Wasmtime"></p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>We have seen that it is possible to run the same Wasm module built from a .NET 7 Web API on Windows and then on a Raspberry PI Zero 2 W using WASI SDK for .NET and Wasmtime. It was a very interesting experiment. I am looking forward to seeing what will happen next. I hope we hear about this during the <a target="_blank" rel="noopener" href="https://www.dotnetconf.net/">.NET Conf 2022</a>.</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p></p>
+<div style="text-align: left">
+  <div class="github-card"
+    data-user="laurentkempe"
+    data-repo="WasiWebApi"
+    data-height="200"
+    data-width="400"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://webassembly.org/">WASM</a></li>
+<li><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/aspnet/core/blazor/hosting-models?view=aspnetcore-6.0#blazor-webassembly">Blazor WebAssembly</a></li>
+<li><a target="_blank" rel="noopener" href="https://wasi.dev/">WASI</a></li>
+<li><a target="_blank" rel="noopener" href="https://hacks.mozilla.org/2019/03/standardizing-wasi-a-webassembly-system-interface/">Standardizing WASI: A system interface to run WebAssembly outside the web</a></li>
+<li><a target="_blank" rel="noopener" href="https://wasmtime.dev/">Wasmtime</a></li>
+<li><a target="_blank" rel="noopener" href="https://wasmer.io/">Wasmer</a></li>
+<li><a target="_blank" rel="noopener" href="https://wasmedge.org/">WasmEdge</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/">Raspberry PI Zero 2 W</a></li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/ASP-NET-Core/" rel="tag">ASP.NET Core</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Raspberry-Pi/" rel="tag">Raspberry Pi</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Wasi/" rel="tag">Wasi</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Wasm/" rel="tag">Wasm</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/10/12/write-logseq-plugins-in-webassembly-using-dotnet-and-csharp/"
+                    data-tooltip="Write Logseq plugins in WebAssembly using .NET and C#"
+                    aria-label="NEXT: Write Logseq plugins in WebAssembly using .NET and C#"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2022/10/29/using-wasm-and-wasi-to-run-dotnet-7-on-a-raspberry-pi-zero-2-w/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2022/10/29/using-wasm-and-wasi-to-run-dotnet-7-on-a-raspberry-pi-zero-2-w/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2022/10/29/using-wasm-and-wasi-to-run-dotnet-7-on-a-raspberry-pi-zero-2-w/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2022 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/10/12/write-logseq-plugins-in-webassembly-using-dotnet-and-csharp/"
+                    data-tooltip="Write Logseq plugins in WebAssembly using .NET and C#"
+                    aria-label="NEXT: Write Logseq plugins in WebAssembly using .NET and C#"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2022/10/29/using-wasm-and-wasi-to-run-dotnet-7-on-a-raspberry-pi-zero-2-w/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2022/10/29/using-wasm-and-wasi-to-run-dotnet-7-on-a-raspberry-pi-zero-2-w/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2022/10/29/using-wasm-and-wasi-to-run-dotnet-7-on-a-raspberry-pi-zero-2-w/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2022/10/29/using-wasm-and-wasi-to-run-dotnet-7-on-a-raspberry-pi-zero-2-w/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2022/10/29/using-wasm-and-wasi-to-run-dotnet-7-on-a-raspberry-pi-zero-2-w/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2022/10/29/using-wasm-and-wasi-to-run-dotnet-7-on-a-raspberry-pi-zero-2-w/"
+                        aria-label="global.share_on_linkedin"
+                    >
+                        <i class="fab fa-linkedin" aria-hidden="true"></i><span>global.share_on_linkedin</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Distinguished Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-yjw6s1lptow1xdla0axtp3u4uflm7rkcqyqtojij07mkcxdqnkx5puxpfgma.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://laurentkempe.com/2022/10/29/using-wasm-and-wasi-to-run-dotnet-7-on-a-raspberry-pi-zero-2-w/';
+              
+            this.page.identifier = '20221029110442';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'laurentkempe';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>
