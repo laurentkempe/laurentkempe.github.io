@@ -1,0 +1,791 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Experimenting with .NET 7, WASM, and WASI on Docker - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"On October 24th, Docker announced the support of WASM and WASI in a new technical preview release. I wanted to try it out and see how it works with .NET 7. If you want to know more about WASM and WASI you can read the introduction from my previous post, “Using WASM and WASI to run .NET 7 on a Raspberry PI Zero 2 W“.\n\n\nA couple of weeks ago my friend Julien Chable asked me about WASM&#x2F;WASI and Wasmtime. As he is a .NET developer, I explained that Wasmtime is similar to the .NET CLR, with some key differences. It runs in a sandbox environment therefore secure, starts in a few milliseconds therefore faster than containers. It allows you to write code with many languages and deploy this code on many platforms without recompiling and above all to write modules in one language and use them from another.\nI also told him that you often read that WASI will replace containers. It might be true for some situations but not for all. I think that they will complement each other. Containers are great for running applications, but to run code something better could be built. For example, if you want to run a function that calculates the sum of two numbers, you will have to create a container with an application that will call this function. With WASM&#x2F;WASI, you can create a module that will contain this function and call it from any language.\nWhy Docker announcing WASM&#x2F;WASI support is interesting?Docker makes developers’ life easy to bundle and run their applications. \nTheir approach toward WASM&#x2F;WASI support is to leverage containerd providing the ability to use OCI-compatible artifacts and containerd shims. In our case, the interesting part is the containerd shim created in collaboration with WasmEdge. \n\nThis shim extracts the Wasm module from the OCI artifact and runs it using the WasmEdge runtime. We added support to declare the Wasm runtime, which will enable the use of this new shim.\n\n\nSo, as a developer you can use the same Dockerfile to build your WASM module. You can also use the same Docker commands to run your WASM module. But there is more, as we will see later.\nYou can read more about it on their blog post “Introducing the Docker+Wasm Technical Preview“.\nDocker technical previewTo run this experiment, installing Docker technical preview release is needed. You can find the instructions on the Docker+Wasm (Beta).\nBuilding a .NET 7 Console WASM moduleBeware, this is a technical preview, and things might change in the future. It is also very early for all the different parts used, and mostly a hack to try those altogether.\nI experimented with a .NET 7 Web API but failed to make it work, so I switched to a .NET 7 Console application.\n1234dotnet new console -o ConsoleWasmDockercd ConsoleWasmDockerdotnet add package Wasi.Sdk --prereleasedotnet build\n\nWe end up with ConsoleWasmDocker.wasm in the folder \\bin\\Debug\\net7.0\\. We can run it with Wasmtime.\n1wasmtime .\\bin\\Debug\\net7.0\\ConsoleWasmDocker.wasm\n\nBundling our .NET 7 Console WASM module with DockerAt first, I tried to use the multi-stage build approach with the Docker image mcr.microsoft.com/dotnet/sdk:7.0 to build the WASM module. But it failed with a weird error.\nSo, we will use a workaround to publish the WASM module from Windows and then copy the ConsoleWasmDocker.wasm in the Docker image.\n1dotnet publish -c Release \n\nWe define the Dockerfile.\n123FROM scratchCOPY ./bin/Release/net7.0/ConsoleWasmDocker.wasm /ConsoleWasmDocker.wasmENTRYPOINT [ &quot;ConsoleWasmDocker.wasm&quot; ]\n\nHere we see another advantage, using the scratch image as a base image. This image is empty. It will create a minimal Docker image. We can also use it to build a container that will run a single process. In our case, we will run our WASM module.\nWe build the Docker image.\n1docker buildx build --platform wasi/wasm32 -t consolewasmdocker .\n\nNow the good surprise is the size of the docker image 3.63MB.\n123docker image listREPOSITORY          TAG       IMAGE ID       CREATED         SIZEconsolewasmdocker   latest    a1d9e476ae28   7 seconds ago   3.63MB\n\nRunning our .NET 7 Console WASM module with DockerWe can run our WASM module with Docker with an extended command.\n1docker run --rm --name=consolewasmdocker --runtime=io.containerd.wasmedge.v1 --platform=wasi/wasm32 consolewasmdocker\n\nand the output\n\nConclusionAll of this is still very early and rough on the edges. Nevertheless, it is a good start and lets us envision the great potential that those technologies will bring. I am looking forward to seeing how this evolves.\nThe announcement of Docker+Wasm Technical Preview was done on October 24th, 2022. The same day, Fermyon announced “Fermyon Cloud“. Almost a year before,  Microsoft announced “Public preview: AKS support for WebAssembly System Interface (WASI) workloads“.\nThis field is very active and I hope to see more announcements related to WASM&#x2F;WASI in the .NET ecosystem during the .NET Conf 2022.\nCode\n\n  \n\n\n\n\nPresentationBuild, Share, Run WebAssembly Apps Using the Docker Toolchain - Chris Crone &amp; Michael Yuan\n\nWebAssembly has emerged as a secure, portable, lightweight, and high performance runtime sandbox for certain types of workloads that make up cloud native apps. Chris and Michael will show how familiar Docker commands can be used to develop and share Wasm applications. Today, developers need to learn new &amp; complicated tooling for Wasm apps. By having Docker manage the Wasm runtime, existing container tooling that Cloud Native developers are familiar with can be used, and the dev ex is fast &amp; efficient. Docker can use WasmEdge as a security sandbox, side by side with Linux containers on the same dev machine or in a deployment cluster. They will cover how to create WebAssembly OCI images using buildx, how to publish the annotated image to Docker Hub, and how the enhanced Docker engine can distinguish the image and automatically run it with WasmEdge. They will demonstrate a complete demo of creating and running a Wasm-based microservice application using these Docker tools. We see this as a first step towards making Wasm as easy a target for developers as their existing platforms.\n\n\n\n\nReferences\nIntroducing the Docker+Wasm Technical Preview\nDocker+Wasm (Beta)\nBuild, Share, Run WebAssembly Apps Using the Docker Toolchain - Chris Crone &amp; Michael Yuan\nWasmEdge\nIntroducing Fermyon Cloud\nCreate WebAssembly System Interface (WASI) node pools in Azure Kubernetes Service (AKS) to run your WebAssembly (WASM) workload (preview)\n\n","dateCreated":"2022-10-31T12:25:10+00:00","dateModified":"2022-10-31T12:26:24+00:00","datePublished":"2022-10-31T12:25:10+00:00","description":"On October 24th, Docker announced the support of WASM and WASI in a new technical preview release. I wanted to try it out and see how it works with .NET 7. If you want to know more about WASM and WASI you can read the introduction from my previous post, “Using WASM and WASI to run .NET 7 on a Raspberry PI Zero 2 W“.","headline":"Experimenting with .NET 7, WASM, and WASI on Docker","image":["https://live.staticflickr.com/8299/7764455174_84625faf34_q.jpg","https://live.staticflickr.com/8299/7764455174_207330f8d0_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2022/10/31/experimenting-with-dotnet-7-wasm-and-wasi-on-docker/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2022/10/31/experimenting-with-dotnet-7-wasm-and-wasi-on-docker/","keywords":".NET, Docker, WASM, WASI","thumbnailUrl":"https://live.staticflickr.com/8299/7764455174_84625faf34_q.jpg"}</script>
+    <meta name="description" content="On October 24th, Docker announced the support of WASM and WASI in a new technical preview release. I wanted to try it out and see how it works with .NET 7. If you want to know more about WASM and WASI">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Experimenting with .NET 7, WASM, and WASI on Docker">
+<meta property="og:url" content="https://laurentkempe.com/2022/10/31/experimenting-with-dotnet-7-wasm-and-wasi-on-docker/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="On October 24th, Docker announced the support of WASM and WASI in a new technical preview release. I wanted to try it out and see how it works with .NET 7. If you want to know more about WASM and WASI">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://laurentkempe.com/images/docker-containerd-wasm-diagram.png.webp">
+<meta property="og:image" content="https://laurentkempe.com/images/ConsoleWasmDocker.png">
+<meta property="article:published_time" content="2022-10-31T12:25:10.000Z">
+<meta property="article:modified_time" content="2022-10-31T12:26:24.516Z">
+<meta property="article:author" content="Laurent Kempé">
+<meta property="article:tag" content=".NET">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="WASM">
+<meta property="article:tag" content="WASI">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://laurentkempe.com/images/docker-containerd-wasm-diagram.png.webp">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/8299/7764455174_84625faf34_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/8299/7764455174_84625faf34_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/8299/7764455174_207330f8d0_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/8299/7764455174_207330f8d0_h.jpg"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-4fbgmo2mmpla6a7xcyagmcbnq52nyqrpqh94d4bufq8hkkcqrtjdvqp39evi.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-64298-8');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Laurent Kempé
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/presentations.html"
+                            
+                            rel="noopener"
+                            title="Presentations"
+                        >
+                        <i class="sidebar-button-icon fa fa-file-powerpoint" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Presentations</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/about-laurent-kempe.html"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://twitter.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/in/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://flickr.com/photos/laurentkempe/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Flickr"
+                        >
+                        <i class="sidebar-button-icon fab fa-flickr" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Flickr</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://feeds.feedburner.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial"
+             style="background-image:url('https://live.staticflickr.com/8299/7764455174_207330f8d0_h.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Experimenting with .NET 7, WASM, and WASI on Docker
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2022-10-31T12:25:10+00:00">
+	
+		    Oct 31, 2022
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Calzarellu, Corse, France</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>On October 24th, Docker announced the support of WASM and WASI in a new technical preview release. I wanted to try it out and see how it works with .NET 7. If you want to know more about WASM and WASI you can read the introduction from my previous post, “<a href="https://laurentkempe.com/2022/10/29/using-wasm-and-wasi-to-run-dotnet-7-on-a-raspberry-pi-zero-2-w/">Using WASM and WASI to run .NET 7 on a Raspberry PI Zero 2 W</a>“.</p>
+<span id="more"></span>
+
+<p>A couple of weeks ago my friend <a target="_blank" rel="noopener" href="https://twitter.com/JChable">Julien Chable</a> asked me about WASM&#x2F;WASI and Wasmtime. As he is a .NET developer, I explained that Wasmtime is similar to the .NET CLR, with some key differences. It runs in a sandbox environment therefore secure, starts in a few milliseconds therefore faster than containers. It allows you to write code with many languages and deploy this code on many platforms without recompiling and above all to write modules in one language and use them from another.</p>
+<p>I also told him that you often read that WASI will replace containers. It might be true for some situations but not for all. I think that they will complement each other. Containers are great for running applications, but to run code something better could be built. For example, if you want to run a function that calculates the sum of two numbers, you will have to create a container with an application that will call this function. With WASM&#x2F;WASI, you can create a module that will contain this function and call it from any language.</p>
+<h1 id="Why-Docker-announcing-WASM-x2F-WASI-support-is-interesting"><a href="#Why-Docker-announcing-WASM-x2F-WASI-support-is-interesting" class="headerlink" title="Why Docker announcing WASM&#x2F;WASI support is interesting?"></a>Why Docker announcing WASM&#x2F;WASI support is interesting?</h1><p>Docker makes developers’ life easy to bundle and run their applications. </p>
+<p>Their approach toward WASM&#x2F;WASI support is to leverage containerd providing the ability to use OCI-compatible artifacts and <strong>containerd shims</strong>. In our case, the interesting part is the containerd shim created in collaboration with WasmEdge. </p>
+<blockquote>
+<p>This shim extracts the Wasm module from the OCI artifact and runs it using the WasmEdge runtime. We added support to declare the Wasm runtime, which will enable the use of this new shim.</p>
+</blockquote>
+<p><img src="/images/docker-containerd-wasm-diagram.png.webp" alt="Docker support for WASM and WASI"></p>
+<p>So, as a developer you can use the <strong>same Dockerfile to build</strong> your WASM module. You can also use the <strong>same Docker commands</strong> to run your WASM module. But there is more, as we will see later.</p>
+<p>You can read more about it on their blog post “<a target="_blank" rel="noopener" href="https://www.docker.com/blog/docker-wasm-technical-preview/">Introducing the Docker+Wasm Technical Preview</a>“.</p>
+<h1 id="Docker-technical-preview"><a href="#Docker-technical-preview" class="headerlink" title="Docker technical preview"></a>Docker technical preview</h1><p>To run this experiment, installing Docker technical preview release is needed. You can find the instructions on the <a target="_blank" rel="noopener" href="https://docs.docker.com/desktop/wasm/">Docker+Wasm (Beta)</a>.</p>
+<h1 id="Building-a-NET-7-Console-WASM-module"><a href="#Building-a-NET-7-Console-WASM-module" class="headerlink" title="Building a .NET 7 Console WASM module"></a>Building a .NET 7 Console WASM module</h1><p>Beware, this is a technical preview, and things might change in the future. It is also very early for all the different parts used, and mostly a hack to try those altogether.</p>
+<p>I experimented with a .NET 7 Web API but failed to make it work, so I switched to a .NET 7 Console application.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dotnet new console <span class="literal">-o</span> ConsoleWasmDocker</span><br><span class="line"><span class="built_in">cd</span> ConsoleWasmDocker</span><br><span class="line">dotnet add package Wasi.Sdk <span class="literal">--prerelease</span></span><br><span class="line">dotnet build</span><br></pre></td></tr></table></figure>
+
+<p>We end up with <code>ConsoleWasmDocker.wasm</code> in the folder <code>\bin\Debug\net7.0\</code>. We can run it with Wasmtime.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wasmtime .\bin\Debug\net7.<span class="number">0</span>\ConsoleWasmDocker.wasm</span><br></pre></td></tr></table></figure>
+
+<h1 id="Bundling-our-NET-7-Console-WASM-module-with-Docker"><a href="#Bundling-our-NET-7-Console-WASM-module-with-Docker" class="headerlink" title="Bundling our .NET 7 Console WASM module with Docker"></a>Bundling our .NET 7 Console WASM module with Docker</h1><p>At first, I tried to use the multi-stage build approach with the Docker image <code>mcr.microsoft.com/dotnet/sdk:7.0</code> to build the WASM module. But it failed with a weird error.</p>
+<p>So, we will use a workaround to publish the WASM module from Windows and then copy the ConsoleWasmDocker.wasm in the Docker image.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet publish <span class="literal">-c</span> Release </span><br></pre></td></tr></table></figure>
+
+<p>We define the Dockerfile.</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> scratch</span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./bin/Release/net7.0/ConsoleWasmDocker.wasm /ConsoleWasmDocker.wasm</span></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="language-bash"> [ <span class="string">&quot;ConsoleWasmDocker.wasm&quot;</span> ]</span></span><br></pre></td></tr></table></figure>
+
+<p>Here we see another advantage, using the <code>scratch</code> image as a base image. This image is empty. It will create a minimal Docker image. We can also use it to build a container that will run a single process. In our case, we will run our WASM module.</p>
+<p>We build the Docker image.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker buildx build <span class="literal">--platform</span> wasi/wasm32 <span class="literal">-t</span> consolewasmdocker .</span><br></pre></td></tr></table></figure>
+
+<p>Now the good surprise is the size of the docker image <strong>3.63MB</strong>.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker image list</span><br><span class="line">REPOSITORY          TAG       IMAGE ID       CREATED         SIZE</span><br><span class="line">consolewasmdocker   latest    a1d9e476ae28   <span class="number">7</span> seconds ago   <span class="number">3.63</span>MB</span><br></pre></td></tr></table></figure>
+
+<h1 id="Running-our-NET-7-Console-WASM-module-with-Docker"><a href="#Running-our-NET-7-Console-WASM-module-with-Docker" class="headerlink" title="Running our .NET 7 Console WASM module with Docker"></a>Running our .NET 7 Console WASM module with Docker</h1><p>We can run our WASM module with Docker with an extended command.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run <span class="literal">--rm</span> <span class="literal">--name</span>=consolewasmdocker <span class="literal">--runtime</span>=io.containerd.wasmedge.v1 <span class="literal">--platform</span>=wasi/wasm32 consolewasmdocker</span><br></pre></td></tr></table></figure>
+
+<p>and the output</p>
+<p><img src="/images/ConsoleWasmDocker.png" alt="Docker run output"></p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>All of this is still very early and rough on the edges. Nevertheless, it is a good start and lets us envision the great potential that those technologies will bring. I am looking forward to seeing how this evolves.</p>
+<p>The announcement of Docker+Wasm Technical Preview was done on October 24th, 2022. The same day, Fermyon announced “<a target="_blank" rel="noopener" href="https://www.fermyon.com/blog/introducing-fermyon-cloud">Fermyon Cloud</a>“. Almost a year before,  Microsoft announced “<a target="_blank" rel="noopener" href="https://azure.microsoft.com/en-us/updates/public-preview-aks-support-for-webassembly-system-interface-wasi-workloads/?WT.mc_id=DT-MVP-7749">Public preview: AKS support for WebAssembly System Interface (WASI) workloads</a>“.</p>
+<p>This field is very active and I hope to see more announcements related to WASM&#x2F;WASI in the .NET ecosystem during the <a target="_blank" rel="noopener" href="https://www.dotnetconf.net/">.NET Conf 2022</a>.</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p></p>
+<div style="text-align: left">
+  <div class="github-card"
+    data-user="laurentkempe"
+    data-repo="ConsoleWasmDocker"
+    data-height="200"
+    data-width="400"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+<h1 id="Presentation"><a href="#Presentation" class="headerlink" title="Presentation"></a>Presentation</h1><p>Build, Share, Run WebAssembly Apps Using the Docker Toolchain - Chris Crone &amp; Michael Yuan</p>
+<blockquote>
+<p>WebAssembly has emerged as a secure, portable, lightweight, and high performance runtime sandbox for certain types of workloads that make up cloud native apps. Chris and Michael will show how familiar Docker commands can be used to develop and share Wasm applications. Today, developers need to learn new &amp; complicated tooling for Wasm apps. By having Docker manage the Wasm runtime, existing container tooling that Cloud Native developers are familiar with can be used, and the dev ex is fast &amp; efficient. Docker can use WasmEdge as a security sandbox, side by side with Linux containers on the same dev machine or in a deployment cluster. They will cover how to <strong>create WebAssembly OCI images using buildx</strong>, how to publish the annotated image to Docker Hub, and how the enhanced Docker engine can distinguish the image and <strong>automatically run it with WasmEdge</strong>. They will demonstrate a complete demo of creating and running a Wasm-based microservice application using these Docker tools. We see this as a first step towards making Wasm as easy a target for developers as their existing platforms.</p>
+</blockquote>
+<p></p>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/3j915xoDovs" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.docker.com/blog/docker-wasm-technical-preview/">Introducing the Docker+Wasm Technical Preview</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.docker.com/desktop/wasm/">Docker+Wasm (Beta)</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=3j915xoDovs&ab_channel=CNCF%5BCloudNativeComputingFoundation%5D">Build, Share, Run WebAssembly Apps Using the Docker Toolchain - Chris Crone &amp; Michael Yuan</a></li>
+<li><a target="_blank" rel="noopener" href="https://wasmedge.org/">WasmEdge</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.fermyon.com/blog/introducing-fermyon-cloud">Introducing Fermyon Cloud</a></li>
+<li><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/aks/use-wasi-node-pools?WT.mc_id=DT-MVP-7749">Create WebAssembly System Interface (WASI) node pools in Azure Kubernetes Service (AKS) to run your WebAssembly (WASM) workload (preview)</a></li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/NET/" rel="tag">.NET</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Docker/" rel="tag">Docker</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/WASI/" rel="tag">WASI</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/WASM/" rel="tag">WASM</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/10/29/using-wasm-and-wasi-to-run-dotnet-7-on-a-raspberry-pi-zero-2-w/"
+                    data-tooltip="Using WASM and WASI to run .NET 7 on a Raspberry PI Zero 2 W"
+                    aria-label="NEXT: Using WASM and WASI to run .NET 7 on a Raspberry PI Zero 2 W"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2022/10/31/experimenting-with-dotnet-7-wasm-and-wasi-on-docker/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2022/10/31/experimenting-with-dotnet-7-wasm-and-wasi-on-docker/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2022/10/31/experimenting-with-dotnet-7-wasm-and-wasi-on-docker/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2022 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/10/29/using-wasm-and-wasi-to-run-dotnet-7-on-a-raspberry-pi-zero-2-w/"
+                    data-tooltip="Using WASM and WASI to run .NET 7 on a Raspberry PI Zero 2 W"
+                    aria-label="NEXT: Using WASM and WASI to run .NET 7 on a Raspberry PI Zero 2 W"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2022/10/31/experimenting-with-dotnet-7-wasm-and-wasi-on-docker/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2022/10/31/experimenting-with-dotnet-7-wasm-and-wasi-on-docker/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2022/10/31/experimenting-with-dotnet-7-wasm-and-wasi-on-docker/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2022/10/31/experimenting-with-dotnet-7-wasm-and-wasi-on-docker/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2022/10/31/experimenting-with-dotnet-7-wasm-and-wasi-on-docker/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2022/10/31/experimenting-with-dotnet-7-wasm-and-wasi-on-docker/"
+                        aria-label="global.share_on_linkedin"
+                    >
+                        <i class="fab fa-linkedin" aria-hidden="true"></i><span>global.share_on_linkedin</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Distinguished Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-c7m951dhttmhlqo4rrdlvhe1v7c5m4msnwkyac3gihxgkedbo0rz3xvhipru.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://laurentkempe.com/2022/10/31/experimenting-with-dotnet-7-wasm-and-wasi-on-docker/';
+              
+            this.page.identifier = '20221031012510';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'laurentkempe';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>
