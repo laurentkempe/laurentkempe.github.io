@@ -1,0 +1,805 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Refactoring huge C# code base in minutes - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"With my team, we like to keep our C# code base updated. So, recently we went to .NET 7 and C# 11. At the same time, we were still adopting some of the new capabilities of .NET 6 and C# 10. Our code base is large, so it takes some time. One of the new features that we planned to use was the ArgumentNullException.ThrowIfNull method, which throws an exception if an argument is null. In this post, I will show you how I effortlessly did that refactoring by letting the machine work and not the human 😁 (me). In the past, I used the same approach to migrate lots of code that used Assert.True() to Assert.That(, Is.True) and for some other even more complex cases. We will use ReSharper and Rider for that.\n\n\nWhy going to ArgumentNullException.ThrowIfNullThe original code might look something like this:\n12345678public void DoSomething(string name)&#123;    if (name == null)    &#123;        throw new ArgumentNullException(nameof(name));    &#125;    // do something&#125;\n\nAfter refactoring toward the new ArgumentNullException.ThrowIfNull method, the code looks like this.\n12345public void DoSomething(string name)&#123;    ArgumentNullException.ThrowIfNull(name);    // do something&#125;\n\nThe immediate and obvious advantage of using the new method is the reduction of code that we have to write.\nAnother less obvious advantage, is that this code is less error prone. Looking at the first implementation, a mismatch between name == null and nameof(name) is easily made. EEspecially with multiple similar line checking arguments. With The new method this is not possible anymore. \nAs we know why we want to use the new method, let’s see how we can refactor our large code base.\nHow to automate the refactoring of huge code baseThe first step that comes to mind is to find all the places where ArgumentNullException constructor is used. For that, we use the find functionality of our IDE. We use ReSharper&#x2F;Rider Search Everywhere feature, specifying throw new ArgumentNullException constructor as the search term.\n\nWe can find all the places where we are using the ArgumentNullException. And start to replace by hand all the places. But this is a tedious task.\nYou can have this form\n1if (spans == null) throw new ArgumentNullException(nameof(spans));\nand this form\n1234if (spans == null)&#123;    throw new ArgumentNullException(nameof(spans));&#125;\n\nor even\n1if (spans is null) throw new ArgumentNullException(nameof(spans));\n\nFinding, is easy. It is more the replacement that will be tedious.\nIs there a better way? Yes, using ReSharper - Search with Pattern.\n\nWe see that we can use placeholders to specify the name of the parameter. In our case $spans$ specifies the identifier placeholder meaning any symbol identifier. Each placeholder must be defined once and can be used several times in the pattern. When defining a placeholder, you need to define its kind and optional constraints. There are five kinds of placeholders:\n\nArgument Placeholder — one or more arguments in a method invocation. If necessary, you can specify minimal or maximal number of arguments that should be matched.\n\nExpression Placeholder — a sequence of operators and operands. You can optionally specify a type that is returned by this expression.\n\nIdentifier Placeholder — any symbol identifier. You can additionally specify a regular expression that will be used to match symbol names.\n\nStatement Placeholder — a single-line statement that ends with a semicolon or a block of statements. If necessary, you can specify minimal or maximal number of statements that should be matched.\n\nType Placeholder — a value type or a reference type. By default, a placeholder of this kind will match any type, but you can specify a specific type explicitly.\n\n\n\n\nIn our code base it’s finding 131 occurrences of the pattern.\n\nIf we use the Search Anywhere feature, we can see that it’s finding 166 occurrences of the string throw new ArgumentNullException. \n\nWhy this difference? Because we have some places in the code where we are using the ArgumentNullException constructor with two parameters which is not handled in the search pattern defined in our Search with Pattern. We could modify it to find the missing 35 occurrences, however we want to review those ones and see if the second parameter is really needed.\nSo, let’s replace all the occurrences found by the Search with Pattern. Click on the Replace and then specify the replace pattern in which we re-use the placeholder $spans$ and add the ArgumentNullException.ThrowIfNull method.\n\nI could click on Replace and have a good part of the work done. A question then comes to mind. What if a developer after that refactoring reintroduce old way of doing things? How can I prevent that?\nPrevent reintroducing the old way of doing thingsThe great thing is that ReSharper is not only a tool to help you refactor your code, but also to help you keep your code base clean. For that, we can use the Pattern Catalog and share the pattern with the team.\nClick save\n\nNow go to the pattern catalog\n\nFind your pattern\n\nDouble click to edit it\n\nHere select Pattern severity to Show as error or to the value that you prefer. Then add a description and save.\nNow, if someone uses the old way of doing, the following error is shown.\n\nHelp other developers to fix their codeNow we can do even better because we can propose a way to fix the code. For that we can use the Quick Fix feature of ReSharper&#x2F;Rider.\nEdit the pattern again, and choose now to replace the pattern with the following in Replace pattern and click save\n\nYour code will still display the red squiggles and now the bulb menu will appear, proposing a way to fix the code to the way.\n\nAnd the beauty is that you can use “Apply replacement in solution“ to fix all the occurrences in the solution. This where we let the machine do the work for us 😁.\nSharing the Custom patterns in your teamFinally, we can share that new custom pattern with our team by saving the settings to the team-shared settings layer.\n\nReSharper and Rider settingsAt the moment of writing this post, Rider doesn’t have any way to edit the custom patterns in a settings dialog. Nevertheless, you can define the custom patterns in ReSharper and share those with your team, and the error and quick fix will be shown in Rider.\nConclusionWe have seen how easy it is to put in place a custom pattern in ReSharper, share it with the team, and use it in Rider. We have also seen how we can use the custom pattern to prevent reintroducing old code and how we can use the quick fix to fix the code. It requires a bit of effort to define the pattern, but it will pay off overall! It will also help you to keep your code base clean and consistent and help other developers, especially new ones, apply the same patterns. I would also recommend running those inspections during your CI build and breaking the build if some new ones are introduced.\nReferences\nRider Search Everywhere\nStructural Search and Replace\nShare patterns\nManage and share ReSharper settings\n\n","dateCreated":"2023-02-20T12:38:00+00:00","dateModified":"2023-02-20T12:41:05+00:00","datePublished":"2023-02-20T12:38:00+00:00","description":"With my team, we like to keep our C# code base updated. So, recently we went to .NET 7 and C# 11. At the same time, we were still adopting some of the new capabilities of .NET 6 and C# 10. Our code base is large, so it takes some time. One of the new features that we planned to use was the ArgumentNullException.ThrowIfNull method, which throws an exception if an argument is null. In this post, I will show you how I effortlessly did that refactoring by letting the machine work and not the human 😁 (me). In the past, I used the same approach to migrate lots of code that used Assert.True() to Assert.That(, Is.True) and for some other even more complex cases. We will use ReSharper and Rider for that.","headline":"Refactoring huge C# code base in minutes","image":["https://live.staticflickr.com/4440/36229431203_2b8f512b62_q.jpg","https://live.staticflickr.com/4440/36229431203_0b829098fb_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2023/02/20/refactoring-huge-csharp-code-base-in-minutes/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2023/02/20/refactoring-huge-csharp-code-base-in-minutes/","keywords":"Rider, ReSharper, .NET, C#","thumbnailUrl":"https://live.staticflickr.com/4440/36229431203_2b8f512b62_q.jpg"}</script>
+    <meta name="description" content="With my team, we like to keep our C# code base updated. So, recently we went to .NET 7 and C# 11. At the same time, we were still adopting some of the new capabilities of .NET 6 and C# 10. Our code ba">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Refactoring huge C# code base in minutes">
+<meta property="og:url" content="https://laurentkempe.com/2023/02/20/refactoring-huge-csharp-code-base-in-minutes/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="With my team, we like to keep our C# code base updated. So, recently we went to .NET 7 and C# 11. At the same time, we were still adopting some of the new capabilities of .NET 6 and C# 10. Our code ba">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://laurentkempe.com/images/RiderSearchEverywhere.png">
+<meta property="og:image" content="https://laurentkempe.com/images/ReSharperSearchWithPattern.png">
+<meta property="og:image" content="https://laurentkempe.com/images/ReSharperSearchWithPatternFindings.png">
+<meta property="og:image" content="https://laurentkempe.com/images/ReSharperSearchAnywhereFindings.png">
+<meta property="og:image" content="https://laurentkempe.com/images/ReSharperSearchWithPatternReplace.png">
+<meta property="og:image" content="https://laurentkempe.com/images/ReSharperSavePatternCatalog.png">
+<meta property="og:image" content="https://laurentkempe.com/images/ReSharperPatternCatalog.png">
+<meta property="og:image" content="https://laurentkempe.com/images/ReSharperPatternCatalogDialog.png">
+<meta property="og:image" content="https://laurentkempe.com/images/ReSharperEditHighlightingPattern.png">
+<meta property="og:image" content="https://laurentkempe.com/images/InspectCodeSquiggles.png">
+<meta property="og:image" content="https://laurentkempe.com/images/EditHighlightingPatternReplace.png">
+<meta property="og:image" content="https://laurentkempe.com/images/ApplyReplacementInSolution.png">
+<meta property="og:image" content="https://laurentkempe.com/images/CustomPatternSaveToTeamShared.png">
+<meta property="article:published_time" content="2023-02-20T12:38:00.000Z">
+<meta property="article:modified_time" content="2023-02-20T12:41:05.100Z">
+<meta property="article:author" content="Laurent Kempé">
+<meta property="article:tag" content="Rider">
+<meta property="article:tag" content="ReSharper">
+<meta property="article:tag" content=".NET">
+<meta property="article:tag" content="C#">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://laurentkempe.com/images/RiderSearchEverywhere.png">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/4440/36229431203_2b8f512b62_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/4440/36229431203_2b8f512b62_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/4440/36229431203_0b829098fb_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/4440/36229431203_0b829098fb_h.jpg"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-11y79lr1prkw4b5gdjcpus73deifuttfdb94yplunr8eisuepwlshisxw6uy.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-64298-8');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Laurent Kempé
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/presentations.html"
+                            
+                            rel="noopener"
+                            title="Presentations"
+                        >
+                        <i class="sidebar-button-icon fa fa-file-powerpoint" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Presentations</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/about-laurent-kempe.html"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://twitter.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/in/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://flickr.com/photos/laurentkempe/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Flickr"
+                        >
+                        <i class="sidebar-button-icon fab fa-flickr" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Flickr</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://feeds.feedburner.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial"
+             style="background-image:url('https://live.staticflickr.com/4440/36229431203_0b829098fb_h.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Refactoring huge C# code base in minutes
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2023-02-20T12:38:00+00:00">
+	
+		    Feb 20, 2023
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Moʻorea, Polynésie, France</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>With my team, we like to keep our C# code base updated. So, recently we went to .NET 7 and C# 11. At the same time, we were still adopting some of the new capabilities of .NET 6 and C# 10. Our code base is large, so it takes some time. One of the new features that we planned to use was the <code>ArgumentNullException.ThrowIfNull</code> method, which throws an exception if an argument is null. In this post, I will show you how I effortlessly did that refactoring by letting the machine work and not the human 😁 (me). In the past, I used the same approach to migrate lots of code that used <code>Assert.True()</code> to <code>Assert.That(, Is.True)</code> and for some other even more complex cases. We will use ReSharper and Rider for that.</p>
+<span id="more"></span>
+
+<h1 id="Why-going-to-ArgumentNullException-ThrowIfNull"><a href="#Why-going-to-ArgumentNullException-ThrowIfNull" class="headerlink" title="Why going to ArgumentNullException.ThrowIfNull"></a>Why going to ArgumentNullException.ThrowIfNull</h1><p>The original code might look something like this:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DoSomething</span>(<span class="params"><span class="built_in">string</span> name</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (name == <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ArgumentNullException(<span class="keyword">nameof</span>(name));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>After refactoring toward the new <code>ArgumentNullException.ThrowIfNull</code> method, the code looks like this.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DoSomething</span>(<span class="params"><span class="built_in">string</span> name</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    ArgumentNullException.ThrowIfNull(name);</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The immediate and obvious advantage of using the new method is the <strong>reduction of code</strong> that we have to write.</p>
+<p>Another less obvious advantage, is that this code is <strong>less error prone</strong>. Looking at the first implementation, a mismatch between <code>name == null</code> and <code>nameof(name)</code> is easily made. EEspecially with multiple similar line checking arguments. With The new method this is not possible anymore. </p>
+<p>As we know why we want to use the new method, let’s see how we can refactor our large code base.</p>
+<h1 id="How-to-automate-the-refactoring-of-huge-code-base"><a href="#How-to-automate-the-refactoring-of-huge-code-base" class="headerlink" title="How to automate the refactoring of huge code base"></a>How to automate the refactoring of huge code base</h1><p>The first step that comes to mind is to find all the places where <code>ArgumentNullException</code> constructor is used. For that, we use the find functionality of our IDE. We use ReSharper&#x2F;Rider <strong>Search Everywhere</strong> feature, specifying <code>throw new ArgumentNullException</code> constructor as the search term.</p>
+<p><img src="/images/RiderSearchEverywhere.png" alt="Rider Search Everywhere"></p>
+<p>We can find all the places where we are using the <code>ArgumentNullException</code>. And start to replace by hand all the places. But this is a tedious task.</p>
+<p>You can have this form</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (spans == <span class="literal">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> ArgumentNullException(<span class="keyword">nameof</span>(spans));</span><br></pre></td></tr></table></figure>
+<p>and this form</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (spans == <span class="literal">null</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> ArgumentNullException(<span class="keyword">nameof</span>(spans));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>or even</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (spans <span class="keyword">is</span> <span class="literal">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> ArgumentNullException(<span class="keyword">nameof</span>(spans));</span><br></pre></td></tr></table></figure>
+
+<p>Finding, is easy. It is more the replacement that will be tedious.</p>
+<p>Is there a better way? Yes, using <strong>ReSharper - Search with Pattern</strong>.</p>
+<p><img src="/images/ReSharperSearchWithPattern.png" alt="ReSharper Search With Pattern"></p>
+<p>We see that we can use placeholders to specify the name of the parameter. In our case <code>$spans$</code> specifies the identifier placeholder meaning any symbol identifier. Each placeholder must be defined once and can be used several times in the pattern. When defining a placeholder, you need to define its kind and optional constraints. There are five kinds of placeholders:</p>
+<div class="alert info"><ul>
+<li><p><strong>Argument Placeholder</strong> — one or more arguments in a method invocation. If necessary, you can specify minimal or maximal number of arguments that should be matched.</p>
+</li>
+<li><p><strong>Expression Placeholder</strong> — a sequence of operators and operands. You can optionally specify a type that is returned by this expression.</p>
+</li>
+<li><p><strong>Identifier Placeholder</strong> — any symbol identifier. You can additionally specify a regular expression that will be used to match symbol names.</p>
+</li>
+<li><p><strong>Statement Placeholder</strong> — a single-line statement that ends with a semicolon or a block of statements. If necessary, you can specify minimal or maximal number of statements that should be matched.</p>
+</li>
+<li><p><strong>Type Placeholder</strong> — a value type or a reference type. By default, a placeholder of this kind will match any type, but you can specify a specific type explicitly.</p>
+</li>
+</ul>
+</div>
+
+<p>In our code base it’s finding 131 occurrences of the pattern.</p>
+<p><img src="/images/ReSharperSearchWithPatternFindings.png" alt="ReSharper Search With Pattern Findinds"></p>
+<p>If we use the Search Anywhere feature, we can see that it’s finding 166 occurrences of the string <code>throw new ArgumentNullException</code>. </p>
+<p><img src="/images/ReSharperSearchAnywhereFindings.png" alt="ReSharper Search Anywhere Findinds"></p>
+<p>Why this difference? Because we have some places in the code where we are using the <code>ArgumentNullException</code> constructor with two parameters which is not handled in the search pattern defined in our Search with Pattern. We could modify it to find the missing 35 occurrences, however we want to review those ones and see if the second parameter is really needed.</p>
+<p>So, let’s replace all the occurrences found by the Search with Pattern. Click on the Replace and then specify the replace pattern in which we re-use the placeholder <code>$spans$</code> and add the <code>ArgumentNullException.ThrowIfNull</code> method.</p>
+<p><img src="/images/ReSharperSearchWithPatternReplace.png" alt="ReSharper Search With Pattern Replace"></p>
+<p>I could click on Replace and have a good part of the work done. A question then comes to mind. What if a developer after that refactoring reintroduce old way of doing things? How can I prevent that?</p>
+<h1 id="Prevent-reintroducing-the-old-way-of-doing-things"><a href="#Prevent-reintroducing-the-old-way-of-doing-things" class="headerlink" title="Prevent reintroducing the old way of doing things"></a>Prevent reintroducing the old way of doing things</h1><p>The great thing is that ReSharper is not only a tool to help you refactor your code, but also to help you keep your code base clean. For that, we can use the <strong>Pattern Catalog</strong> and share the pattern with the team.</p>
+<p>Click save</p>
+<p><img src="/images/ReSharperSavePatternCatalog.png" alt="ReSharper Save Pattern Catalog.png"></p>
+<p>Now go to the pattern catalog</p>
+<p><img src="/images/ReSharperPatternCatalog.png" alt="ReSharper Pattern Catalog"></p>
+<p>Find your pattern</p>
+<p><img src="/images/ReSharperPatternCatalogDialog.png" alt="ReSharper Pattern Catalog Dialog"></p>
+<p>Double click to edit it</p>
+<p><img src="/images/ReSharperEditHighlightingPattern.png" alt="ReSharper Edit Highlighting Pattern"></p>
+<p>Here select <em>Pattern severity</em> to <em>Show as error</em> or to the value that you prefer. Then add a description and save.</p>
+<p>Now, if someone uses the old way of doing, the following error is shown.</p>
+<p><img src="/images/InspectCodeSquiggles.png" alt="InspectCode Squiggles"></p>
+<h1 id="Help-other-developers-to-fix-their-code"><a href="#Help-other-developers-to-fix-their-code" class="headerlink" title="Help other developers to fix their code"></a>Help other developers to fix their code</h1><p>Now we can do even better because we can propose a way to fix the code. For that we can use the <strong>Quick Fix</strong> feature of ReSharper&#x2F;Rider.</p>
+<p>Edit the pattern again, and choose now to replace the pattern with the following in <em>Replace pattern</em> and click save</p>
+<p><img src="/images/EditHighlightingPatternReplace.png" alt="Edit Highlighting Pattern Replace"></p>
+<p>Your code will still display the red squiggles and now the bulb menu will appear, proposing a way to fix the code to the way.</p>
+<p><img src="/images/ApplyReplacementInSolution.png" alt="Apply Replacement In Solution"></p>
+<p>And the beauty is that you can use “<em>Apply replacement in solution</em>“ to fix all the occurrences in the solution. This where we let the machine do the work for us 😁.</p>
+<h1 id="Sharing-the-Custom-patterns-in-your-team"><a href="#Sharing-the-Custom-patterns-in-your-team" class="headerlink" title="Sharing the Custom patterns in your team"></a>Sharing the Custom patterns in your team</h1><p>Finally, we can share that new <em>custom pattern</em> with our team by saving the settings to the team-shared settings layer.</p>
+<p><img src="/images/CustomPatternSaveToTeamShared.png" alt="Custom Pattern Save To Team Shared"></p>
+<h1 id="ReSharper-and-Rider-settings"><a href="#ReSharper-and-Rider-settings" class="headerlink" title="ReSharper and Rider settings"></a>ReSharper and Rider settings</h1><p>At the moment of writing this post, Rider doesn’t have any way to edit the custom patterns in a settings dialog. Nevertheless, you can define the custom patterns in ReSharper and share those with your team, and the error and quick fix will be shown in Rider.</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>We have seen how easy it is to put in place a custom pattern in ReSharper, share it with the team, and use it in Rider. We have also seen how we can use the custom pattern to prevent reintroducing old code and how we can use the quick fix to fix the code. It requires a bit of effort to define the pattern, but it will pay off overall! It will also help you to keep your code base clean and consistent and help other developers, especially new ones, apply the same patterns. I would also recommend running those inspections during your CI build and breaking the build if some new ones are introduced.</p>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.jetbrains.com/help/rider/Searching_Everywhere.html">Rider Search Everywhere</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jetbrains.com/help/resharper/Navigation_and_Search__Structural_Search_and_Replace.html">Structural Search and Replace</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jetbrains.com/help/resharper/Navigation_and_Search__Structural_Search_and_Replace.html#sharing-patterns">Share patterns</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jetbrains.com/help/resharper/Sharing_Configuration_Options.html">Manage and share ReSharper settings</a></li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/NET/" rel="tag">.NET</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/C/" rel="tag">C#</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/ReSharper/" rel="tag">ReSharper</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Rider/" rel="tag">Rider</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/11/14/dotnet-7-sdk-built-in-container-support-and-ubuntu-chiseled/"
+                    data-tooltip=".NET 7 SDK built-in container support and Ubuntu Chiseled"
+                    aria-label="NEXT: .NET 7 SDK built-in container support and Ubuntu Chiseled"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2023/02/20/refactoring-huge-csharp-code-base-in-minutes/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2023/02/20/refactoring-huge-csharp-code-base-in-minutes/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2023/02/20/refactoring-huge-csharp-code-base-in-minutes/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2023 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/11/14/dotnet-7-sdk-built-in-container-support-and-ubuntu-chiseled/"
+                    data-tooltip=".NET 7 SDK built-in container support and Ubuntu Chiseled"
+                    aria-label="NEXT: .NET 7 SDK built-in container support and Ubuntu Chiseled"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2023/02/20/refactoring-huge-csharp-code-base-in-minutes/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2023/02/20/refactoring-huge-csharp-code-base-in-minutes/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2023/02/20/refactoring-huge-csharp-code-base-in-minutes/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2023/02/20/refactoring-huge-csharp-code-base-in-minutes/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2023/02/20/refactoring-huge-csharp-code-base-in-minutes/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2023/02/20/refactoring-huge-csharp-code-base-in-minutes/"
+                        aria-label="global.share_on_linkedin"
+                    >
+                        <i class="fab fa-linkedin" aria-hidden="true"></i><span>global.share_on_linkedin</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Distinguished Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-zbhjsfxrnb9olfkfctepnfgoomtupjjyou223rfd8ugffqynvb5ytjfk6ti1.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://laurentkempe.com/2023/02/20/refactoring-huge-csharp-code-base-in-minutes/';
+              
+            this.page.identifier = '20230220133800';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'laurentkempe';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>
