@@ -1,0 +1,805 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>.NET 7 SDK built-in container improvements - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Are you looking for a fast and easy way to create and run .NET applications using Docker containers without writing any Dockerfile? If so, you will be glad to know that Microsoft has introduced a new feature of the .NET SDK 7.0.200 that makes it possible to create and publish OCI container images directly from your project file. We have seen how “.NET 7 SDK built-in container support and Ubuntu Chiseled“ can be used together. It lets us create small and secure containers for our .NET applications easily. We went from a first docker image of 216MB down to 48.3 MB. That is more than a 77% reduction in size. .NET SDK 7.0.200 bring some new capabilities. We will explore some in this post.\n\n\nCapability now bundled into the .NET SDK 7.0.200Previously you had to add a reference to the nuget Microsoft.NET.Build.Containers. With the .NET SDK 7.0.200, we do not require it anymore. The .NET SDK bundle this new capability.\nThe only thing needed is the following property in your csproj project file:\n.csproj1&lt;EnableSdkContainerSupport&gt;true&lt;/EnableSdkContainerSupport&gt;\n\nThe feature leverages dotnet publish. The command-line tool allows you to build and publish your .NET applications as Docker images with one command. With dotnet publish, you can:\n\nCreate a Docker image for your .NET application without writing any Dockerfile\nPublish your Docker image to a container registry of your choice with one command\nSpecify variables such as the base image, image tag, and registry name in your project file\n\nIt is interesting to realize that you don’t need docker installed on your machine to publish to a remote container registry. The .NET SDK can build the image and then push it to the remote registry. It is interesting for CI&#x2F;CD pipelines or even local development.\n\n\nCreate a Docker imageTo create a Docker image for your .NET application, you need to run the following command:\n1❯  dotnet publish --os linux --arch x64 -p:PublishProfile=DefaultContainer -c Release\n\nPublishing your Docker imageBy default, dotnet publish publishes your Docker image to the local Docker daemon.\nTo publish your Docker image to a container registry, you need again to add a new MSBuild property to your .csproj file:\nlocal.pubxml1&lt;ContainerRegistry&gt;myregistry.azurecr.io&lt;/ContainerRegistry&gt;\n\nI tend to prefer another approach than extending the .csproj. It lets you use the same command line to publish to a local Docker daemon or to a container registry. For that, I use publish profiles. Those are files found in the &#x2F;Properties&#x2F;PublishProfiles folder. You can set publish-related properties like ContainerRegistry or EnableSdkContainerSupport by referring to a .pubxml file in that folder.\nSample publish profileHere is a minimal publish profile. You can use it to publish to the local container registry. We will extend it with the new properties.\n./Properties/PublishProfiles/local.pubxml123456&lt;Project&gt;    &lt;PropertyGroup&gt;        &lt;EnableSdkContainerSupport&gt;true&lt;/EnableSdkContainerSupport&gt;        &lt;WebPublishMethod&gt;Container&lt;/WebPublishMethod&gt;    &lt;/PropertyGroup&gt;&lt;/Project&gt;\n\nWith this approach, you can define multiple publish profiles and use them to publish to different container registries. You might want a publish profile for GitHub Package registry for your feature branch builds and push to Azure Container Registry only the release built images. Or, you might want to push images trimmed and chiseled, and other not.\nPublishing to local container registry using local publish profileRun dotnet publish specifying the name of the publish profile, here local, for the -p:PublishProfile parameter.\n123456789101112❯  dotnet publish --os linux --arch x64 -p:PublishProfile=local -c ReleaseMSBuild version 17.5.0-preview-23061-01+040e2a90e for .NET  Determining projects to restore...  All projects are up-to-date for restore.  dotnetSDK70200 -&gt; C:\\projects\\containerPlayground\\dotnetSDK70200\\bin\\Release\\net7.0\\linux-x64\\dotnetSDK70200.dll  dotnetSDK70200 -&gt; C:\\projects\\containerPlayground\\dotnetSDK70200\\bin\\Release\\net7.0\\linux-x64\\publish\\C:\\.nuget\\packages\\microsoft.net.build.containers\\0.3.2\\build\\Microsoft.NET.Build.Containers.targets(82,9): message CONTAINER001: &#x27;ContainerImageName&#x27; was not a valid container image name, it was normalized to &#x27;dotnetsdk70200&#x27; [C:\\projects\\containerPlayground\\dotnetSDK70200\\dotnetSDK70200.csproj]  Building image &#x27;dotnetsdk70200&#x27; with tags 1.0.0 on top of base image mcr.microsoft.com/dotnet/aspnet:7.0  Pushed container &#x27;dotnetsdk70200:1.0.0&#x27; to Docker daemon\n\n.NET SDK has been tested against the following registries: Azure Container Registry, GitLab Container Registry, Google Cloud Artifact Registry, Quay.io, AWS Elastic Container Registry, GitHub Package Registry, and Docker Hub.\nCurrently, the .NET SDK 7.0.200 has an issue to upload the image to GitHub Container registry. The issue is tracked on GitHub issue #292\n\n\nYou would need to authenticate to the container registry before publishing. Docker has established a pattern via the docker login command. It is a way of interacting with a Docker config file containing rules for authenticating with specific registries. It should ensure that this package works seamlessly with any registry you can docker pull from and docker push.\nYou can read more about this part in the Authenticating to container registries documentation.\nSpecifying a base imageBy default, the SDK will infer the best base image to use. It can use values of properties of your project like TargetFramework or verify if the application is self-contained or an ASP.NET Core application. You can read about this here.\nNevertheless, you can override the default base image by adding the ContainerBaseImage property to your .csproj or .pubxml file:\n./Properties/PublishProfiles/local.pubxml1234567&lt;Project&gt;    &lt;PropertyGroup&gt;        &lt;EnableSdkContainerSupport&gt;true&lt;/EnableSdkContainerSupport&gt;        &lt;WebPublishMethod&gt;Container&lt;/WebPublishMethod&gt;        &lt;ContainerBaseImage&gt;mcr.microsoft.com/dotnet/aspnet:7.0&lt;/ContainerBaseImage&gt;    &lt;/PropertyGroup&gt;&lt;/Project&gt;\n\nWe saw how to use lighter base images in the previous post “.NET 7 SDK built-in container support and Ubuntu Chiseled”.\nSpecifying the container portWe are using an ASP.NET Core web application in this example, so we need to specify the port on which the mapping will be done with the host machine. In our case, we are using tcp port 80, but you can also use udp.\n./Properties/PublishProfiles/local.pubxml12345678910&lt;Project&gt;    &lt;PropertyGroup&gt;        &lt;EnableSdkContainerSupport&gt;true&lt;/EnableSdkContainerSupport&gt;        &lt;WebPublishMethod&gt;Container&lt;/WebPublishMethod&gt;        &lt;ContainerBaseImage&gt;mcr.microsoft.com/dotnet/aspnet:7.0&lt;/ContainerBaseImage&gt;    &lt;/PropertyGroup&gt;    &lt;ItemGroup&gt;        &lt;ContainerPort Include=&quot;80&quot; Type=&quot;tcp&quot; /&gt;    &lt;/ItemGroup&gt;&lt;/Project&gt;\n\nAnd running the docker image, we can browse to http://localhost:8080/\n123456789 ❯  docker run --rm -it -p 8080:80 laurentkempe/my-awesome-webapp info: Microsoft.Hosting.Lifetime[14]      Now listening on: http://[::]:80info: Microsoft.Hosting.Lifetime[0]      Application started. Press Ctrl+C to shut down.info: Microsoft.Hosting.Lifetime[0]      Hosting environment: Productioninfo: Microsoft.Hosting.Lifetime[0]      Content root path: /app\n\nDefine the image nameYou can achieve this by adding the following property to your .csproj or .pubxml file:\n./Properties/PublishProfiles/local.pubxml12345678&lt;Project&gt;    &lt;PropertyGroup&gt;        &lt;EnableSdkContainerSupport&gt;true&lt;/EnableSdkContainerSupport&gt;        &lt;WebPublishMethod&gt;Container&lt;/WebPublishMethod&gt;        &lt;ContainerBaseImage&gt;mcr.microsoft.com/dotnet/runtime:7.0&lt;/ContainerBaseImage&gt;        &lt;ContainerImageName&gt;laurentkempe/my-awesome-webapp&lt;/ContainerImageName&gt;    &lt;/PropertyGroup&gt;&lt;/Project&gt;\n\nWe define the image name in the publish profile so that we can have multiple names.\nTagging your imageYou can achieve this by adding the following property to your .csproj or .pubxml file:\n.csproj or .pubxml123&lt;PropertyGroup&gt;    &lt;ContainerImageTag&gt;1.2.3-alpha2&lt;/ContainerImageTag&gt;&lt;/PropertyGroup&gt;\n\nThis property also can be used to push multiple tags - simply use a semicolon-delimited set of tags, e.g. 1.2.3-alpha2;latest.\nThis part is a part that we want to automate. For example, we can use MinVer tool for minimalistic versioning using Git tags.\nAfter adding the reference to MinVer to your project, run the publish command again\n12345678 ❯  dotnet publish --os linux --arch x64 -p:PublishProfile=local -c ReleaseMSBuild version 17.5.0-preview-23061-01+040e2a90e for .NET  Determining projects to restore...  All projects are up-to-date for restore.  dotnetSDK70200 -&gt; C:\\Users\\laure\\projects\\containerPlayground\\dotnetSDK70200\\bin\\Release\\net7.0\\linux-x64\\dotnetSDK70200.dll  dotnetSDK70200 -&gt; C:\\Users\\laure\\projects\\containerPlayground\\dotnetSDK70200\\bin\\Release\\net7.0\\linux-x64\\publish\\  Building image &#x27;laurentkempe/my-awesome-webapp&#x27; with tags 0.0.0-alpha.0.2 on top of base image mcr.microsoft.com/dotnet/aspnet:7.0  Pushed container &#x27;laurentkempe/my-awesome-webapp:0.0.0-alpha.0.2&#x27; to Docker daemon\n\nWe can see now that the image is built with a tag 0.0.0-alpha.0.2. Nice 😁.\nWhen you want to release a version, you need to create a Git tag. The image will be tagged with that version automatically.\n123456789❯  git tag 1.0.0❯  dotnet publish --os linux --arch x64 -p:PublishProfile=local -c ReleaseMSBuild version 17.5.0-preview-23061-01+040e2a90e for .NET  Determining projects to restore...  All projects are up-to-date for restore.  dotnetSDK70200 -&gt; C:\\Users\\laure\\projects\\containerPlayground\\dotnetSDK70200\\bin\\Release\\net7.0\\linux-x64\\dotnetSDK70200.dll  dotnetSDK70200 -&gt; C:\\Users\\laure\\projects\\containerPlayground\\dotnetSDK70200\\bin\\Release\\net7.0\\linux-x64\\publish\\  Building image &#x27;laurentkempe/my-awesome-webapp&#x27; with tags 1.0.0 on top of base image mcr.microsoft.com/dotnet/aspnet:7.0  Pushed container &#x27;laurentkempe/my-awesome-webapp:1.0.0&#x27; to Docker daemon\n\nNow that the image is built with the tag 1.0.0.\n1234 ❯  docker imagesREPOSITORY                                      TAG                  IMAGE ID       CREATED         SIZElaurentkempe/my-awesome-webapp                  1.0.0                e532ec6f7556   2 minutes ago   212MBlaurentkempe/my-awesome-webapp                  0.0.0-alpha.0.2      f06c6bb87647   3 minutes ago   212MB\n\nIt is an efficient and easy way. Nevertheless, I am always balanced about tagging to produce an artifact. I think tagging should happen as the last step of your release process. Your release process might be something like this: provide a release candidate artifact to your QA team, they do the testing, and finally, approve it. Then, you would need to tag and produce yet another artifact. Then, would you ask them to test it again?\nConclusionIn this post, we have seen how to build a container image using the .NET SDK without creating a Dockerfile. We also looked at how to configure the image name and tag. Then how to publish the image to a remote registry using publish profiles.\nThere are more ways to configure your container image, which we might explore in a future post. For example, you can use the ContainerLabel property to add a metadata label to the container.\nI hope you enjoyed this post and learned something new that you want to try out. If you have any questions or comments, please leave them below. Thanks for reading!\nCode\n\n  \n\n\n\n\nReferences\ndotnet publish\n.NET SDK Container Building Tools\nOCI container\nPublish Profiles\n\n","dateCreated":"2023-03-13T12:56:12+00:00","dateModified":"2023-03-13T12:58:13+00:00","datePublished":"2023-03-13T12:56:12+00:00","description":"Are you looking for a fast and easy way to create and run .NET applications using Docker containers without writing any Dockerfile? If so, you will be glad to know that Microsoft has introduced a new feature of the .NET SDK 7.0.200 that makes it possible to create and publish OCI container images directly from your project file. We have seen how “.NET 7 SDK built-in container support and Ubuntu Chiseled“ can be used together. It lets us create small and secure containers for our .NET applications easily. We went from a first docker image of 216MB down to 48.3 MB. That is more than a 77% reduction in size. .NET SDK 7.0.200 bring some new capabilities. We will explore some in this post.","headline":".NET 7 SDK built-in container improvements","image":["https://live.staticflickr.com/4382/36202267994_84b6d19e94_q.jpg","https://live.staticflickr.com/4382/36202267994_445a9bf7a1_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2023/03/13/dotnet-7-sdk-built-in-container-improvements/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2023/03/13/dotnet-7-sdk-built-in-container-improvements/","keywords":"Docker, .NET SDK","thumbnailUrl":"https://live.staticflickr.com/4382/36202267994_84b6d19e94_q.jpg"}</script>
+    <meta name="description" content="Are you looking for a fast and easy way to create and run .NET applications using Docker containers without writing any Dockerfile? If so, you will be glad to know that Microsoft has introduced a new">
+<meta property="og:type" content="blog">
+<meta property="og:title" content=".NET 7 SDK built-in container improvements">
+<meta property="og:url" content="https://laurentkempe.com/2023/03/13/dotnet-7-sdk-built-in-container-improvements/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="Are you looking for a fast and easy way to create and run .NET applications using Docker containers without writing any Dockerfile? If so, you will be glad to know that Microsoft has introduced a new">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-03-13T12:56:12.000Z">
+<meta property="article:modified_time" content="2023-03-13T12:58:13.150Z">
+<meta property="article:author" content="Laurent Kempé">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content=".NET SDK">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/4382/36202267994_84b6d19e94_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/4382/36202267994_84b6d19e94_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/4382/36202267994_445a9bf7a1_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/4382/36202267994_445a9bf7a1_h.jpg"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-ddrvgq9rs3pfl96mhsxmxrjnopnjvqawq5v5nkca5lh2o6kqexiwr0edyzrw.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64298-8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-64298-8');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Laurent Kempé
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/presentations.html"
+                            
+                            rel="noopener"
+                            title="Presentations"
+                        >
+                        <i class="sidebar-button-icon fa fa-file-powerpoint" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Presentations</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/about-laurent-kempe.html"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://twitter.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/in/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://flickr.com/photos/laurentkempe/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Flickr"
+                        >
+                        <i class="sidebar-button-icon fab fa-flickr" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Flickr</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://feeds.feedburner.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial"
+             style="background-image:url('https://live.staticflickr.com/4382/36202267994_445a9bf7a1_h.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            .NET 7 SDK built-in container improvements
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2023-03-13T12:56:12+00:00">
+	
+		    Mar 13, 2023
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Moʻorea, Polynésie, France</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>Are you looking for a fast and easy way to <strong>create and run .NET applications using Docker containers without writing any Dockerfile?</strong> If so, you will be glad to know that Microsoft has introduced a new feature of the .NET SDK 7.0.200 that makes it possible to create and publish OCI container images directly from your project file. We have seen how “<a href="https://laurentkempe.com/2022/11/14/dotnet-7-sdk-built-in-container-support-and-ubuntu-chiseled/">.NET 7 SDK built-in container support and Ubuntu Chiseled</a>“ can be used together. It lets us <strong>create small and secure containers</strong> for our .NET applications easily. We went from a first docker image of 216MB down to 48.3 MB. That is more than a <strong>77% reduction in size</strong>. .NET SDK 7.0.200 bring some new capabilities. We will explore some in this post.</p>
+<span id="more"></span>
+
+<h1 id="Capability-now-bundled-into-the-NET-SDK-7-0-200"><a href="#Capability-now-bundled-into-the-NET-SDK-7-0-200" class="headerlink" title="Capability now bundled into the .NET SDK 7.0.200"></a>Capability now bundled into the .NET SDK 7.0.200</h1><p>Previously you had to add a reference to the nuget <code>Microsoft.NET.Build.Containers</code>. With the .NET SDK 7.0.200, we do not require it anymore. The .NET SDK bundle this new capability.</p>
+<p>The only thing needed is the following property in your <code>csproj</code> project file:</p>
+<figure class="highlight xml"><figcaption><span>.csproj</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">EnableSdkContainerSupport</span>&gt;</span>true<span class="tag">&lt;/<span class="name">EnableSdkContainerSupport</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>The feature leverages <code>dotnet publish</code>. The command-line tool allows you to build and publish your .NET applications as Docker images with one command. With dotnet publish, you can:</p>
+<ul>
+<li>Create a Docker image for your .NET application without writing any Dockerfile</li>
+<li>Publish your Docker image to a container registry of your choice with one command</li>
+<li>Specify variables such as the base image, image tag, and registry name in your project file</li>
+</ul>
+<div class="alert info"><p>It is interesting to realize that you don’t need docker installed on your machine to publish to a remote container registry. The .NET SDK can build the image and then push it to the remote registry. It is interesting for CI&#x2F;CD pipelines or even local development.</p>
+</div>
+
+<h1 id="Create-a-Docker-image"><a href="#Create-a-Docker-image" class="headerlink" title="Create a Docker image"></a>Create a Docker image</h1><p>To create a Docker image for your .NET application, you need to run the following command:</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">❯  dotnet publish <span class="literal">--os</span> linux <span class="literal">--arch</span> x64 <span class="literal">-p</span>:PublishProfile=DefaultContainer <span class="literal">-c</span> Release</span><br></pre></td></tr></table></figure>
+
+<h1 id="Publishing-your-Docker-image"><a href="#Publishing-your-Docker-image" class="headerlink" title="Publishing your Docker image"></a>Publishing your Docker image</h1><p>By default, <code>dotnet publish</code> publishes your Docker image to the local Docker daemon.</p>
+<p>To publish your Docker image to a container registry, you need again to add a new MSBuild property to your <code>.csproj</code> file:</p>
+<figure class="highlight xml"><figcaption><span>local.pubxml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ContainerRegistry</span>&gt;</span>myregistry.azurecr.io<span class="tag">&lt;/<span class="name">ContainerRegistry</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>I tend to prefer another approach than extending the <code>.csproj</code>. It lets you use the same command line to publish to a local Docker daemon or to a container registry. For that, I use <strong>publish profiles</strong>. Those are files found in the <em>&#x2F;Properties&#x2F;PublishProfiles</em> folder. You can set publish-related properties like <code>ContainerRegistry</code> or <code>EnableSdkContainerSupport</code> by referring to a .pubxml file in that folder.</p>
+<h2 id="Sample-publish-profile"><a href="#Sample-publish-profile" class="headerlink" title="Sample publish profile"></a>Sample publish profile</h2><p>Here is a minimal publish profile. You can use it to publish to the <strong>local</strong> container registry. We will extend it with the new properties.</p>
+<figure class="highlight xml"><figcaption><span>./Properties/PublishProfiles/local.pubxml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Project</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">EnableSdkContainerSupport</span>&gt;</span>true<span class="tag">&lt;/<span class="name">EnableSdkContainerSupport</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">WebPublishMethod</span>&gt;</span>Container<span class="tag">&lt;/<span class="name">WebPublishMethod</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>With this approach, you can define <strong>multiple publish profiles</strong> and use them to publish to different container registries. You might want a publish profile for GitHub Package registry for your feature branch builds and push to Azure Container Registry only the release built images. Or, you might want to push images trimmed and chiseled, and other not.</p>
+<h2 id="Publishing-to-local-container-registry-using-local-publish-profile"><a href="#Publishing-to-local-container-registry-using-local-publish-profile" class="headerlink" title="Publishing to local container registry using local publish profile"></a>Publishing to local container registry using local publish profile</h2><p>Run <code>dotnet publish</code> specifying the name of the publish profile, here <strong>local</strong>, for the <code>-p:PublishProfile</code> parameter.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">❯  dotnet publish <span class="literal">--os</span> linux <span class="literal">--arch</span> x64 <span class="literal">-p</span>:PublishProfile=local <span class="literal">-c</span> Release</span><br><span class="line"></span><br><span class="line">MSBuild version <span class="number">17.5</span>.<span class="number">0</span><span class="literal">-preview-23061-01</span>+<span class="number">040</span>e2a90e <span class="keyword">for</span> .NET</span><br><span class="line">  Determining projects to restore...</span><br><span class="line">  All projects are up<span class="literal">-to-date</span> <span class="keyword">for</span> restore.</span><br><span class="line">  dotnetSDK70200 -&gt; C:\projects\containerPlayground\dotnetSDK70200\bin\Release\net7.<span class="number">0</span>\linux<span class="literal">-x64</span>\dotnetSDK70200.dll</span><br><span class="line">  dotnetSDK70200 -&gt; C:\projects\containerPlayground\dotnetSDK70200\bin\Release\net7.<span class="number">0</span>\linux<span class="literal">-x64</span>\publish\</span><br><span class="line">C:\.nuget\packages\microsoft.net.build.containers\<span class="number">0.3</span>.<span class="number">2</span>\build\Microsoft.NET.Build.Containers.targets(<span class="number">82</span>,<span class="number">9</span>): message CONTAINER00</span><br><span class="line"><span class="number">1</span>: <span class="string">&#x27;ContainerImageName&#x27;</span> was not a valid container image name, it was normalized to <span class="string">&#x27;dotnetsdk70200&#x27;</span> [<span class="type">C</span>:\<span class="type">projects</span>\<span class="type">containerPlayg</span></span><br><span class="line"><span class="type">round</span>\<span class="type">dotnetSDK70200</span>\<span class="type">dotnetSDK70200.csproj</span>]</span><br><span class="line">  Building image <span class="string">&#x27;dotnetsdk70200&#x27;</span> with tags <span class="number">1.0</span>.<span class="number">0</span> on top of base image mcr.microsoft.com/dotnet/aspnet:<span class="number">7.0</span></span><br><span class="line">  Pushed container <span class="string">&#x27;dotnetsdk70200:1.0.0&#x27;</span> to Docker daemon</span><br></pre></td></tr></table></figure>
+
+<p>.NET SDK has been tested against the following registries: Azure Container Registry, GitLab Container Registry, Google Cloud Artifact Registry, Quay.io, AWS Elastic Container Registry, GitHub Package Registry, and Docker Hub.</p>
+<div class="alert warning"><p>Currently, the .NET SDK 7.0.200 has an issue to upload the image to GitHub Container registry. The issue is tracked on <a target="_blank" rel="noopener" href="https://github.com/dotnet/sdk-container-builds/issues/292">GitHub issue #292</a></p>
+</div>
+
+<p>You would need to authenticate to the container registry before publishing. Docker has established a pattern via the docker login command. It is a way of interacting with a Docker config file containing rules for authenticating with specific registries. It should ensure that this package works seamlessly with any registry you can <code>docker pull</code> from and <code>docker push</code>.</p>
+<p>You can read more about this part in the <a target="_blank" rel="noopener" href="https://github.com/dotnet/sdk-container-builds/blob/main/docs/RegistryAuthentication.md#authenticating-to-container-registries">Authenticating to container registries documentation</a>.</p>
+<h1 id="Specifying-a-base-image"><a href="#Specifying-a-base-image" class="headerlink" title="Specifying a base image"></a>Specifying a base image</h1><p>By default, the SDK will infer the best base image to use. It can use values of properties of your project like <code>TargetFramework</code> or verify if the application is self-contained or an ASP.NET Core application. You can read about this <a target="_blank" rel="noopener" href="https://github.com/dotnet/sdk-container-builds/blob/main/docs/ContainerCustomization.md#containerbaseimage">here</a>.</p>
+<p>Nevertheless, you can override the default base image by adding the <code>ContainerBaseImage</code> property to your <code>.csproj</code> or <code>.pubxml</code> file:</p>
+<figure class="highlight xml"><figcaption><span>./Properties/PublishProfiles/local.pubxml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Project</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">EnableSdkContainerSupport</span>&gt;</span>true<span class="tag">&lt;/<span class="name">EnableSdkContainerSupport</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">WebPublishMethod</span>&gt;</span>Container<span class="tag">&lt;/<span class="name">WebPublishMethod</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ContainerBaseImage</span>&gt;</span>mcr.microsoft.com/dotnet/aspnet:7.0<span class="tag">&lt;/<span class="name">ContainerBaseImage</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>We saw how to use lighter base images in the previous post <a href="https://laurentkempe.com/2022/11/14/dotnet-7-sdk-built-in-container-support-and-ubuntu-chiseled/">“.NET 7 SDK built-in container support and Ubuntu Chiseled”</a>.</p>
+<h1 id="Specifying-the-container-port"><a href="#Specifying-the-container-port" class="headerlink" title="Specifying the container port"></a>Specifying the container port</h1><p>We are using an ASP.NET Core web application in this example, so we need to specify the port on which the mapping will be done with the host machine. In our case, we are using <code>tcp</code> port <code>80</code>, but you can also use <code>udp</code>.</p>
+<figure class="highlight xml"><figcaption><span>./Properties/PublishProfiles/local.pubxml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Project</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">EnableSdkContainerSupport</span>&gt;</span>true<span class="tag">&lt;/<span class="name">EnableSdkContainerSupport</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">WebPublishMethod</span>&gt;</span>Container<span class="tag">&lt;/<span class="name">WebPublishMethod</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ContainerBaseImage</span>&gt;</span>mcr.microsoft.com/dotnet/aspnet:7.0<span class="tag">&lt;/<span class="name">ContainerBaseImage</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ContainerPort</span> <span class="attr">Include</span>=<span class="string">&quot;80&quot;</span> <span class="attr">Type</span>=<span class="string">&quot;tcp&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>And running the docker image, we can browse to <a target="_blank" rel="noopener" href="http://localhost:8080/">http://localhost:8080/</a></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> ❯  docker run <span class="literal">--rm</span> <span class="literal">-it</span> <span class="literal">-p</span> <span class="number">8080</span>:<span class="number">80</span> laurentkempe/my<span class="literal">-awesome-webapp</span></span><br><span class="line"> info: Microsoft.Hosting.Lifetime[<span class="number">14</span>]</span><br><span class="line">      Now listening on: http://[::]:<span class="number">80</span></span><br><span class="line">info: Microsoft.Hosting.Lifetime[<span class="number">0</span>]</span><br><span class="line">      Application started. Press Ctrl+C to shut down.</span><br><span class="line">info: Microsoft.Hosting.Lifetime[<span class="number">0</span>]</span><br><span class="line">      Hosting environment: Production</span><br><span class="line">info: Microsoft.Hosting.Lifetime[<span class="number">0</span>]</span><br><span class="line">      Content root path: /app</span><br></pre></td></tr></table></figure>
+
+<h1 id="Define-the-image-name"><a href="#Define-the-image-name" class="headerlink" title="Define the image name"></a>Define the image name</h1><p>You can achieve this by adding the following property to your <code>.csproj</code> or <code>.pubxml</code> file:</p>
+<figure class="highlight xml"><figcaption><span>./Properties/PublishProfiles/local.pubxml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Project</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">EnableSdkContainerSupport</span>&gt;</span>true<span class="tag">&lt;/<span class="name">EnableSdkContainerSupport</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">WebPublishMethod</span>&gt;</span>Container<span class="tag">&lt;/<span class="name">WebPublishMethod</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ContainerBaseImage</span>&gt;</span>mcr.microsoft.com/dotnet/runtime:7.0<span class="tag">&lt;/<span class="name">ContainerBaseImage</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ContainerImageName</span>&gt;</span>laurentkempe/my-awesome-webapp<span class="tag">&lt;/<span class="name">ContainerImageName</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>We define the image name in the publish profile so that we can have multiple names.</p>
+<h1 id="Tagging-your-image"><a href="#Tagging-your-image" class="headerlink" title="Tagging your image"></a>Tagging your image</h1><p>You can achieve this by adding the following property to your <code>.csproj</code> or <code>.pubxml</code> file:</p>
+<figure class="highlight xml"><figcaption><span>.csproj or .pubxml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ContainerImageTag</span>&gt;</span>1.2.3-alpha2<span class="tag">&lt;/<span class="name">ContainerImageTag</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">PropertyGroup</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>This property also can be used to push multiple tags - simply use a semicolon-delimited set of tags, e.g. <code>1.2.3-alpha2;latest</code>.</p>
+<p>This part is a part that we want to automate. For example, we can use <a target="_blank" rel="noopener" href="https://github.com/adamralph/minver">MinVer</a> tool for minimalistic versioning using Git tags.</p>
+<p>After adding the reference to MinVer to your project, run the publish command again</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> ❯  dotnet publish <span class="literal">--os</span> linux <span class="literal">--arch</span> x64 <span class="literal">-p</span>:PublishProfile=local <span class="literal">-c</span> Release</span><br><span class="line">MSBuild version <span class="number">17.5</span>.<span class="number">0</span><span class="literal">-preview-23061-01</span>+<span class="number">040</span>e2a90e <span class="keyword">for</span> .NET</span><br><span class="line">  Determining projects to restore...</span><br><span class="line">  All projects are up<span class="literal">-to-date</span> <span class="keyword">for</span> restore.</span><br><span class="line">  dotnetSDK70200 -&gt; C:\Users\laure\projects\containerPlayground\dotnetSDK70200\bin\Release\net7.<span class="number">0</span>\linux<span class="literal">-x64</span>\dotnetSDK70200.dll</span><br><span class="line">  dotnetSDK70200 -&gt; C:\Users\laure\projects\containerPlayground\dotnetSDK70200\bin\Release\net7.<span class="number">0</span>\linux<span class="literal">-x64</span>\publish\</span><br><span class="line">  Building image <span class="string">&#x27;laurentkempe/my-awesome-webapp&#x27;</span> with tags <span class="number">0.0</span>.<span class="number">0</span><span class="literal">-alpha</span>.<span class="number">0.2</span> on top of base image mcr.microsoft.com/dotnet/aspnet:<span class="number">7.0</span></span><br><span class="line">  Pushed container <span class="string">&#x27;laurentkempe/my-awesome-webapp:0.0.0-alpha.0.2&#x27;</span> to Docker daemon</span><br></pre></td></tr></table></figure>
+
+<p>We can see now that the image is built with a tag <code>0.0.0-alpha.0.2</code>. Nice 😁.</p>
+<p>When you want to release a version, you need to create a Git tag. The image will be tagged with that version automatically.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">❯  git tag <span class="number">1.0</span>.<span class="number">0</span></span><br><span class="line">❯  dotnet publish <span class="literal">--os</span> linux <span class="literal">--arch</span> x64 <span class="literal">-p</span>:PublishProfile=local <span class="literal">-c</span> Release</span><br><span class="line">MSBuild version <span class="number">17.5</span>.<span class="number">0</span><span class="literal">-preview-23061-01</span>+<span class="number">040</span>e2a90e <span class="keyword">for</span> .NET</span><br><span class="line">  Determining projects to restore...</span><br><span class="line">  All projects are up<span class="literal">-to-date</span> <span class="keyword">for</span> restore.</span><br><span class="line">  dotnetSDK70200 -&gt; C:\Users\laure\projects\containerPlayground\dotnetSDK70200\bin\Release\net7.<span class="number">0</span>\linux<span class="literal">-x64</span>\dotnetSDK70200.dll</span><br><span class="line">  dotnetSDK70200 -&gt; C:\Users\laure\projects\containerPlayground\dotnetSDK70200\bin\Release\net7.<span class="number">0</span>\linux<span class="literal">-x64</span>\publish\</span><br><span class="line">  Building image <span class="string">&#x27;laurentkempe/my-awesome-webapp&#x27;</span> with tags <span class="number">1.0</span>.<span class="number">0</span> on top of base image mcr.microsoft.com/dotnet/aspnet:<span class="number">7.0</span></span><br><span class="line">  Pushed container <span class="string">&#x27;laurentkempe/my-awesome-webapp:1.0.0&#x27;</span> to Docker daemon</span><br></pre></td></tr></table></figure>
+
+<p>Now that the image is built with the tag <code>1.0.0</code>.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> ❯  docker images</span><br><span class="line">REPOSITORY                                      TAG                  IMAGE ID       CREATED         SIZE</span><br><span class="line">laurentkempe/my<span class="literal">-awesome-webapp</span>                  <span class="number">1.0</span>.<span class="number">0</span>                e532ec6f7556   <span class="number">2</span> minutes ago   <span class="number">212</span>MB</span><br><span class="line">laurentkempe/my<span class="literal">-awesome-webapp</span>                  <span class="number">0.0</span>.<span class="number">0</span><span class="literal">-alpha</span>.<span class="number">0.2</span>      f06c6bb87647   <span class="number">3</span> minutes ago   <span class="number">212</span>MB</span><br></pre></td></tr></table></figure>
+
+<p>It is an efficient and easy way. Nevertheless, I am always balanced about tagging to produce an artifact. I think tagging should happen as the last step of your release process. Your release process might be something like this: provide a release candidate artifact to your QA team, they do the testing, and finally, approve it. Then, you would need to tag and produce yet another artifact. Then, would you ask them to test it again?</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>In this post, we have seen how to build a container image using the .NET SDK without creating a Dockerfile. We also looked at how to configure the image name and tag. Then how to publish the image to a remote registry using publish profiles.</p>
+<p>There are more ways to configure your container image, which we might explore in a future post. For example, you can use the <code>ContainerLabel</code> property to add a metadata label to the container.</p>
+<p>I hope you enjoyed this post and learned something new that you want to try out. If you have any questions or comments, please leave them below. Thanks for reading!</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p></p>
+<div style="text-align: left">
+  <div class="github-card"
+    data-user="laurentkempe"
+    data-repo="containerPlayground"
+    data-height="200"
+    data-width="400"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-publish">dotnet publish</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/dotnet/sdk-container-builds">.NET SDK Container Building Tools</a></li>
+<li><a target="_blank" rel="noopener" href="https://opencontainers.org/">OCI container</a></li>
+<li><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/visual-studio-publish-profiles?view=aspnetcore-6.0#publish-profiles">Publish Profiles</a></li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/NET-SDK/" rel="tag">.NET SDK</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Docker/" rel="tag">Docker</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2023/02/27/debugging-dapr-applications-with-rider-or-visual-studio-a-better-way/"
+                    data-tooltip="Debugging Dapr applications with Rider or Visual Studio: A better way"
+                    aria-label="NEXT: Debugging Dapr applications with Rider or Visual Studio: A better way"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2023/03/13/dotnet-7-sdk-built-in-container-improvements/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2023/03/13/dotnet-7-sdk-built-in-container-improvements/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2023/03/13/dotnet-7-sdk-built-in-container-improvements/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2023 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2023/02/27/debugging-dapr-applications-with-rider-or-visual-studio-a-better-way/"
+                    data-tooltip="Debugging Dapr applications with Rider or Visual Studio: A better way"
+                    aria-label="NEXT: Debugging Dapr applications with Rider or Visual Studio: A better way"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2023/03/13/dotnet-7-sdk-built-in-container-improvements/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2023/03/13/dotnet-7-sdk-built-in-container-improvements/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2023/03/13/dotnet-7-sdk-built-in-container-improvements/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2023/03/13/dotnet-7-sdk-built-in-container-improvements/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2023/03/13/dotnet-7-sdk-built-in-container-improvements/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2023/03/13/dotnet-7-sdk-built-in-container-improvements/"
+                        aria-label="global.share_on_linkedin"
+                    >
+                        <i class="fab fa-linkedin" aria-hidden="true"></i><span>global.share_on_linkedin</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Distinguished Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-fdspht3ybtgyktpfwfkhyev7q1igwlllvyejmyliobq55mn05plvtz5juthx.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://laurentkempe.com/2023/03/13/dotnet-7-sdk-built-in-container-improvements/';
+              
+            this.page.identifier = '20230313015612';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'laurentkempe';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>
