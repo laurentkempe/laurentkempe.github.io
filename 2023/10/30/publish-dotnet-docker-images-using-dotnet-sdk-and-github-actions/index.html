@@ -1,0 +1,784 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Publish .NET Docker images using .NET SDK and GitHub Actions - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"My previous blog posts talks about built-in container support in the .NET SDK. It allows you to create and publish Docker images for your .NET applications without writing any Dockerfile. I also showed how to use the Chiseled Ubuntu base images optimized for .NET and containers. We saw  how to publish your Docker images using the .NET SDK to GitHub Packages &#x2F; Container Registry.\nToday, I want to show you how to publish your Docker images using the .NET SDK to GitHub Container Registry using GitHub Actions. It brings us to the next level of automation.\n\nIntroductionGitHub Container Registry is a package hosting service that allows you to host your Docker images and other container images in one place. It integrates with GitHub and GitHub Actions. You can use GitHub Actions to build and publish your Docker images to GitHub Container Registry. You can also use GitHub Actions to build and publish your Docker images to other container registries such as Docker Hub, Azure Container Registry, and Amazon Elastic Container Registry.\nCombining GitHub Actions and the .NET SDK makes the whole experience easy and more consistent.\nGitHub Packages &#x2F; Container Registry publish profileWe configure the .NET SDK container building tools using a profile.It can specify the base image and the target tags. The profile file is a XML file named after the publish profile. Later, you select the publish profile using the PublishProfile property in the GitHub Action.\nAs we want to publish our Docker images to GitHub Container Registry, we specify the ContainerRegistry property to ghcr.io. We also set the ContainerRepository property to the name of the image we want to publish. The ContainerRepository is configured as a path using your GitHub username, laurentkempe, then &#x2F; and the image’s name.\ngithub.pubxml12345678910111213&lt;Project&gt;    &lt;PropertyGroup&gt;        &lt;EnableSdkContainerSupport&gt;true&lt;/EnableSdkContainerSupport&gt;        &lt;WebPublishMethod&gt;Container&lt;/WebPublishMethod&gt;        &lt;ContainerBaseImage&gt;mcr.microsoft.com/dotnet/aspnet:7.0&lt;/ContainerBaseImage&gt;        &lt;ContainerImageTag&gt;1.0.0&lt;/ContainerImageTag&gt;        &lt;ContainerRegistry&gt;ghcr.io&lt;/ContainerRegistry&gt;        &lt;ContainerRepository&gt;laurentkempe/containerplayground&lt;/ContainerRepository&gt;    &lt;/PropertyGroup&gt;    &lt;ItemGroup&gt;        &lt;ContainerPort Include=&quot;80&quot; Type=&quot;tcp&quot; /&gt;    &lt;/ItemGroup&gt;&lt;/Project&gt;\n\nPublishing images using GitHub ActionsTo be able to publish your Docker images to GitHub Container Registry, you need to create a GitHub Actions workflow. A GitHub Actions workflow is a set of instructions executed when a specific event occurs. For example, you can create a workflow executed when a new tag getting pushed to the repository. You can also create a workflow executed when a pull request get created or triggered manually.\nHere is an example of a GitHub action using the .NET SDK container building tools to publish a .NET project to GitHub Container Registry using a .NET publish profile:\n.github/workflows/publish-to-github-container-registry.yml123456789101112131415161718192021222324252627282930313233343536373839name: Publish to GitHub Container Registryon:  # trigger manual workflow  workflow_dispatch:  # trigger workflow on push to master when changes happen in one folder  push:    branches:      - main    paths:      - &#x27;PublishGitHubAction/**&#x27;  jobs:  publish:    runs-on: ubuntu-latest    permissions:      packages: write      contents: read    steps:      - name: Checkout        uses: actions/checkout@v2      - name: Setup .NET        uses: actions/setup-dotnet@v1        with:          dotnet-version: &#x27;7.x&#x27;      - name: Login to GitHub Container Registry        uses: docker/login-action@v1        with:          registry: ghcr.io          username: $&#123;&#123; github.actor &#125;&#125;          password: $&#123;&#123; secrets.GITHUB_TOKEN &#125;&#125;                - name: Publish and push the container image        run: |          dotnet publish --os linux --arch x64 -c Release /p:PublishProfile=github\n\nThe publish job is triggered when a git push is made on the main branch matching a path or can be triggered manually. It sets the permissions granted to the GITHUB_TOKEN for the actions in this job. It uses the checkout action to checkout the repository, the setup-dotnet action to install the .NET 7 SDK, the docker&#x2F;login-action action to login to GitHub Container Registry, and the run action to publish the project using the .NET SDK pushing the container image to GitHub Container Registry.\nFailingFollowing those steps and running the GitHub Action, you will get the following errors error CONTAINER1013 and CONTAINER1001:\n1Error: /home/runner/.dotnet/sdk/7.0.403/Containers/build/Microsoft.NET.Build.Containers.targets(201,5): error CONTAINER1013: Failed to push to the output registry: CONTAINER1001: Failed to upload blob using POST https://ghcr.io/v2/laurentkempe/containerplayground/blobs/uploads/; received status code &#x27;Forbidden&#x27;. [/home/runner/work/containerPlayground/containerPlayground/PublishGitHubAction/PublishGitHubAction.csproj]\n\n\nGitHub Packages supports the GITHUB_TOKEN for easy and secure authentication in your workflows.\n\n\nUsing the GITHUB_TOKEN, instead of a personal access token (classic) with the repo scope, increases the security of your repository as you don’t need to use a long-lived personal access token that offers unnecessary access to the repository where your workflow is run. \n\nTo be able to publish from a GitHub Action to GitHub Container Registry using GITHUB_TOKEN, you need to ensure your package has access to your workflow. You must add the repository where the workflow is stored to your package. Then, use the Role drop-down menu to select the write role.\n\nFollow the following four steps from this page to fix the issue.\nSuccessYou can now manually trigger the GitHub Action and see it succeed.\n\nAnd the package is published to GitHub Container Registry.\n\nTesting the imageThe GitHub Action combined with the publishing profile will create a Docker image named ghcr.io/laurentkempe/containerplayground:1.0.1.\nFirst login to the GitHub Container Registry using the following command using a Personal Access Token with the read:packages scope:\n1docker login ghcr.io -u USERNAME\n\nYou will then be able to pull it using the following command:\n1docker pull ghcr.io/laurentkempe/containerplayground:1.0.1\nor run it\n1docker run -it --rm -p 8080:80 ghcr.io/laurentkempe/containerplayground:1.0.1\n\n\nFinally, browse to http://localhost:8080/ to see the “Hello World!” message.\nConclusionIn this blog post, we saw how to publish Docker images to GitHub Container Registry using GitHub Actions and the .NET SDK. We saw how to create a GitHub Actions workflow triggered when a git push is made on the main branch matching a path or can be triggered manually.\nI hope this helps. If you have any questions, please leave a comment.\nReferencesMy older blog posts on the subject\n\n.NET 7 SDK built-in container support and Ubuntu Chiseled\n.NET 7 SDK built-in container improvements\nSimplify your .NET Docker image publishing workflow with the .NET SDK\n\nOthers\n\n.NET SDK Containers CI Pipeline Example\nDiscover .NET 7 SDK Containers - Support for Authentication and Cross …\nContainerize a .NET app with dotnet publish\nGitHub Actions and .NET | Microsoft Learn\n\nGet the source code on GitHub laurentkempe&#x2F;containerPlayground&#x2F;PublishGitHubAction.\n\n\n  \n\n\n\n\n","dateCreated":"2023-10-30T12:52:08+00:00","dateModified":"2023-10-30T12:55:53+00:00","datePublished":"2023-10-30T12:52:08+00:00","description":"My previous blog posts talks about built-in container support in the .NET SDK. It allows you to create and publish Docker images for your .NET applications without writing any Dockerfile. I also showed how to use the Chiseled Ubuntu base images optimized for .NET and containers. We saw  how to publish your Docker images using the .NET SDK to GitHub Packages &#x2F; Container Registry.\nToday, I want to show you how to publish your Docker images using the .NET SDK to GitHub Container Registry using GitHub Actions. It brings us to the next level of automation.","headline":"Publish .NET Docker images using .NET SDK and GitHub Actions","image":["https://live.staticflickr.com/4376/36848966126_36f1658c9e_q.jpg","https://live.staticflickr.com/4376/36848966126_d20f2b3d6f_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2023/10/30/publish-dotnet-docker-images-using-dotnet-sdk-and-github-actions/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2023/10/30/publish-dotnet-docker-images-using-dotnet-sdk-and-github-actions/","keywords":"Docker, GitHub, .NET SDK, GitHub Actions, GitHub Container Registry","thumbnailUrl":"https://live.staticflickr.com/4376/36848966126_36f1658c9e_q.jpg"}</script>
+    <meta name="description" content="My previous blog posts talks about built-in container support in the .NET SDK. It allows you to create and publish Docker images for your .NET applications without writing any Dockerfile. I also showe">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Publish .NET Docker images using .NET SDK and GitHub Actions">
+<meta property="og:url" content="https://laurentkempe.com/2023/10/30/publish-dotnet-docker-images-using-dotnet-sdk-and-github-actions/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="My previous blog posts talks about built-in container support in the .NET SDK. It allows you to create and publish Docker images for your .NET applications without writing any Dockerfile. I also showe">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://laurentkempe.com/images/ManageActionsAccess.png">
+<meta property="og:image" content="https://laurentkempe.com/images/GitHubActionSucceed.png">
+<meta property="og:image" content="https://laurentkempe.com/images/GitHubActionPackage.png">
+<meta property="og:image" content="https://laurentkempe.com/images/GitHubActionPackageDockerRun.png">
+<meta property="article:published_time" content="2023-10-30T12:52:08.000Z">
+<meta property="article:modified_time" content="2023-10-30T12:55:53.137Z">
+<meta property="article:author" content="Laurent Kempé">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="GitHub">
+<meta property="article:tag" content=".NET SDK">
+<meta property="article:tag" content="GitHub Actions">
+<meta property="article:tag" content="GitHub Container Registry">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://laurentkempe.com/images/ManageActionsAccess.png">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/4376/36848966126_36f1658c9e_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/4376/36848966126_36f1658c9e_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/4376/36848966126_d20f2b3d6f_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/4376/36848966126_d20f2b3d6f_h.jpg"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-ggm0m14rubpen7bf4lgf0iykfxmvj8hnuakubye3twmklxevh5osd5qqxh9b.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Laurent Kempé
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/presentations.html"
+                            
+                            rel="noopener"
+                            title="Presentations"
+                        >
+                        <i class="sidebar-button-icon fa fa-file-powerpoint" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Presentations</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/about-laurent-kempe.html"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://twitter.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/in/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://flickr.com/photos/laurentkempe/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Flickr"
+                        >
+                        <i class="sidebar-button-icon fab fa-flickr" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Flickr</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://feeds.feedburner.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial"
+             style="background-image:url('https://live.staticflickr.com/4376/36848966126_d20f2b3d6f_h.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Publish .NET Docker images using .NET SDK and GitHub Actions
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2023-10-30T12:52:08+00:00">
+	
+		    Oct 30, 2023
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Moʻorea, Polynésie, France</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>My previous blog posts talks about built-in container support in the .NET SDK. It allows you to create and publish Docker images for your .NET applications without writing any Dockerfile. I also showed how to use the Chiseled Ubuntu base images optimized for .NET and containers. We saw  how to publish your Docker images using the .NET SDK to GitHub Packages &#x2F; Container Registry.</p>
+<p>Today, I want to show you how to publish your Docker images using the .NET SDK to GitHub Container Registry using GitHub Actions. It brings us to the next level of automation.</p>
+<span id="more"></span>
+<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>GitHub Container Registry is a package hosting service that allows you to host your Docker images and other container images in one place. It integrates with GitHub and GitHub Actions. You can use GitHub Actions to build and publish your Docker images to GitHub Container Registry. You can also use GitHub Actions to build and publish your Docker images to other container registries such as Docker Hub, Azure Container Registry, and Amazon Elastic Container Registry.</p>
+<p>Combining GitHub Actions and the .NET SDK makes the whole experience easy and more consistent.</p>
+<h1 id="GitHub-Packages-x2F-Container-Registry-publish-profile"><a href="#GitHub-Packages-x2F-Container-Registry-publish-profile" class="headerlink" title="GitHub Packages &#x2F; Container Registry publish profile"></a>GitHub Packages &#x2F; Container Registry publish profile</h1><p>We configure the .NET SDK container building tools using a profile.<br>It can specify the base image and the target tags. The profile file is a XML file named after the publish profile. Later, you select the publish profile using the <strong>PublishProfile</strong> property in the GitHub Action.</p>
+<p>As we want to publish our Docker images to GitHub Container Registry, we specify the <strong>ContainerRegistry</strong> property to <strong>ghcr.io</strong>. We also set the <strong>ContainerRepository</strong> property to the name of the image we want to publish. The ContainerRepository is configured as a path using your GitHub username, laurentkempe, then &#x2F; and the image’s name.</p>
+<figure class="highlight xml"><figcaption><span>github.pubxml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Project</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">EnableSdkContainerSupport</span>&gt;</span>true<span class="tag">&lt;/<span class="name">EnableSdkContainerSupport</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">WebPublishMethod</span>&gt;</span>Container<span class="tag">&lt;/<span class="name">WebPublishMethod</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ContainerBaseImage</span>&gt;</span>mcr.microsoft.com/dotnet/aspnet:7.0<span class="tag">&lt;/<span class="name">ContainerBaseImage</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ContainerImageTag</span>&gt;</span>1.0.0<span class="tag">&lt;/<span class="name">ContainerImageTag</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ContainerRegistry</span>&gt;</span>ghcr.io<span class="tag">&lt;/<span class="name">ContainerRegistry</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ContainerRepository</span>&gt;</span>laurentkempe/containerplayground<span class="tag">&lt;/<span class="name">ContainerRepository</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ContainerPort</span> <span class="attr">Include</span>=<span class="string">&quot;80&quot;</span> <span class="attr">Type</span>=<span class="string">&quot;tcp&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="Publishing-images-using-GitHub-Actions"><a href="#Publishing-images-using-GitHub-Actions" class="headerlink" title="Publishing images using GitHub Actions"></a>Publishing images using GitHub Actions</h1><p>To be able to publish your Docker images to GitHub Container Registry, you need to create a GitHub Actions workflow. A GitHub Actions workflow is a set of instructions executed when a specific event occurs. For example, you can create a workflow executed when a new tag getting pushed to the repository. You can also create a workflow executed when a pull request get created or triggered manually.</p>
+<p>Here is an example of a GitHub action using the .NET SDK container building tools to publish a .NET project to GitHub Container Registry using a .NET publish profile:</p>
+<figure class="highlight yaml"><figcaption><span>.github/workflows/publish-to-github-container-registry.yml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Publish</span> <span class="string">to</span> <span class="string">GitHub</span> <span class="string">Container</span> <span class="string">Registry</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="comment"># trigger manual workflow</span></span><br><span class="line">  <span class="attr">workflow_dispatch:</span></span><br><span class="line">  <span class="comment"># trigger workflow on push to master when changes happen in one folder</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">main</span></span><br><span class="line">    <span class="attr">paths:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&#x27;PublishGitHubAction/**&#x27;</span></span><br><span class="line">  </span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">publish:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">permissions:</span></span><br><span class="line">      <span class="attr">packages:</span> <span class="string">write</span></span><br><span class="line">      <span class="attr">contents:</span> <span class="string">read</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Checkout</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">actions/checkout@v2</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Setup</span> <span class="string">.NET</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">actions/setup-dotnet@v1</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">dotnet-version:</span> <span class="string">&#x27;7.x&#x27;</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Login</span> <span class="string">to</span> <span class="string">GitHub</span> <span class="string">Container</span> <span class="string">Registry</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">docker/login-action@v1</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">registry:</span> <span class="string">ghcr.io</span></span><br><span class="line">          <span class="attr">username:</span> <span class="string">$&#123;&#123;</span> <span class="string">github.actor</span> <span class="string">&#125;&#125;</span></span><br><span class="line">          <span class="attr">password:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.GITHUB_TOKEN</span> <span class="string">&#125;&#125;</span></span><br><span class="line">          </span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Publish</span> <span class="string">and</span> <span class="string">push</span> <span class="string">the</span> <span class="string">container</span> <span class="string">image</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">          <span class="string">dotnet</span> <span class="string">publish</span> <span class="string">--os</span> <span class="string">linux</span> <span class="string">--arch</span> <span class="string">x64</span> <span class="string">-c</span> <span class="string">Release</span> <span class="string">/p:PublishProfile=github</span></span><br></pre></td></tr></table></figure>
+
+<p>The <strong>publish</strong> job is triggered when a git push is made on the main branch matching a path or can be triggered manually. It sets the permissions granted to the GITHUB_TOKEN for the actions in this job. It uses the <strong>checkout</strong> action to checkout the repository, the <strong>setup-dotnet</strong> action to install the .NET 7 SDK, the <strong>docker&#x2F;login-action</strong> action to login to GitHub Container Registry, and the <strong>run</strong> action to publish the project using the .NET SDK pushing the container image to GitHub Container Registry.</p>
+<h1 id="Failing"><a href="#Failing" class="headerlink" title="Failing"></a>Failing</h1><p>Following those steps and running the GitHub Action, you will get the following errors error <strong>CONTAINER1013</strong> and <strong>CONTAINER1001</strong>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Error: /home/runner/.dotnet/sdk/7.0.403/Containers/build/Microsoft.NET.Build.Containers.targets(201,5): error CONTAINER1013: Failed to push to the output registry: CONTAINER1001: Failed to upload blob using POST https://ghcr.io/v2/laurentkempe/containerplayground/blobs/uploads/; received status code &#x27;Forbidden&#x27;. [/home/runner/work/containerPlayground/containerPlayground/PublishGitHubAction/PublishGitHubAction.csproj]</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>GitHub Packages supports the GITHUB_TOKEN for easy and secure authentication in your workflows.</p>
+</blockquote>
+<blockquote>
+<p>Using the <code>GITHUB_TOKEN</code>, instead of a personal access token (classic) with the repo scope, increases the security of your repository as you don’t need to use a long-lived personal access token that offers unnecessary access to the repository where your workflow is run. </p>
+</blockquote>
+<p>To be able to publish from a GitHub Action to GitHub Container Registry using <code>GITHUB_TOKEN</code>, you need to ensure your package has access to your workflow. You must add the repository where the workflow is stored to your package. Then, use the Role drop-down menu to select the write role.</p>
+<p><img src="/images/ManageActionsAccess.png" alt="Manage Actions access"></p>
+<p>Follow the following four steps from <a target="_blank" rel="noopener" href="https://docs.github.com/en/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions#upgrading-a-workflow-that-accesses-a-registry-using-a-personal-access-token">this page</a> to fix the issue.</p>
+<h1 id="Success"><a href="#Success" class="headerlink" title="Success"></a>Success</h1><p>You can now manually trigger the GitHub Action and see it succeed.</p>
+<p><img src="/images/GitHubActionSucceed.png" alt="GitHub Action succeed"></p>
+<p>And the package is published to GitHub Container Registry.</p>
+<p><img src="/images/GitHubActionPackage.png" alt="GitHub Action Package"></p>
+<h1 id="Testing-the-image"><a href="#Testing-the-image" class="headerlink" title="Testing the image"></a>Testing the image</h1><p>The GitHub Action combined with the publishing profile will create a Docker image named <code>ghcr.io/laurentkempe/containerplayground:1.0.1</code>.</p>
+<p>First login to the GitHub Container Registry using the following command using a Personal Access Token with the <code>read:packages</code> scope:</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker login ghcr.io <span class="literal">-u</span> USERNAME</span><br></pre></td></tr></table></figure>
+
+<p>You will then be able to pull it using the following command:</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull ghcr.io/laurentkempe/containerplayground:<span class="number">1.0</span>.<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>or run it</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run <span class="literal">-it</span> <span class="literal">--rm</span> <span class="literal">-p</span> <span class="number">8080</span>:<span class="number">80</span> ghcr.io/laurentkempe/containerplayground:<span class="number">1.0</span>.<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/GitHubActionPackageDockerRun.png" alt="GitHub Action Package Docker Run"></p>
+<p>Finally, browse to <a target="_blank" rel="noopener" href="http://localhost:8080/">http://localhost:8080/</a> to see the “Hello World!” message.</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>In this blog post, we saw how to publish Docker images to GitHub Container Registry using GitHub Actions and the .NET SDK. We saw how to create a GitHub Actions workflow triggered when a git push is made on the main branch matching a path or can be triggered manually.</p>
+<p>I hope this helps. If you have any questions, please leave a comment.</p>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><p>My older blog posts on the subject</p>
+<ul>
+<li><a href="https://laurentkempe.com/2022/11/14/dotnet-7-sdk-built-in-container-support-and-ubuntu-chiseled/">.NET 7 SDK built-in container support and Ubuntu Chiseled</a></li>
+<li><a href="https://laurentkempe.com/2023/03/13/dotnet-7-sdk-built-in-container-improvements/">.NET 7 SDK built-in container improvements</a></li>
+<li><a href="https://laurentkempe.com/2023/10/24/simplify-your-dotnet-docker-image-publishing-workflow-with-the-dotnet-sdk/">Simplify your .NET Docker image publishing workflow with the .NET SDK</a></li>
+</ul>
+<p>Others</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/baronfel/sdk-container-demo">.NET SDK Containers CI Pipeline Example</a></li>
+<li><a target="_blank" rel="noopener" href="https://devblogs.microsoft.com/dotnet/updates-to-container-support-in-the-dotnet-sdk/">Discover .NET 7 SDK Containers - Support for Authentication and Cross …</a></li>
+<li><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/core/docker/publish-as-container?pivots=dotnet-7-0">Containerize a .NET app with dotnet publish</a></li>
+<li><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/devops/github-actions-overview">GitHub Actions and .NET | Microsoft Learn</a></li>
+</ul>
+<p>Get the source code on GitHub <a target="_blank" rel="noopener" href="https://github.com/laurentkempe/containerPlayground/tree/main/PublishGitHubAction">laurentkempe&#x2F;containerPlayground&#x2F;PublishGitHubAction</a>.</p>
+<p></p>
+<div style="text-align: left">
+  <div class="github-card"
+    data-user="laurentkempe"
+    data-repo="containerPlayground"
+    data-height="200"
+    data-width="400"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/NET-SDK/" rel="tag">.NET SDK</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Docker/" rel="tag">Docker</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/GitHub/" rel="tag">GitHub</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/GitHub-Actions/" rel="tag">GitHub Actions</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/GitHub-Container-Registry/" rel="tag">GitHub Container Registry</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2023/10/24/simplify-your-dotnet-docker-image-publishing-workflow-with-the-dotnet-sdk/"
+                    data-tooltip="Simplify your .NET Docker image publishing workflow with the .NET SDK"
+                    aria-label="NEXT: Simplify your .NET Docker image publishing workflow with the .NET SDK"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2023/10/30/publish-dotnet-docker-images-using-dotnet-sdk-and-github-actions/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2023/10/30/publish-dotnet-docker-images-using-dotnet-sdk-and-github-actions/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2023/10/30/publish-dotnet-docker-images-using-dotnet-sdk-and-github-actions/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2023 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2023/10/24/simplify-your-dotnet-docker-image-publishing-workflow-with-the-dotnet-sdk/"
+                    data-tooltip="Simplify your .NET Docker image publishing workflow with the .NET SDK"
+                    aria-label="NEXT: Simplify your .NET Docker image publishing workflow with the .NET SDK"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2023/10/30/publish-dotnet-docker-images-using-dotnet-sdk-and-github-actions/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2023/10/30/publish-dotnet-docker-images-using-dotnet-sdk-and-github-actions/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2023/10/30/publish-dotnet-docker-images-using-dotnet-sdk-and-github-actions/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2023/10/30/publish-dotnet-docker-images-using-dotnet-sdk-and-github-actions/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2023/10/30/publish-dotnet-docker-images-using-dotnet-sdk-and-github-actions/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2023/10/30/publish-dotnet-docker-images-using-dotnet-sdk-and-github-actions/"
+                        aria-label="global.share_on_linkedin"
+                    >
+                        <i class="fab fa-linkedin" aria-hidden="true"></i><span>global.share_on_linkedin</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Distinguished Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-mb1ebmkusdioooykjgg40eekgvma7twcg6t3hhso17spp5c8vggo1gbrdrbf.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://laurentkempe.com/2023/10/30/publish-dotnet-docker-images-using-dotnet-sdk-and-github-actions/';
+              
+            this.page.identifier = '20231030015208';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'laurentkempe';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>
