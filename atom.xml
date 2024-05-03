@@ -6,7 +6,7 @@
   <link href="https://laurentkempe.com/atom.xml" rel="self"/>
   
   <link href="https://laurentkempe.com/"/>
-  <updated>2024-05-03T20:02:38.091Z</updated>
+  <updated>2024-05-03T21:09:32.805Z</updated>
   <id>https://laurentkempe.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://laurentkempe.com/2024/05/01/run-phi-3-slm-on-your-machine-with-csharp-semantic-kernel-and-ollama/"/>
     <id>https://laurentkempe.com/2024/05/01/run-phi-3-slm-on-your-machine-with-csharp-semantic-kernel-and-ollama/</id>
     <published>2024-05-01T08:31:03.000Z</published>
-    <updated>2024-05-03T20:02:38.091Z</updated>
+    <updated>2024-05-03T21:09:32.805Z</updated>
     
     
     <summary type="html">&lt;p&gt;Microsoft recently unveiled Phi-3, the latest iteration of their Small Language Model (SLM). And hot on its heels is Ollama, a powerful tool that enables you to run SLMs and LLMs right on your own machine.&lt;/p&gt;
@@ -50,7 +50,7 @@
     <link href="https://laurentkempe.com/2023/11/14/whats-new-in-csharp-12/"/>
     <id>https://laurentkempe.com/2023/11/14/whats-new-in-csharp-12/</id>
     <published>2023-11-14T16:00:00.000Z</published>
-    <updated>2024-05-03T20:02:38.091Z</updated>
+    <updated>2024-05-03T21:09:32.809Z</updated>
     
     
     <summary type="html">&lt;p&gt;C# 12 is the latest, just released, version of the popular programming language that runs on the .NET 8 platform. It introduces several new features that aim to improve the expressiveness, performance, and safety of the language. In this post, we will explore some of these features and see how they can benefit your code.&lt;/p&gt;</summary>
@@ -67,7 +67,7 @@
     <link href="https://laurentkempe.com/2023/10/30/publish-dotnet-docker-images-using-dotnet-sdk-and-github-actions/"/>
     <id>https://laurentkempe.com/2023/10/30/publish-dotnet-docker-images-using-dotnet-sdk-and-github-actions/</id>
     <published>2023-10-30T12:52:08.000Z</published>
-    <updated>2024-05-03T20:02:38.091Z</updated>
+    <updated>2024-05-03T21:09:32.805Z</updated>
     
     
     <summary type="html">&lt;p&gt;My previous blog posts talks about built-in container support in the .NET SDK. It allows you to create and publish Docker images for your .NET applications without writing any Dockerfile. I also showed how to use the Chiseled Ubuntu base images optimized for .NET and containers. We saw  how to publish your Docker images using the .NET SDK to GitHub Packages &amp;#x2F; Container Registry.&lt;/p&gt;
@@ -93,7 +93,7 @@
     <link href="https://laurentkempe.com/2023/10/24/simplify-your-dotnet-docker-image-publishing-workflow-with-the-dotnet-sdk/"/>
     <id>https://laurentkempe.com/2023/10/24/simplify-your-dotnet-docker-image-publishing-workflow-with-the-dotnet-sdk/</id>
     <published>2023-10-24T10:14:09.000Z</published>
-    <updated>2024-05-03T20:02:38.091Z</updated>
+    <updated>2024-05-03T21:09:32.805Z</updated>
     
     
     <summary type="html">&lt;p&gt;In my previous blog posts, I wrote about the &lt;strong&gt;built-in container support&lt;/strong&gt; in the &lt;strong&gt;.NET 7 SDK&lt;/strong&gt; that allows you to create and publish Docker images for your .NET applications without writing any Dockerfile. I also showed how to use the &lt;strong&gt;Chiseled Ubuntu&lt;/strong&gt; base images optimized for .NET and containers.&lt;/p&gt;
@@ -116,7 +116,7 @@
     <link href="https://laurentkempe.com/2023/03/13/dotnet-7-sdk-built-in-container-improvements/"/>
     <id>https://laurentkempe.com/2023/03/13/dotnet-7-sdk-built-in-container-improvements/</id>
     <published>2023-03-13T12:56:12.000Z</published>
-    <updated>2024-05-03T20:02:38.091Z</updated>
+    <updated>2024-05-03T21:09:32.805Z</updated>
     
     
     <summary type="html">&lt;p&gt;Are you looking for a fast and easy way to &lt;strong&gt;create and run .NET applications using Docker containers without writing any Dockerfile?&lt;/strong&gt; If so, you will be glad to know that Microsoft has introduced a new feature of the .NET SDK 7.0.200 that makes it possible to create and publish OCI container images directly from your project file. We have seen how “&lt;a href=&quot;https://laurentkempe.com/2022/11/14/dotnet-7-sdk-built-in-container-support-and-ubuntu-chiseled/&quot;&gt;.NET 7 SDK built-in container support and Ubuntu Chiseled&lt;/a&gt;“ can be used together. It lets us &lt;strong&gt;create small and secure containers&lt;/strong&gt; for our .NET applications easily. We went from a first docker image of 216MB down to 48.3 MB. That is more than a &lt;strong&gt;77% reduction in size&lt;/strong&gt;. .NET SDK 7.0.200 bring some new capabilities. We will explore some in this post.&lt;/p&gt;</summary>
@@ -135,7 +135,7 @@
     <link href="https://laurentkempe.com/2023/02/27/debugging-dapr-applications-with-rider-or-visual-studio-a-better-way/"/>
     <id>https://laurentkempe.com/2023/02/27/debugging-dapr-applications-with-rider-or-visual-studio-a-better-way/</id>
     <published>2023-02-27T12:07:46.000Z</published>
-    <updated>2024-05-03T20:02:38.091Z</updated>
+    <updated>2024-05-03T21:09:32.805Z</updated>
     
     
     <summary type="html">&lt;p&gt;Dapr is an impressive set of APIs for building distributed applications with any language and platform. It provides a set of building blocks that you can use to build microservices. Dapr is based on sidecar architecture. Meaning that you need to run a Dapr sidecar for each of your applications. &lt;strong&gt;How do you debug your Dapr apps effectively?&lt;/strong&gt; If you have been using PowerShell scripts to run and attach your debugger, you know how tedious and error-prone it can be. Ready to see how to use Rider or Visual Studio to debug your Dapr apps with ease and confidence?&lt;/p&gt;</summary>
@@ -158,7 +158,7 @@
     <link href="https://laurentkempe.com/2023/02/20/refactoring-huge-csharp-code-base-in-minutes/"/>
     <id>https://laurentkempe.com/2023/02/20/refactoring-huge-csharp-code-base-in-minutes/</id>
     <published>2023-02-20T12:38:00.000Z</published>
-    <updated>2024-05-03T20:02:38.091Z</updated>
+    <updated>2024-05-03T21:09:32.805Z</updated>
     
     
     <summary type="html">&lt;p&gt;With my team, we like to keep our C# code base updated. So, recently we went to .NET 7 and C# 11. At the same time, we were still adopting some of the new capabilities of .NET 6 and C# 10. Our code base is large, so it takes some time. One of the new features that we planned to use was the &lt;code&gt;ArgumentNullException.ThrowIfNull&lt;/code&gt; method, which throws an exception if an argument is null. In this post, I will show you how I effortlessly did that refactoring by letting the machine work and not the human 😁 (me). In the past, I used the same approach to migrate lots of code that used &lt;code&gt;Assert.True()&lt;/code&gt; to &lt;code&gt;Assert.That(, Is.True)&lt;/code&gt; and for some other even more complex cases. We will use ReSharper and Rider for that.&lt;/p&gt;</summary>
@@ -181,7 +181,7 @@
     <link href="https://laurentkempe.com/2022/11/14/dotnet-7-sdk-built-in-container-support-and-ubuntu-chiseled/"/>
     <id>https://laurentkempe.com/2022/11/14/dotnet-7-sdk-built-in-container-support-and-ubuntu-chiseled/</id>
     <published>2022-11-14T12:40:41.000Z</published>
-    <updated>2024-05-03T20:02:38.091Z</updated>
+    <updated>2024-05-03T21:09:32.805Z</updated>
     
     
     <summary type="html">&lt;p&gt;End of summer 2022, the .NET team at Microsoft announced two things related to containers: .NET in Chiseled Ubuntu containers and then a week after built-in container support in the .NET 7 SDK. I have talked about both topics on two episodes of the French podcast &lt;a href=&quot;https://devdevdev.net/&quot;&gt;devdevdev.net&lt;/a&gt; by my friend &lt;a href=&quot;https://twitter.com/c2iClark&quot;&gt;Richard Clark&lt;/a&gt;. In this post, I will explain what those are and how to combine them.&lt;/p&gt;</summary>
@@ -204,7 +204,7 @@
     <link href="https://laurentkempe.com/2022/10/31/experimenting-with-dotnet-7-wasm-and-wasi-on-docker/"/>
     <id>https://laurentkempe.com/2022/10/31/experimenting-with-dotnet-7-wasm-and-wasi-on-docker/</id>
     <published>2022-10-31T12:25:10.000Z</published>
-    <updated>2024-05-03T20:02:38.091Z</updated>
+    <updated>2024-05-03T21:09:32.805Z</updated>
     
     
     <summary type="html">&lt;p&gt;On October 24th, Docker announced the support of WASM and WASI in a new technical preview release. I wanted to try it out and see how it works with .NET 7. If you want to know more about WASM and WASI you can read the introduction from my previous post, “&lt;a href=&quot;https://laurentkempe.com/2022/10/29/using-wasm-and-wasi-to-run-dotnet-7-on-a-raspberry-pi-zero-2-w/&quot;&gt;Using WASM and WASI to run .NET 7 on a Raspberry PI Zero 2 W&lt;/a&gt;“.&lt;/p&gt;</summary>
@@ -227,7 +227,7 @@
     <link href="https://laurentkempe.com/2022/10/29/using-wasm-and-wasi-to-run-dotnet-7-on-a-raspberry-pi-zero-2-w/"/>
     <id>https://laurentkempe.com/2022/10/29/using-wasm-and-wasi-to-run-dotnet-7-on-a-raspberry-pi-zero-2-w/</id>
     <published>2022-10-29T09:04:42.000Z</published>
-    <updated>2024-05-03T20:02:38.091Z</updated>
+    <updated>2024-05-03T21:09:32.809Z</updated>
     
     
     <summary type="html">&lt;p&gt;WebAssembly (WASM) and WebAssembly System Interface (WASI) are opening new opportunities for developers. .NET developers became familiar with WASM when Blazor WebAssembly was released. Blazor WebAssembly runs client-side in the browser on a WebAssembly-based .NET runtime. WASI is bringing WASM out of the browser world by providing a system interface to run WebAssembly outside the web. It is a standard for how WASM modules interact with the host environment. This post will show you how to run .NET 7 on a Raspberry PI Zero 2 W using WASM and WASI.&lt;/p&gt;</summary>
@@ -250,7 +250,7 @@
     <link href="https://laurentkempe.com/2022/10/12/write-logseq-plugins-in-webassembly-using-dotnet-and-csharp/"/>
     <id>https://laurentkempe.com/2022/10/12/write-logseq-plugins-in-webassembly-using-dotnet-and-csharp/</id>
     <published>2022-10-12T05:24:08.000Z</published>
-    <updated>2024-05-03T20:02:38.091Z</updated>
+    <updated>2024-05-03T21:09:32.809Z</updated>
     
     
     <summary type="html">&lt;p&gt;I am using a tool called logseq to manage my notes. It is a fantastic tool, and I would like to be able to extend it. I am not an expert web developer, but I am a .NET developer. I would like to be able to write plugins for logseq using .NET and C#. I have found a way to do it using WebAssembly. In this post, I am going to show you how to do it.&lt;/p&gt;</summary>
@@ -275,7 +275,7 @@
     <link href="https://laurentkempe.com/2022/02/10/unit-testing-async-wpf-icommand/"/>
     <id>https://laurentkempe.com/2022/02/10/unit-testing-async-wpf-icommand/</id>
     <published>2022-02-10T19:37:38.000Z</published>
-    <updated>2024-05-03T20:02:38.091Z</updated>
+    <updated>2024-05-03T21:09:32.809Z</updated>
     
     
     <summary type="html">&lt;p&gt;In the past, within my team at &lt;a href=&quot;http://www.innoveo.com/&quot;&gt;Innoveo&lt;/a&gt;, we had several discussions about the best way to unit test async WPF ICommand. We value quality, so testing is essential to us. We decided to make the methods called by the command &lt;code&gt;internal&lt;/code&gt; so that our tests could call those.&lt;/p&gt;
@@ -299,7 +299,7 @@
     <link href="https://laurentkempe.com/2022/02/02/automate-your-dotnet-project-builds-with-nuke-a-cross-platform-build-automation-solution/"/>
     <id>https://laurentkempe.com/2022/02/02/automate-your-dotnet-project-builds-with-nuke-a-cross-platform-build-automation-solution/</id>
     <published>2022-02-02T20:26:31.000Z</published>
-    <updated>2024-05-03T20:02:38.091Z</updated>
+    <updated>2024-05-03T21:09:32.805Z</updated>
     
     
     <summary type="html">&lt;p&gt;Early in my journey in developing software, I used to start a project by setting first a way to build my software automatically each time I did a set of changes. Long, very long ago, I used scripts scheduled to run. When JetBrains shipped &lt;a href=&quot;https://www.jetbrains.com/teamcity/&quot;&gt;TeamCity&lt;/a&gt; I started to use it extensively for &lt;a href=&quot;https://laurentkempe.com/tags/NDepend/&quot;&gt;my projects&lt;/a&gt;, here is my first post about “&lt;a href=&quot;https://laurentkempe.com/2008/03/21/Set-Up-a-Build-Computer-using-VisualSVN-Team-City-MsTest-NUnit/&quot;&gt;Set Up a Build Computer using VisualSVN, Team City, MsTest, NUnit&lt;/a&gt;“ from March 21, 2008, but used it since version 1.0. Later on, I also used Azure Pipelines to build Git Diff Margin and also GitHub Actions, for example, to build and deploy those pages.&lt;/p&gt;</summary>
@@ -322,7 +322,7 @@
     <link href="https://laurentkempe.com/2021/10/19/dapr-binding-building-block-by-simple-example/"/>
     <id>https://laurentkempe.com/2021/10/19/dapr-binding-building-block-by-simple-example/</id>
     <published>2021-10-19T11:32:05.000Z</published>
-    <updated>2024-05-03T20:02:38.091Z</updated>
+    <updated>2024-05-03T21:09:32.805Z</updated>
     
     
     <summary type="html">&lt;p&gt;Till now, we have seen two &lt;a href=&quot;https://laurentkempe.com/tags/Dapr/&quot;&gt;Dapr building blocks&lt;/a&gt; which are the &lt;a href=&quot;https://docs.dapr.io/developing-applications/building-blocks/service-invocation/service-invocation-overview/&quot;&gt;service to service invocation building block&lt;/a&gt; and the &lt;a href=&quot;https://docs.dapr.io/developing-applications/building-blocks/secrets/secrets-overview/&quot;&gt;secrets building block&lt;/a&gt;. The secret building block serves to protect things like a database connection string, an API key… so that they’re never disclosed outside of the application. The service to service invocation building block serves to make calls between services in your distributed application easy. In this post, we will introduce a third one which is the &lt;a href=&quot;https://docs.dapr.io/developing-applications/building-blocks/bindings/bindings-overview/&quot;&gt;bindings building block&lt;/a&gt;. The bindings building block enables your distributed application to handle external events or invoke external services.&lt;/p&gt;</summary>
@@ -341,7 +341,7 @@
     <link href="https://laurentkempe.com/2021/04/06/accessing-dapr-secrets-building-block-using-dapr-dotnet-sdk/"/>
     <id>https://laurentkempe.com/2021/04/06/accessing-dapr-secrets-building-block-using-dapr-dotnet-sdk/</id>
     <published>2021-04-06T14:49:45.000Z</published>
-    <updated>2024-05-03T20:02:38.091Z</updated>
+    <updated>2024-05-03T21:09:32.805Z</updated>
     
     
     <summary type="html">&lt;p&gt;In all &lt;a href=&quot;https://laurentkempe.com/tags/Dapr/&quot;&gt;previous posts&lt;/a&gt;, we were looking at the Dapr service invocation building block. We have seen how to expose and call HTTP and gRPC services using it. In this post, we will see how Dapr ease developers life when it comes to deal with secrets, thanks to the secrets management building block.&lt;/p&gt;</summary>
@@ -360,7 +360,7 @@
     <link href="https://laurentkempe.com/2021/03/25/calling-dapr-service-with-grpc/"/>
     <id>https://laurentkempe.com/2021/03/25/calling-dapr-service-with-grpc/</id>
     <published>2021-03-25T17:07:50.000Z</published>
-    <updated>2024-05-03T20:02:38.091Z</updated>
+    <updated>2024-05-03T21:09:32.805Z</updated>
     
     
     <summary type="html">&lt;p&gt;In previous posts, we focused on Dapr service invocation using the HTTP protocol. Dapr, through its service invocation, can also reliably and securely communicate with other applications using gRPC. We will have a look at this other capability in this post.&lt;/p&gt;</summary>
@@ -381,7 +381,7 @@
     <link href="https://laurentkempe.com/2021/03/18/service-to-service-invocation-with-refit-and-dapr-dotnet-sdk/"/>
     <id>https://laurentkempe.com/2021/03/18/service-to-service-invocation-with-refit-and-dapr-dotnet-sdk/</id>
     <published>2021-03-18T15:20:00.000Z</published>
-    <updated>2024-05-03T20:02:38.091Z</updated>
+    <updated>2024-05-03T21:09:32.805Z</updated>
     
     
     <summary type="html">&lt;p&gt;In the last post, we have seen how to &lt;a href=&quot;https://laurentkempe.com/2021/03/16/service-to-service-invocation-with-dapr-dotnet-sdk/&quot;&gt;call a service from another service using the Dapr .NET SDK&lt;/a&gt;. In this one, we will have a look at a possible way to simplify the development of the client code using &lt;a href=&quot;https://reactiveui.github.io/refit/&quot;&gt;Refit&lt;/a&gt;, the automatic type-safe REST library for .NET Core, Xamarin, and .NET.&lt;/p&gt;</summary>
@@ -402,7 +402,7 @@
     <link href="https://laurentkempe.com/2021/03/16/service-to-service-invocation-with-dapr-dotnet-sdk/"/>
     <id>https://laurentkempe.com/2021/03/16/service-to-service-invocation-with-dapr-dotnet-sdk/</id>
     <published>2021-03-16T16:00:39.000Z</published>
-    <updated>2024-05-03T20:02:38.091Z</updated>
+    <updated>2024-05-03T21:09:32.805Z</updated>
     
     
     <summary type="html">&lt;p&gt;In the previous two posts, we tackled the way to start with Dapr and how to call services. In this one, we will see how we can leverage the Dapr .NET SDK to handle service to service calls.&lt;/p&gt;
@@ -427,7 +427,7 @@
     <link href="https://laurentkempe.com/2021/03/11/using-service-invocation-from-dapr-dotnet-sdk/"/>
     <id>https://laurentkempe.com/2021/03/11/using-service-invocation-from-dapr-dotnet-sdk/</id>
     <published>2021-03-11T15:51:49.000Z</published>
-    <updated>2024-05-03T20:02:38.091Z</updated>
+    <updated>2024-05-03T21:09:32.809Z</updated>
     
     
     <summary type="html">&lt;p&gt;In the previous post “&lt;a href=&quot;https://laurentkempe.com/2021/03/09/getting-started-with-dapr-for-dotnet-developers/&quot;&gt;Getting started with Dapr for .NET Developers&lt;/a&gt;“ we have seen how easy it was to expose a web API written in .NET and the power of exposing it through Dapr sidecar. In this post, we are looking at the different possible ways to invoke that service.&lt;/p&gt;</summary>
@@ -446,7 +446,7 @@
     <link href="https://laurentkempe.com/2021/03/09/getting-started-with-dapr-for-dotnet-developers/"/>
     <id>https://laurentkempe.com/2021/03/09/getting-started-with-dapr-for-dotnet-developers/</id>
     <published>2021-03-09T15:53:56.000Z</published>
-    <updated>2024-05-03T20:02:38.091Z</updated>
+    <updated>2024-05-03T21:09:32.805Z</updated>
     
     
     <summary type="html">&lt;p&gt;&lt;a href=&quot;https://docs.microsoft.com/en-us/dotnet/architecture/dapr-for-net-developers/&quot;&gt;Dapr for .NET Developers&lt;/a&gt; is a great book, read in a weekend, to start gaining an understanding of what &lt;a href=&quot;https://dapr.io/&quot;&gt;Dapr&lt;/a&gt; is and especially for .NET Developers. In this post, we will see how you can use .NET to create a service and run it with Dapr and what does this provides.&lt;/p&gt;</summary>
