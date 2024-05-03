@@ -15,7 +15,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"* *\nConception using generics and reflection of a search engine to index and search content in your business entities without being intrusive.\n\n\nPart 1 is available following this link Indexing and searching business entities using Lucene.Net Framework, part 1\nLucene.Net presentationLucene.Net is an open source project coming from the Java world currently incubating at the Apache Software Foundation (ASF). It is a source code port on the .NET platform using C#, done class-by-class, API-per-API, of the indexing and searching engine algorithms of Java Lucene.  \nApache Lucene is an efficient indexing and searching engine for text data. However it is not offering integrated support for document like Office Word or PDF, you need to use extensions able to extract the text content of a document in order to be able index it. This is also mandatory for markup documents like HTML.  \nLucene.Net follows scrupulously the APIs defined in the classes of the original Lucene Java version. The API names as well as the class names are preserved with the intention to follow naming guidelines of the C# language. For example, the method Hits.length() of the Java implementation is written Hits.Length() in its C# version.  \nLike the port of the APIs and the classes in C#, the algorithm of the Java version of Lucene is also ported in the C# version. This means that an index created using the Java version of Lucene is 100% compatible with it C# version, in reading, writing and updating. Therefore two processes, one written in Java and the other in C#, could achieve concurrent searches using the same index.  \nYou might consult the documentation of the last stable version, version 2.0, on the following page. To download the last stable version browse to this page. To get more information about Lucene I recommend using the pages dedicated to the Java version of Lucene which are much more consistent.  \nLucene.Net Architecture ![Lucene.Net Architecture](http://farm3.static.flickr.com/2412/2316420682_b2fe668382_o.jpg) \n\nThe lower layer is the data access layer (Storage). Then, the upper layer is about accessing the index files (data access). This layer is used by the indexing system and the searching system. On top of those we find a layer for searching and a search request parser layer used by the searching part of Lucene.Net. Identically we found a parser layer and a document layer used for the indexation part of Lucene.Net. \nTo get more information about Lucene I recommend reading the presentation on Lucene website.  \nNow that we got a better view on what is Lucene.Net about we will see in the next part how we will use it to index the properties of our business entities.  \n*This post is cross-posted on innoveo blog *and in French on my .NET community portal Tech Head Brothers.\n","dateCreated":"2008-03-07T17:16:32+00:00","dateModified":"2008-03-07T17:16:32+00:00","datePublished":"2008-03-07T17:16:32+00:00","description":"* *\nConception using generics and reflection of a search engine to index and search content in your business entities without being intrusive.","headline":"Indexing and searching business entities using Lucene.Net Framework, part 2","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-2/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-2/","keywords":"C#, innoveo solutions, ASP.NET 2.0, Tools, Interoperability, Architecture, Generics, Reflection"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"* *\nConception using generics and reflection of a search engine to index and search content in your business entities without being intrusive.\n\n\nPart 1 is available following this link Indexing and searching business entities using Lucene.Net Framework, part 1\nLucene.Net presentationLucene.Net is an open source project coming from the Java world currently incubating at the Apache Software Foundation (ASF). It is a source code port on the .NET platform using C#, done class-by-class, API-per-API, of the indexing and searching engine algorithms of Java Lucene.  \nApache Lucene is an efficient indexing and searching engine for text data. However it is not offering integrated support for document like Office Word or PDF, you need to use extensions able to extract the text content of a document in order to be able index it. This is also mandatory for markup documents like HTML.  \nLucene.Net follows scrupulously the APIs defined in the classes of the original Lucene Java version. The API names as well as the class names are preserved with the intention to follow naming guidelines of the C# language. For example, the method Hits.length() of the Java implementation is written Hits.Length() in its C# version.  \nLike the port of the APIs and the classes in C#, the algorithm of the Java version of Lucene is also ported in the C# version. This means that an index created using the Java version of Lucene is 100% compatible with it C# version, in reading, writing and updating. Therefore two processes, one written in Java and the other in C#, could achieve concurrent searches using the same index.  \nYou might consult the documentation of the last stable version, version 2.0, on the following page. To download the last stable version browse to this page. To get more information about Lucene I recommend using the pages dedicated to the Java version of Lucene which are much more consistent.  \nLucene.Net Architecture ![Lucene.Net Architecture](http://farm3.static.flickr.com/2412/2316420682_b2fe668382_o.jpg) \n\nThe lower layer is the data access layer (Storage). Then, the upper layer is about accessing the index files (data access). This layer is used by the indexing system and the searching system. On top of those we find a layer for searching and a search request parser layer used by the searching part of Lucene.Net. Identically we found a parser layer and a document layer used for the indexation part of Lucene.Net. \nTo get more information about Lucene I recommend reading the presentation on Lucene website.  \nNow that we got a better view on what is Lucene.Net about we will see in the next part how we will use it to index the properties of our business entities.  \n*This post is cross-posted on innoveo blog *and in French on my .NET community portal Tech Head Brothers.\n","dateCreated":"2008-03-07T17:16:32+00:00","dateModified":"2008-03-07T17:16:32+00:00","datePublished":"2008-03-07T17:16:32+00:00","description":"* *\nConception using generics and reflection of a search engine to index and search content in your business entities without being intrusive.","headline":"Indexing and searching business entities using Lucene.Net Framework, part 2","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-2/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-2/","keywords":"innoveo solutions, ASP.NET 2.0, Tools, Interoperability, C#, Architecture, Generics, Reflection"}</script>
     <meta name="description" content="* * Conception using generics and reflection of a search engine to index and search content in your business entities without being intrusive.">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Indexing and searching business entities using Lucene.Net Framework, part 2">
@@ -27,11 +27,11 @@
 <meta property="article:published_time" content="2008-03-07T17:16:32.000Z">
 <meta property="article:modified_time" content="2008-03-07T17:16:32.000Z">
 <meta property="article:author" content="Laurent Kempé">
-<meta property="article:tag" content="C#">
 <meta property="article:tag" content="innoveo solutions">
 <meta property="article:tag" content="ASP.NET 2.0">
 <meta property="article:tag" content="Tools">
 <meta property="article:tag" content="Interoperability">
+<meta property="article:tag" content="C#">
 <meta property="article:tag" content="Architecture">
 <meta property="article:tag" content="Generics">
 <meta property="article:tag" content="Reflection">
@@ -50,7 +50,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-klf7upqqg5fwioaoic4ecr22beyglygpmzlqval99sysarbravlygd1fvrbp.min.css">
+<link rel="stylesheet" href="/assets/css/style-zjxsdasd63khfsujdqp1kdryfomvrt9o10hmhgdfmmnnscfhayaa578ul88k.min.css">
 
     <!--STYLES END-->
     
@@ -441,16 +441,6 @@
         
         
             
-                <li class="post-action">
-                    <a
-                        class="post-action-btn btn btn--default"
-                        href="#disqus_thread"
-                        aria-label="Leave a comment"
-                    >
-                        <i class="fa fa-comment"></i>
-                    </a>
-                </li>
-            
         
         <li class="post-action">
             
@@ -465,10 +455,6 @@
 
         
         
-            
-                <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</div>
             
         
     </div>
@@ -569,16 +555,6 @@
             </li>
         
         
-            
-                <li class="post-action">
-                    <a
-                        class="post-action-btn btn btn--default"
-                        href="#disqus_thread"
-                        aria-label="Leave a comment"
-                    >
-                        <i class="fa fa-comment"></i>
-                    </a>
-                </li>
             
         
         <li class="post-action">
@@ -686,28 +662,11 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-dmmcmi2whewetrdkt6qll6pvwhnnnjrkywqnpmcw1qxs3sqzftnqpero1cdw.min.js"></script>
+<script src="/assets/js/script-gc5nbgrgndsbifceejzlbu0nsmeaosndqzm4wm1ogs5gwbfpxykmov34nj6z.min.js"></script>
 
 <!--SCRIPTS END-->
 
 
-    
-        <script>
-          var disqus_config = function() {
-            this.page.url = 'https://laurentkempe.com/2008/03/07/Indexing-and-searching-business-entities-using-LuceneNet-Framework-part-2/';
-              
-            this.page.identifier = '20080307061632';
-              
-          };
-          (function() {
-            var d = document, s = d.createElement('script');
-            var disqus_shortname = 'laurentkempe';
-            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-
-            s.setAttribute('data-timestamp', +new Date());
-            (d.head || d.body).appendChild(s);
-          })();
-        </script>
     
 
 
