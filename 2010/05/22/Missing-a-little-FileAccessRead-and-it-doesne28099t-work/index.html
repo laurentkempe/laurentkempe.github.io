@@ -16,12 +16,12 @@
         
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"What is the difference between this code\n  using (var fileStream = new FileStream(settingsFilename, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FileMode.Open)) { &nbsp;&nbsp;&nbsp;&nbsp;return ReadSettings(fileStream); }  \nAnd this code\n\n  using (var fileStream = new FileStream(settingsFilename, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FileMode.Open, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FileAccess.Read)) { &nbsp;&nbsp;&nbsp;&nbsp;return ReadSettings(fileStream); }    \n\nAlmost nothing, just a little FileAccess.Read !\nBut this little thing makes a big difference when you run your software in a secured environment.\nThe application with this piece of code was deployed to a customer reporting that the application was crashing at a the point of reading the settings. Weird, really weird. After getting back the log and I finally discovered that using juste FileMode.Open needs modify rights and that’s was the issue because the customer deploy the settings file on a folder in which the user doesn’t have the modify rights.\n","dateCreated":"2010-05-21T23:19:21+00:00","dateModified":"2010-05-21T23:19:21+00:00","datePublished":"2010-05-21T23:19:21+00:00","description":"","headline":"Missing a little FileAccess.Read and it doesn’t work","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/05/22/Missing-a-little-FileAccessRead-and-it-doesne28099t-work/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/05/22/Missing-a-little-FileAccessRead-and-it-doesne28099t-work/","keywords":".NET Framework 3.5"}</script>
-    <meta name="description" content="What is the difference between this code   using (var fileStream &#x3D; new FileStream(settingsFilename, &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbs">
+    <meta name="description" content="What is the difference between this code   using (var fileStream &#x3D; new FileStream(settingsFilename, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;nbs">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Missing a little FileAccess.Read and it doesn’t work">
 <meta property="og:url" content="https://laurentkempe.com/2010/05/22/Missing-a-little-FileAccessRead-and-it-doesne28099t-work/index.html">
 <meta property="og:site_name" content="Laurent Kempé">
-<meta property="og:description" content="What is the difference between this code   using (var fileStream &#x3D; new FileStream(settingsFilename, &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbs">
+<meta property="og:description" content="What is the difference between this code   using (var fileStream &#x3D; new FileStream(settingsFilename, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;nbs">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2010-05-21T23:19:21.000Z">
 <meta property="article:modified_time" content="2010-05-21T23:19:21.000Z">
@@ -41,7 +41,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-zjxsdasd63khfsujdqp1kdryfomvrt9o10hmhgdfmmnnscfhayaa578ul88k.min.css">
+<link rel="stylesheet" href="/assets/css/style-my4sluajdnleqz0aayv8zhaqhlgqokfnxsvp3bkeejc7z6tygmqaeza2mzei.min.css">
 
     <!--STYLES END-->
     
@@ -646,7 +646,7 @@ And this code
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-gc5nbgrgndsbifceejzlbu0nsmeaosndqzm4wm1ogs5gwbfpxykmov34nj6z.min.js"></script>
+<script src="/assets/js/script-2caieyqhj693jkqlfljjytfsvtqqoi1jxz7wkb41uqr48apnft31glslrl1l.min.js"></script>
 
 <!--SCRIPTS END-->
 

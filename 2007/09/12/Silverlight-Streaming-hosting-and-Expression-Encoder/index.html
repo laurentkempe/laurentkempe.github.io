@@ -43,7 +43,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-zjxsdasd63khfsujdqp1kdryfomvrt9o10hmhgdfmmnnscfhayaa578ul88k.min.css">
+<link rel="stylesheet" href="/assets/css/style-my4sluajdnleqz0aayv8zhaqhlgqokfnxsvp3bkeejc7z6tygmqaeza2mzei.min.css">
 
     <!--STYLES END-->
     
@@ -333,7 +333,7 @@
 <p>To start you have to modify the default.html to use the Silverlight JavaScript script delivered by Silverlight Streaming:</p>
 <p><span style="color: rgb(0,0,255)">&lt;</span><span style="color: rgb(163,21,21)">script</span> <span style="color: rgb(255,0,0)">type</span><span style="color: rgb(0,0,255)">&#x3D;’text&#x2F;javascript’</span> <span style="color: rgb(255,0,0)">src</span><span style="color: rgb(0,0,255)">&#x3D;”Silverlight.js”&gt;&lt;&#x2F;</span><span style="color: rgb(163,21,21)">script</span><span style="color: rgb(0,0,255)">&gt;</span></p>
 <p><a target="_blank" rel="noopener" href="http://11011.net/software/vspaste"></a>by</p>
-<p><span style="color: rgb(0,0,255)">&lt;</span><span style="color: rgb(163,21,21)">script</span> <span style="color: rgb(255,0,0)">type</span><span style="color: rgb(0,0,255)">&#x3D;”text&#x2F;javascript”</span> <span style="color: rgb(255,0,0)">src</span><span style="color: rgb(0,0,255)">&#x3D;”<a target="_blank" rel="noopener" href="http://agappdom.net/h/silverlight.js&quot;&gt;">http://agappdom.net/h/silverlight.js&quot;&gt;</a>&lt;&#x2F;</span><span style="color: rgb(163,21,21)">script</span><span style="color: rgb(0,0,255)">&gt;<br></span><br><a target="_blank" rel="noopener" href="http://11011.net/software/vspaste"></a></p>
+<p><span style="color: rgb(0,0,255)">&lt;</span><span style="color: rgb(163,21,21)">script</span> <span style="color: rgb(255,0,0)">type</span><span style="color: rgb(0,0,255)">&#x3D;”text&#x2F;javascript”</span> <span style="color: rgb(255,0,0)">src</span><span style="color: rgb(0,0,255)">&#x3D;”<a target="_blank" rel="noopener" href="http://agappdom.net/h/silverlight.js%22%3E">http://agappdom.net/h/silverlight.js&quot;&gt;</a>&lt;&#x2F;</span><span style="color: rgb(163,21,21)">script</span><span style="color: rgb(0,0,255)">&gt;<br></span><br><a target="_blank" rel="noopener" href="http://11011.net/software/vspaste"></a></p>
 <p>This is recommended by the documentation, but it is not mandatory:</p>
 <blockquote>
 <p>Instead of hosting Silverlight.js on your own web site and using it, you should use <tt><a target="_blank" rel="noopener" href="http://agappdom.net/h/silverlight.js">http://agappdom.net/h/silverlight.js</a></tt></p>
@@ -357,7 +357,7 @@
 <p>}</p>
 <p><a target="_blank" rel="noopener" href="http://11011.net/software/vspaste"></a></p>
 <p>Now you need a way to get back this the real url of you video out of the streaming:&#x2F;4065&#x2F;livewriterdemo&#x2F;livewriterdemo.wmv, this is done automatically by the script doing a post to Silverlight Streaming server that returns the following javascript:</p>
-<p>SLStreaming._StartApp(“bl2”, null<br>, {}<br>, []<br>, [“<a target="_blank" rel="noopener" href="http://msbluelight-0.agappdom.net/e1/d/4065/8.w/63325188000/0.UZcUXMfJgIK0I0HcP-SQGzhvvVE/livewriterdemo.wmv&quot;]">http://msbluelight-0.agappdom.net/e1/d/4065/8.w/63325188000/0.UZcUXMfJgIK0I0HcP-SQGzhvvVE/livewriterdemo.wmv&quot;]</a>);</p>
+<p>SLStreaming._StartApp(“bl2”, null<br>, {}<br>, []<br>, [“<a target="_blank" rel="noopener" href="http://msbluelight-0.agappdom.net/e1/d/4065/8.w/63325188000/0.UZcUXMfJgIK0I0HcP-SQGzhvvVE/livewriterdemo.wmv%22]">http://msbluelight-0.agappdom.net/e1/d/4065/8.w/63325188000/0.UZcUXMfJgIK0I0HcP-SQGzhvvVE/livewriterdemo.wmv&quot;]</a>);</p>
 <p>Now we need to take car of the real url in the _handleLoad method we change the call to the _playNextVideo to a new method ChangeVideo:</p>
 <p>StartPlayer_0.prototype&#x3D; {<br>    _handleLoad: <span style="color: rgb(0,0,255)">function</span>() {<br>        <span style="color: rgb(0,0,255)">this</span>._player &#x3D; $create(   ExtendedPlayer.Player,<br>                                  { <span style="color: rgb(0,128,0)">&#x2F;&#x2F; properties<br></span>                                    autoPlay    : <span style="color: rgb(0,0,255)">true</span>,<br>                                    volume      : 1.0,<br>                                    muted       : <span style="color: rgb(0,0,255)">false<br></span>                                  },<br>                                  { <span style="color: rgb(0,128,0)">&#x2F;&#x2F; event handlers<br></span>                                    mediaEnded: Function.createDelegate(<span style="color: rgb(0,0,255)">this</span>, <span style="color: rgb(0,0,255)">this</span>._onMediaEnded),<br>                                    mediaFailed: Function.createDelegate(<span style="color: rgb(0,0,255)">this</span>, <span style="color: rgb(0,0,255)">this</span>._onMediaFailed)<br>                                  },<br>                                  <span style="color: rgb(0,0,255)">null</span>, $get(<span style="color: rgb(0,0,255)">this</span>._hostname)  );<br>        <span style="color: rgb(0,128,0)">&#x2F;&#x2F;this._playNextVideo();<br></span>        <span style="color: rgb(0,0,255)">this</span>.ChangeVideo();<br>    },<br>    ChangeVideo: <span style="color: rgb(0,0,255)">function</span>(){            </p>
 <pre><code>    &lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;var&lt;/span&gt; params = $get(&lt;span style=&quot;color: rgb(0,0,255)&quot;&gt;this&lt;/span&gt;._hostname).InitParams;
@@ -693,7 +693,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-gc5nbgrgndsbifceejzlbu0nsmeaosndqzm4wm1ogs5gwbfpxykmov34nj6z.min.js"></script>
+<script src="/assets/js/script-2caieyqhj693jkqlfljjytfsvtqqoi1jxz7wkb41uqr48apnft31glslrl1l.min.js"></script>
 
 <!--SCRIPTS END-->
 
