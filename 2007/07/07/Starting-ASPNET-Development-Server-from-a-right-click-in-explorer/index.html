@@ -15,7 +15,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"**Update: **Following the comment of Jon Galloway\nI know that there are other solutions doing this but I was just asked about how to do it today (hey Christine ;) and had this registry file stored somewhere for a while waiting for a blog post.\n\n\nSave this to a file with an extension .reg, e.g. “asp.net web server here.reg”:\nWindows Registry Editor Version 5.00  \n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Classes\\Folder\\shell\\VS2005 WebServer]@&#x3D;”ASP.NET 2.0 Web Server Here”  \n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Classes\\Folder\\shell\\VS2005 WebServer\\command]@&#x3D;”C:\\Windows\\Microsoft.NET\\Framework\\v2.0.50727\\Webdev.WebServer.exe &#x2F;port:9081 &#x2F;path:&quot;%1&quot;“ \nYou might also change the port used to start the ASP.NET Development Server. If this option is not specified then the port 80 is used.  \nThen double click on the .reg file to save the settings in the registry.  \nNow you will have access to the following right click menu in explorer and you can browse your site without running Visual Studio:  \n \nUpdate: This is not needed anymore\nYou will need to copy hstart.exe to your C:\\Windows\\system32\\ first, or change the path used in the .reg file. This little tool (3kb); Hidden start, by NTWind Software is really good for “small startup manager that allows console applications to be started without any windows in the background.”. Exactly what is need in our case. \n","dateCreated":"2007-07-06T22:18:37+00:00","dateModified":"2010-05-07T05:46:47+00:00","datePublished":"2007-07-06T22:18:37+00:00","description":"**Update: **Following the comment of Jon Galloway\nI know that there are other solutions doing this but I was just asked about how to do it today (hey Christine ;) and had this registry file stored somewhere for a while waiting for a blog post.","headline":"Starting ASP.NET Development Server from a right click in explorer","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/07/07/Starting-ASPNET-Development-Server-from-a-right-click-in-explorer/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2007/07/07/Starting-ASPNET-Development-Server-from-a-right-click-in-explorer/","keywords":"ASP.NET 2.0, ASP.NET, Visual Studio, Tools"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"**Update: **Following the comment of Jon Galloway\nI know that there are other solutions doing this but I was just asked about how to do it today (hey Christine ;) and had this registry file stored somewhere for a while waiting for a blog post.\n\n\nSave this to a file with an extension .reg, e.g. “asp.net web server here.reg”:\nWindows Registry Editor Version 5.00  \n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Classes\\Folder\\shell\\VS2005 WebServer]@&#x3D;”ASP.NET 2.0 Web Server Here”  \n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Classes\\Folder\\shell\\VS2005 WebServer\\command]@&#x3D;”C:\\Windows\\Microsoft.NET\\Framework\\v2.0.50727\\Webdev.WebServer.exe &#x2F;port:9081 &#x2F;path:&quot;%1&quot;“ \nYou might also change the port used to start the ASP.NET Development Server. If this option is not specified then the port 80 is used.  \nThen double click on the .reg file to save the settings in the registry.  \nNow you will have access to the following right click menu in explorer and you can browse your site without running Visual Studio:  \n \nUpdate: This is not needed anymore\nYou will need to copy hstart.exe to your C:\\Windows\\system32\\ first, or change the path used in the .reg file. This little tool (3kb); Hidden start, by NTWind Software is really good for “small startup manager that allows console applications to be started without any windows in the background.”. Exactly what is need in our case. \n","dateCreated":"2007-07-06T22:18:37+00:00","dateModified":"2010-05-07T05:46:47+00:00","datePublished":"2007-07-06T22:18:37+00:00","description":"**Update: **Following the comment of Jon Galloway\nI know that there are other solutions doing this but I was just asked about how to do it today (hey Christine ;) and had this registry file stored somewhere for a while waiting for a blog post.","headline":"Starting ASP.NET Development Server from a right click in explorer","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/07/07/Starting-ASPNET-Development-Server-from-a-right-click-in-explorer/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2007/07/07/Starting-ASPNET-Development-Server-from-a-right-click-in-explorer/","keywords":"ASP.NET 2.0, ASP.NET, Visual Studio, Tools"}</script>
     <meta name="description" content="**Update: **Following the comment of Jon Galloway I know that there are other solutions doing this but I was just asked about how to do it today (hey Christine ;) and had this registry file stored som">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Starting ASP.NET Development Server from a right click in explorer">
@@ -46,7 +46,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-doniingxleqtskehawedou7bzpostkgz4qlz0yobiabzhqmnylypjqwegr3d.min.css">
+<link rel="stylesheet" href="/assets/css/style-nj2tcgsxvavixx0ekjaz3nmbwnwdxxgtchtg7syzmgnqgmjuvsvnfsetvjhz.min.css">
 
     <!--STYLES END-->
     
@@ -195,6 +195,22 @@
                         >
                         <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://bsky.app/profile/laurentkempe.com"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Bluesky"
+                        >
+                        <i class="sidebar-button-icon fab fa-bluesky" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Bluesky</span>
                     </a>
             </li>
             
@@ -656,7 +672,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-za8r7uewgi1nvhjmgqzvf7mob7ezchqoma8q4168evleeatdyd3r22ubsg0a.min.js"></script>
+<script src="/assets/js/script-a0lxi21n9lh3kaitgglgcvbwmxqpissmevjsszlcqluototinhfehoprw4nf.min.js"></script>
 
 <!--SCRIPTS END-->
 

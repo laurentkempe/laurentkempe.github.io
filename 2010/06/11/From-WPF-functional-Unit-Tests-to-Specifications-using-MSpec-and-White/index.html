@@ -15,7 +15,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I am in the train back home and wanted to try out quickly to migrate our WPF functional tests written has Unit Tests to BDD Specifications. \nHere is the code I started from, pure Unit Test using NUnit and White\n\n  [Test] public void Opening_Valid_VersionZip() { &nbsp;&nbsp;&nbsp;&nbsp;OpenAndWait(\"Product.zip\");  &nbsp;&nbsp;&nbsp;&nbsp;Assert.That(MainWindow.Title.Equals(\"Product.zip - Innoveo Skye® Editor\")); &nbsp;&nbsp;&nbsp;&nbsp;Assert.That(Status.Text.Equals(\"product\")); &nbsp;&nbsp;&nbsp;&nbsp;Assert.That(ProductTree.Nodes.Count &gt;= 1); &nbsp;&nbsp;&nbsp;&nbsp;Assert.IsFalse(SplashScreen.Visible); &nbsp;&nbsp;&nbsp;&nbsp;Assert.IsTrue(SaveButton.Enabled); &nbsp;&nbsp;&nbsp;&nbsp;Assert.IsTrue(ActivateButton.Enabled); }  \n\nNow the same functional test written as a BDD specification using MSpec\n  [Subject(\"OpenVersionZip\")] public class when_user_open_valid_versionzip : MainWindowViewSpecs { &nbsp;&nbsp;&nbsp;&nbsp;Establish context = () =&gt; {};  &nbsp;&nbsp;&nbsp;&nbsp;Because of = () =&gt; OpenAndWait(\"Product.zip\");  &nbsp;&nbsp;&nbsp;&nbsp;It should_display_mainwindow_title_correctly = () =&gt;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MainWindow.Title.ShouldEqual(\"Product.zip - Innoveo Skye® Editor\");  &nbsp;&nbsp;&nbsp;&nbsp;It should_display_status_correctly = () =&gt;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status.Text.ShouldEqual(\"product\");  &nbsp;&nbsp;&nbsp;&nbsp;It should_display_the_product_tree = () =&gt;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ProductTree.Nodes.ShouldNotBeNull();  &nbsp;&nbsp;&nbsp;&nbsp;It should_hide_the_splashscreen = () =&gt;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SplashScreen.Visible.ShouldBeFalse();  &nbsp;&nbsp;&nbsp;&nbsp;It should_enable_save_button = () =&gt;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SaveButton.Enabled.ShouldBeTrue();  &nbsp;&nbsp;&nbsp;&nbsp;It should_enable_activate_button = () =&gt;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ActivateButton.Enabled.ShouldBeTrue(); }  \n\nAnd the output in ReSharper MSpec plugin\n \nWhich one do you prefer? I personally have made my choice.\n","dateCreated":"2010-06-11T01:21:22+00:00","dateModified":"2010-06-13T18:09:10+00:00","datePublished":"2010-06-11T01:21:22+00:00","description":"I am in the train back home and wanted to try out quickly to migrate our WPF functional tests written has Unit Tests to BDD Specifications. \nHere is the code I started from, pure Unit Test using NUnit and White","headline":"From WPF functional Unit Tests to Specifications using MSpec and White","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/06/11/From-WPF-functional-Unit-Tests-to-Specifications-using-MSpec-and-White/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/06/11/From-WPF-functional-Unit-Tests-to-Specifications-using-MSpec-and-White/","keywords":"MSpec, WPF, unit test, white"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I am in the train back home and wanted to try out quickly to migrate our WPF functional tests written has Unit Tests to BDD Specifications. \nHere is the code I started from, pure Unit Test using NUnit and White\n\n  [Test] public void Opening_Valid_VersionZip() { &nbsp;&nbsp;&nbsp;&nbsp;OpenAndWait(\"Product.zip\");  &nbsp;&nbsp;&nbsp;&nbsp;Assert.That(MainWindow.Title.Equals(\"Product.zip - Innoveo Skye® Editor\")); &nbsp;&nbsp;&nbsp;&nbsp;Assert.That(Status.Text.Equals(\"product\")); &nbsp;&nbsp;&nbsp;&nbsp;Assert.That(ProductTree.Nodes.Count &gt;= 1); &nbsp;&nbsp;&nbsp;&nbsp;Assert.IsFalse(SplashScreen.Visible); &nbsp;&nbsp;&nbsp;&nbsp;Assert.IsTrue(SaveButton.Enabled); &nbsp;&nbsp;&nbsp;&nbsp;Assert.IsTrue(ActivateButton.Enabled); }  \n\nNow the same functional test written as a BDD specification using MSpec\n  [Subject(\"OpenVersionZip\")] public class when_user_open_valid_versionzip : MainWindowViewSpecs { &nbsp;&nbsp;&nbsp;&nbsp;Establish context = () =&gt; {};  &nbsp;&nbsp;&nbsp;&nbsp;Because of = () =&gt; OpenAndWait(\"Product.zip\");  &nbsp;&nbsp;&nbsp;&nbsp;It should_display_mainwindow_title_correctly = () =&gt;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MainWindow.Title.ShouldEqual(\"Product.zip - Innoveo Skye® Editor\");  &nbsp;&nbsp;&nbsp;&nbsp;It should_display_status_correctly = () =&gt;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status.Text.ShouldEqual(\"product\");  &nbsp;&nbsp;&nbsp;&nbsp;It should_display_the_product_tree = () =&gt;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ProductTree.Nodes.ShouldNotBeNull();  &nbsp;&nbsp;&nbsp;&nbsp;It should_hide_the_splashscreen = () =&gt;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SplashScreen.Visible.ShouldBeFalse();  &nbsp;&nbsp;&nbsp;&nbsp;It should_enable_save_button = () =&gt;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SaveButton.Enabled.ShouldBeTrue();  &nbsp;&nbsp;&nbsp;&nbsp;It should_enable_activate_button = () =&gt;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ActivateButton.Enabled.ShouldBeTrue(); }  \n\nAnd the output in ReSharper MSpec plugin\n \nWhich one do you prefer? I personally have made my choice.\n","dateCreated":"2010-06-11T01:21:22+00:00","dateModified":"2010-06-13T18:09:10+00:00","datePublished":"2010-06-11T01:21:22+00:00","description":"I am in the train back home and wanted to try out quickly to migrate our WPF functional tests written has Unit Tests to BDD Specifications. \nHere is the code I started from, pure Unit Test using NUnit and White","headline":"From WPF functional Unit Tests to Specifications using MSpec and White","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/06/11/From-WPF-functional-Unit-Tests-to-Specifications-using-MSpec-and-White/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/06/11/From-WPF-functional-Unit-Tests-to-Specifications-using-MSpec-and-White/","keywords":"MSpec, WPF, unit test, white"}</script>
     <meta name="description" content="I am in the train back home and wanted to try out quickly to migrate our WPF functional tests written has Unit Tests to BDD Specifications.  Here is the code I started from, pure Unit Test using NUnit">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="From WPF functional Unit Tests to Specifications using MSpec and White">
@@ -46,7 +46,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-doniingxleqtskehawedou7bzpostkgz4qlz0yobiabzhqmnylypjqwegr3d.min.css">
+<link rel="stylesheet" href="/assets/css/style-nj2tcgsxvavixx0ekjaz3nmbwnwdxxgtchtg7syzmgnqgmjuvsvnfsetvjhz.min.css">
 
     <!--STYLES END-->
     
@@ -195,6 +195,22 @@
                         >
                         <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://bsky.app/profile/laurentkempe.com"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Bluesky"
+                        >
+                        <i class="sidebar-button-icon fab fa-bluesky" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Bluesky</span>
                     </a>
             </li>
             
@@ -653,7 +669,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-za8r7uewgi1nvhjmgqzvf7mob7ezchqoma8q4168evleeatdyd3r22ubsg0a.min.js"></script>
+<script src="/assets/js/script-a0lxi21n9lh3kaitgglgcvbwmxqpissmevjsszlcqluototinhfehoprw4nf.min.js"></script>
 
 <!--SCRIPTS END-->
 

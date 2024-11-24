@@ -15,7 +15,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"In my development process I do use what Rob is describing in his post “Crazy Talk: Reducing ORM Friction” with some slight differences.\nFor example I developed Tech Head Brothers portal this way, as Innoveo Solutions web site. I use TDD and Domain Driven Development and I keep the mapping as one of the last step for my implementation.\n\n\nI do have a generic Repository interface as following:     \nusing System;\nusing System.Collections.Generic;\nusing System.Linq;\nnamespace TechHeadBrothers.Portal.Infrastructure.Interfaces\n{\n    &#x2F;&#x2F;&#x2F; \n    &#x2F;&#x2F;&#x2F; IRepository exposes all methods to access the data repository\n    &#x2F;&#x2F;&#x2F; \n    public interface IRepository\n    {\n        void InitializeRepository();\n        bool Save(T entity) where T : class;\n        bool SaveAll(IList entities) where T : class;\n        bool Delete(string id) where T : class;\n        T Find(string id) where T : class;\n        IQueryable Find();\n        IQueryable DetachedFind();\n        IQueryable Find(System.Linq.Expressions.Expression&lt;Func&lt;T, bool&gt;&gt; expression);\n        int Count();\n        int Count(System.Linq.Expressions.Expression&lt;Func&lt;T, bool&gt;&gt; expression);\n    }\n}\n   \n\nMy ORM mapping tool of choice is Euss. And here comes the slight difference, I do have one implementation of my interface leveraging Euss, and that’s it. All different possibilities are handled by Euss. During my work on the definition of the domain I took the habit to use an Euss XML Engine or an Euss Memory Engine. I use those two engine for my unit test and my real application.\nFollowing the lean principle I postpone the choice of the data repository till the last minute, when I know more about the real need. So it really happen that I stay with an XML Engine so that all my data are stored in an XML file. If I need more I go to an Euss SQL Mapper Engine and then define the mapping.\nSo I moved to the ORM framework the different implementations.\nNow I am still free to go to another ORM, or something else, by using the interface IRepository.\nI used several time this technique and I am currently happy about it.\n","dateCreated":"2008-11-05T06:20:24+00:00","dateModified":"2008-11-05T06:20:24+00:00","datePublished":"2008-11-05T06:20:24+00:00","description":"In my development process I do use what Rob is describing in his post “Crazy Talk: Reducing ORM Friction” with some slight differences.\nFor example I developed Tech Head Brothers portal this way, as Innoveo Solutions web site. I use TDD and Domain Driven Development and I keep the mapping as one of the last step for my implementation.","headline":"Follow up on “Reducing ORM Friction” by Rob Conery","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/11/05/Follow-up-on-e2809cReducing-ORM-Frictione2809d-by-Rob-Conery/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2008/11/05/Follow-up-on-e2809cReducing-ORM-Frictione2809d-by-Rob-Conery/","keywords":"Agile, unit test, Euss, ORM"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"In my development process I do use what Rob is describing in his post “Crazy Talk: Reducing ORM Friction” with some slight differences.\nFor example I developed Tech Head Brothers portal this way, as Innoveo Solutions web site. I use TDD and Domain Driven Development and I keep the mapping as one of the last step for my implementation.\n\n\nI do have a generic Repository interface as following:     \nusing System;\nusing System.Collections.Generic;\nusing System.Linq;\nnamespace TechHeadBrothers.Portal.Infrastructure.Interfaces\n{\n    &#x2F;&#x2F;&#x2F; \n    &#x2F;&#x2F;&#x2F; IRepository exposes all methods to access the data repository\n    &#x2F;&#x2F;&#x2F; \n    public interface IRepository\n    {\n        void InitializeRepository();\n        bool Save(T entity) where T : class;\n        bool SaveAll(IList entities) where T : class;\n        bool Delete(string id) where T : class;\n        T Find(string id) where T : class;\n        IQueryable Find();\n        IQueryable DetachedFind();\n        IQueryable Find(System.Linq.Expressions.Expression&lt;Func&lt;T, bool&gt;&gt; expression);\n        int Count();\n        int Count(System.Linq.Expressions.Expression&lt;Func&lt;T, bool&gt;&gt; expression);\n    }\n}\n   \n\nMy ORM mapping tool of choice is Euss. And here comes the slight difference, I do have one implementation of my interface leveraging Euss, and that’s it. All different possibilities are handled by Euss. During my work on the definition of the domain I took the habit to use an Euss XML Engine or an Euss Memory Engine. I use those two engine for my unit test and my real application.\nFollowing the lean principle I postpone the choice of the data repository till the last minute, when I know more about the real need. So it really happen that I stay with an XML Engine so that all my data are stored in an XML file. If I need more I go to an Euss SQL Mapper Engine and then define the mapping.\nSo I moved to the ORM framework the different implementations.\nNow I am still free to go to another ORM, or something else, by using the interface IRepository.\nI used several time this technique and I am currently happy about it.\n","dateCreated":"2008-11-05T06:20:24+00:00","dateModified":"2008-11-05T06:20:24+00:00","datePublished":"2008-11-05T06:20:24+00:00","description":"In my development process I do use what Rob is describing in his post “Crazy Talk: Reducing ORM Friction” with some slight differences.\nFor example I developed Tech Head Brothers portal this way, as Innoveo Solutions web site. I use TDD and Domain Driven Development and I keep the mapping as one of the last step for my implementation.","headline":"Follow up on “Reducing ORM Friction” by Rob Conery","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/11/05/Follow-up-on-e2809cReducing-ORM-Frictione2809d-by-Rob-Conery/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2008/11/05/Follow-up-on-e2809cReducing-ORM-Frictione2809d-by-Rob-Conery/","keywords":"Agile, unit test, Euss, ORM"}</script>
     <meta name="description" content="In my development process I do use what Rob is describing in his post “Crazy Talk: Reducing ORM Friction” with some slight differences. For example I developed Tech Head Brothers portal this way, as I">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Follow up on “Reducing ORM Friction” by Rob Conery">
@@ -44,7 +44,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-doniingxleqtskehawedou7bzpostkgz4qlz0yobiabzhqmnylypjqwegr3d.min.css">
+<link rel="stylesheet" href="/assets/css/style-nj2tcgsxvavixx0ekjaz3nmbwnwdxxgtchtg7syzmgnqgmjuvsvnfsetvjhz.min.css">
 
     <!--STYLES END-->
     
@@ -193,6 +193,22 @@
                         >
                         <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://bsky.app/profile/laurentkempe.com"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Bluesky"
+                        >
+                        <i class="sidebar-button-icon fab fa-bluesky" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Bluesky</span>
                     </a>
             </li>
             
@@ -674,7 +690,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-za8r7uewgi1nvhjmgqzvf7mob7ezchqoma8q4168evleeatdyd3r22ubsg0a.min.js"></script>
+<script src="/assets/js/script-a0lxi21n9lh3kaitgglgcvbwmxqpissmevjsszlcqluototinhfehoprw4nf.min.js"></script>
 
 <!--SCRIPTS END-->
 

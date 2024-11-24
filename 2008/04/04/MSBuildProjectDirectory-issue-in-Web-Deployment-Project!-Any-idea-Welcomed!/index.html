@@ -15,7 +15,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I go crazy with a stupid error!\nI try to have my web deployment project use the property MSBuildProjectDirectory like this:\n\n                       \n\n  &lt;Target Name&#x3D;”NDepend“&gt;    &lt;Message Text&#x3D;”#——— Executing NDepend ———#“ Importance&#x3D;”normal“&#x2F;&gt;    &lt;Message Text&#x3D;”NDepend ProjectFilePath: $(NDependProjectFilePath)“ Importance&#x3D;”normal“&#x2F;&gt;    &lt;Message Text&#x3D;”NDepend OutDir: $(NDpendOutputDir)“ Importance&#x3D;”normal“&#x2F;&gt;    &lt;NDependTask NDependConsoleExePath&#x3D;”$(NDependPath)“           ProjectFilePath&#x3D;”$(MSBuildProjectDirectory)....\\Tests\\NDepend\\TechHeadBrothers.Portal.xml“           OutDir&#x3D;”$(MSBuildProjectDirectory)....\\Tests\\Output\\NDependOut“ &#x2F;&gt;  \n    [](http://11011.net/software/vspaste)&lt;/td&gt;\n&lt;/tr&gt;\n\n  \n\n\n\nAnd with Visual Studio 2008 I have the following error:\nError    1    The NDepend project file T:_Projects_handsup\\Portal_HandsUP\\Deployment\\TechHeadBrothers.Portal.csproj_deploy....\\Tests\\NDepend\\TechHeadBrothers.Portal.xml can’t be found.    \nSo I am getting the correct folder but the filename of the project file too. Weird.\nIn the documentation there are saying that \n\nMSBuildProjectDirectory\nThe absolute path of the directory where the project file is located, for example, C:\\MyCompany\\MyProduct.\n\nBy I am getting\n\nMSBuildProjectFullPath\nThe absolute path and complete file name of the project file, for example, C:\\MyCompany\\MyProduct\\MyApp.proj\n\nAny idea would be greatly appreciated!\nUpdate: In fact I mixed two things folder and files. TechHeadBrothers.Portal.csproj_deploy is a folder and I thought it was a file :-( too bad\nNow the second issue is that there is a bug in NDepend MSBuild task that I communicated to Patrick (the author) and he fixed and I could test it. It will be released next week. I will post about my integration of NDepend with Team City soon.\n","dateCreated":"2008-04-04T01:31:50+00:00","dateModified":"2008-04-04T01:31:50+00:00","datePublished":"2008-04-04T01:31:50+00:00","description":"I go crazy with a stupid error!\nI try to have my web deployment project use the property MSBuildProjectDirectory like this:","headline":"MSBuildProjectDirectory issue in Web Deployment Project! Any idea Welcomed!","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/04/04/MSBuildProjectDirectory-issue-in-Web-Deployment-Project!-Any-idea-Welcomed!/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2008/04/04/MSBuildProjectDirectory-issue-in-Web-Deployment-Project!-Any-idea-Welcomed!/","keywords":"Tech Head Brothers, continuous integration, Team City"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I go crazy with a stupid error!\nI try to have my web deployment project use the property MSBuildProjectDirectory like this:\n\n                       \n\n  &lt;Target Name&#x3D;”NDepend“&gt;    &lt;Message Text&#x3D;”#——— Executing NDepend ———#“ Importance&#x3D;”normal“&#x2F;&gt;    &lt;Message Text&#x3D;”NDepend ProjectFilePath: $(NDependProjectFilePath)“ Importance&#x3D;”normal“&#x2F;&gt;    &lt;Message Text&#x3D;”NDepend OutDir: $(NDpendOutputDir)“ Importance&#x3D;”normal“&#x2F;&gt;    &lt;NDependTask NDependConsoleExePath&#x3D;”$(NDependPath)“           ProjectFilePath&#x3D;”$(MSBuildProjectDirectory)....\\Tests\\NDepend\\TechHeadBrothers.Portal.xml“           OutDir&#x3D;”$(MSBuildProjectDirectory)....\\Tests\\Output\\NDependOut“ &#x2F;&gt;  \n    [](http://11011.net/software/vspaste)&lt;/td&gt;\n&lt;/tr&gt;\n\n  \n\n\n\nAnd with Visual Studio 2008 I have the following error:\nError    1    The NDepend project file T:_Projects_handsup\\Portal_HandsUP\\Deployment\\TechHeadBrothers.Portal.csproj_deploy....\\Tests\\NDepend\\TechHeadBrothers.Portal.xml can’t be found.    \nSo I am getting the correct folder but the filename of the project file too. Weird.\nIn the documentation there are saying that \n\nMSBuildProjectDirectory\nThe absolute path of the directory where the project file is located, for example, C:\\MyCompany\\MyProduct.\n\nBy I am getting\n\nMSBuildProjectFullPath\nThe absolute path and complete file name of the project file, for example, C:\\MyCompany\\MyProduct\\MyApp.proj\n\nAny idea would be greatly appreciated!\nUpdate: In fact I mixed two things folder and files. TechHeadBrothers.Portal.csproj_deploy is a folder and I thought it was a file :-( too bad\nNow the second issue is that there is a bug in NDepend MSBuild task that I communicated to Patrick (the author) and he fixed and I could test it. It will be released next week. I will post about my integration of NDepend with Team City soon.\n","dateCreated":"2008-04-04T01:31:50+00:00","dateModified":"2008-04-04T01:31:50+00:00","datePublished":"2008-04-04T01:31:50+00:00","description":"I go crazy with a stupid error!\nI try to have my web deployment project use the property MSBuildProjectDirectory like this:","headline":"MSBuildProjectDirectory issue in Web Deployment Project! Any idea Welcomed!","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2008/04/04/MSBuildProjectDirectory-issue-in-Web-Deployment-Project!-Any-idea-Welcomed!/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2008/04/04/MSBuildProjectDirectory-issue-in-Web-Deployment-Project!-Any-idea-Welcomed!/","keywords":"Tech Head Brothers, continuous integration, Team City"}</script>
     <meta name="description" content="I go crazy with a stupid error! I try to have my web deployment project use the property MSBuildProjectDirectory like this:">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="MSBuildProjectDirectory issue in Web Deployment Project! Any idea Welcomed!">
@@ -43,7 +43,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-doniingxleqtskehawedou7bzpostkgz4qlz0yobiabzhqmnylypjqwegr3d.min.css">
+<link rel="stylesheet" href="/assets/css/style-nj2tcgsxvavixx0ekjaz3nmbwnwdxxgtchtg7syzmgnqgmjuvsvnfsetvjhz.min.css">
 
     <!--STYLES END-->
     
@@ -192,6 +192,22 @@
                         >
                         <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://bsky.app/profile/laurentkempe.com"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Bluesky"
+                        >
+                        <i class="sidebar-button-icon fab fa-bluesky" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Bluesky</span>
                     </a>
             </li>
             
@@ -668,7 +684,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-za8r7uewgi1nvhjmgqzvf7mob7ezchqoma8q4168evleeatdyd3r22ubsg0a.min.js"></script>
+<script src="/assets/js/script-a0lxi21n9lh3kaitgglgcvbwmxqpissmevjsszlcqluototinhfehoprw4nf.min.js"></script>
 
 <!--SCRIPTS END-->
 

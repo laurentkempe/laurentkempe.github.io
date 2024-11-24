@@ -15,7 +15,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I am conducting a spike for a couple of evening on the way we might automate our functional tests at Jobping.  \nI started with Watin and MSpec and the MSpec excellent plugin for ReSharper 5 which gives the following great outputs directly from Visual Studio\n\n\n  \nAfter some discussion with Alexander Groß (Thanks for your help ;) to gain some knowhow about MSpec I finally managed to have some automated functional tests running like this:    [Subject(“Search”)] public class when_user_search_using_keywords : WebBaseSpec {     const string Keywords &#x3D; “C#”;     static SearchScreenObject searchScreenObject;     static ResultScreenObject resultScreenObject;  \n     Establish context &#x3D; () &#x3D;&gt;         {             searchScreenObject &#x3D; new SearchScreenObject(Browser);             resultScreenObject &#x3D; new ResultScreenObject(Browser);         };  \n     Because of &#x3D; () &#x3D;&gt; searchScreenObject.Search(Keywords);  \n     It should_direct_user_to_results_page &#x3D; () &#x3D;&gt;         Browser.Uri.Route().ShouldMapTo&lt;HomeController&gt;(x &#x3D;&gt;             x.Search(“AU”, new SearchRequest { Keywords &#x3D; Keywords}));  \n     It should_fill_search_textbox_with_keywords_entered_by_user &#x3D; () &#x3D;&gt;         resultScreenObject.SearchText.Text.ShouldEqual(Keywords); }    \nI think it talks for itself!\nRemarks to note:\n\nSearchScreenObject and ResultScreenObject represents an isolation layer between my tests and objects that are present on the web pages. This helps in the case you decide to change an id of an element\nI use MvcContrib ShouldMap to ensure that the browser navigates to the correct destination page which add another isolation layer and let me change my URL without impacting my tests\n\nIt is really funny to see the browser opening and clicking automatically, typing texts… \nHopefully, at the end this will replace our smoke test document and quite some time of manual testing.\n","dateCreated":"2010-05-13T07:54:12+00:00","dateModified":"2010-05-14T08:02:06+00:00","datePublished":"2010-05-13T07:54:12+00:00","description":"I am conducting a spike for a couple of evening on the way we might automate our functional tests at Jobping.  \nI started with Watin and MSpec and the MSpec excellent plugin for ReSharper 5 which gives the following great outputs directly from Visual Studio","headline":"Automated functional tests using Watin and MSpec","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/05/13/Automated-functional-tests-using-Watin-and-MSpec/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/05/13/Automated-functional-tests-using-Watin-and-MSpec/"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I am conducting a spike for a couple of evening on the way we might automate our functional tests at Jobping.  \nI started with Watin and MSpec and the MSpec excellent plugin for ReSharper 5 which gives the following great outputs directly from Visual Studio\n\n\n  \nAfter some discussion with Alexander Groß (Thanks for your help ;) to gain some knowhow about MSpec I finally managed to have some automated functional tests running like this:    [Subject(“Search”)] public class when_user_search_using_keywords : WebBaseSpec {     const string Keywords &#x3D; “C#”;     static SearchScreenObject searchScreenObject;     static ResultScreenObject resultScreenObject;  \n     Establish context &#x3D; () &#x3D;&gt;         {             searchScreenObject &#x3D; new SearchScreenObject(Browser);             resultScreenObject &#x3D; new ResultScreenObject(Browser);         };  \n     Because of &#x3D; () &#x3D;&gt; searchScreenObject.Search(Keywords);  \n     It should_direct_user_to_results_page &#x3D; () &#x3D;&gt;         Browser.Uri.Route().ShouldMapTo&lt;HomeController&gt;(x &#x3D;&gt;             x.Search(“AU”, new SearchRequest { Keywords &#x3D; Keywords}));  \n     It should_fill_search_textbox_with_keywords_entered_by_user &#x3D; () &#x3D;&gt;         resultScreenObject.SearchText.Text.ShouldEqual(Keywords); }    \nI think it talks for itself!\nRemarks to note:\n\nSearchScreenObject and ResultScreenObject represents an isolation layer between my tests and objects that are present on the web pages. This helps in the case you decide to change an id of an element\nI use MvcContrib ShouldMap to ensure that the browser navigates to the correct destination page which add another isolation layer and let me change my URL without impacting my tests\n\nIt is really funny to see the browser opening and clicking automatically, typing texts… \nHopefully, at the end this will replace our smoke test document and quite some time of manual testing.\n","dateCreated":"2010-05-13T07:54:12+00:00","dateModified":"2010-05-14T08:02:06+00:00","datePublished":"2010-05-13T07:54:12+00:00","description":"I am conducting a spike for a couple of evening on the way we might automate our functional tests at Jobping.  \nI started with Watin and MSpec and the MSpec excellent plugin for ReSharper 5 which gives the following great outputs directly from Visual Studio","headline":"Automated functional tests using Watin and MSpec","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/05/13/Automated-functional-tests-using-Watin-and-MSpec/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/05/13/Automated-functional-tests-using-Watin-and-MSpec/"}</script>
     <meta name="description" content="I am conducting a spike for a couple of evening on the way we might automate our functional tests at Jobping.   I started with Watin and MSpec and the MSpec excellent plugin for ReSharper 5 which give">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Automated functional tests using Watin and MSpec">
@@ -42,7 +42,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-doniingxleqtskehawedou7bzpostkgz4qlz0yobiabzhqmnylypjqwegr3d.min.css">
+<link rel="stylesheet" href="/assets/css/style-nj2tcgsxvavixx0ekjaz3nmbwnwdxxgtchtg7syzmgnqgmjuvsvnfsetvjhz.min.css">
 
     <!--STYLES END-->
     
@@ -191,6 +191,22 @@
                         >
                         <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://bsky.app/profile/laurentkempe.com"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Bluesky"
+                        >
+                        <i class="sidebar-button-icon fab fa-bluesky" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Bluesky</span>
                     </a>
             </li>
             
@@ -649,7 +665,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-za8r7uewgi1nvhjmgqzvf7mob7ezchqoma8q4168evleeatdyd3r22ubsg0a.min.js"></script>
+<script src="/assets/js/script-a0lxi21n9lh3kaitgglgcvbwmxqpissmevjsszlcqluototinhfehoprw4nf.min.js"></script>
 
 <!--SCRIPTS END-->
 

@@ -15,7 +15,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I finally fixed the issue I reported in the post “New milestone reached in the development of the authoring tool for Tech Head Brothers French portal “. I am still waiting some feedback from Peter (he might be in holidays).\nI am getting an exception when I try to deserialize an object. This exception is due to a security problem.\n\n\nWhat I did is to use SGen tool from Daniel Cazzulino described in this post: “Strongly-typed, event-rising, design-time generated custom XmlSerializers (even more than Whidbey sgen!) “. I also used Mike Woodring code described in the post: “The Last Configuration Section Handler I’ll Ever Need“. I mixed all and modified XmlSerializerSectionHandler from Mike so that it doesn’t return a fixed IDictionary but an object. With reflection I can determine which Handler to instantiate, then from this handler I call it method Create and I get something like that to deserialize an object from the configuration file:\nSchemaSettings schemaSettings &#x3D; (SchemaSettings)AssemblySettings.GetConfig(“SchemaSettings”);\nWith the configuration:\n&lt;configuration&gt;\n\n&lt;configSections&gt;\n\n&lt;section name&#x3D;”SchemaSettings”\n\ntype&#x3D;”TechHeadBrothers.Configuration.XmlDynamicSerializerSectionHandler, THBPublisher”&#x2F;&gt;\n\n&lt;&#x2F;configSections&gt;\n\n&lt;SchemaSettings type&#x3D;”THBPublisher.SchemaSettings, THBPublisher” serializer&#x3D;”THBPublisher.SchemaSettingsSerializer, THBPublisher” reader&#x3D;”THBPublisher.SchemaSettingsReader, THBPublisher”&gt;\n\n&lt;Name&gt;Laurent&lt;&#x2F;Name&gt;\n\n&lt;&#x2F;SchemaSettings&gt;\n\n&lt;&#x2F;configuration&gt;\nSo the good point at the end is that I have a configuration file looking like a normal one, that I can get configuration settings from even deserialize object from it. Nice.\n","dateCreated":"2004-08-28T15:32:00+00:00","dateModified":"2004-08-28T15:32:00+00:00","datePublished":"2004-08-28T15:32:00+00:00","description":"I finally fixed the issue I reported in the post “New milestone reached in the development of the authoring tool for Tech Head Brothers French portal “. I am still waiting some feedback from Peter (he might be in holidays).\nI am getting an exception when I try to deserialize an object. This exception is due to a security problem.","headline":"Visual Studio Office Tools and Word 2003 using deserialization, nightmare end","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2004/08/28/Visual-Studio-Office-Tools-and-Word-2003-using-deserialization-nightmare-end/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2004/08/28/Visual-Studio-Office-Tools-and-Word-2003-using-deserialization-nightmare-end/","keywords":"Tech Head Brothers, .NET Development"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I finally fixed the issue I reported in the post “New milestone reached in the development of the authoring tool for Tech Head Brothers French portal “. I am still waiting some feedback from Peter (he might be in holidays).\nI am getting an exception when I try to deserialize an object. This exception is due to a security problem.\n\n\nWhat I did is to use SGen tool from Daniel Cazzulino described in this post: “Strongly-typed, event-rising, design-time generated custom XmlSerializers (even more than Whidbey sgen!) “. I also used Mike Woodring code described in the post: “The Last Configuration Section Handler I’ll Ever Need“. I mixed all and modified XmlSerializerSectionHandler from Mike so that it doesn’t return a fixed IDictionary but an object. With reflection I can determine which Handler to instantiate, then from this handler I call it method Create and I get something like that to deserialize an object from the configuration file:\nSchemaSettings schemaSettings &#x3D; (SchemaSettings)AssemblySettings.GetConfig(“SchemaSettings”);\nWith the configuration:\n&lt;configuration&gt;\n\n&lt;configSections&gt;\n\n&lt;section name&#x3D;”SchemaSettings”\n\ntype&#x3D;”TechHeadBrothers.Configuration.XmlDynamicSerializerSectionHandler, THBPublisher”&#x2F;&gt;\n\n&lt;&#x2F;configSections&gt;\n\n&lt;SchemaSettings type&#x3D;”THBPublisher.SchemaSettings, THBPublisher” serializer&#x3D;”THBPublisher.SchemaSettingsSerializer, THBPublisher” reader&#x3D;”THBPublisher.SchemaSettingsReader, THBPublisher”&gt;\n\n&lt;Name&gt;Laurent&lt;&#x2F;Name&gt;\n\n&lt;&#x2F;SchemaSettings&gt;\n\n&lt;&#x2F;configuration&gt;\nSo the good point at the end is that I have a configuration file looking like a normal one, that I can get configuration settings from even deserialize object from it. Nice.\n","dateCreated":"2004-08-28T15:32:00+00:00","dateModified":"2004-08-28T15:32:00+00:00","datePublished":"2004-08-28T15:32:00+00:00","description":"I finally fixed the issue I reported in the post “New milestone reached in the development of the authoring tool for Tech Head Brothers French portal “. I am still waiting some feedback from Peter (he might be in holidays).\nI am getting an exception when I try to deserialize an object. This exception is due to a security problem.","headline":"Visual Studio Office Tools and Word 2003 using deserialization, nightmare end","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2004/08/28/Visual-Studio-Office-Tools-and-Word-2003-using-deserialization-nightmare-end/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2004/08/28/Visual-Studio-Office-Tools-and-Word-2003-using-deserialization-nightmare-end/","keywords":"Tech Head Brothers, .NET Development"}</script>
     <meta name="description" content="I finally fixed the issue I reported in the post “New milestone reached in the development of the authoring tool for Tech Head Brothers French portal “. I am still waiting some feedback from Peter (he">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Visual Studio Office Tools and Word 2003 using deserialization, nightmare end">
@@ -42,7 +42,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-doniingxleqtskehawedou7bzpostkgz4qlz0yobiabzhqmnylypjqwegr3d.min.css">
+<link rel="stylesheet" href="/assets/css/style-nj2tcgsxvavixx0ekjaz3nmbwnwdxxgtchtg7syzmgnqgmjuvsvnfsetvjhz.min.css">
 
     <!--STYLES END-->
     
@@ -191,6 +191,22 @@
                         >
                         <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://bsky.app/profile/laurentkempe.com"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Bluesky"
+                        >
+                        <i class="sidebar-button-icon fab fa-bluesky" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Bluesky</span>
                     </a>
             </li>
             
@@ -663,7 +679,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-za8r7uewgi1nvhjmgqzvf7mob7ezchqoma8q4168evleeatdyd3r22ubsg0a.min.js"></script>
+<script src="/assets/js/script-a0lxi21n9lh3kaitgglgcvbwmxqpissmevjsszlcqluototinhfehoprw4nf.min.js"></script>
 
 <!--SCRIPTS END-->
 

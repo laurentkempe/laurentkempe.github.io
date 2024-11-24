@@ -15,7 +15,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"My old build script wasn’t working after the migration to this new version and you will find in this post the different adaptation that I had to do.\nAdd missing ToolsVersion as following:\n\n\n&lt;Project DefaultTargets&#x3D;“Build“         xmlns&#x3D;“http://schemas.microsoft.com/developer/msbuild/2003“         ToolsVersion&#x3D;“3.5“&gt;\nReplace\n&lt;Import Project&#x3D;“$(MSBuildExtensionsPath)\\Microsoft\\WebDeployment\\v8.0\\Microsoft.WebDeployment.targets“&#x2F;&gt;\nwith\n&lt;Import Project&#x3D;“$(MSBuildExtensionsPath)\\Microsoft\\WebDeployment\\v9.0\\Microsoft.WebDeployment.targets“&#x2F;&gt;\nI also had to add the following to the beginning of my AfterBuild task:\n&lt;Target Name&#x3D;“AfterBuild“&gt;  &lt;CreateItem Include&#x3D;“$(TempBuildDir)**.“&gt;    &lt;Output ItemName&#x3D;“CompiledFiles“ TaskParameter&#x3D;“Include“ &#x2F;&gt;  &lt;&#x2F;CreateItem&gt;  &lt;Exec Command&#x3D;“if exist &quot;$(WDTargetDir)&quot; rd &#x2F;s &#x2F;q &quot;$(WDTargetDir)&quot;“ &#x2F;&gt;  &lt;Exec Command&#x3D;“if not exist &quot;$(WDTargetDir)&quot; md &quot;$(WDTargetDir)&quot;“ &#x2F;&gt;  &lt;Copy SourceFiles&#x3D;“@(CompiledFiles)“ DestinationFolder&#x3D;“$(WDTargetDir)%(CompiledFiles.SubFolder)%(CompiledFiles.RecursiveDir)“ &#x2F;&gt;  &lt;Exec Command&#x3D;“if exist &quot;$(TempBuildDir)&quot; rd &#x2F;s &#x2F;q &quot;$(TempBuildDir)&quot;“ &#x2F;&gt;  …\n&lt;&#x2F;Target&gt;\nOtherwise I ended up with TempBuildDir folder with a part of my solution. This is just a copy of what is defined in Microsoft.WebDeployment.targets.\nNow everything works like before, I can:\n\nset Staging as my active solution configuration\nRun a compilation\nZip the merged result of the build\nStart uploading using ssh to the target stage server\n\nNice!\n","dateCreated":"2007-12-02T15:59:02+00:00","dateModified":"2007-12-02T15:59:02+00:00","datePublished":"2007-12-02T15:59:02+00:00","description":"My old build script wasn’t working after the migration to this new version and you will find in this post the different adaptation that I had to do.\nAdd missing ToolsVersion as following:","headline":"Web Deployment Projects for VS08 released as CTP & Migration tips","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/12/02/Web-Deployment-Projects-for-VS08-released-as-CTP-amp3b-Migration-tips/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2007/12/02/Web-Deployment-Projects-for-VS08-released-as-CTP-amp3b-Migration-tips/","keywords":"Tech Head Brothers, ASP.NET 2.0, ASP.NET, Visual Studio"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"My old build script wasn’t working after the migration to this new version and you will find in this post the different adaptation that I had to do.\nAdd missing ToolsVersion as following:\n\n\n&lt;Project DefaultTargets&#x3D;“Build“         xmlns&#x3D;“http://schemas.microsoft.com/developer/msbuild/2003“         ToolsVersion&#x3D;“3.5“&gt;\nReplace\n&lt;Import Project&#x3D;“$(MSBuildExtensionsPath)\\Microsoft\\WebDeployment\\v8.0\\Microsoft.WebDeployment.targets“&#x2F;&gt;\nwith\n&lt;Import Project&#x3D;“$(MSBuildExtensionsPath)\\Microsoft\\WebDeployment\\v9.0\\Microsoft.WebDeployment.targets“&#x2F;&gt;\nI also had to add the following to the beginning of my AfterBuild task:\n&lt;Target Name&#x3D;“AfterBuild“&gt;  &lt;CreateItem Include&#x3D;“$(TempBuildDir)**.“&gt;    &lt;Output ItemName&#x3D;“CompiledFiles“ TaskParameter&#x3D;“Include“ &#x2F;&gt;  &lt;&#x2F;CreateItem&gt;  &lt;Exec Command&#x3D;“if exist &quot;$(WDTargetDir)&quot; rd &#x2F;s &#x2F;q &quot;$(WDTargetDir)&quot;“ &#x2F;&gt;  &lt;Exec Command&#x3D;“if not exist &quot;$(WDTargetDir)&quot; md &quot;$(WDTargetDir)&quot;“ &#x2F;&gt;  &lt;Copy SourceFiles&#x3D;“@(CompiledFiles)“ DestinationFolder&#x3D;“$(WDTargetDir)%(CompiledFiles.SubFolder)%(CompiledFiles.RecursiveDir)“ &#x2F;&gt;  &lt;Exec Command&#x3D;“if exist &quot;$(TempBuildDir)&quot; rd &#x2F;s &#x2F;q &quot;$(TempBuildDir)&quot;“ &#x2F;&gt;  …\n&lt;&#x2F;Target&gt;\nOtherwise I ended up with TempBuildDir folder with a part of my solution. This is just a copy of what is defined in Microsoft.WebDeployment.targets.\nNow everything works like before, I can:\n\nset Staging as my active solution configuration\nRun a compilation\nZip the merged result of the build\nStart uploading using ssh to the target stage server\n\nNice!\n","dateCreated":"2007-12-02T15:59:02+00:00","dateModified":"2007-12-02T15:59:02+00:00","datePublished":"2007-12-02T15:59:02+00:00","description":"My old build script wasn’t working after the migration to this new version and you will find in this post the different adaptation that I had to do.\nAdd missing ToolsVersion as following:","headline":"Web Deployment Projects for VS08 released as CTP & Migration tips","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2007/12/02/Web-Deployment-Projects-for-VS08-released-as-CTP-amp3b-Migration-tips/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2007/12/02/Web-Deployment-Projects-for-VS08-released-as-CTP-amp3b-Migration-tips/","keywords":"Tech Head Brothers, ASP.NET 2.0, ASP.NET, Visual Studio"}</script>
     <meta name="description" content="My old build script wasn’t working after the migration to this new version and you will find in this post the different adaptation that I had to do. Add missing ToolsVersion as following:">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Web Deployment Projects for VS08 released as CTP &amp; Migration tips">
@@ -44,7 +44,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-doniingxleqtskehawedou7bzpostkgz4qlz0yobiabzhqmnylypjqwegr3d.min.css">
+<link rel="stylesheet" href="/assets/css/style-nj2tcgsxvavixx0ekjaz3nmbwnwdxxgtchtg7syzmgnqgmjuvsvnfsetvjhz.min.css">
 
     <!--STYLES END-->
     
@@ -193,6 +193,22 @@
                         >
                         <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://bsky.app/profile/laurentkempe.com"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Bluesky"
+                        >
+                        <i class="sidebar-button-icon fab fa-bluesky" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Bluesky</span>
                     </a>
             </li>
             
@@ -661,7 +677,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-za8r7uewgi1nvhjmgqzvf7mob7ezchqoma8q4168evleeatdyd3r22ubsg0a.min.js"></script>
+<script src="/assets/js/script-a0lxi21n9lh3kaitgglgcvbwmxqpissmevjsszlcqluototinhfehoprw4nf.min.js"></script>
 
 <!--SCRIPTS END-->
 

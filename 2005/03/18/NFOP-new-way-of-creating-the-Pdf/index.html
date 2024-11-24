@@ -15,7 +15,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I was asked about the new way to work with NFOP to generate the pdf withoutthe old Engine class. So here is what I am doing:\n  1 #region Using  2  3 using System.Net;  4 using System.Reflection;  5 using System.Xml;  6 using System.Xml.Xsl;  7 using java.io;  8 using log4net;  9 using org.apache.fop.apps; 10 using org.xml.sax; 11 using TechHeadBrothers.Portal.UI; 12 using StringWriter &#x3D; System.IO.StringWriter; 13 14 #endregion 15 16 namespace TechHeadBrothers.TechHeadBrothers.Portal.UI 17 { 18     &#x2F;&#x2F;&#x2F;  19     &#x2F;&#x2F;&#x2F; Strategy to print PDF using FOP 20     &#x2F;&#x2F;&#x2F;  21     public class FOPPrintStrategy : PrintStrategy 22     { 23         #region Logging Definition 24 25         private static readonly ILog log &#x3D; LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType); 26 27         #endregion 28 29         protected override void Print(PrintArticle page, string xmlpath, string xslpah, XsltArgumentList xsltargs) 30         { 31             string fullFoDoc &#x3D; XmlContentToFoContent(page, xmlpath, xslpah); 32 33             InputSource source &#x3D; new InputSource(fullFoDoc); 34             ByteArrayOutputStream output &#x3D; new ByteArrayOutputStream(); 35 36             try 37             { 38                 Driver driver &#x3D; new Driver(source, output); 39                 driver.setRenderer(Driver.RENDER_PDF); 40                 driver.run(); 41                 output.close(); 42 43                 int sz &#x3D; output.buf.Length; 44                 byte[] pdf &#x3D; new byte[sz]; 45                 for (int i &#x3D; 0; i &lt; sz; i++) 46                     pdf[i] &#x3D; (byte) output.buf[i]; 47 48                 page.Response.ClearHeaders(); 49                 page.Response.Clear(); 50 51                 page.Response.AddHeader(“Content-Disposition”, “attachment; filename&#x3D;TechHeadBrothers.pdf”); 52                 page.Response.ContentType &#x3D; “application&#x2F;octet-stream”; 53 54                 page.Response.Flush(); 55                 page.Response.BinaryWrite(pdf); 56                 page.Response.End(); 57             } 58             catch (FOPException fope) 59             { 60                 if (log.IsDebugEnabled) 61                     log.Debug(fope.getMessage()); 62             } 63         } 64 }\n","dateCreated":"2005-03-18T02:26:00+00:00","dateModified":"2005-03-18T02:26:00+00:00","datePublished":"2005-03-18T02:26:00+00:00","description":"","headline":"NFOP new way of creating the Pdf","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2005/03/18/NFOP-new-way-of-creating-the-Pdf/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2005/03/18/NFOP-new-way-of-creating-the-Pdf/","keywords":"Tech Head Brothers, .NET Development"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"I was asked about the new way to work with NFOP to generate the pdf withoutthe old Engine class. So here is what I am doing:\n  1 #region Using  2  3 using System.Net;  4 using System.Reflection;  5 using System.Xml;  6 using System.Xml.Xsl;  7 using java.io;  8 using log4net;  9 using org.apache.fop.apps; 10 using org.xml.sax; 11 using TechHeadBrothers.Portal.UI; 12 using StringWriter &#x3D; System.IO.StringWriter; 13 14 #endregion 15 16 namespace TechHeadBrothers.TechHeadBrothers.Portal.UI 17 { 18     &#x2F;&#x2F;&#x2F;  19     &#x2F;&#x2F;&#x2F; Strategy to print PDF using FOP 20     &#x2F;&#x2F;&#x2F;  21     public class FOPPrintStrategy : PrintStrategy 22     { 23         #region Logging Definition 24 25         private static readonly ILog log &#x3D; LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType); 26 27         #endregion 28 29         protected override void Print(PrintArticle page, string xmlpath, string xslpah, XsltArgumentList xsltargs) 30         { 31             string fullFoDoc &#x3D; XmlContentToFoContent(page, xmlpath, xslpah); 32 33             InputSource source &#x3D; new InputSource(fullFoDoc); 34             ByteArrayOutputStream output &#x3D; new ByteArrayOutputStream(); 35 36             try 37             { 38                 Driver driver &#x3D; new Driver(source, output); 39                 driver.setRenderer(Driver.RENDER_PDF); 40                 driver.run(); 41                 output.close(); 42 43                 int sz &#x3D; output.buf.Length; 44                 byte[] pdf &#x3D; new byte[sz]; 45                 for (int i &#x3D; 0; i &lt; sz; i++) 46                     pdf[i] &#x3D; (byte) output.buf[i]; 47 48                 page.Response.ClearHeaders(); 49                 page.Response.Clear(); 50 51                 page.Response.AddHeader(“Content-Disposition”, “attachment; filename&#x3D;TechHeadBrothers.pdf”); 52                 page.Response.ContentType &#x3D; “application&#x2F;octet-stream”; 53 54                 page.Response.Flush(); 55                 page.Response.BinaryWrite(pdf); 56                 page.Response.End(); 57             } 58             catch (FOPException fope) 59             { 60                 if (log.IsDebugEnabled) 61                     log.Debug(fope.getMessage()); 62             } 63         } 64 }\n","dateCreated":"2005-03-18T02:26:00+00:00","dateModified":"2005-03-18T02:26:00+00:00","datePublished":"2005-03-18T02:26:00+00:00","description":"","headline":"NFOP new way of creating the Pdf","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2005/03/18/NFOP-new-way-of-creating-the-Pdf/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2005/03/18/NFOP-new-way-of-creating-the-Pdf/","keywords":"Tech Head Brothers, .NET Development"}</script>
     <meta name="description" content="I was asked about the new way to work with NFOP to generate the pdf withoutthe old Engine class. So here is what I am doing:   1 #region Using  2  3 using System.Net;  4 using System.Reflection;  5 us">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="NFOP new way of creating the Pdf">
@@ -42,7 +42,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-doniingxleqtskehawedou7bzpostkgz4qlz0yobiabzhqmnylypjqwegr3d.min.css">
+<link rel="stylesheet" href="/assets/css/style-nj2tcgsxvavixx0ekjaz3nmbwnwdxxgtchtg7syzmgnqgmjuvsvnfsetvjhz.min.css">
 
     <!--STYLES END-->
     
@@ -191,6 +191,22 @@
                         >
                         <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://bsky.app/profile/laurentkempe.com"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Bluesky"
+                        >
+                        <i class="sidebar-button-icon fab fa-bluesky" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Bluesky</span>
                     </a>
             </li>
             
@@ -640,7 +656,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-za8r7uewgi1nvhjmgqzvf7mob7ezchqoma8q4168evleeatdyd3r22ubsg0a.min.js"></script>
+<script src="/assets/js/script-a0lxi21n9lh3kaitgglgcvbwmxqpissmevjsszlcqluototinhfehoprw4nf.min.js"></script>
 
 <!--SCRIPTS END-->
 

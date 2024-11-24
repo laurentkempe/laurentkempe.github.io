@@ -15,7 +15,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"\nOn February I posted about “Running your TeamCity builds from PowerShell for any Git branch” and now I have to configure a new ssh key so that TeamCity can connect to Gitlab.\nI struggled a bit getting continuous error message from TeamCity that the connection failed because it was enable to load identity file. File rights were all ok on the key file and everything looked fine. But still the error message.\n\n\nThen I remembered that I had the same issue in February while using PuTTYgen to generate my SSH key pair. \nI forgot a minor details that I had to generate the key pair like this:\n\nClick Generate button and move your mouse \nClick Save public key \nClick Save private key (if you need it in this format) \nClick on the menu Conversions &#x2F; Export OpenSSH key and save that key\n\n\nThen upload the exported OpenSSH key on the TeamCity server. The one in the putty format isn’t working, and that was my problem!\nFinally copy the public key generated to your clipboard\n\nand use it in Gitlab\n\nNow when you test the Git connection from TeamCity you should see the following\n\n","dateCreated":"2012-08-24T21:44:59+00:00","dateModified":"2012-08-24T21:59:24+00:00","datePublished":"2012-08-24T21:44:59+00:00","description":"\nOn February I posted about “Running your TeamCity builds from PowerShell for any Git branch” and now I have to configure a new ssh key so that TeamCity can connect to Gitlab.\nI struggled a bit getting continuous error message from TeamCity that the connection failed because it was enable to load identity file. File rights were all ok on the key file and everything looked fine. But still the error message.","headline":"TeamCity and Gitlab working together with SSH Keys","image":["https://farm9.staticflickr.com/8299/7764455174_84625faf34_q.jpg","https://farm9.staticflickr.com/8299/7764455174_207330f8d0_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2012/08/24/TeamCity-and-Gitlab-working-together-with-SSH-Keys/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2012/08/24/TeamCity-and-Gitlab-working-together-with-SSH-Keys/","keywords":"Git, Team City, Gitlab","thumbnailUrl":"https://farm9.staticflickr.com/8299/7764455174_84625faf34_q.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"\nOn February I posted about “Running your TeamCity builds from PowerShell for any Git branch” and now I have to configure a new ssh key so that TeamCity can connect to Gitlab.\nI struggled a bit getting continuous error message from TeamCity that the connection failed because it was enable to load identity file. File rights were all ok on the key file and everything looked fine. But still the error message.\n\n\nThen I remembered that I had the same issue in February while using PuTTYgen to generate my SSH key pair. \nI forgot a minor details that I had to generate the key pair like this:\n\nClick Generate button and move your mouse \nClick Save public key \nClick Save private key (if you need it in this format) \nClick on the menu Conversions &#x2F; Export OpenSSH key and save that key\n\n\nThen upload the exported OpenSSH key on the TeamCity server. The one in the putty format isn’t working, and that was my problem!\nFinally copy the public key generated to your clipboard\n\nand use it in Gitlab\n\nNow when you test the Git connection from TeamCity you should see the following\n\n","dateCreated":"2012-08-24T21:44:59+00:00","dateModified":"2012-08-24T21:59:24+00:00","datePublished":"2012-08-24T21:44:59+00:00","description":"\nOn February I posted about “Running your TeamCity builds from PowerShell for any Git branch” and now I have to configure a new ssh key so that TeamCity can connect to Gitlab.\nI struggled a bit getting continuous error message from TeamCity that the connection failed because it was enable to load identity file. File rights were all ok on the key file and everything looked fine. But still the error message.","headline":"TeamCity and Gitlab working together with SSH Keys","image":["https://farm9.staticflickr.com/8299/7764455174_84625faf34_q.jpg","https://farm9.staticflickr.com/8299/7764455174_207330f8d0_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2012/08/24/TeamCity-and-Gitlab-working-together-with-SSH-Keys/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2012/08/24/TeamCity-and-Gitlab-working-together-with-SSH-Keys/","keywords":"Git, Team City, Gitlab","thumbnailUrl":"https://farm9.staticflickr.com/8299/7764455174_84625faf34_q.jpg"}</script>
     <meta name="description" content="On February I posted about “Running your TeamCity builds from PowerShell for any Git branch” and now I have to configure a new ssh key so that TeamCity can connect to Gitlab. I struggled a bit gettin">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="TeamCity and Gitlab working together with SSH Keys">
@@ -54,7 +54,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-doniingxleqtskehawedou7bzpostkgz4qlz0yobiabzhqmnylypjqwegr3d.min.css">
+<link rel="stylesheet" href="/assets/css/style-nj2tcgsxvavixx0ekjaz3nmbwnwdxxgtchtg7syzmgnqgmjuvsvnfsetvjhz.min.css">
 
     <!--STYLES END-->
     
@@ -203,6 +203,22 @@
                         >
                         <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://bsky.app/profile/laurentkempe.com"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Bluesky"
+                        >
+                        <i class="sidebar-button-icon fab fa-bluesky" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Bluesky</span>
                     </a>
             </li>
             
@@ -681,7 +697,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-za8r7uewgi1nvhjmgqzvf7mob7ezchqoma8q4168evleeatdyd3r22ubsg0a.min.js"></script>
+<script src="/assets/js/script-a0lxi21n9lh3kaitgglgcvbwmxqpissmevjsszlcqluototinhfehoprw4nf.min.js"></script>
 
 <!--SCRIPTS END-->
 

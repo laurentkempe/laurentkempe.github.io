@@ -15,7 +15,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"The other day I posted about “Automated functional tests using Watin and MSpec” which we do at Jobping as a spike to automate our functional tests on our ASP.NET MVC 2 site.\nYesterday evening I was facing an issue in my base class WebBaseSpec which led to really strange side effects. Basically when I was running one unit test alone it was Green, running all or more than one unit test will fail miserably with the well known STA issue of Watin.\n\n\nSo I thought that I had an issue with the ReSharper MSpec plugin but after some discussion with Alexander GroßI realized that the second failing test was showing another issue than the STA issue.\nGoing further I realized that when I was checking the following\n  It should_direct_user_to_aboutus_page = () =&gt;  &nbsp;&nbsp;&nbsp;&nbsp;Browser.Uri.Route().ShouldMapTo&lt;HomeController&gt;(x =&gt; x.About());  \n\nFirst I needed to call the ASP.NET MVC RegisterRoutes\n  MvcApplication.RegisterRoutes(RouteTable.Routes);  \n\nwhich was done in the constructor of my WebBaseSpec class.\n  protected WebBaseSpec() { &nbsp;&nbsp;&nbsp;&nbsp;MvcApplication.RegisterRoutes(RouteTable.Routes); &nbsp;&nbsp;&nbsp;&nbsp;InitBrowser(); }  \n\nThat’s was the problem, I was registering the routes several time, one time per test. So first one was ok, second one was failing…\nSo I modified it to the following, ensuring that the routes were registered only one time!\n  private static bool registered;  /// &lt;summary&gt; /// Initializes a new instance of the &lt;see cref=\"WebBaseSpec\"/&gt; class. /// &lt;/summary&gt; protected WebBaseSpec() { &nbsp;&nbsp;&nbsp;&nbsp;if (!registered) &nbsp;&nbsp;&nbsp;&nbsp;{ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MvcApplication.RegisterRoutes(RouteTable.Routes); &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;registered = true; &nbsp;&nbsp;&nbsp;&nbsp;} &nbsp;&nbsp;&nbsp;&nbsp;InitBrowser(); }  \n\nNow I can run all my functional tests again\n\n","dateCreated":"2010-05-19T15:07:53+00:00","dateModified":"2010-10-15T09:20:48+00:00","datePublished":"2010-05-19T15:07:53+00:00","description":"The other day I posted about “Automated functional tests using Watin and MSpec” which we do at Jobping as a spike to automate our functional tests on our ASP.NET MVC 2 site.\nYesterday evening I was facing an issue in my base class WebBaseSpec which led to really strange side effects. Basically when I was running one unit test alone it was Green, running all or more than one unit test will fail miserably with the well known STA issue of Watin.","headline":"ASP.NET MVC 2, MSpec and Watin","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/05/19/ASPNET-MVC-2-MSpec-and-Watin/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/05/19/ASPNET-MVC-2-MSpec-and-Watin/","keywords":"Watin, MSpec, Jobping"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"The other day I posted about “Automated functional tests using Watin and MSpec” which we do at Jobping as a spike to automate our functional tests on our ASP.NET MVC 2 site.\nYesterday evening I was facing an issue in my base class WebBaseSpec which led to really strange side effects. Basically when I was running one unit test alone it was Green, running all or more than one unit test will fail miserably with the well known STA issue of Watin.\n\n\nSo I thought that I had an issue with the ReSharper MSpec plugin but after some discussion with Alexander GroßI realized that the second failing test was showing another issue than the STA issue.\nGoing further I realized that when I was checking the following\n  It should_direct_user_to_aboutus_page = () =&gt;  &nbsp;&nbsp;&nbsp;&nbsp;Browser.Uri.Route().ShouldMapTo&lt;HomeController&gt;(x =&gt; x.About());  \n\nFirst I needed to call the ASP.NET MVC RegisterRoutes\n  MvcApplication.RegisterRoutes(RouteTable.Routes);  \n\nwhich was done in the constructor of my WebBaseSpec class.\n  protected WebBaseSpec() { &nbsp;&nbsp;&nbsp;&nbsp;MvcApplication.RegisterRoutes(RouteTable.Routes); &nbsp;&nbsp;&nbsp;&nbsp;InitBrowser(); }  \n\nThat’s was the problem, I was registering the routes several time, one time per test. So first one was ok, second one was failing…\nSo I modified it to the following, ensuring that the routes were registered only one time!\n  private static bool registered;  /// &lt;summary&gt; /// Initializes a new instance of the &lt;see cref=\"WebBaseSpec\"/&gt; class. /// &lt;/summary&gt; protected WebBaseSpec() { &nbsp;&nbsp;&nbsp;&nbsp;if (!registered) &nbsp;&nbsp;&nbsp;&nbsp;{ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MvcApplication.RegisterRoutes(RouteTable.Routes); &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;registered = true; &nbsp;&nbsp;&nbsp;&nbsp;} &nbsp;&nbsp;&nbsp;&nbsp;InitBrowser(); }  \n\nNow I can run all my functional tests again\n\n","dateCreated":"2010-05-19T15:07:53+00:00","dateModified":"2010-10-15T09:20:48+00:00","datePublished":"2010-05-19T15:07:53+00:00","description":"The other day I posted about “Automated functional tests using Watin and MSpec” which we do at Jobping as a spike to automate our functional tests on our ASP.NET MVC 2 site.\nYesterday evening I was facing an issue in my base class WebBaseSpec which led to really strange side effects. Basically when I was running one unit test alone it was Green, running all or more than one unit test will fail miserably with the well known STA issue of Watin.","headline":"ASP.NET MVC 2, MSpec and Watin","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2010/05/19/ASPNET-MVC-2-MSpec-and-Watin/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2010/05/19/ASPNET-MVC-2-MSpec-and-Watin/","keywords":"Watin, MSpec, Jobping"}</script>
     <meta name="description" content="The other day I posted about “Automated functional tests using Watin and MSpec” which we do at Jobping as a spike to automate our functional tests on our ASP.NET MVC 2 site. Yesterday evening I was fa">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="ASP.NET MVC 2, MSpec and Watin">
@@ -45,7 +45,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-doniingxleqtskehawedou7bzpostkgz4qlz0yobiabzhqmnylypjqwegr3d.min.css">
+<link rel="stylesheet" href="/assets/css/style-nj2tcgsxvavixx0ekjaz3nmbwnwdxxgtchtg7syzmgnqgmjuvsvnfsetvjhz.min.css">
 
     <!--STYLES END-->
     
@@ -194,6 +194,22 @@
                         >
                         <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://bsky.app/profile/laurentkempe.com"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Bluesky"
+                        >
+                        <i class="sidebar-button-icon fab fa-bluesky" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Bluesky</span>
                     </a>
             </li>
             
@@ -661,7 +677,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-za8r7uewgi1nvhjmgqzvf7mob7ezchqoma8q4168evleeatdyd3r22ubsg0a.min.js"></script>
+<script src="/assets/js/script-a0lxi21n9lh3kaitgglgcvbwmxqpissmevjsszlcqluototinhfehoprw4nf.min.js"></script>
 
 <!--SCRIPTS END-->
 

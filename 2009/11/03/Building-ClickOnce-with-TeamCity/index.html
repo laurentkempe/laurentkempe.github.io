@@ -15,7 +15,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Migrating our TeamCity server today I got the following error on the new server:\nerror MSB3147: Could not find required file ‘setup.bin’ in …\n\n\nI for sure fixed that on the older server, and the fix was to have the SDK on the build server. The issue is that I don’t want to install Visual Studio to do that, so here is how I achieved it\n\nCopy my whole c:\\Program Files\\Microsoft SDKs\\Windows\\v6.0a folder to the server\nCreated a registry keyKey: HKEY_LOCAL_MACHINE\\Software\\Microsoft\\GenericBootstrapper\\3.5\\Value: PathType: REG_SZData: C:\\Program Files\\Microsoft SDKs\\Windows\\v6.0a\\Bootstrapper\\\n\nThen the error was gone and I had my build server ready again to build ClickOnce setup.\n","dateCreated":"2009-11-03T06:52:25+00:00","dateModified":"2009-11-03T06:52:25+00:00","datePublished":"2009-11-03T06:52:25+00:00","description":"Migrating our TeamCity server today I got the following error on the new server:\nerror MSB3147: Could not find required file ‘setup.bin’ in …","headline":"Building ClickOnce with TeamCity","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2009/11/03/Building-ClickOnce-with-TeamCity/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2009/11/03/Building-ClickOnce-with-TeamCity/","keywords":"continuous integration, Team City, ClickOnce"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"Migrating our TeamCity server today I got the following error on the new server:\nerror MSB3147: Could not find required file ‘setup.bin’ in …\n\n\nI for sure fixed that on the older server, and the fix was to have the SDK on the build server. The issue is that I don’t want to install Visual Studio to do that, so here is how I achieved it\n\nCopy my whole c:\\Program Files\\Microsoft SDKs\\Windows\\v6.0a folder to the server\nCreated a registry keyKey: HKEY_LOCAL_MACHINE\\Software\\Microsoft\\GenericBootstrapper\\3.5\\Value: PathType: REG_SZData: C:\\Program Files\\Microsoft SDKs\\Windows\\v6.0a\\Bootstrapper\\\n\nThen the error was gone and I had my build server ready again to build ClickOnce setup.\n","dateCreated":"2009-11-03T06:52:25+00:00","dateModified":"2009-11-03T06:52:25+00:00","datePublished":"2009-11-03T06:52:25+00:00","description":"Migrating our TeamCity server today I got the following error on the new server:\nerror MSB3147: Could not find required file ‘setup.bin’ in …","headline":"Building ClickOnce with TeamCity","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2009/11/03/Building-ClickOnce-with-TeamCity/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2009/11/03/Building-ClickOnce-with-TeamCity/","keywords":"continuous integration, Team City, ClickOnce"}</script>
     <meta name="description" content="Migrating our TeamCity server today I got the following error on the new server: error MSB3147: Could not find required file ‘setup.bin’ in …">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Building ClickOnce with TeamCity">
@@ -43,7 +43,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-doniingxleqtskehawedou7bzpostkgz4qlz0yobiabzhqmnylypjqwegr3d.min.css">
+<link rel="stylesheet" href="/assets/css/style-nj2tcgsxvavixx0ekjaz3nmbwnwdxxgtchtg7syzmgnqgmjuvsvnfsetvjhz.min.css">
 
     <!--STYLES END-->
     
@@ -192,6 +192,22 @@
                         >
                         <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://bsky.app/profile/laurentkempe.com"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Bluesky"
+                        >
+                        <i class="sidebar-button-icon fab fa-bluesky" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Bluesky</span>
                     </a>
             </li>
             
@@ -649,7 +665,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-za8r7uewgi1nvhjmgqzvf7mob7ezchqoma8q4168evleeatdyd3r22ubsg0a.min.js"></script>
+<script src="/assets/js/script-a0lxi21n9lh3kaitgglgcvbwmxqpissmevjsszlcqluototinhfehoprw4nf.min.js"></script>
 
 <!--SCRIPTS END-->
 
