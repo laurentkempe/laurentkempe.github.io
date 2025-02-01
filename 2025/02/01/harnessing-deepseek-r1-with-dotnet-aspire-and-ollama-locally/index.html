@@ -1,0 +1,752 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Harnessing DeepSeek-R1 with .NET Aspire and Ollama locally - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+        <link rel="icon" href="https://laurentkempe.com/assets/images/favicon.ico">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"In my earlier posts, I’ve demonstrated how to install Ollama using the Windows installer. However, for developers, there’s a more streamlined method to set up Ollama on your machine.\nIn this blog post, we’ll explore how to run DeepSeek-R1 by harnessing the capabilities of .NET Aspire alongside Ollama on your local environment.\n\nIntroductionOllama offers a Docker image that can be seamlessly executed on your local machine. By integrating Docker with .NET Aspire, you create a robust solution for running diverse large language models (LLMs) and small language models (SLMs) efficiently. And you still can use your beefy GPU to accelerate the answer generation process.\nThis setup ensures that Ollama operates within an isolated containerized environment, providing enhanced security and consistency without the necessity of installing additional software directly on your machine.\nPrerequisitesBefore proceeding, ensure that you have the following prerequisites installed on your machine:\n\n\n\n.NET 9 SDK\nDocker Desktop\n\nSetting up DeepSeek-R1 with .NET Aspire and OllamaStep 1: Create a new .NET Aspire projectTo run DeepSeek-R1 with .NET Aspire and Ollama on your machine, we will start by creating a new .NET Aspire project. Open a terminal window and run the following command to create a new .NET Aspire project:\n1234567mkdir DeepSeekOllamaAspire\\cd .\\DeepSeekOllamaAspire\\dotnet new aspire-startercd .\\DeepSeekOllamaAspire.AppHost\\dotnet add package CommunityToolkit.Aspire.Hosting.Ollama  // 👈🏼 .NET Aspire Ollama Hostingcd ..\\DeepSeekOllamaAspire.ApiService\\dotnet add package CommunityToolkit.Aspire.OllamaSharp  // 👈🏼 .NET Aspire Ollama Client\n\nStep 2: Configure .NET Aspire AppHostThe code for the .NET Aspire AppHost is configuring the Ollama server hosting integration. It is adding the Ollama container to the app host, configuring data volume, GPU support, and container lifetime. Additionally, it adds the DeepSeek-R1 model to the Ollama server.\n1234567891011121314151617181920212223242526var builder = DistributedApplication.CreateBuilder(args);// 👇🏼 Configure Ollama server hosting integrationvar ollama =    builder.AddOllama(&quot;ollama&quot;) // 👈🏼 Add Ollama container to the app host        .WithDataVolume() // 👈🏼 Adds a data volume to store models        .WithGPUSupport() // 👈🏼 Use your beefy GPU 🎉        .WithLifetime(ContainerLifetime.Persistent); // 👈🏼 Keep the container running                                                     //    when the app exits// 👇🏼 Add DeepSeek-R1 model to Ollama servervar chat =    ollama.AddModel(&quot;chat&quot;, &quot;deepseek-r1:1.5b&quot;);var apiService =     builder.AddProject&lt;Projects.DeepSeekOllamaAspire_ApiService&gt;(&quot;apiservice&quot;)           // 👇🏼 Our Web API relies on Ollama chat and waits for it to start            .WithReference(chat)           .WaitFor(chat);builder.AddProject&lt;Projects.DeepSeekOllamaAspire_Web&gt;(&quot;webfrontend&quot;)    .WithExternalHttpEndpoints()    .WithReference(apiService)    .WaitFor(apiService);builder.Build().Run();\n\nStep 3: Configure .NET Aspire ApiServiceThe code for the .NET Aspire ApiService is configuring the Ollama client integration. It is adding the Ollama client to the IOC and registering it as a chat client. Then it is used to call the Ollama API to get an answer from DeepSeek-R1.\n123456789101112131415161718192021222324252627282930313233343536using Microsoft.Extensions.AI;var builder = WebApplication.CreateBuilder(args);// Add service defaults &amp; Aspire client integrations.builder.AddServiceDefaults();// 👇🏼 IOC registration of OllamaSharp client as IChatClientbuilder.AddOllamaSharpChatClient(&quot;chat&quot;);builder.Services.AddProblemDetails();builder.Services.AddOpenApi();var app = builder.Build();app.UseExceptionHandler();if (app.Environment.IsDevelopment())&#123;    app.MapOpenApi();&#125;// 👇🏼 Web API getting IChatClient from IOCapp.MapGet(&quot;/chat&quot;, async (IChatClient chatClient, string question) =&gt;&#123;    // 👇🏼 Calling Ollama API to get an answer from DeepSeek-R1    var response = await chatClient.CompleteAsync(question);    return new Response(response.Message.Text ?? &quot;Failed to generate response.&quot;);&#125;).WithName(&quot;Chat&quot;);app.MapDefaultEndpoints();app.Run();public record Response(string Value);\n\nStep 4: The web frontendThe web frontend is a simple Blazor application. It sends the question to the API service and displays the answer. It doesn’t know anything about Ollama or DeepSeek-R1. It just knows about the API service.\nWe create a ChatApiClient that uses HttpClient to call the API service. The ChatAsync method sends the question to the API service and returns the answer.\n12345678910111213public class ChatApiClient(HttpClient httpClient)&#123;    public async Task&lt;string&gt; ChatAsync(string question,                                         CancellationToken cancellationToken = default)    &#123;        var requestUri = $&quot;/chat?question=&#123;question&#125;&quot;;        var response =             await httpClient.GetFromJsonAsync&lt;Response&gt;(requestUri, cancellationToken);        return response?.Value ?? &quot;&quot;;    &#125;&#125;public record Response(string Value);\n\nThe ChatApiClient is registered in the Program.cs file.\n123456builder.Services.AddHttpClient&lt;ChatApiClient&gt;(client =&gt;    &#123;        // This URL uses &quot;https+http://&quot; to indicate HTTPS is preferred over HTTP.        // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.        client.BaseAddress = new(&quot;https+http://apiservice&quot;);    &#125;);\n\nand injected and used in the Chat.razor component\n12345678910111213141516171819202122232425262728293031@page &quot;/chat&quot;@attribute [StreamRendering(true)]@attribute [OutputCache(Duration = 5)]@inject ChatApiClient ChatApi&lt;PageTitle&gt;Chat&lt;/PageTitle&gt;&lt;h1&gt;Chat&lt;/h1&gt;&lt;p&gt;This component demonstrates showing data loaded from a backend API service talking to Ollama.&lt;/p&gt;@if (_response == null)&#123;    &lt;p&gt;&lt;em&gt;Loading...&lt;/em&gt;&lt;/p&gt;&#125;else&#123;    &lt;p&gt;@_response&lt;/p&gt;&#125;@code &#123;    private string? _response;    protected override async Task OnInitializedAsync()    &#123;        var question = Uri.EscapeDataString(&quot;Hello, can you help me in C#?&quot;);        _response = await ChatApi.ChatAsync(question);    &#125;&#125;\n\nRunning the .NET Aspire projectTo run the .NET Aspire project, execute the following command in the terminal:\n12cd .\\DeepSeekOllamaAspire.AppHost\\dotnet run\n\nThe .NET Aspire project will start, and you will see the Container “ollama” starting. The OllamaModelResource “chat” will download the DeepSeek-R1 model. When the Ollama server is ready, the ApiService will start, and the Web frontend will be available.\n\nClick on the Project “webfrontend” link and then on the “Chat” link to see the answer generated by DeepSeek-R1.\n\nAnd with the power of .NET Aspire, you can observe the trace of the calls to the Ollama API.\n\nConclusionBy integrating DeepSeek-R1 with .NET Aspire and Ollama, developers can leverage a robust and efficient setup for managing and deploying language models. This solution provides an easy streamlined approach to running LLM or SLM on your local machine without the need for additional software installations.\nReferences\n.NET Aspire Community Toolkit Ollama integration\nOllama Docker image\nOllama DeepSeek-R1 model\nUsing Local AI models with .NET Aspire\n\nGet the source code on GitHub laurentkempe&#x2F;aiPlayground&#x2F;DeepSeekOllamaAspire\n\n\n  \n\n\n\n\n","dateCreated":"2025-02-01T11:30:53+00:00","dateModified":"2025-02-01T13:21:52+00:00","datePublished":"2025-02-01T11:30:53+00:00","description":"In my earlier posts, I’ve demonstrated how to install Ollama using the Windows installer. However, for developers, there’s a more streamlined method to set up Ollama on your machine.\nIn this blog post, we’ll explore how to run DeepSeek-R1 by harnessing the capabilities of .NET Aspire alongside Ollama on your local environment.","headline":"Harnessing DeepSeek-R1 with .NET Aspire and Ollama locally","image":["https://live.staticflickr.com/65535/54288775875_cf354c8df3_q.jpg","https://live.staticflickr.com/65535/54288775875_2a5a3ffb62_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2025/02/01/harnessing-deepseek-r1-with-dotnet-aspire-and-ollama-locally/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2025/02/01/harnessing-deepseek-r1-with-dotnet-aspire-and-ollama-locally/","keywords":"C#, AI, LLM, Ollama, SLM","thumbnailUrl":"https://live.staticflickr.com/65535/54288775875_cf354c8df3_q.jpg"}</script>
+    <meta name="description" content="In my earlier posts, I’ve demonstrated how to install Ollama using the Windows installer. However, for developers, there’s a more streamlined method to set up Ollama on your machine. In this blog post">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Harnessing DeepSeek-R1 with .NET Aspire and Ollama locally">
+<meta property="og:url" content="https://laurentkempe.com/2025/02/01/harnessing-deepseek-r1-with-dotnet-aspire-and-ollama-locally/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="In my earlier posts, I’ve demonstrated how to install Ollama using the Windows installer. However, for developers, there’s a more streamlined method to set up Ollama on your machine. In this blog post">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://laurentkempe.com/images/aspire-ollama-deepseek-r1.png">
+<meta property="og:image" content="https://laurentkempe.com/images/aspire-ollama-deepseek-r1-answer.png">
+<meta property="og:image" content="https://laurentkempe.com/images/aspire-ollama-deepseek-r1-trace.png">
+<meta property="article:published_time" content="2025-02-01T11:30:53.000Z">
+<meta property="article:modified_time" content="2025-02-01T13:21:52.147Z">
+<meta property="article:author" content="Laurent Kempé">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="Ollama">
+<meta property="article:tag" content="SLM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://laurentkempe.com/images/aspire-ollama-deepseek-r1.png">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/65535/54288775875_cf354c8df3_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/65535/54288775875_cf354c8df3_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/65535/54288775875_2a5a3ffb62_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/65535/54288775875_2a5a3ffb62_h.jpg"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-qalgcxrfzsodqg9gwef9916uxm09elrffirlz7rrxwjjcjybquuesiqgzwxx.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Laurent Kempé
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/presentations.html"
+                            
+                            rel="noopener"
+                            title="Presentations"
+                        >
+                        <i class="sidebar-button-icon fa fa-file-powerpoint" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Presentations</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/about-laurent-kempe.html"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://bsky.app/profile/laurentkempe.com"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Bluesky"
+                        >
+                        <i class="sidebar-button-icon fab fa-bluesky" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Bluesky</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://twitter.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/in/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://flickr.com/photos/laurentkempe/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Flickr"
+                        >
+                        <i class="sidebar-button-icon fab fa-flickr" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Flickr</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://feeds.feedburner.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial"
+             style="background-image:url('https://live.staticflickr.com/65535/54288775875_2a5a3ffb62_h.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Harnessing DeepSeek-R1 with .NET Aspire and Ollama locally
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2025-02-01T11:30:53+00:00">
+	
+		    Feb 01, 2025
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Liebvillers, France</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>In my earlier posts, I’ve demonstrated how to install Ollama using the Windows installer. However, for developers, there’s a more streamlined method to set up Ollama on your machine.</p>
+<p>In this blog post, we’ll explore how to run DeepSeek-R1 by harnessing the capabilities of .NET Aspire alongside Ollama on your local environment.</p>
+<span id="more"></span>
+<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>Ollama offers a Docker image that can be seamlessly executed on your local machine. By integrating Docker with .NET Aspire, you create a robust solution for running diverse large language models (LLMs) and small language models (SLMs) efficiently. And you still can use your beefy GPU to accelerate the answer generation process.</p>
+<p>This setup ensures that Ollama operates within an isolated containerized environment, providing enhanced security and consistency without the necessity of installing additional software directly on your machine.</p>
+<h1 id="Prerequisites"><a href="#Prerequisites" class="headerlink" title="Prerequisites"></a>Prerequisites</h1><p>Before proceeding, ensure that you have the following prerequisites installed on your machine:</p>
+<p></p>
+
+<ul>
+<li><a target="_blank" rel="noopener" href="https://dotnet.microsoft.com/download">.NET 9 SDK</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.docker.com/products/docker-desktop">Docker Desktop</a></li>
+</ul>
+<h1 id="Setting-up-DeepSeek-R1-with-NET-Aspire-and-Ollama"><a href="#Setting-up-DeepSeek-R1-with-NET-Aspire-and-Ollama" class="headerlink" title="Setting up DeepSeek-R1 with .NET Aspire and Ollama"></a>Setting up DeepSeek-R1 with .NET Aspire and Ollama</h1><h2 id="Step-1-Create-a-new-NET-Aspire-project"><a href="#Step-1-Create-a-new-NET-Aspire-project" class="headerlink" title="Step 1: Create a new .NET Aspire project"></a>Step 1: Create a new .NET Aspire project</h2><p>To run DeepSeek-R1 with .NET Aspire and Ollama on your machine, we will start by creating a new .NET Aspire project. Open a terminal window and run the following command to create a new .NET Aspire project:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> DeepSeekOllamaAspire\</span><br><span class="line"><span class="built_in">cd</span> .\DeepSeekOllamaAspire\</span><br><span class="line">dotnet new aspire-starter</span><br><span class="line"><span class="built_in">cd</span> .\DeepSeekOllamaAspire.AppHost\</span><br><span class="line">dotnet add package CommunityToolkit.Aspire.Hosting.Ollama  // 👈🏼 .NET Aspire Ollama Hosting</span><br><span class="line"><span class="built_in">cd</span> ..\DeepSeekOllamaAspire.ApiService\</span><br><span class="line">dotnet add package CommunityToolkit.Aspire.OllamaSharp  // 👈🏼 .NET Aspire Ollama Client</span><br></pre></td></tr></table></figure>
+
+<h2 id="Step-2-Configure-NET-Aspire-AppHost"><a href="#Step-2-Configure-NET-Aspire-AppHost" class="headerlink" title="Step 2: Configure .NET Aspire AppHost"></a>Step 2: Configure .NET Aspire AppHost</h2><p>The code for the .NET Aspire AppHost is configuring the Ollama server hosting integration. It is adding the Ollama container to the app host, configuring data volume, GPU support, and container lifetime. Additionally, it adds the DeepSeek-R1 model to the Ollama server.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> builder = DistributedApplication.CreateBuilder(args);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 👇🏼 Configure Ollama server hosting integration</span></span><br><span class="line"><span class="keyword">var</span> ollama =</span><br><span class="line">    builder.AddOllama(<span class="string">&quot;ollama&quot;</span>) <span class="comment">// 👈🏼 Add Ollama container to the app host</span></span><br><span class="line">        .WithDataVolume() <span class="comment">// 👈🏼 Adds a data volume to store models</span></span><br><span class="line">        .WithGPUSupport() <span class="comment">// 👈🏼 Use your beefy GPU 🎉</span></span><br><span class="line">        .WithLifetime(ContainerLifetime.Persistent); <span class="comment">// 👈🏼 Keep the container running</span></span><br><span class="line">                                                     <span class="comment">//    when the app exits</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 👇🏼 Add DeepSeek-R1 model to Ollama server</span></span><br><span class="line"><span class="keyword">var</span> chat =</span><br><span class="line">    ollama.AddModel(<span class="string">&quot;chat&quot;</span>, <span class="string">&quot;deepseek-r1:1.5b&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> apiService = </span><br><span class="line">    builder.AddProject&lt;Projects.DeepSeekOllamaAspire_ApiService&gt;(<span class="string">&quot;apiservice&quot;</span>)</span><br><span class="line">           <span class="comment">// 👇🏼 Our Web API relies on Ollama chat and waits for it to start </span></span><br><span class="line">           .WithReference(chat)</span><br><span class="line">           .WaitFor(chat);</span><br><span class="line"></span><br><span class="line">builder.AddProject&lt;Projects.DeepSeekOllamaAspire_Web&gt;(<span class="string">&quot;webfrontend&quot;</span>)</span><br><span class="line">    .WithExternalHttpEndpoints()</span><br><span class="line">    .WithReference(apiService)</span><br><span class="line">    .WaitFor(apiService);</span><br><span class="line"></span><br><span class="line">builder.Build().Run();</span><br></pre></td></tr></table></figure>
+
+<h2 id="Step-3-Configure-NET-Aspire-ApiService"><a href="#Step-3-Configure-NET-Aspire-ApiService" class="headerlink" title="Step 3: Configure .NET Aspire ApiService"></a>Step 3: Configure .NET Aspire ApiService</h2><p>The code for the .NET Aspire ApiService is configuring the Ollama client integration. It is adding the Ollama client to the IOC and registering it as a chat client. Then it is used to call the Ollama API to get an answer from DeepSeek-R1.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> Microsoft.Extensions.AI;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> builder = WebApplication.CreateBuilder(args);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Add service defaults &amp; Aspire client integrations.</span></span><br><span class="line">builder.AddServiceDefaults();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 👇🏼 IOC registration of OllamaSharp client as IChatClient</span></span><br><span class="line">builder.AddOllamaSharpChatClient(<span class="string">&quot;chat&quot;</span>);</span><br><span class="line"></span><br><span class="line">builder.Services.AddProblemDetails();</span><br><span class="line">builder.Services.AddOpenApi();</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> app = builder.Build();</span><br><span class="line"></span><br><span class="line">app.UseExceptionHandler();</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (app.Environment.IsDevelopment())</span><br><span class="line">&#123;</span><br><span class="line">    app.MapOpenApi();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 👇🏼 Web API getting IChatClient from IOC</span></span><br><span class="line">app.MapGet(<span class="string">&quot;/chat&quot;</span>, <span class="keyword">async</span> (IChatClient chatClient, <span class="built_in">string</span> question) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 👇🏼 Calling Ollama API to get an answer from DeepSeek-R1</span></span><br><span class="line">    <span class="keyword">var</span> response = <span class="keyword">await</span> chatClient.CompleteAsync(question);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Response(response.Message.Text ?? <span class="string">&quot;Failed to generate response.&quot;</span>);</span><br><span class="line">&#125;)</span><br><span class="line">.WithName(<span class="string">&quot;Chat&quot;</span>);</span><br><span class="line"></span><br><span class="line">app.MapDefaultEndpoints();</span><br><span class="line"></span><br><span class="line">app.Run();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">record</span> <span class="title">Response</span>(<span class="params"><span class="built_in">string</span> Value</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Step-4-The-web-frontend"><a href="#Step-4-The-web-frontend" class="headerlink" title="Step 4: The web frontend"></a>Step 4: The web frontend</h2><p>The web frontend is a simple Blazor application. It sends the question to the API service and displays the answer. It doesn’t know anything about Ollama or DeepSeek-R1. It just knows about the API service.</p>
+<p>We create a ChatApiClient that uses HttpClient to call the API service. The ChatAsync method sends the question to the API service and returns the answer.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ChatApiClient</span>(<span class="params">HttpClient httpClient</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">async</span> Task&lt;<span class="built_in">string</span>&gt; <span class="title">ChatAsync</span>(<span class="params"><span class="built_in">string</span> question, </span></span></span><br><span class="line"><span class="params"><span class="function">                                        CancellationToken cancellationToken = <span class="literal">default</span></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> requestUri = <span class="string">$&quot;/chat?question=<span class="subst">&#123;question&#125;</span>&quot;</span>;</span><br><span class="line">        <span class="keyword">var</span> response = </span><br><span class="line">            <span class="keyword">await</span> httpClient.GetFromJsonAsync&lt;Response&gt;(requestUri, cancellationToken);</span><br><span class="line">        <span class="keyword">return</span> response?.Value ?? <span class="string">&quot;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">record</span> <span class="title">Response</span>(<span class="params"><span class="built_in">string</span> Value</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>The <code>ChatApiClient</code> is registered in the <code>Program.cs</code> file.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">builder.Services.AddHttpClient&lt;ChatApiClient&gt;(client =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// This URL uses &quot;https+http://&quot; to indicate HTTPS is preferred over HTTP.</span></span><br><span class="line">        <span class="comment">// Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.</span></span><br><span class="line">        client.BaseAddress = <span class="keyword">new</span>(<span class="string">&quot;https+http://apiservice&quot;</span>);</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>and injected and used in the <code>Chat.razor</code> component</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">@page <span class="string">&quot;/chat&quot;</span></span><br><span class="line">@attribute [StreamRendering(<span class="literal">true</span>)]</span><br><span class="line">@attribute [OutputCache(Duration = <span class="number">5</span>)]</span><br><span class="line"></span><br><span class="line">@inject ChatApiClient ChatApi</span><br><span class="line"></span><br><span class="line">&lt;PageTitle&gt;Chat&lt;/PageTitle&gt;</span><br><span class="line"></span><br><span class="line">&lt;h1&gt;Chat&lt;/h1&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;This component demonstrates showing data loaded <span class="keyword">from</span> a </span><br><span class="line">backend API service talking to Ollama.&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">@if (_response == <span class="literal">null</span>)</span><br><span class="line">&#123;</span><br><span class="line">    &lt;p&gt;&lt;em&gt;Loading...&lt;/em&gt;&lt;/p&gt;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    &lt;p&gt;@_response&lt;/p&gt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@code &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span>? _response;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">async</span> Task <span class="title">OnInitializedAsync</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> question = Uri.EscapeDataString(<span class="string">&quot;Hello, can you help me in C#?&quot;</span>);</span><br><span class="line">        _response = <span class="keyword">await</span> ChatApi.ChatAsync(question);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Running-the-NET-Aspire-project"><a href="#Running-the-NET-Aspire-project" class="headerlink" title="Running the .NET Aspire project"></a>Running the .NET Aspire project</h1><p>To run the .NET Aspire project, execute the following command in the terminal:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> .\DeepSeekOllamaAspire.AppHost\</span><br><span class="line">dotnet run</span><br></pre></td></tr></table></figure>
+
+<p>The .NET Aspire project will start, and you will see the Container “ollama” starting. The OllamaModelResource “chat” will download the DeepSeek-R1 model. When the Ollama server is ready, the ApiService will start, and the Web frontend will be available.</p>
+<p><img src="/images/aspire-ollama-deepseek-r1.png" alt=".NET Aspire Ollama DeepSeek-R1"></p>
+<p>Click on the Project “webfrontend” link and then on the “Chat” link to see the answer generated by DeepSeek-R1.</p>
+<p><img src="/images/aspire-ollama-deepseek-r1-answer.png" alt=".NET Aspire Ollama DeepSeek-R1 answer"></p>
+<p>And with the power of .NET Aspire, you can observe the trace of the calls to the Ollama API.</p>
+<p><img src="/images/aspire-ollama-deepseek-r1-trace.png" alt=".NET Aspire Ollama DeepSeek-R1 trace"></p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>By integrating DeepSeek-R1 with .NET Aspire and Ollama, developers can leverage a robust and efficient setup for managing and deploying language models. This solution provides an easy streamlined approach to running LLM or SLM on your local machine without the need for additional software installations.</p>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/aspire/community-toolkit/ollama?tabs=dotnet-cli,docker">.NET Aspire Community Toolkit Ollama integration</a></li>
+<li><a target="_blank" rel="noopener" href="https://hub.docker.com/r/ollama/ollama">Ollama Docker image</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ollama.com/library/deepseek-r1">Ollama DeepSeek-R1 model</a></li>
+<li><a target="_blank" rel="noopener" href="https://devblogs.microsoft.com/dotnet/local-ai-models-with-dotnet-aspire/">Using Local AI models with .NET Aspire</a></li>
+</ul>
+<p>Get the source code on GitHub <a target="_blank" rel="noopener" href="https://github.com/laurentkempe/aiPlayground/tree/main/DeepSeekOllamaAspire">laurentkempe&#x2F;aiPlayground&#x2F;DeepSeekOllamaAspire</a></p>
+<p></p>
+<div style="text-align: left">
+  <div class="github-card"
+    data-user="laurentkempe"
+    data-repo="aiPlayground"
+    data-height="200"
+    data-width="400"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/AI/" rel="tag">AI</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/C/" rel="tag">C#</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/LLM/" rel="tag">LLM</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Ollama/" rel="tag">Ollama</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/SLM/" rel="tag">SLM</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2025/01/27/leveraging-microsoftextensionsai-for-tool-calling-in-csharp/"
+                    data-tooltip="Leveraging Microsoft.Extensions.AI for Tool Calling in C#"
+                    aria-label="NEXT: Leveraging Microsoft.Extensions.AI for Tool Calling in C#"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2025/02/01/harnessing-deepseek-r1-with-dotnet-aspire-and-ollama-locally/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2025/02/01/harnessing-deepseek-r1-with-dotnet-aspire-and-ollama-locally/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2025/02/01/harnessing-deepseek-r1-with-dotnet-aspire-and-ollama-locally/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2025 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2025/01/27/leveraging-microsoftextensionsai-for-tool-calling-in-csharp/"
+                    data-tooltip="Leveraging Microsoft.Extensions.AI for Tool Calling in C#"
+                    aria-label="NEXT: Leveraging Microsoft.Extensions.AI for Tool Calling in C#"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2025/02/01/harnessing-deepseek-r1-with-dotnet-aspire-and-ollama-locally/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2025/02/01/harnessing-deepseek-r1-with-dotnet-aspire-and-ollama-locally/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2025/02/01/harnessing-deepseek-r1-with-dotnet-aspire-and-ollama-locally/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2025/02/01/harnessing-deepseek-r1-with-dotnet-aspire-and-ollama-locally/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2025/02/01/harnessing-deepseek-r1-with-dotnet-aspire-and-ollama-locally/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2025/02/01/harnessing-deepseek-r1-with-dotnet-aspire-and-ollama-locally/"
+                        aria-label="global.share_on_linkedin"
+                    >
+                        <i class="fab fa-linkedin" aria-hidden="true"></i><span>global.share_on_linkedin</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Distinguished Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-znbflazkm5iabomzvedanmcxywazlbrjm7nyrew9x3ghbfategbl0pmt7c2y.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+
+    
+
+
+
+
+    </body>
+</html>
