@@ -1,0 +1,778 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>.NET Aspire and Dev Container - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+        <link rel="icon" href="https://laurentkempe.com/assets/images/favicon.ico">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":".NET Aspire 9.1 was just released on February 25th, 2025. It comes with great new dashboard features, and there is more! One feature I am particularly interested in is the ability to use Dev Containers.\nIn this post, I will show you how to use the new .NET Aspire 9.1 with a Dev Container and JetBrains Rider. You could also use Visual Studio Code.\n\n\nIntroductionFirst, what are Dev Containers? Dev Containers are a way to define a fully functional development environment in a container. This allows you to have a consistent development environment across your team. It also allows you to have a development environment that is isolated from your host machine. This means that you can host your development environment somewhere else, like in the cloud, and access it from anywhere.\nPrerequisitesTo follow this post, you need to have the following installed on your machine:\n\nDocker Desktop\n\nThen you can use one of the following:\n\nRider or Gateway\nVisual Studio Code\n\nNote that you don’t need to have .NET or .NET Aspire 9.1 installed on your machine as these will be provided by the Dev Container 🤯\nGetting StartedDev containers are defined using a devcontainer.json file. This file defines the development container and is placed in a .devcontainer folder in your project. \nCreate a folder for your project, and inside create another folder named .devcontainer. Inside the .devcontainer folder, create a devcontainer.json file. Then edit the devcontainer.json file and copy-paste the following:\n.devcontainer/devcontainer.json123456789101112131415161718192021222324252627282930313233343536373839&#123;    &quot;name&quot;: &quot;.NET Aspire&quot;,    // 👇🏼 Use .NET 9 Debian image    &quot;image&quot;: &quot;mcr.microsoft.com/devcontainers/dotnet:9.0-bookworm&quot;,    &quot;features&quot;: &#123;        &quot;ghcr.io/devcontainers/features/docker-in-docker:2&quot;: &#123;&#125;,        &quot;ghcr.io/devcontainers/features/powershell:1&quot;: &#123;&#125;,    &#125;,    // 👇🏼 This is not supported by Rider but it is supported by VS Code     &quot;hostRequirements&quot;: &#123;        &quot;cpus&quot;: 8,        &quot;memory&quot;: &quot;32gb&quot;,        &quot;storage&quot;: &quot;64gb&quot;    &#125;,    // 👇🏼 Install .NET Aspire project templates, run inside the container     // immediately after it has started for the first time\t&quot;onCreateCommand&quot;: &quot;dotnet new install Aspire.ProjectTemplates::9.1.0 --force&quot;,    // 👇🏼 Restore NuGet packages when the container is created\t&quot;postCreateCommand&quot;: &quot;dotnet restore&quot;,    // 👇🏼 Trust the development certificates, run each time the    // container is successfully started    &quot;postStartCommand&quot;: &quot;dotnet dev-certs https --trust&quot;,    &quot;customizations&quot;: &#123;        // 👇🏼 Settings and Plugins for Rider        &quot;jetbrains&quot;: &#123;            &quot;settings&quot;: &#123;            &#125;            , &quot;plugins&quot; : [            ],        &#125;,    &quot;vscode&quot;: &#123;            &quot;extensions&quot;: [                &quot;ms-dotnettools.csdevkit&quot;,                &quot;GitHub.copilot-chat&quot;,                &quot;GitHub.copilot&quot;            ]        &#125;    &#125;&#125;\n\nThe features section defines the features that are installed in the container. In this case, we are installing Docker in Docker and PowerShell.\nThe hostRequirements section defines the requirements for the host machine. \nThe onCreateCommand section defines the command that is run inside the container immediately after it has started for the first time. In this case, we are installing the .NET Aspire project templates.\nThe postCreateCommand section defines the command that is run once when the container is created. It executes in the container after onCreateCommand. In this case, we are running dotnet restore.\nThe postStartCommand section defines the command that is run each time the container starts. In this case, we are trusting the development certificates. \nFinally, the customizations section defines the customizations that are applied to the container. In this case, we are installing the C# extension for Visual Studio Code and the GitHub Copilot extensions.\nUsing the Dev Container in Rider or GatewayFor this blog post, I used Rider 2025.1 EAP 7, which is the Early Access Program version. It seems to fix an issue I had with onCreateCommand. In previous versions, the .NET Aspire templates were not installed.\n\n\nStart Rider or JetBrains Gateway, select Remote Development &#x2F; Dev Containers, then click on New Dev Container and open your project. \n\nSelect From Local Project, then Rider and the path of your devcontainer.json file, and click on the Build Container and Continue button.\n\nYour container will be built\n\nand you will be connected to it. You can now start developing in your container.\n\nAs the .NET Aspire templates are installed, you can create a new project using Rider or from the terminal. If you already have a .NET Aspire project in your repository, then you could run it directly. NuGet packages would be restored, and the development certificate is trusted 😏\n\nA new window will open with the new solution created. You can close the other one.\n\nNow, you can benefit from all the features of Rider and .NET Aspire 9.1. For example, you can use the .NET Aspire run configuration to start your .NET Aspire application, which will start the AppHost, then the ApiService and the Web.\n\nThis will start the application and open the browser to the URL of the Web project. Then Rider will ask you for permission to open the following URL:\n\nYou can always see which ports are mapped from your dev container to your host machine by clicking on the Ports tab in the Remote Explorer.\n\nAnother nice feature is the Services tab which gives you some of the functionalities of .NET Aspire Dashboard directly in Rider.\n\nFor sure, you can start your AppHost in Debug, set breakpoints, and debug your application.\n\nTruly amazing! 🤩\nWe used the From Local Project option to create the Dev Container. We are using it for testing. When you are all set, you will prefer from VCS Project for performance reasons. In that case, the source code would be cloned in the container and not mounted from the host. And this makes the development experience much faster.\n\n\nConclusionIn this post, I showed you how to use the new .NET Aspire 9.1 with a Dev Container from JetBrains Rider. This allows you to have a consistent development environment across your team and have a development environment that is isolated from your host machine. It also means that you can host your development environment somewhere else, like in the cloud, and access it from anywhere.\nReferences\nDevelopment Containers\nDeveloping inside a Container\nDev Container overview\nAvailable Dev Container Features\nDev Container Lifecycle scripts\ndotnet&#x2F;aspire-devcontainer\n.NET Development Container Images\nJetBrains Rider and the .NET Aspire Plugin\nBig News for .NET and Game Devs: Rider Is Now Free for Non-Commercial Use\n\nGet the source code on GitHub laurentkempe&#x2F;aspirePlayground&#x2F;Aspire91DevContainer\n\n\n  \n\n\n\n\n","dateCreated":"2025-03-06T21:59:39+00:00","dateModified":"2025-03-06T22:01:16+00:00","datePublished":"2025-03-06T21:59:39+00:00","description":".NET Aspire 9.1 was just released on February 25th, 2025. It comes with great new dashboard features, and there is more! One feature I am particularly interested in is the ability to use Dev Containers.\nIn this post, I will show you how to use the new .NET Aspire 9.1 with a Dev Container and JetBrains Rider. You could also use Visual Studio Code.","headline":".NET Aspire and Dev Container","image":["https://live.staticflickr.com/4437/36202255394_5fbaed9148_q.jpg","https://live.staticflickr.com/4437/36202255394_ad1672c496_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2025/03/06/dotnet-aspire-and-dev-container/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2025/03/06/dotnet-aspire-and-dev-container/","keywords":"Docker, Rider, .NET Aspire, Dev Container","thumbnailUrl":"https://live.staticflickr.com/4437/36202255394_5fbaed9148_q.jpg"}</script>
+    <meta name="description" content=".NET Aspire 9.1 was just released on February 25th, 2025. It comes with great new dashboard features, and there is more! One feature I am particularly interested in is the ability to use Dev Container">
+<meta property="og:type" content="blog">
+<meta property="og:title" content=".NET Aspire and Dev Container">
+<meta property="og:url" content="https://laurentkempe.com/2025/03/06/dotnet-aspire-and-dev-container/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content=".NET Aspire 9.1 was just released on February 25th, 2025. It comes with great new dashboard features, and there is more! One feature I am particularly interested in is the ability to use Dev Container">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://laurentkempe.com/images/2025/dotnet-aspire_jetbrains-rider-new-devcontainer.png">
+<meta property="og:image" content="https://laurentkempe.com/images/2025/dotnet-aspire_jetbrains-rider-dev-containers.png">
+<meta property="og:image" content="https://laurentkempe.com/images/2025/dotnet-aspire_jetbrains-rider-building-container.png">
+<meta property="og:image" content="https://laurentkempe.com/images/2025/dotnet-aspire_jetbrains-rider-connected-container.png">
+<meta property="og:image" content="https://laurentkempe.com/images/2025/dotnet-aspire_jetbrains-rider-new-solution.png">
+<meta property="og:image" content="https://laurentkempe.com/images/2025/dotnet-aspire_jetbrains-rider-new-solution-created.png">
+<meta property="og:image" content="https://laurentkempe.com/images/2025/dotnet-aspire_jetbrains-rider-run-configuration.png">
+<meta property="og:image" content="https://laurentkempe.com/images/2025/dotnet-aspire_jetbrains-rider-open-following-url.png">
+<meta property="og:image" content="https://laurentkempe.com/images/2025/dotnet-aspire_jetbrains-rider-ports.png">
+<meta property="og:image" content="https://laurentkempe.com/images/2025/dotnet-aspire_jetbrains-rider-services.png">
+<meta property="og:image" content="https://laurentkempe.com/images/2025/dotnet-aspire_jetbrains-rider-debugging.png">
+<meta property="article:published_time" content="2025-03-06T21:59:39.000Z">
+<meta property="article:modified_time" content="2025-03-06T22:01:16.932Z">
+<meta property="article:author" content="Laurent Kempé">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="Rider">
+<meta property="article:tag" content=".NET Aspire">
+<meta property="article:tag" content="Dev Container">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://laurentkempe.com/images/2025/dotnet-aspire_jetbrains-rider-new-devcontainer.png">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/4437/36202255394_5fbaed9148_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/4437/36202255394_5fbaed9148_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/4437/36202255394_ad1672c496_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/4437/36202255394_ad1672c496_h.jpg"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-wbmpw1cmsdhbdtcpaw8nyqasevrh03fgfhif7g2hs4hoc8gasngkmwj6hwtq.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Laurent Kempé
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/presentations.html"
+                            
+                            rel="noopener"
+                            title="Presentations"
+                        >
+                        <i class="sidebar-button-icon fa fa-file-powerpoint" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Presentations</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/about-laurent-kempe.html"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://bsky.app/profile/laurentkempe.com"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Bluesky"
+                        >
+                        <i class="sidebar-button-icon fab fa-bluesky" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Bluesky</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://twitter.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/in/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://flickr.com/photos/laurentkempe/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Flickr"
+                        >
+                        <i class="sidebar-button-icon fab fa-flickr" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Flickr</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://feeds.feedburner.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial"
+             style="background-image:url('https://live.staticflickr.com/4437/36202255394_ad1672c496_h.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            .NET Aspire and Dev Container
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2025-03-06T21:59:39+00:00">
+	
+		    Mar 06, 2025
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Moʻorea, Polynésie, France</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>.NET Aspire 9.1 was just released on February 25th, 2025. It comes with great new dashboard features, and there is more! One feature I am particularly interested in is the ability to use <strong>Dev Containers</strong>.</p>
+<p>In this post, I will show you how to use the new .NET Aspire 9.1 with a Dev Container and JetBrains Rider. You could also use Visual Studio Code.</p>
+<span id="more"></span>
+
+<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>First, what are Dev Containers? Dev Containers are a way to <strong>define a fully functional development environment in a container</strong>. This allows you to have a <strong>consistent development environment across your team</strong>. It also allows you to have a development environment that is <strong>isolated from your host machine</strong>. This means that you can host your development environment somewhere else, like in the cloud, and access it from anywhere.</p>
+<h1 id="Prerequisites"><a href="#Prerequisites" class="headerlink" title="Prerequisites"></a>Prerequisites</h1><p>To follow this post, you need to have the following installed on your machine:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.docker.com/products/docker-desktop">Docker Desktop</a></li>
+</ul>
+<p>Then you can use one of the following:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.jetbrains.com/rider/">Rider</a> or <a target="_blank" rel="noopener" href="https://www.jetbrains.com/remote-development/gateway/">Gateway</a></li>
+<li><a target="_blank" rel="noopener" href="https://code.visualstudio.com/">Visual Studio Code</a></li>
+</ul>
+<p>Note that you don’t need to have .NET or .NET Aspire 9.1 installed on your machine as these will be provided by the Dev Container 🤯</p>
+<h1 id="Getting-Started"><a href="#Getting-Started" class="headerlink" title="Getting Started"></a>Getting Started</h1><p>Dev containers are defined using a <code>devcontainer.json</code> file. This file defines the development container and is placed in a <code>.devcontainer</code> folder in your project. </p>
+<p>Create a folder for your project, and inside create another folder named <code>.devcontainer</code>. Inside the <code>.devcontainer</code> folder, create a <code>devcontainer.json</code> file. Then edit the <code>devcontainer.json</code> file and copy-paste the following:</p>
+<figure class="highlight json"><figcaption><span>.devcontainer/devcontainer.json</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;.NET Aspire&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="comment">// 👇🏼 Use .NET 9 Debian image</span></span><br><span class="line">    <span class="attr">&quot;image&quot;</span><span class="punctuation">:</span> <span class="string">&quot;mcr.microsoft.com/devcontainers/dotnet:9.0-bookworm&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;features&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;ghcr.io/devcontainers/features/docker-in-docker:2&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;ghcr.io/devcontainers/features/powershell:1&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="comment">// 👇🏼 This is not supported by Rider but it is supported by VS Code </span></span><br><span class="line">    <span class="attr">&quot;hostRequirements&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;cpus&quot;</span><span class="punctuation">:</span> <span class="number">8</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;memory&quot;</span><span class="punctuation">:</span> <span class="string">&quot;32gb&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;storage&quot;</span><span class="punctuation">:</span> <span class="string">&quot;64gb&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="comment">// 👇🏼 Install .NET Aspire project templates, run inside the container </span></span><br><span class="line">    <span class="comment">// immediately after it has started for the first time</span></span><br><span class="line">	<span class="attr">&quot;onCreateCommand&quot;</span><span class="punctuation">:</span> <span class="string">&quot;dotnet new install Aspire.ProjectTemplates::9.1.0 --force&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="comment">// 👇🏼 Restore NuGet packages when the container is created</span></span><br><span class="line">	<span class="attr">&quot;postCreateCommand&quot;</span><span class="punctuation">:</span> <span class="string">&quot;dotnet restore&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="comment">// 👇🏼 Trust the development certificates, run each time the</span></span><br><span class="line">    <span class="comment">// container is successfully started</span></span><br><span class="line">    <span class="attr">&quot;postStartCommand&quot;</span><span class="punctuation">:</span> <span class="string">&quot;dotnet dev-certs https --trust&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;customizations&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="comment">// 👇🏼 Settings and Plugins for Rider</span></span><br><span class="line">        <span class="attr">&quot;jetbrains&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;settings&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">,</span> <span class="attr">&quot;plugins&quot;</span> <span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">            <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;vscode&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;extensions&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                <span class="string">&quot;ms-dotnettools.csdevkit&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="string">&quot;GitHub.copilot-chat&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="string">&quot;GitHub.copilot&quot;</span></span><br><span class="line">            <span class="punctuation">]</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>The <code>features</code> section defines the features that are installed in the container. In this case, we are installing <strong>Docker in Docker</strong> and <strong>PowerShell</strong>.</p>
+<p>The <code>hostRequirements</code> section defines the requirements for the host machine. </p>
+<p>The <code>onCreateCommand</code> section defines the command that is run inside the container immediately after it has started for the first time. In this case, we are installing the .NET Aspire project templates.</p>
+<p>The <code>postCreateCommand</code> section defines the command that is run once when the container is created. It executes in the container after <code>onCreateCommand</code>. In this case, we are running <code>dotnet restore</code>.</p>
+<p>The <code>postStartCommand</code> section defines the command that is run each time the container starts. In this case, we are trusting the development certificates. </p>
+<p>Finally, the <code>customizations</code> section defines the customizations that are applied to the container. In this case, we are installing the C# extension for Visual Studio Code and the GitHub Copilot extensions.</p>
+<h1 id="Using-the-Dev-Container-in-Rider-or-Gateway"><a href="#Using-the-Dev-Container-in-Rider-or-Gateway" class="headerlink" title="Using the Dev Container in Rider or Gateway"></a>Using the Dev Container in Rider or Gateway</h1><div class="alert warning"><p>For this blog post, I used Rider 2025.1 EAP 7, which is the Early Access Program version. It seems to fix an issue I had with <code>onCreateCommand</code>. In previous versions, the .NET Aspire templates were not installed.</p>
+</div>
+
+<p>Start Rider or JetBrains Gateway, select Remote Development &#x2F; Dev Containers, then click on <strong>New Dev Container</strong> and open your project. </p>
+<p><img src="/images/2025/dotnet-aspire_jetbrains-rider-new-devcontainer.png" alt="JetBrains Rider New Dev Container"></p>
+<p>Select <strong>From Local Project</strong>, then <strong>Rider</strong> and the path of your devcontainer.json file, and click on the <strong>Build Container and Continue</strong> button.</p>
+<p><img src="/images/2025/dotnet-aspire_jetbrains-rider-dev-containers.png" alt="JetBrains Gateway New Dev Container from local project"></p>
+<p>Your container will be built</p>
+<p><img src="/images/2025/dotnet-aspire_jetbrains-rider-building-container.png" alt="JetBrains Gateway Dev Container building"></p>
+<p>and you will be connected to it. You can now start developing in your container.</p>
+<p><img src="/images/2025/dotnet-aspire_jetbrains-rider-connected-container.png" alt="JetBrains Gateway Dev Container connected"></p>
+<p>As the .NET Aspire templates are installed, you can create a new project using Rider or from the terminal. If you already have a .NET Aspire project in your repository, then you could run it directly. NuGet packages would be restored, and the development certificate is trusted 😏</p>
+<p><img src="/images/2025/dotnet-aspire_jetbrains-rider-new-solution.png" alt="Rider New Solution"></p>
+<p>A new window will open with the new solution created. You can close the other one.</p>
+<p><img src="/images/2025/dotnet-aspire_jetbrains-rider-new-solution-created.png" alt="Rider New Solution Created"></p>
+<p>Now, you can benefit from all the features of Rider and .NET Aspire 9.1. For example, you can use the .NET Aspire run configuration to start your .NET Aspire application, which will start the AppHost, then the ApiService and the Web.</p>
+<p><img src="/images/2025/dotnet-aspire_jetbrains-rider-run-configuration.png" alt="Rider .NET Aspire Run Configuration"></p>
+<p>This will start the application and open the browser to the URL of the Web project. Then Rider will ask you for permission to open the following URL:</p>
+<p><img src="/images/2025/dotnet-aspire_jetbrains-rider-open-following-url.png" alt="Rider .NET Aspire Open Following Url"></p>
+<p>You can always see which ports are mapped from your dev container to your host machine by clicking on the <strong>Ports</strong> tab in the <strong>Remote Explorer</strong>.</p>
+<p><img src="/images/2025/dotnet-aspire_jetbrains-rider-ports.png" alt="Rider Dev Container Ports"></p>
+<p>Another nice feature is the <strong>Services</strong> tab which gives you some of the functionalities of .NET Aspire Dashboard directly in Rider.</p>
+<p><img src="/images/2025/dotnet-aspire_jetbrains-rider-services.png" alt="Rider Dev Container Ports"></p>
+<p>For sure, you can start your AppHost in Debug, set breakpoints, and debug your application.</p>
+<p><img src="/images/2025/dotnet-aspire_jetbrains-rider-debugging.png" alt="Rider Dev Container Debugging"></p>
+<p>Truly amazing! 🤩</p>
+<div class="alert warning"><p>We used the <strong>From Local Project</strong> option to create the Dev Container. We are using it for testing. When you are all set, you will prefer <strong>from VCS Project</strong> for performance reasons. In that case, the source code would be cloned in the container and not mounted from the host. And this makes the development experience much faster.</p>
+</div>
+
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>In this post, I showed you how to use the new .NET Aspire 9.1 with a Dev Container from JetBrains Rider. This allows you to have a consistent development environment across your team and have a development environment that is isolated from your host machine. It also means that you can host your development environment somewhere else, like in the cloud, and access it from anywhere.</p>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://containers.dev/">Development Containers</a></li>
+<li><a target="_blank" rel="noopener" href="https://code.visualstudio.com/docs/devcontainers/containers">Developing inside a Container</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jetbrains.com/help/rider/Connect_to_DevContainer.html">Dev Container overview</a></li>
+<li><a target="_blank" rel="noopener" href="https://containers.dev/features">Available Dev Container Features</a></li>
+<li><a target="_blank" rel="noopener" href="https://containers.dev/implementors/json_reference/#lifecycle-scripts">Dev Container Lifecycle scripts</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/dotnet/aspire-devcontainer">dotnet&#x2F;aspire-devcontainer</a></li>
+<li><a target="_blank" rel="noopener" href="https://mcr.microsoft.com/en-us/artifact/mar/devcontainers/dotnet/about">.NET Development Container Images</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.jetbrains.com/dotnet/2024/02/19/jetbrains-rider-and-the-net-aspire-plugin/">JetBrains Rider and the .NET Aspire Plugin</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.jetbrains.com/dotnet/2024/10/16/rider-reveal-livestream-big-news-for-dotnet-and-game-devs/">Big News for .NET and Game Devs: Rider Is Now Free for Non-Commercial Use</a></li>
+</ul>
+<p>Get the source code on GitHub <a target="_blank" rel="noopener" href="https://github.com/laurentkempe/aspirePlayground/tree/main/Aspire91DevContainer">laurentkempe&#x2F;aspirePlayground&#x2F;Aspire91DevContainer</a></p>
+<p></p>
+<div style="text-align: left">
+  <div class="github-card"
+    data-user="laurentkempe"
+    data-repo="aspirePlayground"
+    data-height="200"
+    data-width="400"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/NET-Aspire/" rel="tag">.NET Aspire</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Dev-Container/" rel="tag">Dev Container</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Docker/" rel="tag">Docker</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Rider/" rel="tag">Rider</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2025/03/02/building-local-ai-agents-semantic-kernel-agent-with-functions-in-csharp-using-ollama/"
+                    data-tooltip="Building Local AI Agents: Semantic Kernel Agent with Functions in C# using Ollama"
+                    aria-label="NEXT: Building Local AI Agents: Semantic Kernel Agent with Functions in C# using Ollama"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2025/03/06/dotnet-aspire-and-dev-container/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2025/03/06/dotnet-aspire-and-dev-container/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2025/03/06/dotnet-aspire-and-dev-container/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2025 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2025/03/02/building-local-ai-agents-semantic-kernel-agent-with-functions-in-csharp-using-ollama/"
+                    data-tooltip="Building Local AI Agents: Semantic Kernel Agent with Functions in C# using Ollama"
+                    aria-label="NEXT: Building Local AI Agents: Semantic Kernel Agent with Functions in C# using Ollama"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2025/03/06/dotnet-aspire-and-dev-container/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2025/03/06/dotnet-aspire-and-dev-container/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2025/03/06/dotnet-aspire-and-dev-container/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2025/03/06/dotnet-aspire-and-dev-container/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2025/03/06/dotnet-aspire-and-dev-container/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2025/03/06/dotnet-aspire-and-dev-container/"
+                        aria-label="global.share_on_linkedin"
+                    >
+                        <i class="fab fa-linkedin" aria-hidden="true"></i><span>global.share_on_linkedin</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Distinguished Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-tfpoie6odq34rhngrjo82vpazt9epmdzv6ilhgvuc4raswcjhvqa3rna49rx.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+
+    
+
+
+
+
+    </body>
+</html>

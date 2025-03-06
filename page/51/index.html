@@ -38,7 +38,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-alkhnhioxdeqoqym0ivaqklnlbp9sj1chcb7nqwkmxdugpxbunrmdlv4nm06.min.css">
+<link rel="stylesheet" href="/assets/css/style-wbmpw1cmsdhbdtcpaw8nyqasevrh03fgfhif7g2hs4hoc8gasngkmwj6hwtq.min.css">
 
     <!--STYLES END-->
     
@@ -301,6 +301,52 @@
                         hasCoverMetaIn
                         ">
                 <section class="postShorten-group main-content-wrap">
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2004/07/23/Managing-IIS-with-scripts/"
+                            aria-label=": Managing IIS with scripts"
+                        >
+                            Managing IIS with scripts
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2004-07-22T22:14:00+00:00">
+	
+		    Jul 22, 2004
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>I needed to create a virtual directory in IIS 6 during the deployment of one of our backend application on a Windows 2003 server. This application is a COM component written in C++ that I developed wrapping a very old VB6 COM component. The whole exposed as a Web Service using the <a target="_blank" rel="noopener" href="http://www.microsoft.com/downloads/details.aspx?FamilyId=C943C0DD-CEEC-4088-9753-86F052EC8450&displaylang=en">SOAP Toolkit 3</a>. I already discussed about it <a target="_blank" rel="noopener" href="http://weblogs.asp.net/lkempe/archive/2003/11/06/36233.aspx">here</a>.</p>
+<p>So I created a script that will register both COM component, by the way regsvr32 is really bad cause it doesn’t return different value if it fails. Right now I have no verification in the script that let me know if the registration went well. I plan to add it in a second step by reading the content of the registry using the <a target="_blank" rel="noopener" href="http://www.microsoft.com/resources/documentation/windows/xp/all/proddocs/en-us/reg.mspx">reg command</a>. The script is using the <em>SOAPVDIR.CMD</em> packaged with the <a target="_blank" rel="noopener" href="http://www.microsoft.com/downloads/details.aspx?FamilyId=C943C0DD-CEEC-4088-9753-86F052EC8450&displaylang=en">SOAP Toolkit 3</a> to create the Virtual Directory with the soap ISAPI of the <a target="_blank" rel="noopener" href="http://www.microsoft.com/downloads/details.aspx?FamilyId=C943C0DD-CEEC-4088-9753-86F052EC8450&displaylang=en">SOAP Toolkit 3</a>:</p>
+                    
+                        <a
+                            href="/2004/07/23/Managing-IIS-with-scripts/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": Managing IIS with scripts"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
     
     
     <article class="postShorten postShorten--thumbnailimg-right">
@@ -753,70 +799,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2004/07/08/How-I-restored-my-notebook-after-uninstalling-issues-of-V2i-from-Symantec/"
-                            aria-label=": How I restored my notebook after uninstalling issues of V2i from Symantec"
-                        >
-                            How I restored my notebook after uninstalling issues of V2i from Symantec
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2004-07-08T04:43:00+00:00">
-	
-		    Jul 08, 2004
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <P>After uninstalling V2i from Symantec I was asked to reboot my notebook. The reboot took for ever so I decide after 30 minutes to switch it off. Problems started when I rebooted, lots of drivers where missing and it seems that I lost the plug and play features. One of the first driver I decided to recover was the Sound driver. This is the way I recover from that sound driver issue.</P>
-<OL>
-<LI>In services, check that WinAudio service is enabled, set to automatic, and running.</LI>
-<LI>In Device Manager, System Devices check that Plug and Play Software Device Enumerator is installed and running</LI></OL>
-<P>If not , then you need to reinstall it:</P>
-<OL>
-<LI>Copy machine.inf from %windir%\inf to your desktop</LI>
-<LI>Remove line ExcludeFromSelect=*</LI>
-<LI>Use Add new hardware wizard using the Have Disk option</LI>
-<LI>Select the machine.inf you saved on the desktop</LI>
-<LI>Install Plug and Play Software Device</LI></OL>
-<P>If the sound card is listed in the device manager, then uninstall it and start a scan for hardware changes. Afer installing it again I got the sound back live.</P>
-<P>I did the same for several other drivers that were missing on my notebook. And now it seems to be ok.</P>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2004/07/08/How-I-restored-my-notebook-after-uninstalling-issues-of-V2i-from-Symantec/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -902,7 +884,7 @@
 <div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-sq5my1bekygdonhpwjskqccqqqvosf04e6bojhkyea67kgeai7hh2ljvmrsu.min.js"></script>
+<script src="/assets/js/script-tfpoie6odq34rhngrjo82vpazt9epmdzv6ilhgvuc4raswcjhvqa3rna49rx.min.js"></script>
 
 <!--SCRIPTS END-->
 
