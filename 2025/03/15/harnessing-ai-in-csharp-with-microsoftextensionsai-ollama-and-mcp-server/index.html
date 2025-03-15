@@ -1,0 +1,736 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Laurent Kempé">
+    <title>Harnessing AI in C# with Microsoft.Extensions.AI, Ollama, and MCP Server - Laurent Kempé</title>
+    <meta name="author" content="Laurent Kempé">
+    
+    
+        <link rel="icon" href="https://laurentkempe.com/assets/images/favicon.ico">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"},"articleBody":"In the previous post “Leveraging Microsoft.Extensions.AI for Tool Calling in C#“, we explored how to create custom tools that enhance the capabilities of Large Language Models (LLMs). We demonstrated how integrating these technologies enables developers to build applications with advanced AI capabilities, facilitating more complex interactions.\nIn this post, we’ll take a step further and explore how to leverage Model Context Protocol (MCP) servers to utilize external Tools and AI models in C# applications. We’ll continue using Ollama to run local AI models.\n\n\nIntroductionThe future of AI extends beyond powerful models to their seamless interaction with the data that drives our world. Model Context Protocol (MCP) is a groundbreaking open standard designed to bridge the gap between AI systems and diverse data sources. Developed by Anthropic, MCP simplifies the integration of AI with content repositories, business tools, and development environments. By replacing fragmented, custom integrations with a universal protocol, MCP empowers developers to create secure, scalable, and context-aware AI applications.\nRequirements\nLlama 3.2 SLM, a model supporting function calling\nOllama to run the SLM and handle the integration\nA .NET CLI application using Microsoft.Extensions.AI and McpDotNet.Extensions.AI\n\nCreate a .NET Console ApplicationWe’ll create a simple .NET CLI application that interacts with the AI model using Microsoft.Extensions.AI. This library provides a unified set of AI building blocks for .NET applications, making it easy to incorporate AI capabilities into your projects. We’ll extend these capabilities using McpDotNet.Extensions.AI to provide tools via a Model Context Protocol (MCP) server.\n1234dotnet new console -n OllamaMCPServerMicrosoftExtensionscd OllamaMCPServerMicrosoftExtensionsdotnet add package Microsoft.Extensions.AIdotnet add package McpDotNet.Extensions.AI\n\nImplementation using Microsoft.Extensions.AI &amp; McpDotNet.Extensions.AIOur console application leverages Microsoft.Extensions.AI to interact with a Llama 3.2 AI model running locally via Ollama. We then enhance the chat client’s capabilities using McpDotNet.Extensions.AI to incorporate tools hosted outside our application by an MCP server.\nContinuing from our previous examples, we’ll use a Time MCP Server packaged as a simple Docker container. This container automatically starts and stops when our application runs.\n1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950Console.WriteLine(&quot;Hello, Microsoft.Extensions.AI with Ollama &amp; MCP Server !&quot;);var message = &quot;What is the current (CET) time in Illzach, France?&quot;;Console.WriteLine(message);// 👇🏼 Configure the Model Context Protocol server to usevar config = new McpServerConfig&#123;    Id = &quot;time&quot;,    Name = &quot;Time MCP Server&quot;,    TransportType = TransportTypes.StdIo,    TransportOptions = new Dictionary&lt;string, string&gt;    &#123;        // 👇🏼 The command executed to start the MCP server        [&quot;command&quot;] = &quot;docker&quot;,        [&quot;arguments&quot;] = &quot;run -i --rm mcp/time&quot;    &#125;&#125;;// 👇🏼 Get an MCP session scope used to get the MCP toolsawait using var sessionScope = await McpSessionScope.CreateAsync(config);using var factory =    LoggerFactory.Create(builder =&gt; builder.AddConsole().SetMinimumLevel(LogLevel.Trace));// 👇🏼 Use Ollama as the chat clientvar ollamaChatClient =    new OllamaChatClient(new Uri(&quot;http://localhost:11434/&quot;), &quot;llama3.2:3b&quot;);var client = new ChatClientBuilder(ollamaChatClient)    // 👇🏼 Add logging to the chat client, wrapping the function invocation client     .UseLogging(factory)    // 👇🏼 Add function invocation to the chat client, wrapping the Ollama client    .UseFunctionInvocation()    .Build();IList&lt;ChatMessage&gt; messages =[    new(ChatRole.System, &quot;&quot;&quot;                         You are a helpful assistant delivering time in one sentence                         in a short format, like &#x27;It is 10:08 in Paris, France.&#x27;                         &quot;&quot;&quot;),    new(ChatRole.User, message)];// 👇🏼 Pass the MCP tools to the chat clientvar response =    await client.GetResponseAsync(        messages,        new ChatOptions &#123; Tools = sessionScope.Tools &#125;);Console.WriteLine(response);\n\nRunning the ApplicationTo run the application, simply execute dotnet run. The application starts the Time MCP Server Docker container, interacts with the AI model, and returns the current time in Illzach, France.\n123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081&gt; dotnet runHello, Microsoft.Extensions.AI with Ollama &amp; MCP Server !What is the current (CET) time in Illzach, France?trce: Microsoft.Extensions.AI.LoggingChatClient[805843669]      GetResponseAsync invoked: [        &#123;          &quot;role&quot;: &quot;system&quot;,          &quot;contents&quot;: [            &#123;              &quot;$type&quot;: &quot;text&quot;,              &quot;text&quot;: &quot;You are a helpful assistant delivering time in one sentence\\r\\nin a short format, like &#x27;It is 10:08 in Paris, France.&#x27;&quot;            &#125;          ]        &#125;,        &#123;          &quot;role&quot;: &quot;user&quot;,          &quot;contents&quot;: [            &#123;              &quot;$type&quot;: &quot;text&quot;,              &quot;text&quot;: &quot;What is the current (CET) time in Illzach, France?&quot;            &#125;          ]        &#125;      ]. Options: &#123;&#125;. Metadata: &#123;        &quot;providerName&quot;: &quot;ollama&quot;,        &quot;providerUri&quot;: &quot;http://localhost:11434/&quot;,        &quot;modelId&quot;: &quot;llama3.2:3b&quot;      &#125;.trce: Microsoft.Extensions.AI.LoggingChatClient[384896670]      GetResponseAsync completed: &#123;        &quot;messages&quot;: [          &#123;            &quot;role&quot;: &quot;assistant&quot;,            &quot;contents&quot;: [              &#123;                &quot;$type&quot;: &quot;functionCall&quot;,                &quot;callId&quot;: &quot;86D17B64&quot;,                &quot;name&quot;: &quot;get_current_time&quot;,                &quot;arguments&quot;: &#123;                  &quot;timezone&quot;: &quot;Europe/Paris&quot;                &#125;              &#125;            ]          &#125;,          &#123;            &quot;role&quot;: &quot;tool&quot;,            &quot;contents&quot;: [              &#123;                &quot;$type&quot;: &quot;functionResult&quot;,                &quot;callId&quot;: &quot;86D17B64&quot;,                &quot;result&quot;: &quot;&#123;\\n  \\&quot;timezone\\&quot;: \\&quot;Europe/Paris\\&quot;,\\n  \\&quot;datetime\\&quot;: \\&quot;2025-03-15T12:51:31+01:00\\&quot;,\\n  \\&quot;is_dst\\&quot;: false\\n&#125;&quot;              &#125;            ]          &#125;,          &#123;            &quot;role&quot;: &quot;assistant&quot;,            &quot;contents&quot;: [              &#123;                &quot;$type&quot;: &quot;text&quot;,                &quot;text&quot;: &quot;The current time in Illzach, France (CET) is 12:51 PM.&quot;              &#125;            ]          &#125;        ],        &quot;responseId&quot;: &quot;2025-03-15T11:51:32.2116206Z&quot;,        &quot;modelId&quot;: &quot;llama3.2:3b&quot;,        &quot;createdAt&quot;: &quot;2025-03-15T11:51:32.2116206+00:00&quot;,        &quot;finishReason&quot;: &quot;stop&quot;,        &quot;usage&quot;: &#123;          &quot;inputTokenCount&quot;: 614,          &quot;outputTokenCount&quot;: 41,          &quot;totalTokenCount&quot;: 655,          &quot;additionalCounts&quot;: &#123;            &quot;load_duration&quot;: 2706148300,            &quot;total_duration&quot;: 3390812700,            &quot;prompt_eval_duration&quot;: 238000000,            &quot;eval_duration&quot;: 439000000          &#125;        &#125;      &#125;.The current time in Illzach, France (CET) is 12:51 PM.\n\nThe trace logs reveal how the application interacts with the AI model: first, it receives a functionCall response from the assistant, then the Microsoft.Extensions.AI client calls the MCP server and receives a functionResult from the tool. Finally, the assistant formulates an answer for the user based on the function call result.\nWe can also examine the logs from the Time MCP Server Docker container to observe the interaction with our application:\n12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485862025-03-15 11:01:11&#123;  &quot;jsonrpc&quot;: &quot;2.0&quot;,  &quot;id&quot;: 2,  &quot;result&quot;: &#123;    &quot;protocolVersion&quot;: &quot;2024-11-05&quot;,    &quot;capabilities&quot;: &#123;      &quot;experimental&quot;: &#123;&#125;,      &quot;tools&quot;: &#123;        &quot;listChanged&quot;: false      &#125;    &#125;,    &quot;serverInfo&quot;: &#123;      &quot;name&quot;: &quot;mcp-time&quot;,      &quot;version&quot;: &quot;1.0.0&quot;    &#125;  &#125;&#125;2025-03-15 11:01:11 &#123;  &quot;jsonrpc&quot;: &quot;2.0&quot;,  &quot;id&quot;: 3,  &quot;result&quot;: &#123;    &quot;tools&quot;: [      &#123;        &quot;name&quot;: &quot;get_current_time&quot;,        &quot;description&quot;: &quot;Get current time in a specific timezone&quot;,        &quot;inputSchema&quot;: &#123;          &quot;type&quot;: &quot;object&quot;,          &quot;properties&quot;: &#123;            &quot;timezone&quot;: &#123;              &quot;type&quot;: &quot;string&quot;,              &quot;description&quot;: &quot;IANA timezone name (e.g., &#x27;America/New_York&#x27;, &#x27;Europe/London&#x27;). Use &#x27;UTC&#x27; as local timezone if no timezone provided by the user.&quot;            &#125;          &#125;,          &quot;required&quot;: [            &quot;timezone&quot;          ]        &#125;      &#125;,      &#123;        &quot;name&quot;: &quot;convert_time&quot;,        &quot;description&quot;: &quot;Convert time between timezones&quot;,        &quot;inputSchema&quot;: &#123;          &quot;type&quot;: &quot;object&quot;,          &quot;properties&quot;: &#123;            &quot;source_timezone&quot;: &#123;              &quot;type&quot;: &quot;string&quot;,              &quot;description&quot;: &quot;Source IANA timezone name (e.g., &#x27;America/New_York&#x27;, &#x27;Europe/London&#x27;). Use &#x27;UTC&#x27; as local timezone if no source timezone provided by the user.&quot;            &#125;,            &quot;time&quot;: &#123;              &quot;type&quot;: &quot;string&quot;,              &quot;description&quot;: &quot;Time to convert in 24-hour format (HH:MM)&quot;            &#125;,            &quot;target_timezone&quot;: &#123;              &quot;type&quot;: &quot;string&quot;,              &quot;description&quot;: &quot;Target IANA timezone name (e.g., &#x27;Asia/Tokyo&#x27;, &#x27;America/San_Francisco&#x27;). Use &#x27;UTC&#x27; as local timezone if no target timezone provided by the user.&quot;            &#125;          &#125;,          &quot;required&quot;: [            &quot;source_timezone&quot;,            &quot;time&quot;,            &quot;target_timezone&quot;          ]        &#125;      &#125;    ]  &#125;&#125;2025-03-15 11:01:14&#123;  &quot;jsonrpc&quot;: &quot;2.0&quot;,  &quot;id&quot;: 4,  &quot;result&quot;: &#123;    &quot;content&quot;: [      &#123;        &quot;type&quot;: &quot;text&quot;,        &quot;text&quot;: &quot;&#123;\\n  \\&quot;timezone\\&quot;: \\&quot;Europe/Paris\\&quot;,\\n  \\&quot;datetime\\&quot;: \\&quot;2025-03-15T11:01:14+01:00\\&quot;,\\n  \\&quot;is_dst\\&quot;: false\\n&#125;&quot;      &#125;    ],    &quot;isError&quot;: false  &#125;&#125;\n\nThese logs show the connection being established, tools being listed, and a function call being made to retrieve the current time. Note that this log comes from a previous run of the application, so the time differs from our main example.\nConclusionThe Model Context Protocol (MCP) represents a transformative advancement for AI integrations. By providing a standardized, unified approach for connecting AI agents to tools and data sources, MCP simplifies development, enhances flexibility, and enables real-time, context-rich interactions. Its dynamic discovery capabilities and bidirectional communication distinguish it from traditional APIs, creating a foundation for more intelligent, responsive AI systems.\nThe future of AI has never looked brighter, with MCP driving seamless integrations and powering intelligent solutions across numerous use cases. It’s truly an exciting time for AI enthusiasts and professionals as we embark on a new era of connectivity and possibility! 🚀\nReferences\nIntroducing the Model Context Protocol\nModel Context Protocol\nPederHP&#x2F;mcpdotnet\nIntroducing Microsoft.Extensions.AI Preview – Unified AI Building Blocks for .NET\nTime MCP Server\nIntegrating Model Context Protocol Tools with Semantic Kernel: A Step-by-Step Guide\n\nGet the source code on GitHub laurentkempe&#x2F;aiPlayground&#x2F;OllamaMCPServerMicrosoftExtensions.\n\n\n  \n\n\n\n\n","dateCreated":"2025-03-15T14:36:00+00:00","dateModified":"2025-03-15T14:38:23+00:00","datePublished":"2025-03-15T14:36:00+00:00","description":"In the previous post “Leveraging Microsoft.Extensions.AI for Tool Calling in C#“, we explored how to create custom tools that enhance the capabilities of Large Language Models (LLMs). We demonstrated how integrating these technologies enables developers to build applications with advanced AI capabilities, facilitating more complex interactions.\nIn this post, we’ll take a step further and explore how to leverage Model Context Protocol (MCP) servers to utilize external Tools and AI models in C# applications. We’ll continue using Ollama to run local AI models.","headline":"Harnessing AI in C# with Microsoft.Extensions.AI, Ollama, and MCP Server","image":["https://live.staticflickr.com/5210/5297920398_431f7d7b27_q.jpg","https://live.staticflickr.com/5210/5297920398_199c438d4c_h.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://laurentkempe.com/2025/03/15/harnessing-ai-in-csharp-with-microsoftextensionsai-ollama-and-mcp-server/"},"publisher":{"@type":"Organization","name":"Laurent Kempé","sameAs":["https://github.com/laurentkempe","https://bsky.app/profile/laurentkempe.com","https://twitter.com/laurentkempe","https://www.linkedin.com/in/laurentkempe","https://flickr.com/photos/laurentkempe/"],"image":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg","logo":{"@type":"ImageObject","url":"https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"}},"url":"https://laurentkempe.com/2025/03/15/harnessing-ai-in-csharp-with-microsoftextensionsai-ollama-and-mcp-server/","keywords":"C#, AI, Ollama, SLM, MCP","thumbnailUrl":"https://live.staticflickr.com/5210/5297920398_431f7d7b27_q.jpg"}</script>
+    <meta name="description" content="In the previous post “Leveraging Microsoft.Extensions.AI for Tool Calling in C#“, we explored how to create custom tools that enhance the capabilities of Large Language Models (LLMs). We demonstrated">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Harnessing AI in C# with Microsoft.Extensions.AI, Ollama, and MCP Server">
+<meta property="og:url" content="https://laurentkempe.com/2025/03/15/harnessing-ai-in-csharp-with-microsoftextensionsai-ollama-and-mcp-server/index.html">
+<meta property="og:site_name" content="Laurent Kempé">
+<meta property="og:description" content="In the previous post “Leveraging Microsoft.Extensions.AI for Tool Calling in C#“, we explored how to create custom tools that enhance the capabilities of Large Language Models (LLMs). We demonstrated">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-03-15T14:36:00.000Z">
+<meta property="article:modified_time" content="2025-03-15T14:38:23.388Z">
+<meta property="article:author" content="Laurent Kempé">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Ollama">
+<meta property="article:tag" content="SLM">
+<meta property="article:tag" content="MCP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@laurentkempe">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/5210/5297920398_431f7d7b27_q.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/5210/5297920398_431f7d7b27_q.jpg"/>
+    
+    
+        <meta property="og:image" content="https://live.staticflickr.com/5210/5297920398_199c438d4c_h.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://live.staticflickr.com/5210/5297920398_199c438d4c_h.jpg"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-xfgaqkjuiiah9xydovxatgudtbru4d1wyww0kuk2n2bp0qedj1ytnai3rcqm.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Laurent Kempé
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Laurent Kempé</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/presentations.html"
+                            
+                            rel="noopener"
+                            title="Presentations"
+                        >
+                        <i class="sidebar-button-icon fa fa-file-powerpoint" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Presentations</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/about-laurent-kempe.html"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://bsky.app/profile/laurentkempe.com"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Bluesky"
+                        >
+                        <i class="sidebar-button-icon fab fa-bluesky" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Bluesky</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://twitter.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/in/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://flickr.com/photos/laurentkempe/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Flickr"
+                        >
+                        <i class="sidebar-button-icon fab fa-flickr" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Flickr</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://feeds.feedburner.com/laurentkempe"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    post-header-cover--partial"
+             style="background-image:url('https://live.staticflickr.com/5210/5297920398_199c438d4c_h.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Harnessing AI in C# with Microsoft.Extensions.AI, Ollama, and MCP Server
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2025-03-15T14:36:00+00:00">
+	
+		    Mar 15, 2025
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">Les Vosges, France</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>In the previous post “<a href="https://laurentkempe.com/2025/01/27/leveraging-microsoftextensionsai-for-tool-calling-in-csharp/">Leveraging Microsoft.Extensions.AI for Tool Calling in C#</a>“, we explored how to create custom tools that enhance the capabilities of Large Language Models (LLMs). We demonstrated how integrating these technologies enables developers to build applications with advanced AI capabilities, facilitating more complex interactions.</p>
+<p>In this post, we’ll take a step further and explore how to leverage <strong>Model Context Protocol (MCP)</strong> servers to utilize external Tools and AI models in C# applications. We’ll continue using Ollama to run local AI models.</p>
+<span id="more"></span>
+
+<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>The future of AI extends beyond powerful models to their seamless interaction with the data that drives our world. <strong>Model Context Protocol (MCP)</strong> is a groundbreaking open standard designed to bridge the gap between AI systems and diverse data sources. Developed by Anthropic, MCP simplifies the integration of AI with content repositories, business tools, and development environments. By replacing fragmented, custom integrations with a universal protocol, MCP empowers developers to create secure, scalable, and context-aware AI applications.</p>
+<h1 id="Requirements"><a href="#Requirements" class="headerlink" title="Requirements"></a>Requirements</h1><ul>
+<li><strong>Llama 3.2 SLM</strong>, a model supporting function calling</li>
+<li><strong>Ollama</strong> to run the SLM and handle the integration</li>
+<li>A .NET CLI application using <strong>Microsoft.Extensions.AI</strong> and <strong>McpDotNet.Extensions.AI</strong></li>
+</ul>
+<h1 id="Create-a-NET-Console-Application"><a href="#Create-a-NET-Console-Application" class="headerlink" title="Create a .NET Console Application"></a>Create a .NET Console Application</h1><p>We’ll create a simple .NET CLI application that interacts with the AI model using <code>Microsoft.Extensions.AI</code>. This library provides a unified set of AI building blocks for .NET applications, making it easy to incorporate AI capabilities into your projects. We’ll extend these capabilities using <code>McpDotNet.Extensions.AI</code> to provide tools via a <strong>Model Context Protocol (MCP) server</strong>.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dotnet new console <span class="literal">-n</span> OllamaMCPServerMicrosoftExtensions</span><br><span class="line"><span class="built_in">cd</span> OllamaMCPServerMicrosoftExtensions</span><br><span class="line">dotnet add package Microsoft.Extensions.AI</span><br><span class="line">dotnet add package McpDotNet.Extensions.AI</span><br></pre></td></tr></table></figure>
+
+<h1 id="Implementation-using-Microsoft-Extensions-AI-McpDotNet-Extensions-AI"><a href="#Implementation-using-Microsoft-Extensions-AI-McpDotNet-Extensions-AI" class="headerlink" title="Implementation using Microsoft.Extensions.AI &amp; McpDotNet.Extensions.AI"></a>Implementation using Microsoft.Extensions.AI &amp; McpDotNet.Extensions.AI</h1><p>Our console application leverages <code>Microsoft.Extensions.AI</code> to interact with a Llama 3.2 AI model running locally via Ollama. We then enhance the chat client’s capabilities using <code>McpDotNet.Extensions.AI</code> to incorporate tools hosted outside our application by an MCP server.</p>
+<p>Continuing from our previous examples, we’ll use a <strong>Time MCP Server</strong> packaged as a simple Docker container. This container automatically starts and stops when our application runs.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">Console.WriteLine(<span class="string">&quot;Hello, Microsoft.Extensions.AI with Ollama &amp; MCP Server !&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> message = <span class="string">&quot;What is the current (CET) time in Illzach, France?&quot;</span>;</span><br><span class="line">Console.WriteLine(message);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 👇🏼 Configure the Model Context Protocol server to use</span></span><br><span class="line"><span class="keyword">var</span> config = <span class="keyword">new</span> McpServerConfig</span><br><span class="line">&#123;</span><br><span class="line">    Id = <span class="string">&quot;time&quot;</span>,</span><br><span class="line">    Name = <span class="string">&quot;Time MCP Server&quot;</span>,</span><br><span class="line">    TransportType = TransportTypes.StdIo,</span><br><span class="line">    TransportOptions = <span class="keyword">new</span> Dictionary&lt;<span class="built_in">string</span>, <span class="built_in">string</span>&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 👇🏼 The command executed to start the MCP server</span></span><br><span class="line">        [<span class="string">&quot;command&quot;</span>] = <span class="string">&quot;docker&quot;</span>,</span><br><span class="line">        [<span class="string">&quot;arguments&quot;</span>] = <span class="string">&quot;run -i --rm mcp/time&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 👇🏼 Get an MCP session scope used to get the MCP tools</span></span><br><span class="line"><span class="keyword">await</span> <span class="keyword">using</span> <span class="keyword">var</span> sessionScope = <span class="keyword">await</span> McpSessionScope.CreateAsync(config);</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> factory =</span><br><span class="line">    LoggerFactory.Create(builder =&gt; builder.AddConsole().SetMinimumLevel(LogLevel.Trace));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 👇🏼 Use Ollama as the chat client</span></span><br><span class="line"><span class="keyword">var</span> ollamaChatClient =</span><br><span class="line">    <span class="keyword">new</span> OllamaChatClient(<span class="keyword">new</span> Uri(<span class="string">&quot;http://localhost:11434/&quot;</span>), <span class="string">&quot;llama3.2:3b&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> client = <span class="keyword">new</span> ChatClientBuilder(ollamaChatClient)</span><br><span class="line">    <span class="comment">// 👇🏼 Add logging to the chat client, wrapping the function invocation client </span></span><br><span class="line">    .UseLogging(factory)</span><br><span class="line">    <span class="comment">// 👇🏼 Add function invocation to the chat client, wrapping the Ollama client</span></span><br><span class="line">    .UseFunctionInvocation()</span><br><span class="line">    .Build();</span><br><span class="line"></span><br><span class="line">IList&lt;ChatMessage&gt; messages =</span><br><span class="line">[</span><br><span class="line">    <span class="keyword">new</span>(ChatRole.System, <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">                         You are a helpful assistant delivering time in one sentence</span></span><br><span class="line"><span class="string">                         in a short format, like &#x27;It is 10:08 in Paris, France.&#x27;</span></span><br><span class="line"><span class="string">                         &quot;</span><span class="string">&quot;&quot;</span>),</span><br><span class="line">    <span class="keyword">new</span>(ChatRole.User, message)</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 👇🏼 Pass the MCP tools to the chat client</span></span><br><span class="line"><span class="keyword">var</span> response =</span><br><span class="line">    <span class="keyword">await</span> client.GetResponseAsync(</span><br><span class="line">        messages,</span><br><span class="line">        <span class="keyword">new</span> ChatOptions &#123; Tools = sessionScope.Tools &#125;);</span><br><span class="line"></span><br><span class="line">Console.WriteLine(response);</span><br></pre></td></tr></table></figure>
+
+<h1 id="Running-the-Application"><a href="#Running-the-Application" class="headerlink" title="Running the Application"></a>Running the Application</h1><p>To run the application, simply execute <code>dotnet run</code>. The application starts the <strong>Time MCP Server</strong> Docker container, interacts with the AI model, and returns the current time in Illzach, France.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">&gt; dotnet run</span><br><span class="line">Hello, Microsoft.Extensions.AI with Ollama &amp; MCP Server !</span><br><span class="line">What is the current (CET) time <span class="keyword">in</span> Illzach, France?</span><br><span class="line">trce: Microsoft.Extensions.AI.LoggingChatClient[<span class="number">805843669</span>]</span><br><span class="line">      GetResponseAsync invoked: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="string">&quot;role&quot;</span>: <span class="string">&quot;system&quot;</span>,</span><br><span class="line">          <span class="string">&quot;contents&quot;</span>: [</span><br><span class="line">            &#123;</span><br><span class="line">              <span class="string">&quot;<span class="variable">$type</span>&quot;</span>: <span class="string">&quot;text&quot;</span>,</span><br><span class="line">              <span class="string">&quot;text&quot;</span>: <span class="string">&quot;You are a helpful assistant delivering time in one sentence\r\nin a short format, like &#x27;It is 10:08 in Paris, France.&#x27;&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">          ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>,</span><br><span class="line">          <span class="string">&quot;contents&quot;</span>: [</span><br><span class="line">            &#123;</span><br><span class="line">              <span class="string">&quot;<span class="variable">$type</span>&quot;</span>: <span class="string">&quot;text&quot;</span>,</span><br><span class="line">              <span class="string">&quot;text&quot;</span>: <span class="string">&quot;What is the current (CET) time in Illzach, France?&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      ]. Options: &#123;&#125;. Metadata: &#123;</span><br><span class="line">        <span class="string">&quot;providerName&quot;</span>: <span class="string">&quot;ollama&quot;</span>,</span><br><span class="line">        <span class="string">&quot;providerUri&quot;</span>: <span class="string">&quot;http://localhost:11434/&quot;</span>,</span><br><span class="line">        <span class="string">&quot;modelId&quot;</span>: <span class="string">&quot;llama3.2:3b&quot;</span></span><br><span class="line">      &#125;.</span><br><span class="line">trce: Microsoft.Extensions.AI.LoggingChatClient[<span class="number">384896670</span>]</span><br><span class="line">      GetResponseAsync completed: &#123;</span><br><span class="line">        <span class="string">&quot;messages&quot;</span>: [</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="string">&quot;role&quot;</span>: <span class="string">&quot;assistant&quot;</span>,</span><br><span class="line">            <span class="string">&quot;contents&quot;</span>: [</span><br><span class="line">              &#123;</span><br><span class="line">                <span class="string">&quot;<span class="variable">$type</span>&quot;</span>: <span class="string">&quot;functionCall&quot;</span>,</span><br><span class="line">                <span class="string">&quot;callId&quot;</span>: <span class="string">&quot;86D17B64&quot;</span>,</span><br><span class="line">                <span class="string">&quot;name&quot;</span>: <span class="string">&quot;get_current_time&quot;</span>,</span><br><span class="line">                <span class="string">&quot;arguments&quot;</span>: &#123;</span><br><span class="line">                  <span class="string">&quot;timezone&quot;</span>: <span class="string">&quot;Europe/Paris&quot;</span></span><br><span class="line">                &#125;</span><br><span class="line">              &#125;</span><br><span class="line">            ]</span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="string">&quot;role&quot;</span>: <span class="string">&quot;tool&quot;</span>,</span><br><span class="line">            <span class="string">&quot;contents&quot;</span>: [</span><br><span class="line">              &#123;</span><br><span class="line">                <span class="string">&quot;<span class="variable">$type</span>&quot;</span>: <span class="string">&quot;functionResult&quot;</span>,</span><br><span class="line">                <span class="string">&quot;callId&quot;</span>: <span class="string">&quot;86D17B64&quot;</span>,</span><br><span class="line">                <span class="string">&quot;result&quot;</span>: <span class="string">&quot;&#123;\n  \&quot;</span><span class="type">timezone</span>\<span class="string">&quot;: \&quot;</span><span class="type">Europe</span>/<span class="type">Paris</span>\<span class="string">&quot;,\n  \&quot;</span><span class="built_in">datetime</span>\<span class="string">&quot;: \&quot;</span><span class="number">2025</span>-<span class="number">03</span>-<span class="number">15</span><span class="type">T12</span>:<span class="number">51</span>:<span class="number">31</span>+<span class="number">01</span>:<span class="number">00</span>\<span class="string">&quot;,\n  \&quot;</span><span class="type">is_dst</span>\<span class="string">&quot;: false\n&#125;&quot;</span></span><br><span class="line">              &#125;</span><br><span class="line">            ]</span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="string">&quot;role&quot;</span>: <span class="string">&quot;assistant&quot;</span>,</span><br><span class="line">            <span class="string">&quot;contents&quot;</span>: [</span><br><span class="line">              &#123;</span><br><span class="line">                <span class="string">&quot;<span class="variable">$type</span>&quot;</span>: <span class="string">&quot;text&quot;</span>,</span><br><span class="line">                <span class="string">&quot;text&quot;</span>: <span class="string">&quot;The current time in Illzach, France (CET) is 12:51 PM.&quot;</span></span><br><span class="line">              &#125;</span><br><span class="line">            ]</span><br><span class="line">          &#125;</span><br><span class="line">        ],</span><br><span class="line">        <span class="string">&quot;responseId&quot;</span>: <span class="string">&quot;2025-03-15T11:51:32.2116206Z&quot;</span>,</span><br><span class="line">        <span class="string">&quot;modelId&quot;</span>: <span class="string">&quot;llama3.2:3b&quot;</span>,</span><br><span class="line">        <span class="string">&quot;createdAt&quot;</span>: <span class="string">&quot;2025-03-15T11:51:32.2116206+00:00&quot;</span>,</span><br><span class="line">        <span class="string">&quot;finishReason&quot;</span>: <span class="string">&quot;stop&quot;</span>,</span><br><span class="line">        <span class="string">&quot;usage&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;inputTokenCount&quot;</span>: <span class="number">614</span>,</span><br><span class="line">          <span class="string">&quot;outputTokenCount&quot;</span>: <span class="number">41</span>,</span><br><span class="line">          <span class="string">&quot;totalTokenCount&quot;</span>: <span class="number">655</span>,</span><br><span class="line">          <span class="string">&quot;additionalCounts&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;load_duration&quot;</span>: <span class="number">2706148300</span>,</span><br><span class="line">            <span class="string">&quot;total_duration&quot;</span>: <span class="number">3390812700</span>,</span><br><span class="line">            <span class="string">&quot;prompt_eval_duration&quot;</span>: <span class="number">238000000</span>,</span><br><span class="line">            <span class="string">&quot;eval_duration&quot;</span>: <span class="number">439000000</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;.</span><br><span class="line">The current time <span class="keyword">in</span> Illzach, France (CET) is <span class="number">12</span>:<span class="number">51</span> PM.</span><br></pre></td></tr></table></figure>
+
+<p>The trace logs reveal how the application interacts with the AI model: first, it receives a <code>functionCall</code> response from the assistant, then the <code>Microsoft.Extensions.AI</code> client calls the MCP server and receives a <code>functionResult</code> from the tool. Finally, the assistant formulates an answer for the user based on the function call result.</p>
+<p>We can also examine the logs from the <strong>Time MCP Server</strong> Docker container to observe the interaction with our application:</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2025</span><span class="literal">-03-15</span> <span class="number">11</span>:<span class="number">01</span>:<span class="number">11</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;jsonrpc&quot;</span>: <span class="string">&quot;2.0&quot;</span>,</span><br><span class="line">  <span class="string">&quot;id&quot;</span>: <span class="number">2</span>,</span><br><span class="line">  <span class="string">&quot;result&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;protocolVersion&quot;</span>: <span class="string">&quot;2024-11-05&quot;</span>,</span><br><span class="line">    <span class="string">&quot;capabilities&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;experimental&quot;</span>: &#123;&#125;,</span><br><span class="line">      <span class="string">&quot;tools&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;listChanged&quot;</span>: false</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;serverInfo&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;mcp-time&quot;</span>,</span><br><span class="line">      <span class="string">&quot;version&quot;</span>: <span class="string">&quot;1.0.0&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">2025</span><span class="literal">-03-15</span> <span class="number">11</span>:<span class="number">01</span>:<span class="number">11</span> </span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;jsonrpc&quot;</span>: <span class="string">&quot;2.0&quot;</span>,</span><br><span class="line">  <span class="string">&quot;id&quot;</span>: <span class="number">3</span>,</span><br><span class="line">  <span class="string">&quot;result&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;tools&quot;</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="string">&quot;name&quot;</span>: <span class="string">&quot;get_current_time&quot;</span>,</span><br><span class="line">        <span class="string">&quot;description&quot;</span>: <span class="string">&quot;Get current time in a specific timezone&quot;</span>,</span><br><span class="line">        <span class="string">&quot;inputSchema&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;type&quot;</span>: <span class="string">&quot;object&quot;</span>,</span><br><span class="line">          <span class="string">&quot;properties&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;timezone&quot;</span>: &#123;</span><br><span class="line">              <span class="string">&quot;type&quot;</span>: <span class="string">&quot;string&quot;</span>,</span><br><span class="line">              <span class="string">&quot;description&quot;</span>: <span class="string">&quot;IANA timezone name (e.g., &#x27;America/New_York&#x27;, &#x27;Europe/London&#x27;). Use &#x27;UTC&#x27; as local timezone if no timezone provided by the user.&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">          &#125;,</span><br><span class="line">          <span class="string">&quot;required&quot;</span>: [</span><br><span class="line">            <span class="string">&quot;timezone&quot;</span></span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="string">&quot;name&quot;</span>: <span class="string">&quot;convert_time&quot;</span>,</span><br><span class="line">        <span class="string">&quot;description&quot;</span>: <span class="string">&quot;Convert time between timezones&quot;</span>,</span><br><span class="line">        <span class="string">&quot;inputSchema&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;type&quot;</span>: <span class="string">&quot;object&quot;</span>,</span><br><span class="line">          <span class="string">&quot;properties&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;source_timezone&quot;</span>: &#123;</span><br><span class="line">              <span class="string">&quot;type&quot;</span>: <span class="string">&quot;string&quot;</span>,</span><br><span class="line">              <span class="string">&quot;description&quot;</span>: <span class="string">&quot;Source IANA timezone name (e.g., &#x27;America/New_York&#x27;, &#x27;Europe/London&#x27;). Use &#x27;UTC&#x27; as local timezone if no source timezone provided by the user.&quot;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">&quot;time&quot;</span>: &#123;</span><br><span class="line">              <span class="string">&quot;type&quot;</span>: <span class="string">&quot;string&quot;</span>,</span><br><span class="line">              <span class="string">&quot;description&quot;</span>: <span class="string">&quot;Time to convert in 24-hour format (HH:MM)&quot;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">&quot;target_timezone&quot;</span>: &#123;</span><br><span class="line">              <span class="string">&quot;type&quot;</span>: <span class="string">&quot;string&quot;</span>,</span><br><span class="line">              <span class="string">&quot;description&quot;</span>: <span class="string">&quot;Target IANA timezone name (e.g., &#x27;Asia/Tokyo&#x27;, &#x27;America/San_Francisco&#x27;). Use &#x27;UTC&#x27; as local timezone if no target timezone provided by the user.&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">          &#125;,</span><br><span class="line">          <span class="string">&quot;required&quot;</span>: [</span><br><span class="line">            <span class="string">&quot;source_timezone&quot;</span>,</span><br><span class="line">            <span class="string">&quot;time&quot;</span>,</span><br><span class="line">            <span class="string">&quot;target_timezone&quot;</span></span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="number">2025</span><span class="literal">-03-15</span> <span class="number">11</span>:<span class="number">01</span>:<span class="number">14</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;jsonrpc&quot;</span>: <span class="string">&quot;2.0&quot;</span>,</span><br><span class="line">  <span class="string">&quot;id&quot;</span>: <span class="number">4</span>,</span><br><span class="line">  <span class="string">&quot;result&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;content&quot;</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="string">&quot;type&quot;</span>: <span class="string">&quot;text&quot;</span>,</span><br><span class="line">        <span class="string">&quot;text&quot;</span>: <span class="string">&quot;&#123;\n  \&quot;</span><span class="type">timezone</span>\<span class="string">&quot;: \&quot;</span><span class="type">Europe</span>/<span class="type">Paris</span>\<span class="string">&quot;,\n  \&quot;</span><span class="built_in">datetime</span>\<span class="string">&quot;: \&quot;</span><span class="number">2025</span>-<span class="number">03</span>-<span class="number">15</span><span class="type">T11</span>:<span class="number">01</span>:<span class="number">14</span>+<span class="number">01</span>:<span class="number">00</span>\<span class="string">&quot;,\n  \&quot;</span><span class="type">is_dst</span>\<span class="string">&quot;: false\n&#125;&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&quot;isError&quot;</span>: false</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>These logs show the connection being established, tools being listed, and a function call being made to retrieve the current time. Note that this log comes from a previous run of the application, so the time differs from our main example.</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>The Model Context Protocol (MCP) represents a transformative advancement for AI integrations. By providing a standardized, unified approach for connecting AI agents to tools and data sources, MCP simplifies development, enhances flexibility, and enables real-time, context-rich interactions. Its dynamic discovery capabilities and bidirectional communication distinguish it from traditional APIs, creating a foundation for more intelligent, responsive AI systems.</p>
+<p>The future of AI has never looked brighter, with MCP driving seamless integrations and powering intelligent solutions across numerous use cases. It’s truly an exciting time for AI enthusiasts and professionals as we embark on a new era of connectivity and possibility! 🚀</p>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.anthropic.com/news/model-context-protocol">Introducing the Model Context Protocol</a></li>
+<li><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/introduction">Model Context Protocol</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/PederHP/mcpdotnet">PederHP&#x2F;mcpdotnet</a></li>
+<li><a target="_blank" rel="noopener" href="https://devblogs.microsoft.com/dotnet/introducing-microsoft-extensions-ai-preview/">Introducing Microsoft.Extensions.AI Preview – Unified AI Building Blocks for .NET</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/modelcontextprotocol/servers/tree/main/src/time">Time MCP Server</a></li>
+<li><a target="_blank" rel="noopener" href="https://devblogs.microsoft.com/semantic-kernel/integrating-model-context-protocol-tools-with-semantic-kernel-a-step-by-step-guide/">Integrating Model Context Protocol Tools with Semantic Kernel: A Step-by-Step Guide</a></li>
+</ul>
+<p>Get the source code on GitHub <a target="_blank" rel="noopener" href="https://github.com/laurentkempe/aiPlayground/tree/main/OllamaMCPServerMicrosoftExtensions">laurentkempe&#x2F;aiPlayground&#x2F;OllamaMCPServerMicrosoftExtensions</a>.</p>
+<p></p>
+<div style="text-align: left">
+  <div class="github-card"
+    data-user="laurentkempe"
+    data-repo="aiPlayground"
+    data-height="200"
+    data-width="400"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/AI/" rel="tag">AI</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/C/" rel="tag">C#</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/MCP/" rel="tag">MCP</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Ollama/" rel="tag">Ollama</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/SLM/" rel="tag">SLM</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2025/03/06/dotnet-aspire-and-dev-container/"
+                    data-tooltip=".NET Aspire and Dev Container"
+                    aria-label="NEXT: .NET Aspire and Dev Container"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2025/03/15/harnessing-ai-in-csharp-with-microsoftextensionsai-ollama-and-mcp-server/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2025/03/15/harnessing-ai-in-csharp-with-microsoftextensionsai-ollama-and-mcp-server/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2025/03/15/harnessing-ai-in-csharp-with-microsoftextensionsai-ollama-and-mcp-server/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2025 Laurent Kempé. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2025/03/06/dotnet-aspire-and-dev-container/"
+                    data-tooltip=".NET Aspire and Dev Container"
+                    aria-label="NEXT: .NET Aspire and Dev Container"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2025/03/15/harnessing-ai-in-csharp-with-microsoftextensionsai-ollama-and-mcp-server/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2025/03/15/harnessing-ai-in-csharp-with-microsoftextensionsai-ollama-and-mcp-server/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2025/03/15/harnessing-ai-in-csharp-with-microsoftextensionsai-ollama-and-mcp-server/"
+                    title="global.share_on_linkedin"
+                    aria-label="global.share_on_linkedin"
+                >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://laurentkempe.com/2025/03/15/harnessing-ai-in-csharp-with-microsoftextensionsai-ollama-and-mcp-server/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://laurentkempe.com/2025/03/15/harnessing-ai-in-csharp-with-microsoftextensionsai-ollama-and-mcp-server/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://laurentkempe.com/2025/03/15/harnessing-ai-in-csharp-with-microsoftextensionsai-ollama-and-mcp-server/"
+                        aria-label="global.share_on_linkedin"
+                    >
+                        <i class="fab fa-linkedin" aria-hidden="true"></i><span>global.share_on_linkedin</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://farm2.staticflickr.com/1971/31306281378_02b055ccfe_q.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Laurent Kempé</h4>
+        
+            <div id="about-card-bio"><p>I am an experienced Team Leader &amp; Distinguished Solution Architect with a passion for shipping high-quality products by empowering development team and culture toward an agile mindset. I bring technical vision and strategy, leading engineering teams to move product, processes and architecture forward.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Team Leader, Distinguished Solutions Architect</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Illzach, France
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://farm5.staticflickr.com/4437/37116073235_dda239221d_o.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-te7ur9kiqsgqdwswpbq6nwzx5hb0etjhphcudunqifwqodasx9gzpguhfply.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+
+    
+
+
+
+
+    </body>
+</html>
